@@ -18,38 +18,42 @@ import {
   ChevronLeft,
   ChevronRight,
   Music,
-  Clock
+  Clock,
+  Lock,
+  X,
+  AlertTriangle
 } from 'lucide-react';
 import { GoogleGenAI, Type } from '@google/genai';
 
 // --- CONFIGURATION DU ROSTER (Le Multivers) ---
 
 const CHARACTERS = [
-  { id: 'homer', name: 'Homer Simpson', faction: 'Simpsons', img: '/images/homer_generic_sf_1778417069953.png', color: 'from-yellow-400 to-orange-500', voice: 'Charon' },
-  { id: 'bart', name: 'Bart Simpson', faction: 'Simpsons', img: '/images/bart_generic_sf_1778417084932.png', color: 'from-orange-500 to-red-500', voice: 'Puck' },
-  { id: 'adele', name: 'Mortelle Adèle', faction: 'Cartoon', img: '/images/adele_generic_sf_1778417097290.png', color: 'from-red-600 to-purple-800', voice: 'Kore' },
-  { id: 'steve', name: 'Steve', faction: 'Minecraft', img: '/images/steve_sf_1778417051770.png', color: 'from-green-700 to-emerald-900', voice: 'Fenrir' },
-  { id: 'franklin', name: 'Franklin', faction: 'GTA', img: '/images/franklin_sf_1778417110721.png', color: 'from-emerald-800 to-black', voice: 'Charon' },
-  { id: 'papa', name: 'Papa', faction: 'Family', img: '/images/papa_sf_1778417131723.png', color: 'from-blue-800 to-indigo-900', voice: 'Fenrir' },
-  { id: 'maman', name: 'Maman', faction: 'Family', img: '/images/maman_sf_1778417144541.png', color: 'from-pink-600 to-purple-600', voice: 'Kore' },
-  { id: 'clara', name: 'Clara', faction: 'Family', img: 'https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?w=400&h=600&fit=crop', color: 'from-purple-500 to-fuchsia-700', voice: 'Aoede' },
-  { id: 'mayron', name: 'Mayron', faction: 'Family', img: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=600&fit=crop', color: 'from-cyan-500 to-blue-700', voice: 'Puck' },
-  { id: 'chat', name: 'Le Chat', faction: 'Animals', img: '/images/le_chat_sf_1778416951561.png', color: 'from-gray-800 to-black', voice: 'Charon' },
-  { id: 'voisin', name: 'Le Voisin Relou', faction: 'Banlieue', img: '/images/voisin_relou_street_fighter_1778416835801.png', color: 'from-gray-400 to-gray-600', voice: 'Charon' },
-  { id: 'livreur', name: 'Livreur UberEats', faction: 'Précaire', img: '/images/livreur_ubereats_sf_1778416904964.png', color: 'from-green-500 to-green-700', voice: 'Puck' },
-  { id: 'influenceuse', name: 'Influenceuse Drama', faction: 'Réseaux', img: '/images/influenceuse_drama_sf_1778416919814.png', color: 'from-pink-400 to-pink-600', voice: 'Kore' },
-  { id: 'banquier', name: 'Le Banquier', faction: 'Capitalisme', img: '/images/le_banquier_sf_1778416934105.png', color: 'from-slate-700 to-slate-900', voice: 'Fenrir' },
-  { id: 'tonton', name: 'Tonton Bourré', faction: 'Family', img: '/images/tonton_bourre_sf_1778416951155.png', color: 'from-amber-600 to-orange-800', voice: 'Charon' },
-  { id: 'rick', name: 'Rick Sanchez', faction: 'Sci-Fi', img: '/images/rick_sf.png', color: 'from-cyan-400 to-blue-600', voice: 'Charon' },
-  { id: 'morty', name: 'Morty Smith', faction: 'Sci-Fi', img: '/images/morty_sf.png', color: 'from-yellow-300 to-yellow-500', voice: 'Puck' },
-  { id: 'goku', name: 'Son Goku', faction: 'Anime', img: '/images/goku_sf.png', color: 'from-orange-400 to-blue-600', voice: 'Fenrir' },
-  { id: 'pikachu', name: 'Pikachu', faction: 'Pokemon', img: '/images/pikachu_sf.png', color: 'from-yellow-400 to-yellow-600', voice: 'Puck' },
-  { id: 'john_wick', name: 'John Wick', faction: 'Action', img: '/images/johnwick_sf.png', color: 'from-gray-700 to-black', voice: 'Charon' },
-  { id: 'shrek', name: 'Shrek', faction: 'Fantasy', img: '/images/shrek_sf.png', color: 'from-green-500 to-lime-700', voice: 'Fenrir' },
-  { id: 'lara', name: 'Lara Croft', faction: 'Adventure', img: '/images/lara_sf.png', color: 'from-brown-500 to-gray-800', voice: 'Kore' },
-  { id: 'walter', name: 'Walter White', faction: 'Drama', img: '/images/walter_sf.png', color: 'from-yellow-600 to-slate-900', voice: 'Charon' },
-  { id: 'spiderman', name: 'Spider-Man', faction: 'Marvel', img: '/images/spiderman_sf.png', color: 'from-red-600 to-blue-800', voice: 'Puck' },
-  { id: 'mercredi', name: 'Mercredi Addams', faction: 'Gothic', img: '/images/mercredi_sf.png', color: 'from-gray-900 to-black', voice: 'Aoede' },
+  // VOIX GEMINI TTS: Charon (grave, menaçant), Fenrir (puissant, héroïque), Puck (jeune, agile), Kore (féminin assertif), Aoede (féminin doux)
+  { id: 'homer', name: 'Homer Simpson', faction: 'Simpsons', img: '/images/homer_generic_sf_1778417069953.png', color: 'from-yellow-400 to-orange-500', voice: 'Charon', voiceStyle: 'idiot' },
+  { id: 'bart', name: 'Bart Simpson', faction: 'Simpsons', img: '/images/bart_generic_sf_1778417084932.png', color: 'from-orange-500 to-red-500', voice: 'Puck', voiceStyle: 'enfant' },
+  { id: 'adele', name: 'Mortelle Adèle', faction: 'Cartoon', img: '/images/adele_generic_sf_1778417097290.png', color: 'from-red-600 to-purple-800', voice: 'Kore', voiceStyle: 'enfant_diabolique' },
+  { id: 'steve', name: 'Steve', faction: 'Minecraft', img: '/images/steve_sf_1778417051770.png', color: 'from-green-700 to-emerald-900', voice: 'Puck', voiceStyle: 'gamer' },
+  { id: 'franklin', name: 'Franklin', faction: 'GTA', img: '/images/franklin_sf_1778417110721.png', color: 'from-emerald-800 to-black', voice: 'Fenrir', voiceStyle: 'gangster' },
+  { id: 'papa', name: 'Papa', faction: 'Family', img: '/images/papa_sf_1778417131723.png', color: 'from-blue-800 to-indigo-900', voice: 'Fenrir', voiceStyle: 'papa' },
+  { id: 'maman', name: 'Maman', faction: 'Family', img: '/images/maman_sf_1778417144541.png', color: 'from-pink-600 to-purple-600', voice: 'Kore', voiceStyle: 'maman' },
+  { id: 'clara', name: 'Clara', faction: 'Family', img: 'https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?w=400&h=600&fit=crop', color: 'from-purple-500 to-fuchsia-700', voice: 'Aoede', voiceStyle: 'ado_fille' },
+  { id: 'mayron', name: 'Mayron', faction: 'Family', img: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=600&fit=crop', color: 'from-cyan-500 to-blue-700', voice: 'Puck', voiceStyle: 'ado_garcon' },
+  { id: 'chat', name: 'Le Chat', faction: 'Animals', img: '/images/le_chat_sf_1778416951561.png', color: 'from-gray-800 to-black', voice: 'Puck', voiceStyle: 'animal' },
+  { id: 'voisin', name: 'Le Voisin Relou', faction: 'Banlieue', img: '/images/voisin_relou_street_fighter_1778416835801.png', color: 'from-gray-400 to-gray-600', voice: 'Charon', voiceStyle: 'raleur' },
+  { id: 'livreur', name: 'Livreur UberEats', faction: 'Précaire', img: '/images/livreur_ubereats_sf_1778416904964.png', color: 'from-green-500 to-green-700', voice: 'Puck', voiceStyle: 'presse' },
+  { id: 'influenceuse', name: 'Influenceuse Drama', faction: 'Réseaux', img: '/images/influenceuse_drama_sf_1778416919814.png', color: 'from-pink-400 to-pink-600', voice: 'Kore', voiceStyle: 'drama_queen' },
+  { id: 'banquier', name: 'Le Banquier', faction: 'Capitalisme', img: '/images/le_banquier_sf_1778416934105.png', color: 'from-slate-700 to-slate-900', voice: 'Fenrir', voiceStyle: 'autoritaire' },
+  { id: 'tonton', name: 'Tonton Bourré', faction: 'Family', img: '/images/tonton_bourre_sf_1778416951155.png', color: 'from-amber-600 to-orange-800', voice: 'Charon', voiceStyle: 'ivre' },
+  { id: 'rick', name: 'Rick Sanchez', faction: 'Sci-Fi', img: '/images/rick_sf.png', color: 'from-cyan-400 to-blue-600', voice: 'Charon', voiceStyle: 'scientifique_fou' },
+  { id: 'morty', name: 'Morty Smith', faction: 'Sci-Fi', img: '/images/morty_sf.png', color: 'from-yellow-300 to-yellow-500', voice: 'Puck', voiceStyle: 'nerveux' },
+  { id: 'goku', name: 'Son Goku', faction: 'Anime', img: '/images/goku_sf.png', color: 'from-orange-400 to-blue-600', voice: 'Fenrir', voiceStyle: 'guerrier' },
+  { id: 'pikachu', name: 'Pikachu', faction: 'Pokemon', img: '/images/pikachu_sf.png', color: 'from-yellow-400 to-yellow-600', voice: 'Puck', voiceStyle: 'creature' },
+  { id: 'john_wick', name: 'John Wick', faction: 'Action', img: '/images/johnwick_sf.png', color: 'from-gray-700 to-black', voice: 'Charon', voiceStyle: 'froid' },
+  { id: 'shrek', name: 'Shrek', faction: 'Fantasy', img: '/images/shrek_sf.png', color: 'from-green-500 to-lime-700', voice: 'Fenrir', voiceStyle: 'ogre' },
+  { id: 'lara', name: 'Lara Croft', faction: 'Adventure', img: '/images/lara_sf.png', color: 'from-brown-500 to-gray-800', voice: 'Kore', voiceStyle: 'aventuriere' },
+  { id: 'walter', name: 'Walter White', faction: 'Drama', img: '/images/walter_sf.png', color: 'from-yellow-600 to-slate-900', voice: 'Fenrir', voiceStyle: 'menacant' },
+  { id: 'spiderman', name: 'Spider-Man', faction: 'Marvel', img: '/images/spiderman_sf.png', color: 'from-red-600 to-blue-800', voice: 'Puck', voiceStyle: 'hero_jeune' },
+  { id: 'mercredi', name: 'Mercredi Addams', faction: 'Gothic', img: '/images/mercredi_sf.png', color: 'from-gray-900 to-black', voice: 'Aoede', voiceStyle: 'monotone' },
 ];
 
 const STYLES = [
@@ -137,21 +141,41 @@ export default function App() {
   const [matchDuration, setMatchDuration] = useState(3);
   const audioBgRef = useRef<HTMLAudioElement | null>(null);
 
+  // Trash mode (parental control)
+  const [trashMode, setTrashMode] = useState(false);
+  const [showParentalModal, setShowParentalModal] = useState(false);
+  const [parentalCode, setParentalCode] = useState("");
+  const [parentalError, setParentalError] = useState(false);
+  const PARENTAL_CODE = "0001";
+
   // Musique: online = fichier audio, offline = génération Web Audio
   useEffect(() => {
     if (!audioContextRef.current && musicEnabled) {
       audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
     }
     if (musicEnabled && gameState === 'SETUP') {
-      if (navigator.onLine) {
-        stopBgMusicOffline();
-        audioBgRef.current?.play().catch(() => {
-          // Si l'URL échoue, utiliser la musique offline
+      stopBgMusicOffline();
+      const audio = audioBgRef.current;
+      if (audio) {
+        audio.volume = 0.4;
+        const playPromise = audio.play();
+        if (playPromise) {
+          playPromise.catch(() => {
+            // Browser blocked autoplay or source failed — use offline synth
+            console.log("Audio play blocked, starting offline music");
+            getAudioCtx();
+            startBgMusicOffline();
+          });
+        }
+        // Also handle network errors on the audio element
+        const handleError = () => {
+          console.log("Audio source error, starting offline music");
           getAudioCtx();
           startBgMusicOffline();
-        });
+        };
+        audio.addEventListener('error', handleError, { once: true });
+        return () => audio.removeEventListener('error', handleError);
       } else {
-        audioBgRef.current?.pause();
         getAudioCtx();
         startBgMusicOffline();
       }
@@ -165,13 +189,43 @@ export default function App() {
   const audioContextRef = useRef<AudioContext | null>(null);
   const musicNodesRef = useRef<{ osc?: OscillatorNode; gain?: GainNode; interval?: ReturnType<typeof setInterval> } | null>(null);
 
-  // Profils de voix Web Speech API (fallback offline) mappés aux voix Gemini
+  // Profils de voix Web Speech API (fallback offline) — chaque voiceStyle a un profil unique
   const VOICE_PROFILES: Record<string, { pitch: number; rate: number; lang: string }> = {
-    'Charon':  { pitch: 0.6, rate: 0.85, lang: 'fr-FR' },  // Grave, lent
-    'Fenrir':  { pitch: 0.8, rate: 0.95, lang: 'fr-FR' },  // Puissant
-    'Puck':    { pitch: 1.4, rate: 1.15, lang: 'fr-FR' },  // Jeune, dynamique
-    'Kore':    { pitch: 1.6, rate: 1.0,  lang: 'fr-FR' },  // Féminin
-    'Aoede':   { pitch: 1.8, rate: 0.9,  lang: 'fr-FR' },  // Féminin doux
+    // Voix Gemini de base
+    'Charon':  { pitch: 0.5, rate: 0.8, lang: 'fr-FR' },   // Très grave, lent
+    'Fenrir':  { pitch: 0.7, rate: 0.9, lang: 'fr-FR' },   // Puissant, posé
+    'Puck':    { pitch: 1.3, rate: 1.1, lang: 'fr-FR' },   // Jeune, vif
+    'Kore':    { pitch: 1.5, rate: 1.0, lang: 'fr-FR' },   // Féminin assertif
+    'Aoede':   { pitch: 1.7, rate: 0.85, lang: 'fr-FR' },  // Féminin doux
+  };
+
+  // Profils de voix par style de personnage (pour Web Speech fallback)
+  const STYLE_VOICE_OVERRIDES: Record<string, { pitch: number; rate: number }> = {
+    'idiot':            { pitch: 0.6, rate: 0.75 },  // Homer: lent, abruti
+    'enfant':           { pitch: 1.8, rate: 1.3 },   // Bart: aigu, rapide
+    'enfant_diabolique':{ pitch: 1.6, rate: 1.15 },  // Adèle: aigu, machiavélique
+    'gamer':            { pitch: 1.2, rate: 1.05 },  // Steve: neutre, gamer
+    'gangster':         { pitch: 0.7, rate: 0.95 },  // Franklin: grave, cool
+    'papa':             { pitch: 0.8, rate: 0.9 },   // Papa: posé, autoritaire
+    'maman':            { pitch: 1.4, rate: 0.95 },  // Maman: féminin, ferme
+    'ado_fille':        { pitch: 1.6, rate: 1.15 },  // Clara: ado fille
+    'ado_garcon':       { pitch: 1.1, rate: 1.2 },   // Mayron: ado garçon, vif
+    'animal':           { pitch: 2.0, rate: 1.5 },   // Le Chat: très aigu, rapide (miaulements)
+    'raleur':           { pitch: 0.6, rate: 0.7 },   // Voisin: grave, lent, agacé
+    'presse':           { pitch: 1.3, rate: 1.4 },   // Livreur: rapide, stressé
+    'drama_queen':      { pitch: 1.7, rate: 1.2 },   // Influenceuse: aigu, théâtral
+    'autoritaire':      { pitch: 0.5, rate: 0.8 },   // Banquier: très grave, posé
+    'ivre':             { pitch: 0.7, rate: 0.65 },   // Tonton: grave, traînant, lent
+    'scientifique_fou': { pitch: 0.55, rate: 1.1 },  // Rick: grave mais rapide, sarcastique
+    'nerveux':          { pitch: 1.5, rate: 1.35 },  // Morty: aigu, bégayant, rapide
+    'guerrier':         { pitch: 0.6, rate: 1.0 },   // Goku: grave, déterminé
+    'creature':         { pitch: 2.0, rate: 1.6 },   // Pikachu: très aigu, "pika pika"
+    'froid':            { pitch: 0.4, rate: 0.7 },   // John Wick: très grave, minimal
+    'ogre':             { pitch: 0.3, rate: 0.75 },  // Shrek: ultra grave, imposant
+    'aventuriere':      { pitch: 1.3, rate: 1.0 },   // Lara: féminin déterminé
+    'menacant':         { pitch: 0.5, rate: 0.75 },  // Walter: grave, menaçant, lent
+    'hero_jeune':       { pitch: 1.4, rate: 1.25 },  // Spider-Man: jeune, blagueur
+    'monotone':         { pitch: 1.0, rate: 0.7 },   // Mercredi: plat, monotone, glaçant
   };
 
   // Génère une musique de style jeu de combat avec Web Audio API (fonctionne hors ligne)
@@ -217,24 +271,49 @@ export default function App() {
     return audioContextRef.current;
   };
 
-  const getVoiceForSpeaker = (speaker: string) => {
-    if (speaker.toLowerCase().includes(p1.name.toLowerCase())) return p1.voice;
-    if (speaker.toLowerCase().includes(p2.name.toLowerCase())) return p2.voice;
-    return 'Aoede'; // Voix par défaut (Arbitre)
+  const getVoiceForSpeaker = (speaker: string): { voiceName: string; voiceStyle: string } => {
+    const speakerLower = speaker.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    
+    // Check P1
+    const p1NameLower = p1.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    if (speakerLower.includes(p1NameLower) || p1NameLower.includes(speakerLower)) {
+      return { voiceName: p1.voice, voiceStyle: p1.voiceStyle };
+    }
+    // Check P2
+    const p2NameLower = p2.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    if (speakerLower.includes(p2NameLower) || p2NameLower.includes(speakerLower)) {
+      return { voiceName: p2.voice, voiceStyle: p2.voiceStyle };
+    }
+    // Also check partial names (first word) for composite names like "Spider-Man" or "Le Chat"
+    const p1FirstWord = p1NameLower.split(/[\s-]/)[0];
+    const p2FirstWord = p2NameLower.split(/[\s-]/)[0];
+    if (p1FirstWord.length > 2 && speakerLower.includes(p1FirstWord)) {
+      return { voiceName: p1.voice, voiceStyle: p1.voiceStyle };
+    }
+    if (p2FirstWord.length > 2 && speakerLower.includes(p2FirstWord)) {
+      return { voiceName: p2.voice, voiceStyle: p2.voiceStyle };
+    }
+    // Default: Arbitre voice
+    return { voiceName: 'Aoede', voiceStyle: '' };
   };
 
-  // Fallback offline : Web Speech API avec profils de voix distinctifs
-  const playWebSpeech = (text: string, voiceName: string): Promise<void> => {
+  // Fallback offline : Web Speech API avec profils de voix distinctifs par personnage
+  const playWebSpeech = (text: string, voiceName: string, voiceStyle: string = ''): Promise<void> => {
     return new Promise((resolve) => {
       if (!('speechSynthesis' in window)) { setTimeout(resolve, 1500); return; }
       window.speechSynthesis.cancel();
       const cleanText = text.replace(/^[^:]+:\s*/, ''); // Enlève le préfixe "Nom: "
       const utterance = new SpeechSynthesisUtterance(cleanText);
-      const profile = VOICE_PROFILES[voiceName] || VOICE_PROFILES['Fenrir'];
-      utterance.lang = profile.lang;
-      utterance.pitch = profile.pitch;
-      utterance.rate = profile.rate;
+      
+      // Use character-specific style override if available, otherwise fall back to Gemini voice profile
+      const styleOverride = voiceStyle && STYLE_VOICE_OVERRIDES[voiceStyle];
+      const baseProfile = VOICE_PROFILES[voiceName] || VOICE_PROFILES['Fenrir'];
+      
+      utterance.lang = baseProfile.lang;
+      utterance.pitch = styleOverride ? styleOverride.pitch : baseProfile.pitch;
+      utterance.rate = styleOverride ? styleOverride.rate : baseProfile.rate;
       utterance.volume = 1.0;
+      
       // Essayer de trouver une voix française
       const voices = window.speechSynthesis.getVoices();
       const frVoice = voices.find(v => v.lang.startsWith('fr'));
@@ -245,7 +324,7 @@ export default function App() {
     });
   };
 
-  const playGeminiAudio = async (text: string, voiceName: string) => {
+  const playGeminiAudio = async (text: string, voiceName: string, voiceStyle: string = '') => {
     if (!voiceEnabled) {
       await new Promise(r => setTimeout(r, 800));
       return;
@@ -255,7 +334,7 @@ export default function App() {
 
     // Mode hors-ligne ou sans clé API : utiliser Web Speech API
     if (!apiKey || !navigator.onLine) {
-      await playWebSpeech(text, voiceName);
+      await playWebSpeech(text, voiceName, voiceStyle);
       return;
     }
 
@@ -277,10 +356,10 @@ export default function App() {
       });
 
       const parts = response.candidates?.[0]?.content?.parts;
-      if (!parts) { await playWebSpeech(text, voiceName); return; }
+      if (!parts) { await playWebSpeech(text, voiceName, voiceStyle); return; }
 
       const audioPart = parts.find(p => p.inlineData && p.inlineData.mimeType.includes("audio"));
-      if (!audioPart) { await playWebSpeech(text, voiceName); return; }
+      if (!audioPart) { await playWebSpeech(text, voiceName, voiceStyle); return; }
 
       const base64Audio = audioPart.inlineData.data;
       const audioCtx = getAudioCtx();
@@ -321,7 +400,7 @@ export default function App() {
     } catch (e) {
       console.warn("Gemini TTS échoué, fallback Web Speech:", e);
       // Fallback automatique sur Web Speech en cas d'erreur réseau
-      await playWebSpeech(text, voiceName);
+      await playWebSpeech(text, voiceName, voiceStyle);
     }
   };
 
@@ -347,21 +426,35 @@ export default function App() {
 
       const ai = new GoogleGenAI({ apiKey });
 
-      const prompt = `Tu es le "Grand Maître du Multivers", le narrateur officiel d'un tournoi de combat ultime. Génère un script de combat en JSON.
-
-PARAMÈTRES D'ENTRÉE :
-- Combattant 1 : ${p1.name} (Style : ${p1Style.name})
-- Combattant 2 : ${p2.name} (Style : ${p2Style.name})
-- Arène : ${arena.name}
-- Nombre de rounds requis : EXACTEMENT ${matchDuration} rounds.
-
-DIRECTIVES DE RÉDACTION :
-1. TON TRASH ET HUMOUR NOIR : Lâche-toi ! C'est un jeu pour adultes. Utilise des gros mots (putain, merde, bâtard, salaud, bordel...), du trashtalk violent, cynique et humoristique. Les insultes doivent fuser et être créatives.
+      const trashDirectives = trashMode
+        ? `1. TON TRASH ET HUMOUR NOIR : Lâche-toi ! C'est un jeu pour adultes. Utilise des gros mots (putain, merde, bâtard, salaud, bordel...), du trashtalk violent, cynique et humoristique. Les insultes doivent fuser et être créatives.
 2. INTONATIONS ET ÉMOTIONS : Ajoute beaucoup d'expressions sonores, de cris (Aaaargh, D'oh, Grrr), d'onomatopées. Utilise une ponctuation forte (!, ?, ...) pour la synthèse vocale.
 3. PERSONNAGES : Respecte les personnalités à 100% mais en version énervée et trash.
 4. STRUCTURE TTS : Chaque valeur du champ "text" DOIT commencer par "Nom: ". Exemple: "${p1.name}: Prends ça dans ta gueule ! Boom !".
 5. DYNAMISME : Fais EXACTEMENT ${matchDuration} rounds. Chaque round doit comporter plusieurs échanges de coups.
-6. FINITION : Termine par une FATALITY épique, absurde et violente.
+6. FINITION : Termine par une FATALITY épique, absurde et violente.`
+        : `1. TON FAMILIAL ET HUMORISTIQUE : Le jeu est en mode FAMILLE. Utilise un humour bon enfant, des vannes gentilles, des jeux de mots rigolos. AUCUN gros mot, AUCUNE insulte. C'est fun mais respectueux !
+2. INTONATIONS ET ÉMOTIONS : Ajoute des expressions amusantes, des cris rigolos (Ouille, Aïe, Waouh), des onomatopées fun. Utilise une ponctuation forte (!, ?, ...) pour la synthèse vocale.
+3. PERSONNAGES : Respecte les personnalités à 100% mais en version amusante et bienveillante.
+4. STRUCTURE TTS : Chaque valeur du champ "text" DOIT commencer par "Nom: ". Exemple: "${p1.name}: Prends ça mon ami ! Boing !".
+5. DYNAMISME : Fais EXACTEMENT ${matchDuration} rounds. Chaque round doit comporter plusieurs échanges de coups.
+6. FINITION : Termine par un SUPER MOVE épique, spectaculaire et drôle (pas de violence gratuite).`;
+
+      const prompt = `Tu es le "Grand Maître du Multivers", le narrateur officiel d'un tournoi de combat ultime. Génère un script de combat en JSON.
+
+PARAMÈTRES D'ENTRÉE :
+- Combattant 1 : ${p1.name} (Style : ${p1Style.name})
+  → Personnalité vocale : ${p1.voiceStyle === 'idiot' ? 'Parle de manière lente et stupide, fait des "D\'oh!", mange en parlant' : p1.voiceStyle === 'enfant' ? 'Voix de gamin insolent, dit "Ay caramba!"' : p1.voiceStyle === 'enfant_diabolique' ? 'Voix de petite fille terrifiante, ricane de façon démoniaque' : p1.voiceStyle === 'gangster' ? 'Parle comme un gangster de quartier, argot de rue' : p1.voiceStyle === 'animal' ? 'Fait des miaulements agressifs "Miiaaou! Pschh!", griffes' : p1.voiceStyle === 'ivre' ? 'Parle de manière pâteuse, bafouille, rote, hoquets "Hic!"' : p1.voiceStyle === 'scientifique_fou' ? 'Sarcastique, rote en parlant "*buuurp*", condescendant' : p1.voiceStyle === 'nerveux' ? 'Bégaie, stressé "Oh j-je-jeez Rick!", paniqué' : p1.voiceStyle === 'guerrier' ? 'Crie ses attaques "KAMEHAMEHA!!!", déterminé' : p1.voiceStyle === 'creature' ? 'Dit uniquement "Pika pika! Pikaaa-CHUUU!" avec des variations' : p1.voiceStyle === 'froid' ? 'Phrases courtes, calme mortel, peu de mots' : p1.voiceStyle === 'ogre' ? 'Parle avec un accent rustique, fait des blagues d\'ogre' : p1.voiceStyle === 'menacant' ? 'Parle lentement avec menace "Je suis celui qui frappe à la porte"' : p1.voiceStyle === 'monotone' ? 'Ton plat et glaçant, pas d\'émotion visible, terrifiant' : p1.voiceStyle === 'drama_queen' ? 'Exagère tout "Oh mon Dieuuu!", théâtral' : p1.voiceStyle === 'presse' ? 'Parle vite, stressé, toujours pressé "J\'ai une commande!"' : 'Personnalité standard'}
+- Combattant 2 : ${p2.name} (Style : ${p2Style.name})
+  → Personnalité vocale : ${p2.voiceStyle === 'idiot' ? 'Parle de manière lente et stupide, fait des "D\'oh!", mange en parlant' : p2.voiceStyle === 'enfant' ? 'Voix de gamin insolent, dit "Ay caramba!"' : p2.voiceStyle === 'enfant_diabolique' ? 'Voix de petite fille terrifiante, ricane de façon démoniaque' : p2.voiceStyle === 'gangster' ? 'Parle comme un gangster de quartier, argot de rue' : p2.voiceStyle === 'animal' ? 'Fait des miaulements agressifs "Miiaaou! Pschh!", griffes' : p2.voiceStyle === 'ivre' ? 'Parle de manière pâteuse, bafouille, rote, hoquets "Hic!"' : p2.voiceStyle === 'scientifique_fou' ? 'Sarcastique, rote en parlant "*buuurp*", condescendant' : p2.voiceStyle === 'nerveux' ? 'Bégaie, stressé "Oh j-je-jeez Rick!", paniqué' : p2.voiceStyle === 'guerrier' ? 'Crie ses attaques "KAMEHAMEHA!!!", déterminé' : p2.voiceStyle === 'creature' ? 'Dit uniquement "Pika pika! Pikaaa-CHUUU!" avec des variations' : p2.voiceStyle === 'froid' ? 'Phrases courtes, calme mortel, peu de mots' : p2.voiceStyle === 'ogre' ? 'Parle avec un accent rustique, fait des blagues d\'ogre' : p2.voiceStyle === 'menacant' ? 'Parle lentement avec menace "Je suis celui qui frappe à la porte"' : p2.voiceStyle === 'monotone' ? 'Ton plat et glaçant, pas d\'émotion visible, terrifiant' : p2.voiceStyle === 'drama_queen' ? 'Exagère tout "Oh mon Dieuuu!", théâtral' : p2.voiceStyle === 'presse' ? 'Parle vite, stressé, toujours pressé "J\'ai une commande!"' : 'Personnalité standard'}
+- Arène : ${arena.name}
+- Nombre de rounds requis : EXACTEMENT ${matchDuration} rounds.
+- Mode : ${trashMode ? 'TRASH (adultes, gros mots autorisés)' : 'FAMILLE (tout public, zéro gros mot)'}
+
+DIRECTIVES DE RÉDACTION :
+${trashDirectives}
+
+IMPORTANT POUR LA VOIX : Chaque réplique sera lue par un moteur de synthèse vocale. Écris les dialogues de manière à ce qu'ils sonnent naturels à l'oral. Utilise des pauses (...), des cris (!!!), des hésitations, des onomatopées qui correspondent à la personnalité vocale décrite ci-dessus. Les répliques doivent être COURTES (max 2-3 phrases) pour être fluides en TTS.
 
 FORMAT JSON REQUIS :
 {
@@ -451,9 +544,9 @@ FORMAT JSON REQUIS :
       for (const line of lines) {
         if (!isActive) break;
         const textToSpeak = line.text || line.description;
-        const voiceName = getVoiceForSpeaker(line.speaker || 'Arbitre');
+        const { voiceName, voiceStyle } = getVoiceForSpeaker(line.speaker || 'Arbitre');
 
-        await playGeminiAudio(textToSpeak, voiceName);
+        await playGeminiAudio(textToSpeak, voiceName, voiceStyle);
       }
 
       setIsSpeaking(false);
@@ -498,16 +591,115 @@ FORMAT JSON REQUIS :
 
   return (
     <div className="h-screen bg-black text-white font-sans overflow-hidden p-2 md:p-4 flex flex-col items-center selection:bg-red-500/30 scanlines">
-      {/* Street Fighter Audio */}
-      <audio ref={audioBgRef} src="https://archive.org/download/StreetFighterIIMusic/SF2_Guile.mp3" loop />
+      {/* Street Fighter Audio - multiple sources for reliability */}
+      <audio ref={audioBgRef} loop preload="auto">
+        <source src="https://vgmsite.com/soundtracks/street-fighter-ii-the-definitive-soundtrack/ynidrlgp/1-02%20Ryu%20Stage.mp3" type="audio/mpeg" />
+        <source src="https://archive.org/download/StreetFighterIIMusic/SF2_Guile.mp3" type="audio/mpeg" />
+      </audio>
       
-      {/* Bouton Musique */}
-      <button
-        onClick={() => setMusicEnabled(!musicEnabled)}
-        className="fixed top-4 right-4 z-50 p-3 bg-gray-900/80 rounded-full border border-gray-700 text-white hover:bg-yellow-600 transition-colors shadow-lg"
-      >
-        {musicEnabled ? <Music size={24} className="text-yellow-500 animate-pulse" /> : <Music size={24} className="opacity-40" />}
-      </button>
+      {/* Top-right buttons */}
+      <div className="fixed top-4 right-4 z-50 flex items-center gap-2">
+        {/* Bouton Parental / Trash Mode */}
+        <button
+          onClick={() => setShowParentalModal(true)}
+          className={`p-3 bg-gray-900/80 rounded-full border text-white transition-colors shadow-lg ${trashMode ? 'border-red-500 hover:bg-red-900/60' : 'border-gray-700 hover:bg-gray-700'}`}
+          title={trashMode ? 'Mode Trash: ACTIVÉ' : 'Mode Trash: Désactivé'}
+        >
+          {trashMode ? <AlertTriangle size={22} className="text-red-500 animate-pulse" /> : <Lock size={22} className="opacity-40" />}
+        </button>
+
+        {/* Bouton Musique */}
+        <button
+          onClick={() => {
+            setMusicEnabled(!musicEnabled);
+            // Force user interaction to unlock audio context
+            if (!musicEnabled && audioBgRef.current) {
+              audioBgRef.current.play().catch(() => {});
+            }
+          }}
+          className="p-3 bg-gray-900/80 rounded-full border border-gray-700 text-white hover:bg-yellow-600 transition-colors shadow-lg"
+        >
+          {musicEnabled ? <Music size={24} className="text-yellow-500 animate-pulse" /> : <Music size={24} className="opacity-40" />}
+        </button>
+      </div>
+
+      {/* Parental Control Modal */}
+      <AnimatePresence>
+        {showParentalModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm"
+            onClick={() => { setShowParentalModal(false); setParentalCode(""); setParentalError(false); }}
+          >
+            <motion.div
+              initial={{ scale: 0.8, y: 40 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.8, y: 40 }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-gray-900 border-2 border-red-600/60 rounded-3xl p-6 w-full max-w-sm shadow-[0_0_60px_rgba(220,38,38,0.3)] relative"
+            >
+              <button onClick={() => { setShowParentalModal(false); setParentalCode(""); setParentalError(false); }} className="absolute top-3 right-3 p-1 text-gray-500 hover:text-white transition-colors">
+                <X size={20} />
+              </button>
+              <div className="text-center mb-4">
+                <AlertTriangle size={40} className="text-red-500 mx-auto mb-2" />
+                <h3 className="sf-title text-xl text-red-500 uppercase">Contrôle Parental</h3>
+                <p className="text-gray-400 text-xs mt-1">Activer/Désactiver le mode trash (gros mots, insultes créatives)</p>
+              </div>
+
+              <div className={`text-center mb-4 px-4 py-2 rounded-xl ${trashMode ? 'bg-red-900/30 border border-red-700/50' : 'bg-gray-800 border border-gray-700'}`}>
+                <span className="text-xs uppercase tracking-wider font-bold">Statut actuel : </span>
+                <span className={`font-black text-sm ${trashMode ? 'text-red-400' : 'text-green-400'}`}>
+                  {trashMode ? '🔥 MODE TRASH ACTIVÉ' : '😇 MODE FAMILLE'}
+                </span>
+              </div>
+
+              <label className="text-[10px] text-gray-500 uppercase tracking-wider block mb-2">Code Parental (4 chiffres)</label>
+              <div className="flex gap-2 mb-3">
+                <input
+                  type="password"
+                  maxLength={4}
+                  value={parentalCode}
+                  onChange={(e) => { setParentalCode(e.target.value.replace(/\D/g, '')); setParentalError(false); }}
+                  placeholder="● ● ● ●"
+                  className={`flex-1 bg-black border-2 rounded-xl px-4 py-3 text-center text-lg tracking-[0.5em] font-mono outline-none transition-colors ${parentalError ? 'border-red-500 animate-shake' : 'border-gray-700 focus:border-red-500'}`}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      if (parentalCode === PARENTAL_CODE) {
+                        setTrashMode(!trashMode);
+                        setShowParentalModal(false);
+                        setParentalCode("");
+                        setParentalError(false);
+                      } else {
+                        setParentalError(true);
+                      }
+                    }
+                  }}
+                />
+              </div>
+              {parentalError && <p className="text-red-400 text-[10px] text-center mb-2 animate-pulse">❌ Code incorrect !</p>}
+
+              <button
+                onClick={() => {
+                  if (parentalCode === PARENTAL_CODE) {
+                    setTrashMode(!trashMode);
+                    setShowParentalModal(false);
+                    setParentalCode("");
+                    setParentalError(false);
+                  } else {
+                    setParentalError(true);
+                  }
+                }}
+                className="w-full py-3 rounded-xl bg-red-700 hover:bg-red-600 text-white font-black uppercase text-sm tracking-wider transition-colors"
+              >
+                {trashMode ? 'Désactiver le Mode Trash' : 'Activer le Mode Trash'}
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Background Arena Preview */}
       <div className="absolute inset-0 z-0 transition-all duration-1000 overflow-hidden">
@@ -589,8 +781,8 @@ FORMAT JSON REQUIS :
             })}
           </div>
 
-          {/* Character Roster Grid */}
-          <div className="grid grid-cols-5 gap-1.5 sm:gap-2 p-2 sm:p-3 bg-gray-900/60 backdrop-blur-xl rounded-2xl border border-gray-700/50 shadow-2xl flex-shrink-0">
+          {/* Character Roster Grid — max 2 rows of 4 visible, scroll for more */}
+          <div className="grid grid-cols-4 gap-1.5 sm:gap-2 p-2 sm:p-3 bg-gray-900/60 backdrop-blur-xl rounded-2xl border border-gray-700/50 shadow-2xl flex-shrink-0 max-h-[120px] sm:max-h-[130px] overflow-y-auto custom-scroll">
             {CHARACTERS.map((char) => (
               <button
                 key={char.id}
@@ -598,7 +790,7 @@ FORMAT JSON REQUIS :
                   if (selectingPlayer === 1) { setP1(char); setSelectingPlayer(2); }
                   else { setP2(char); setSelectingPlayer(1); }
                 }}
-                className={`w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-lg border-2 overflow-hidden transition-all duration-300 hover:scale-110 active:scale-95 group relative
+                className={`w-11 h-11 sm:w-12 sm:h-12 md:w-13 md:h-13 rounded-lg border-2 overflow-hidden transition-all duration-300 hover:scale-110 active:scale-95 group relative
                   ${p1.id === char.id ? 'border-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.6)] z-10 scale-105' : 'border-gray-700/50 opacity-50 hover:opacity-100'}
                   ${p2.id === char.id ? 'border-red-500 shadow-[0_0_15px_rgba(239,68,68,0.6)] z-10 scale-105 opacity-100' : ''}`}
               >
@@ -638,7 +830,7 @@ FORMAT JSON REQUIS :
             <label className="text-[11px] text-yellow-400 uppercase tracking-[0.3em] block mb-2 text-center sf-title flex items-center justify-center gap-2 font-bold">
               <MapPin size={12} /> Arène de Combat
             </label>
-            <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mb-1">
+            <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mb-1 max-h-[130px] overflow-y-auto custom-scroll pr-1">
               {ARENAS.map((a) => (
                 <button
                   key={a.id}

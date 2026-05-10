@@ -109,3 +109,15 @@ body {
   background: linear-gradient(135deg, rgba(255,200,0,0.4), transparent 40%, rgba(255,200,0,0.1));
   pointer-events: none;
 }
+
+/* Shake animation for error feedback */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(4px); }
+}
+.animate-shake {
+  animation: shake 0.4s ease-in-out;
+}
