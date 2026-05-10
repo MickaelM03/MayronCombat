@@ -40,6 +40,16 @@ const CHARACTERS = [
   { id: 'influenceuse', name: 'Influenceuse Drama', faction: 'Réseaux', img: '/images/influenceuse_drama_sf_1778416919814.png', color: 'from-pink-400 to-pink-600', voice: 'Kore' },
   { id: 'banquier', name: 'Le Banquier', faction: 'Capitalisme', img: '/images/le_banquier_sf_1778416934105.png', color: 'from-slate-700 to-slate-900', voice: 'Fenrir' },
   { id: 'tonton', name: 'Tonton Bourré', faction: 'Family', img: '/images/tonton_bourre_sf_1778416951155.png', color: 'from-amber-600 to-orange-800', voice: 'Charon' },
+  { id: 'rick', name: 'Rick Sanchez', faction: 'Sci-Fi', img: '/images/rick_sf.png', color: 'from-cyan-400 to-blue-600', voice: 'Charon' },
+  { id: 'morty', name: 'Morty Smith', faction: 'Sci-Fi', img: '/images/morty_sf.png', color: 'from-yellow-300 to-yellow-500', voice: 'Puck' },
+  { id: 'goku', name: 'Son Goku', faction: 'Anime', img: '/images/goku_sf.png', color: 'from-orange-400 to-blue-600', voice: 'Fenrir' },
+  { id: 'pikachu', name: 'Pikachu', faction: 'Pokemon', img: '/images/pikachu_sf.png', color: 'from-yellow-400 to-yellow-600', voice: 'Puck' },
+  { id: 'john_wick', name: 'John Wick', faction: 'Action', img: '/images/johnwick_sf.png', color: 'from-gray-700 to-black', voice: 'Charon' },
+  { id: 'shrek', name: 'Shrek', faction: 'Fantasy', img: '/images/shrek_sf.png', color: 'from-green-500 to-lime-700', voice: 'Fenrir' },
+  { id: 'lara', name: 'Lara Croft', faction: 'Adventure', img: '/images/lara_sf.png', color: 'from-brown-500 to-gray-800', voice: 'Kore' },
+  { id: 'walter', name: 'Walter White', faction: 'Drama', img: '/images/walter_sf.png', color: 'from-yellow-600 to-slate-900', voice: 'Charon' },
+  { id: 'spiderman', name: 'Spider-Man', faction: 'Marvel', img: '/images/spiderman_sf.png', color: 'from-red-600 to-blue-800', voice: 'Puck' },
+  { id: 'mercredi', name: 'Mercredi Addams', faction: 'Gothic', img: '/images/mercredi_sf.png', color: 'from-gray-900 to-black', voice: 'Aoede' },
 ];
 
 const STYLES = [
@@ -57,6 +67,11 @@ const STYLES = [
   { id: 'fuite', name: 'Technique "J\'ai pas le temps"', icon: <Clock size={16} /> },
   { id: 'nerf', name: 'Tir au Pigeon (Nerf)', icon: <Target size={16} /> },
   { id: 'magie_noire', name: 'Magie Noire de Wish', icon: <Skull size={16} /> },
+  { id: 'kamehameha', name: 'Kamehameha', icon: <Zap size={16} /> },
+  { id: 'portal_gun', name: 'Pistolet à Portails', icon: <MapPin size={16} /> },
+  { id: 'pencil', name: 'Le Crayon (John Wick)', icon: <Sword size={16} /> },
+  { id: 'thunderbolt', name: 'Tonnerre (Électrique)', icon: <Zap size={16} /> },
+  { id: 'dance_battle', name: 'Danse de Combat', icon: <Music size={16} /> },
 ];
 
 const ARENAS = [
@@ -68,6 +83,11 @@ const ARENAS = [
   { id: 'parking', name: 'Parking du Supermarché', img: 'https://images.unsplash.com/photo-1506521781263-d8422e82f27a?w=1200' },
   { id: 'caf', name: 'File d\'Attente de la CAF', img: 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=1200' },
   { id: 'space', name: 'Station Spatiale Alpha', img: 'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=1200' },
+  { id: 'cyberpunk', name: 'Neo-Tokyo 2077', img: '/images/neotokyo_sf.png' },
+  { id: 'hogwarts', name: 'Poudlard', img: '/images/hogwarts_sf.png' },
+  { id: 'colosseum', name: 'Colisée de Rome', img: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=1200' },
+  { id: 'forest', name: 'Forêt Mystique', img: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1200' },
+  { id: 'beach', name: 'Plage de Copacabana', img: 'https://images.unsplash.com/photo-1519046904884-53103b34b206?w=1200' },
 ];
 
 const MOCK_BATTLE = {
@@ -477,7 +497,7 @@ FORMAT JSON REQUIS :
   }
 
   return (
-    <div className="min-h-screen bg-black text-white font-sans overflow-hidden p-4 md:p-8 flex flex-col items-center selection:bg-red-500/30">
+    <div className="h-screen bg-black text-white font-sans overflow-hidden p-2 md:p-4 flex flex-col items-center selection:bg-red-500/30 scanlines">
       {/* Street Fighter Audio */}
       <audio ref={audioBgRef} src="https://archive.org/download/StreetFighterIIMusic/SF2_Guile.mp3" loop />
       
@@ -490,198 +510,201 @@ FORMAT JSON REQUIS :
       </button>
 
       {/* Background Arena Preview */}
-      <div className="absolute inset-0 z-0 opacity-40 transition-all duration-1000 overflow-hidden">
+      <div className="absolute inset-0 z-0 transition-all duration-1000 overflow-hidden">
         <motion.img
           key={arena.id}
           initial={{ scale: 1.1, opacity: 0 }}
-          animate={{ scale: 1, opacity: 0.4 }}
+          animate={{ scale: 1, opacity: 0.7 }}
           src={arena.img}
-          className="w-full h-full object-cover grayscale-[30%] blur-sm"
+          className="w-full h-full object-cover"
           alt="Arena"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-black" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/80" />
       </div>
 
-      <header className="relative z-10 text-center mb-6">
+      <header className="relative z-10 text-center mb-2 flex-shrink-0">
         <motion.h1
           initial={{ y: -50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          className="text-4xl md:text-5xl font-black italic tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-yellow-400 to-red-600 uppercase drop-shadow-[0_5px_15px_rgba(220,38,38,0.5)]"
+          className="sf-title text-2xl md:text-3xl tracking-tighter text-transparent bg-clip-text bg-gradient-to-b from-yellow-400 to-red-600 uppercase drop-shadow-[0_5px_15px_rgba(220,38,38,0.5)]"
         >
           Ultimate Multiverse Brawler
         </motion.h1>
-        <p className="text-gray-400 mt-2 font-mono tracking-widest text-sm animate-pulse">CHOISISSEZ VOTRE DESTINÉE</p>
+        <div className="flex items-center justify-center gap-4 mt-1">
+          <div className="h-px flex-1 max-w-20 bg-gradient-to-r from-transparent to-yellow-600/50" />
+          <p className="text-gray-500 font-mono tracking-widest text-[10px] uppercase">Choisissez votre destinée</p>
+          <div className="h-px flex-1 max-w-20 bg-gradient-to-l from-transparent to-yellow-600/50" />
+        </div>
       </header>
 
-      <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-8 w-full max-w-7xl items-start">
+      <div className="relative z-10 flex lg:grid lg:grid-cols-[1fr_auto_1fr] gap-2 lg:gap-4 w-full max-w-7xl items-center flex-1 min-h-0 justify-center">
 
-        {/* PLAYER 1 SELECT */}
-        <SelectionCard 
-          player={1} 
-          active={p1} 
-          style={p1Style} 
-          onStyleChange={setP1Style} 
-          isSelecting={selectingPlayer === 1}
-          onSelectMode={() => setSelectingPlayer(1)}
-          onCharacterChange={setP1}
-        />
+        {/* PLAYER 1 SELECT - hidden on mobile */}
+        <div className="hidden lg:flex">
+          <SelectionCard 
+            player={1} 
+            active={p1} 
+            style={p1Style} 
+            onStyleChange={setP1Style} 
+            isSelecting={selectingPlayer === 1}
+            onSelectMode={() => setSelectingPlayer(1)}
+            onCharacterChange={setP1}
+          />
+        </div>
 
         {/* MIDDLE GRID */}
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center min-h-0 overflow-hidden bg-black/40 backdrop-blur-sm rounded-3xl p-3 lg:p-4 border border-white/5">
 
-          <div className="mb-4">
-            <button
-              onClick={() => setSelectingPlayer(selectingPlayer === 1 ? 2 : 1)}
-              className={`px-6 py-2 rounded-full text-xs font-black uppercase tracking-widest transition-colors ${selectingPlayer === 1 ? 'bg-blue-600 text-white shadow-[0_0_15px_blue]' : 'bg-red-600 text-white shadow-[0_0_15px_red]'}`}
-            >
-              Sélection : Joueur {selectingPlayer}
-            </button>
+          {/* Mobile Player Preview */}
+          <div className="flex lg:hidden items-center justify-center gap-3 mb-2 flex-shrink-0">
+            <div className={`flex items-center gap-2 px-2 py-1 rounded-xl border ${selectingPlayer === 1 ? 'border-blue-500 bg-blue-950/50' : 'border-gray-800 bg-gray-900/50 opacity-60'}`} onClick={() => setSelectingPlayer(1)}>
+              <img src={p1.img} className="w-8 h-8 rounded-lg object-cover border border-blue-500/50" alt={p1.name} />
+              <div className="text-[9px] font-bold uppercase text-blue-400">{p1.name}</div>
+            </div>
+            <div className="sf-title text-red-500 text-sm">VS</div>
+            <div className={`flex items-center gap-2 px-2 py-1 rounded-xl border ${selectingPlayer === 2 ? 'border-red-500 bg-red-950/50' : 'border-gray-800 bg-gray-900/50 opacity-60'}`} onClick={() => setSelectingPlayer(2)}>
+              <div className="text-[9px] font-bold uppercase text-red-400">{p2.name}</div>
+              <img src={p2.img} className="w-8 h-8 rounded-lg object-cover border border-red-500/50" alt={p2.name} />
+            </div>
           </div>
 
-          <div className="grid grid-cols-5 gap-3 p-6 bg-gray-900/60 backdrop-blur-xl rounded-3xl border-2 border-gray-700/50 shadow-2xl">
+          {/* Step indicators */}
+          <div className="flex items-center gap-2 mb-3 flex-shrink-0">
+            {[1, 2, 3].map((step) => {
+              const stepLabel = step === 1 ? 'JOUEUR 1' : step === 2 ? 'JOUEUR 2' : 'ARÈNE';
+              const isActive = step === 1 ? selectingPlayer === 1 : step === 2 ? selectingPlayer === 2 : false;
+              const stepColor = step === 1 ? 'text-blue-500' : step === 2 ? 'text-red-500' : 'text-yellow-500';
+              return (
+                <div key={step} className="flex items-center gap-2">
+                  <button
+                    onClick={() => step < 3 && setSelectingPlayer(step as 1 | 2)}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider transition-all border ${isActive ? `${stepColor} border-current step-active bg-white/5` : 'text-gray-400 border-gray-600 hover:border-gray-500 hover:text-gray-300'}`}
+                  >
+                    <span className={`w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-black ${isActive ? 'bg-current text-black' : 'bg-gray-700 text-gray-300'}`}>{step}</span>
+                    <span className="hidden sm:inline">{stepLabel}</span>
+                  </button>
+                  {step < 3 && <ChevronRight size={10} className="text-gray-700" />}
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Character Roster Grid */}
+          <div className="grid grid-cols-5 gap-1.5 sm:gap-2 p-2 sm:p-3 bg-gray-900/60 backdrop-blur-xl rounded-2xl border border-gray-700/50 shadow-2xl flex-shrink-0">
             {CHARACTERS.map((char) => (
               <button
                 key={char.id}
                 onClick={() => {
-                  if (selectingPlayer === 1) {
-                    setP1(char);
-                    setSelectingPlayer(2);
-                  } else {
-                    setP2(char);
-                    setSelectingPlayer(1);
-                  }
+                  if (selectingPlayer === 1) { setP1(char); setSelectingPlayer(2); }
+                  else { setP2(char); setSelectingPlayer(1); }
                 }}
-                className={`w-12 h-12 md:w-14 md:h-14 rounded-xl border-2 overflow-hidden transition-all duration-300 hover:scale-110 active:scale-95 group relative
-                  ${p1.id === char.id ? 'border-blue-500 shadow-[0_0_20px_rgba(59,130,246,0.6)] z-10 scale-110' : 'border-gray-700 opacity-60 hover:opacity-100'}
-                  ${p2.id === char.id ? 'border-red-500 shadow-[0_0_20px_rgba(239,68,68,0.6)] z-10 scale-110 opacity-100' : ''}`}
+                className={`w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 rounded-lg border-2 overflow-hidden transition-all duration-300 hover:scale-110 active:scale-95 group relative
+                  ${p1.id === char.id ? 'border-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.6)] z-10 scale-105' : 'border-gray-700/50 opacity-50 hover:opacity-100'}
+                  ${p2.id === char.id ? 'border-red-500 shadow-[0_0_15px_rgba(239,68,68,0.6)] z-10 scale-105 opacity-100' : ''}`}
               >
                 <img src={char.img} className="w-full h-full object-cover" alt={char.name} />
                 <div className="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-colors" />
-                {p1.id === char.id && <div className="absolute top-0 left-0 bg-blue-600 text-[8px] font-bold px-1 rounded-br-md">P1</div>}
-                {p2.id === char.id && <div className="absolute bottom-0 right-0 bg-red-600 text-[8px] font-bold px-1 rounded-tl-md">P2</div>}
+                {p1.id === char.id && <div className="absolute top-0 left-0 bg-blue-600 text-[7px] font-bold px-1 rounded-br">P1</div>}
+                {p2.id === char.id && <div className="absolute bottom-0 right-0 bg-red-600 text-[7px] font-bold px-1 rounded-tl">P2</div>}
               </button>
             ))}
           </div>
 
-          <div className="mt-6 w-full max-w-sm">
-            <label className="text-[10px] text-gray-500 uppercase tracking-[0.3em] block mb-3 text-center flex items-center justify-center gap-2">
-              <Sword size={12} /> Style de Combat (P{selectingPlayer})
+          {/* Style selector - compact inline */}
+          <div className="mt-2 w-full max-w-md flex-shrink-0">
+            <label className="text-[10px] text-gray-300 uppercase tracking-[0.2em] block mb-1.5 text-center flex items-center justify-center gap-1.5 font-bold">
+              <Sword size={10} /> Style (P{selectingPlayer})
             </label>
-            <div className="grid grid-cols-2 gap-2 max-h-[140px] overflow-y-auto p-3 bg-gray-900/60 backdrop-blur-xl rounded-2xl border-2 border-gray-700/50 shadow-inner custom-scrollbar">
+            <div className="grid grid-cols-2 gap-1.5 max-h-[80px] overflow-y-auto p-2 bg-gray-900/70 backdrop-blur-xl rounded-xl border border-gray-600/50 custom-scroll">
               {STYLES.map((s) => {
                  const isSelected = selectingPlayer === 1 ? p1Style.id === s.id : p2Style.id === s.id;
+                 const selColor = selectingPlayer === 1 ? 'blue' : 'red';
                  return (
                    <button
                      key={s.id}
                      onClick={() => selectingPlayer === 1 ? setP1Style(s) : setP2Style(s)}
-                     className={`flex items-center gap-2 p-2 rounded-xl border text-[9px] uppercase font-bold text-left transition-all ${isSelected ? (selectingPlayer === 1 ? 'bg-blue-900/60 border-blue-500 text-blue-300 shadow-[0_0_10px_rgba(59,130,246,0.3)]' : 'bg-red-900/60 border-red-500 text-red-300 shadow-[0_0_10px_rgba(239,68,68,0.3)]') : 'bg-black/50 border-gray-700/50 text-gray-400 hover:border-gray-500 hover:text-white'}`}
+                     className={`flex items-center gap-1.5 px-2 py-1.5 rounded-lg border text-[9px] uppercase font-bold transition-all ${isSelected ? `bg-${selColor}-900/60 border-${selColor}-500 text-${selColor}-300` : 'bg-black/40 border-gray-700 text-gray-400 hover:text-white hover:border-gray-500'}`}
                    >
-                     <span className={isSelected ? (selectingPlayer === 1 ? 'text-blue-400' : 'text-red-400') : 'text-gray-500'}>{s.icon}</span>
-                     <span className="leading-tight">{s.name}</span>
+                     <span className="flex-shrink-0">{s.icon}</span>
+                     <span className="leading-tight truncate">{s.name}</span>
                    </button>
                  );
               })}
             </div>
           </div>
 
-          <div className="mt-6 w-full max-w-sm">
-            <label className="text-[10px] text-gray-500 uppercase tracking-[0.3em] block mb-3 text-center">Arène de Combat</label>
-            <div className="flex items-center justify-center gap-4 mb-4">
-              <button 
-                onClick={() => {
-                  setArenaOffset((prev) => (prev - 1 + ARENAS.length) % ARENAS.length);
-                }}
-                className="p-1 hover:text-yellow-500 transition-colors"
-              >
-                <ChevronLeft size={24} />
-              </button>
-              <div className="flex justify-center gap-2 overflow-hidden">
-                {[...Array(6)].map((_, i) => {
-                  const a = ARENAS[(arenaOffset + i) % ARENAS.length];
-                  return (
-                    <button
-                      key={a.id}
-                      onClick={() => setArena(a)}
-                      className={`w-14 h-10 md:w-16 md:h-10 rounded-lg overflow-hidden border-2 transition-all flex-shrink-0 ${arena.id === a.id ? 'border-yellow-500 scale-110 z-10' : 'border-transparent opacity-40 hover:opacity-100'}`}
-                    >
-                      <img src={a.img} className="w-full h-full object-cover" alt={a.name} />
-                    </button>
-                  );
-                })}
-              </div>
-              <button 
-                onClick={() => {
-                  setArenaOffset((prev) => (prev + 1) % ARENAS.length);
-                }}
-                className="p-1 hover:text-yellow-500 transition-colors"
-              >
-                <ChevronRight size={24} />
-              </button>
-            </div>
-            <div className="text-center text-yellow-500 font-bold text-xs uppercase tracking-widest italic mb-6 h-4">{arena.name}</div>
-            
-            {/* Duration Selector */}
-            <div className="mb-6 w-full">
-               <label className="text-[10px] text-gray-500 uppercase tracking-[0.3em] block mb-2 text-center flex items-center justify-center gap-2">
-                 <Clock size={12} /> Durée du Combat
-               </label>
-               <div className="flex bg-gray-800/80 rounded-full p-1 border border-gray-700">
-                  <button onClick={() => setMatchDuration(3)} className={`flex-1 py-1 text-[10px] uppercase font-bold rounded-full transition-colors ${matchDuration === 3 ? 'bg-green-600 text-white' : 'text-gray-400 hover:text-white'}`}>Rapide (3 Rnds)</button>
-                  <button onClick={() => setMatchDuration(5)} className={`flex-1 py-1 text-[10px] uppercase font-bold rounded-full transition-colors ${matchDuration === 5 ? 'bg-yellow-600 text-white' : 'text-gray-400 hover:text-white'}`}>Normal (5 Rnds)</button>
-                  <button onClick={() => setMatchDuration(8)} className={`flex-1 py-1 text-[10px] uppercase font-bold rounded-full transition-colors ${matchDuration === 8 ? 'bg-red-600 text-white' : 'text-gray-400 hover:text-white'}`}>Épique (8 Rnds)</button>
-               </div>
+          {/* Arena Selection - BIGGER & MORE VISIBLE */}
+          <div className="mt-3 w-full max-w-lg flex-shrink-0">
+            <label className="text-[11px] text-yellow-400 uppercase tracking-[0.3em] block mb-2 text-center sf-title flex items-center justify-center gap-2 font-bold">
+              <MapPin size={12} /> Arène de Combat
+            </label>
+            <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mb-1">
+              {ARENAS.map((a) => (
+                <button
+                  key={a.id}
+                  onClick={() => setArena(a)}
+                  className={`arena-card relative rounded-xl overflow-hidden border-2 aspect-[16/10] ${arena.id === a.id ? 'active border-yellow-500 shadow-[0_0_25px_rgba(234,179,8,0.4)]' : 'border-gray-800 opacity-50 hover:opacity-90 hover:border-gray-600'}`}
+                >
+                  <img src={a.img} className="w-full h-full object-cover" alt={a.name} />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                  <span className={`absolute bottom-1 left-1 right-1 text-[7px] font-bold uppercase tracking-wider text-center leading-tight ${arena.id === a.id ? 'text-yellow-400' : 'text-gray-400'}`}>{a.name}</span>
+                </button>
+              ))}
             </div>
           </div>
 
-          {!process.env.GEMINI_API_KEY && (
-            <div className="w-full max-w-sm mb-6 flex flex-col items-center">
-              <label className="text-[10px] text-red-500 uppercase tracking-[0.3em] block mb-2 text-center">Configuration Requise</label>
-              <input
-                type="password"
-                placeholder="Entrez votre Clé API Gemini"
-                value={tempApiKey}
-                onChange={(e) => setTempApiKey(e.target.value)}
-                className="w-full bg-gray-900/80 border border-gray-700 rounded-xl px-4 py-3 text-sm text-center focus:border-red-500 outline-none transition-colors mb-3"
-              />
-              <button
-                onClick={() => generateCombat(true)}
-                className="text-[10px] text-gray-400 hover:text-white uppercase tracking-widest border-b border-gray-700 hover:border-white transition-all pb-1"
-              >
-                Lancer une Démo sans clé API
-              </button>
+          {/* Bottom: Duration + API + Fight */}
+          <div className="mt-2 flex flex-col items-center gap-2 flex-shrink-0 w-full max-w-md">
+            {/* Duration */}
+            <div className="flex bg-gray-800/80 rounded-full p-0.5 border border-gray-700 w-full max-w-xs">
+              <button onClick={() => setMatchDuration(3)} className={`flex-1 py-1 text-[9px] uppercase font-bold rounded-full transition-colors ${matchDuration === 3 ? 'bg-green-600 text-white' : 'text-gray-500 hover:text-white'}`}>3 Rnds</button>
+              <button onClick={() => setMatchDuration(5)} className={`flex-1 py-1 text-[9px] uppercase font-bold rounded-full transition-colors ${matchDuration === 5 ? 'bg-yellow-600 text-white' : 'text-gray-500 hover:text-white'}`}>5 Rnds</button>
+              <button onClick={() => setMatchDuration(8)} className={`flex-1 py-1 text-[9px] uppercase font-bold rounded-full transition-colors ${matchDuration === 8 ? 'bg-red-600 text-white' : 'text-gray-500 hover:text-white'}`}>8 Rnds</button>
             </div>
-          )}
 
-          {gameState === 'LOADING' ? (
-            <div className="mt-12 flex flex-col items-center">
-              <RefreshCw size={48} className="text-red-600 animate-spin mb-4" />
-              <p className="text-white font-black italic animate-pulse">GÉNÉRATION DU COMBAT...</p>
-            </div>
-          ) : (
-            <motion.button
-              whileHover={{ scale: 1.05, boxShadow: "0 0 40px rgba(239,68,68,0.4)" }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => generateCombat(false)}
-              className="mt-6 bg-gradient-to-r from-red-700 via-orange-600 to-red-700 px-12 py-3 rounded-full font-black text-xl md:text-2xl uppercase italic border-4 border-yellow-400 shadow-[0_10px_30px_rgba(0,0,0,0.5)] group"
-            >
-              <span className="flex items-center gap-3">
-                <Play fill="currentColor" size={24} className="group-hover:translate-x-1 transition-transform" />
-                Fight !
-              </span>
-            </motion.button>
-          )}
+            {/* API Key */}
+            {!process.env.GEMINI_API_KEY && (
+              <div className="flex items-center gap-2 w-full max-w-xs">
+                <input type="password" placeholder="Clé API Gemini" value={tempApiKey} onChange={(e) => setTempApiKey(e.target.value)}
+                  className="flex-1 bg-gray-900/80 border border-gray-700 rounded-lg px-3 py-1.5 text-[10px] text-center focus:border-red-500 outline-none" />
+                <button onClick={() => generateCombat(true)} className="text-[9px] text-gray-500 hover:text-yellow-400 uppercase tracking-wider whitespace-nowrap">Démo</button>
+              </div>
+            )}
+
+            {/* Fight Button */}
+            {gameState === 'LOADING' ? (
+              <div className="flex items-center gap-3">
+                <RefreshCw size={24} className="text-red-600 animate-spin" />
+                <p className="text-white font-black italic text-sm animate-pulse">GÉNÉRATION...</p>
+              </div>
+            ) : (
+              <motion.button
+                whileHover={{ scale: 1.05, boxShadow: "0 0 40px rgba(239,68,68,0.4)" }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => generateCombat(false)}
+                className="bg-gradient-to-r from-red-700 via-orange-600 to-red-700 px-10 py-2 rounded-full font-black text-lg uppercase italic border-3 border-yellow-400 shadow-[0_5px_20px_rgba(0,0,0,0.5)] group sf-title tracking-wider"
+              >
+                <span className="flex items-center gap-2">
+                  <Play fill="currentColor" size={18} className="group-hover:translate-x-1 transition-transform" />
+                  Fight !
+                </span>
+              </motion.button>
+            )}
+          </div>
         </div>
 
-        {/* PLAYER 2 SELECT */}
-        <SelectionCard 
-          player={2} 
-          active={p2} 
-          style={p2Style} 
-          onStyleChange={setP2Style} 
-          isSelecting={selectingPlayer === 2}
-          onSelectMode={() => setSelectingPlayer(2)}
-          onCharacterChange={setP2}
-        />
+        {/* PLAYER 2 SELECT - hidden on mobile */}
+        <div className="hidden lg:flex">
+          <SelectionCard 
+            player={2} 
+            active={p2} 
+            style={p2Style} 
+            onStyleChange={setP2Style} 
+            isSelecting={selectingPlayer === 2}
+            onSelectMode={() => setSelectingPlayer(2)}
+            onCharacterChange={setP2}
+          />
+        </div>
 
       </div>
     </div>
@@ -695,72 +718,67 @@ function SelectionCard({ player, active, style, onStyleChange, isSelecting, onSe
   return (
     <div className={`flex flex-col ${isP1 ? 'items-start' : 'items-end'} w-full`}>
       <div 
-        className={`text-2xl md:text-3xl font-black italic mb-2 uppercase tracking-tighter cursor-pointer transition-all duration-300 ${isP1 ? 'text-blue-500' : 'text-red-500'} ${isSelecting ? 'scale-105 drop-shadow-[0_0_15px_currentColor]' : 'opacity-50 hover:opacity-80'}`}
+        className={`sf-title text-lg md:text-xl mb-1 uppercase tracking-tighter cursor-pointer transition-all duration-300 ${isP1 ? 'text-blue-500' : 'text-red-500'} ${isSelecting ? 'drop-shadow-[0_0_15px_currentColor]' : 'opacity-40 hover:opacity-70'}`}
         onClick={onSelectMode}
       >
         PLAYER {player}
       </div>
-      <div className="relative w-full max-w-[200px] group">
+      <div className="relative w-full max-w-[180px] group">
         <motion.div
           key={active.id}
-          initial={{ x: isP1 ? -100 : 100, opacity: 0 }}
+          initial={{ x: isP1 ? -80 : 80, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
-          className={`relative aspect-[3/4] w-full rounded-[2rem] overflow-hidden border-4 cursor-pointer transition-all duration-300 ${isP1 ? 'border-blue-500' : 'border-red-500'} ${isSelecting ? (isP1 ? 'shadow-[0_0_40px_rgba(59,130,246,0.5)] scale-105' : 'shadow-[0_0_40px_rgba(239,68,68,0.5)] scale-105') : 'shadow-xl opacity-70 hover:opacity-100 hover:scale-100 scale-95'}`}
+          className={`relative aspect-[3/4] w-full rounded-2xl overflow-hidden border-3 cursor-pointer transition-all duration-300 ${isP1 ? 'border-blue-500' : 'border-red-500'} ${isSelecting ? (isP1 ? 'shadow-[0_0_30px_rgba(59,130,246,0.5)] scale-[1.02]' : 'shadow-[0_0_30px_rgba(239,68,68,0.5)] scale-[1.02]') : 'shadow-lg opacity-60 hover:opacity-90 scale-95'}`}
           onClick={onSelectMode}
         >
           <img src={active.img} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" alt={active.name} />
-          <div className={`absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80`} />
-          <div className={`absolute inset-0 bg-gradient-to-b from-${color}-900/20 via-transparent to-transparent`} />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80" />
 
-          <div className="absolute bottom-8 left-8 right-8">
+          <div className="absolute bottom-4 left-4 right-4">
             <motion.div
-              initial={{ y: 20, opacity: 0 }}
+              initial={{ y: 15, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              className="text-2xl font-black uppercase italic leading-none tracking-tighter mb-1"
+              className="text-lg font-black uppercase italic leading-none tracking-tighter mb-0.5"
             >
               {active.name}
             </motion.div>
-            <div className="text-xs text-gray-300 uppercase tracking-[0.3em] font-bold opacity-70">{active.faction}</div>
+            <div className="text-[10px] text-gray-300 uppercase tracking-[0.2em] font-bold opacity-60">{active.faction}</div>
           </div>
         </motion.div>
 
-        {/* Navigation Arrows for Characters */}
-        <div className={`absolute top-1/2 -translate-y-1/2 left-0 right-0 flex justify-between px-2 z-20 pointer-events-none`}>
+        {/* Navigation Arrows */}
+        <div className="absolute top-1/2 -translate-y-1/2 left-0 right-0 flex justify-between px-1 z-20 pointer-events-none">
           <button 
             onClick={(e) => {
               e.stopPropagation();
               const idx = CHARACTERS.findIndex(c => c.id === active.id);
-              const next = CHARACTERS[(idx - 1 + CHARACTERS.length) % CHARACTERS.length];
-              // This is a hack because I didn't change the props signature in App.tsx yet
-              // But I will do it in the same multi-replace
-              onCharacterChange(next);
+              onCharacterChange(CHARACTERS[(idx - 1 + CHARACTERS.length) % CHARACTERS.length]);
             }}
-            className="p-2 bg-black/50 hover:bg-black/80 text-white rounded-full transition-all pointer-events-auto hover:scale-120 border border-white/20 backdrop-blur-sm"
+            className="p-1.5 bg-black/60 hover:bg-black/90 text-white rounded-full transition-all pointer-events-auto hover:scale-110 border border-white/20"
           >
-            <ChevronLeft size={24} />
+            <ChevronLeft size={16} />
           </button>
           <button 
             onClick={(e) => {
               e.stopPropagation();
               const idx = CHARACTERS.findIndex(c => c.id === active.id);
-              const next = CHARACTERS[(idx + 1) % CHARACTERS.length];
-              onCharacterChange(next);
+              onCharacterChange(CHARACTERS[(idx + 1) % CHARACTERS.length]);
             }}
-            className="p-2 bg-black/50 hover:bg-black/80 text-white rounded-full transition-all pointer-events-auto hover:scale-120 border border-white/20 backdrop-blur-sm"
+            className="p-1.5 bg-black/60 hover:bg-black/90 text-white rounded-full transition-all pointer-events-auto hover:scale-110 border border-white/20"
           >
-            <ChevronRight size={24} />
+            <ChevronRight size={16} />
           </button>
         </div>
       </div>
 
-      <div className={`mt-6 w-full max-w-[200px] flex ${isP1 ? 'justify-start' : 'justify-end'}`}>
-        <div className={`px-4 py-3 flex items-center gap-3 rounded-2xl border-2 bg-gray-900/80 backdrop-blur-md shadow-2xl ${isP1 ? 'border-blue-500/50' : 'border-red-500/50'}`}>
-          <div className={`p-2 rounded-full bg-black/50 ${isP1 ? 'text-blue-400' : 'text-red-400'}`}>
+      <div className={`mt-2 w-full max-w-[180px] flex ${isP1 ? 'justify-start' : 'justify-end'}`}>
+        <div className={`px-3 py-2 flex items-center gap-2 rounded-xl border bg-gray-900/80 backdrop-blur-md ${isP1 ? 'border-blue-500/40' : 'border-red-500/40'}`}>
+          <div className={`p-1.5 rounded-full bg-black/50 ${isP1 ? 'text-blue-400' : 'text-red-400'}`}>
             {style.icon}
           </div>
           <div className="flex flex-col">
-            <span className="text-[8px] text-gray-400 uppercase tracking-[0.2em]">Style Actuel</span>
-            <span className={`font-black text-[10px] uppercase tracking-wider ${isP1 ? 'text-blue-100' : 'text-red-100'}`}>{style.name}</span>
+            <span className="text-[7px] text-gray-500 uppercase tracking-[0.15em]">Style</span>
+            <span className={`font-bold text-[9px] uppercase tracking-wider ${isP1 ? 'text-blue-200' : 'text-red-200'}`}>{style.name}</span>
           </div>
         </div>
       </div>
