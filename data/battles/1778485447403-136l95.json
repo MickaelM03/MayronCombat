@@ -1,0 +1,98 @@
+{
+  "p1Id": "homer",
+  "p1Name": "Homer Simpson",
+  "p1Img": "/images/homer_generic_sf_1778417069953.png",
+  "p1Voice": "Charon",
+  "p1VoiceStyle": "idiot",
+  "p2Id": "clara",
+  "p2Name": "Clara",
+  "p2Img": "https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?w=400&h=600&fit=crop",
+  "p2Voice": "Aoede",
+  "p2VoiceStyle": "ado_fille",
+  "arenaId": "cyberpunk",
+  "arenaName": "Neo-Tokyo 2077",
+  "arenaImg": "/images/neotokyo_sf.png",
+  "duration": 3,
+  "narrativeMode": 4,
+  "script": {
+    "intro": {
+      "text": "Grand Maître du Multivers: Bienvenue au milieu des néons de Neo-Tokyo 2077 pour un duel improbable ! D'un côté, Homer Simpson, le guerrier du clavier qui tape moins vite qu'il ne mange. De l'autre, Clara, la reine du Catch PMU qui va lui montrer de quel bois on fait les comptoirs !",
+      "speaker": "Grand Maître du Multivers"
+    },
+    "rounds": [
+      {
+        "title": "Round 1 : La Guerre des Mots (et des Doigts)",
+        "dialogues": [
+          {
+            "speaker": "Homer Simpson",
+            "text": "Homer Simpson: Attention, Clara ! Je vais t'écrire un commentaire tellement méchant sur ton profil que tu vas en perdre tes chaussures, espèce de... de fille !",
+            "action": "Homer tape furieusement sur un clavier virtuel dans le vide en tirant la langue."
+          },
+          {
+            "speaker": "Clara",
+            "text": "Clara: Mais regarde-toi, pauvre idiot ! Tu tapes avec tes index comme si tu cherchais des frites au fond d'un cornet. Allez, bouge tes fesses de l'arène !",
+            "action": "Clara lui donne une pichenette sur le front qui le fait basculer en arrière."
+          },
+          {
+            "speaker": "Homer Simpson",
+            "text": "Homer Simpson: D'oh ! Mon armure de graisse ne t'avait pas autorisée à me toucher, petite effrontée ! Je demande un ban immédiat !",
+            "action": "Homer essaie de se relever en s'accrochant à un câble de fibre optique."
+          }
+        ]
+      },
+      {
+        "title": "Round 2 : Cyber-Baston de Comptoir",
+        "dialogues": [
+          {
+            "speaker": "Clara",
+            "text": "Clara: Ton mode guerrier du dimanche me fatigue, Simpson ! On dirait un écran bleu qui essaie de faire du karaté. Tiens, prends ça !",
+            "action": "Clara exécute une prise de catch dite de la 'Tournée Générale' en le faisant tourner."
+          },
+          {
+            "speaker": "Homer Simpson",
+            "text": "Homer Simpson: Oh non ! Le monde tourne ! C'est comme le lendemain d'une soirée chez Moe, mais sans le plaisir de la Duff ! Tu es une brute, Clara !",
+            "action": "Homer titube et essaie de lancer son clavier comme un frisbee, mais il s'emmêle les pieds."
+          },
+          {
+            "speaker": "Clara",
+            "text": "Clara: Mince, t'es encore plus maladroit qu'une andouille dans un magasin de porcelaine. Fais un effort, crétin !",
+            "action": "Clara lui fait un croche-pied magistral en ajustant ses gantelets de cuir."
+          }
+        ]
+      },
+      {
+        "title": "Round 3 : Le Crash Système",
+        "dialogues": [
+          {
+            "speaker": "Homer Simpson",
+            "text": "Homer Simpson: C'est l'heure de mon attaque ultime ! Je vais poster une photo de toi... sans filtre ! Tremble devant ma puissance numérique, espèce de nulle !",
+            "action": "Homer brandit son smartphone mais s'aperçoit qu'il n'a plus de batterie."
+          },
+          {
+            "speaker": "Clara",
+            "text": "Clara: Ta puissance numérique est aussi vide que ton estomac après un jeûne de trois secondes. C'est l'heure de la fermeture, Homer !",
+            "action": "Clara prépare sa prise finale en s'élançant sur une rampe de lancement cybernétique."
+          },
+          {
+            "speaker": "Homer Simpson",
+            "text": "Homer Simpson: Maman ! Pourquoi tout est si brillant ici ? Quelqu'un a volé mes donuts et ma dignité !",
+            "action": "Homer ferme les yeux et attend l'impact en se bouchant les oreilles."
+          }
+        ]
+      }
+    ],
+    "winner": "Clara",
+    "finishingMove": {
+      "type": "Super Combo : Le Grand Chelem du PMU",
+      "description": "Clara attrape Homer par le col, le soulève comme un baril de bière vide et lui inflige un 'Atomic Leg Drop' venu du futur, le projetant directement dans une pile de serveurs qui explosent en confettis de donuts.",
+      "speaker": "Clara"
+    },
+    "conclusion": {
+      "text": "Grand Maître du Multivers: Et c'est Clara qui l'emporte ! Homer a confondu un combat de gladiateurs avec une section de commentaires sur YouTube. Quel abruti, mais on l'aime bien quand même. À la prochaine pour un duel un peu moins... lent !",
+      "speaker": "Grand Maître du Multivers"
+    }
+  },
+  "winner": "Clara",
+  "id": "1778485447403-136l95",
+  "createdAt": 1778485447403
+}

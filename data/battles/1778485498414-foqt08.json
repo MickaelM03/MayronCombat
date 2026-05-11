@@ -1,0 +1,98 @@
+{
+  "p1Id": "papa",
+  "p1Name": "Papa",
+  "p1Img": "/images/papa_sf_1778417131723.png",
+  "p1Voice": "Fenrir",
+  "p1VoiceStyle": "papa",
+  "p2Id": "morty",
+  "p2Name": "Morty Smith",
+  "p2Img": "/images/morty_sf.png",
+  "p2Voice": "Puck",
+  "p2VoiceStyle": "nerveux",
+  "arenaId": "living_room",
+  "arenaName": "Le Salon de la Maison",
+  "arenaImg": "https://images.unsplash.com/photo-1567016432779-094069958ea5?w=1200",
+  "duration": 3,
+  "narrativeMode": 4,
+  "script": {
+    "intro": {
+      "text": "Grand Maître du Multivers: Bienvenue dans le salon familial pour un duel absurde ! À ma gauche, le roi des formulaires, Papa ! À ma droite, le magicien du dimanche, Morty Smith ! Que la bagarre commence !",
+      "speaker": "Grand Maître du Multivers"
+    },
+    "rounds": [
+      {
+        "title": "Round 1 : L'Attaque Administrative",
+        "dialogues": [
+          {
+            "speaker": "Papa",
+            "text": "Papa: Morty, prépare-toi à signer le formulaire B-42 pour occupation illicite du canapé ! Ta défense est nulle !",
+            "action": "Sort une liasse de papiers carbone et les lance comme des shurikens."
+          },
+          {
+            "speaker": "Morty",
+            "text": "Morty: Oh purée, Papa, arrête d'être aussi ennuyeux ! Regarde mon Art de la Baguette ! Je lance le sortilège de la miette rebondissante !",
+            "action": "Agite une baguette de pain rassis vers les papiers."
+          },
+          {
+            "speaker": "Papa",
+            "text": "Papa: Quel idiot ! Je tamponne ton sort avec un refus prioritaire ! Prends ça, gamin !",
+            "action": "Écrase un tampon encreur sur la baguette de pain."
+          }
+        ]
+      },
+      {
+        "title": "Round 2 : Magie contre Bureaucratie",
+        "dialogues": [
+          {
+            "speaker": "Morty",
+            "text": "Morty: Mince, mon pain est tout noir maintenant ! Très bien, tu l'as voulu ! Abracadabra, je fais apparaître une facture impayée dans ton dos !",
+            "action": "Fait un mouvement de poignet rapide avec sa baguette imaginaire."
+          },
+          {
+            "speaker": "Papa",
+            "text": "Papa: Une facture ? Sale petit malin ! Heureusement, j'ai activé mon bouclier d'exonération fiscale !",
+            "action": "S'entoure d'un classeur à levier géant pour parer l'attaque."
+          },
+          {
+            "speaker": "Morty",
+            "text": "Morty: Quel gros nul avec ton classeur ! C'est même pas de la vraie magie, c'est juste de l'ennui pur !",
+            "action": "Tente de piquer Papa avec le bout de sa baguette."
+          }
+        ]
+      },
+      {
+        "title": "Round 3 : La Clôture du Dossier",
+        "dialogues": [
+          {
+            "speaker": "Papa",
+            "text": "Papa: Assez de gamineries ! Ton dossier est incomplet et ton comportement est déplorable !",
+            "action": "Ouvre sa mallette pour préparer une offensive finale."
+          },
+          {
+            "speaker": "Morty",
+            "text": "Morty: Oh non, pas la mallette ! Zut, ma baguette est cassée en deux ! Je suis foutu !",
+            "action": "Regarde ses mains avec désespoir pendant que Papa rigole."
+          },
+          {
+            "speaker": "Papa",
+            "text": "Papa: C'est fini pour toi, andouille ! Prépare-toi à l'archivage définitif !",
+            "action": "Ajuste ses lunettes de comptable avec un air menaçant."
+          }
+        ]
+      }
+    ],
+    "winner": "Papa",
+    "finishingMove": {
+      "type": "Super Combo : L'Audit de l'Apocalypse",
+      "description": "Papa sort une agrafeuse géante et scelle les poches de Morty avec des avis d'imposition avant de le recouvrir de post-it 'REFUSÉ'.",
+      "speaker": "Papa"
+    },
+    "conclusion": {
+      "text": "Grand Maître du Multivers: Quel carnage administratif ! Morty finit aux archives et Papa gagne le droit de choisir le programme télé ce soir. C'était piquant mais juste !",
+      "speaker": "Grand Maître du Multivers"
+    }
+  },
+  "winner": "Papa",
+  "id": "1778485498414-foqt08",
+  "createdAt": 1778485498415
+}

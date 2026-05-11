@@ -1,0 +1,113 @@
+{
+  "p1Id": "spiderman",
+  "p1Name": "Spider-Man",
+  "p1Img": "/images/spiderman_sf.png",
+  "p1Voice": "Puck",
+  "p1VoiceStyle": "hero_jeune",
+  "p2Id": "voisin",
+  "p2Name": "Le Voisin Relou",
+  "p2Img": "/images/voisin_relou_street_fighter_1778416835801.png",
+  "p2Voice": "Charon",
+  "p2VoiceStyle": "raleur",
+  "arenaId": "cyberpunk",
+  "arenaName": "Neo-Tokyo 2077",
+  "arenaImg": "/images/neotokyo_sf.png",
+  "duration": 5,
+  "narrativeMode": 4,
+  "script": {
+    "intro": {
+      "text": "Grand Maître du Multivers: Bienvenue à Neo-Tokyo 2077 ! Ce soir, le tisseur de Brooklyn troque ses collants pour des gants de boxe, tandis que le Voisin Relou sort sa batte de GTA pour une baston de palier légendaire !",
+      "speaker": "Grand Maître du Multivers"
+    },
+    "rounds": [
+      {
+        "title": "Round 1 : Échauffement et Tapage Nocturne",
+        "dialogues": [
+          {
+            "speaker": "Spider-Man",
+            "text": "Spider-Man: Hé, le voisin ! Ta batte est aussi démodée que tes charentaises !",
+            "action": "Enchaîne des jabs rapides de boxe anglaise dans le vide."
+          },
+          {
+            "speaker": "Le Voisin Relou",
+            "text": "Le Voisin Relou: Taisez-vous l'insecte ! On ne peut plus dormir avec vos sauts de cabri !",
+            "action": "Donne un grand coup de batte horizontal dans un panneau publicitaire holographique."
+          }
+        ]
+      },
+      {
+        "title": "Round 2 : Jeu de Jambes contre Colère de Copro",
+        "dialogues": [
+          {
+            "speaker": "Spider-Man",
+            "text": "Spider-Man: Pas mal le swing, mais tu devrais bosser ton cardio, t'es déjà tout essoufflé, espèce d'andouille !",
+            "action": "Esquive les coups de batte avec des retraits de buste parfaits."
+          },
+          {
+            "speaker": "Le Voisin Relou",
+            "text": "Le Voisin Relou: Idiot ! Attends que je t'attrape, je vais te transformer en tapis de bain !",
+            "action": "Essaie de faire une balayette avec sa batte, mais glisse sur un néon."
+          }
+        ]
+      },
+      {
+        "title": "Round 3 : La Tactique du Crochet",
+        "dialogues": [
+          {
+            "speaker": "Spider-Man",
+            "text": "Spider-Man: Un petit crochet pour les ordures que tu laisses dans le couloir ! Bam !",
+            "action": "Décoche un crochet du gauche précis sur l'épaule du Voisin."
+          },
+          {
+            "speaker": "Le Voisin Relou",
+            "text": "Le Voisin Relou: Mince ! C'est tout ce que tu as ? Ma batte va te montrer la vraie physique de San Andreas !",
+            "action": "Tourne sur lui-même comme une toupie en hurlant des noms d'oiseaux."
+          }
+        ]
+      },
+      {
+        "title": "Round 4 : Punchlines et Cyber-Sucre",
+        "dialogues": [
+          {
+            "speaker": "Spider-Man",
+            "text": "Spider-Man: T'es plus lent qu'une connexion RTC en plein Neo-Tokyo, mon pauvre crétin !",
+            "action": "Enchaîne un une-deux fulgurant dans le plastron du Voisin."
+          },
+          {
+            "speaker": "Le Voisin Relou",
+            "text": "Le Voisin Relou: Zut, ça pique ! Arrête de bouger, espèce de moustique radioactif !",
+            "action": "Lance sa batte comme un boomerang mais elle revient frapper un drone de livraison."
+          }
+        ]
+      },
+      {
+        "title": "Round 5 : Le Dernier Round du Palier",
+        "dialogues": [
+          {
+            "speaker": "Spider-Man",
+            "text": "Spider-Man: C'est l'heure de la mise en demeure, Voisin ! On range les jouets !",
+            "action": "Prépare ses poings avec une lueur bleue cybernétique."
+          },
+          {
+            "speaker": "Le Voisin Relou",
+            "text": "Le Voisin Relou: Abruti de gamin ! Tu vas voir ce que c'est qu'un vrai râleur en colère !",
+            "action": "Tente une charge désespérée en courant comme un personnage de jeu vidéo buggé."
+          }
+        ]
+      }
+    ],
+    "winner": "Spider-Man",
+    "finishingMove": {
+      "type": "Cyber-K.O. de l'Araignée",
+      "description": "Spider-Man entoile la batte du Voisin au plafond, puis propulse un uppercut dévastateur façon Rocky Balboa qui fait décoller le Voisin dans une benne à ordure holographique.",
+      "speaker": "Spider-Man"
+    },
+    "conclusion": {
+      "text": "Grand Maître du Multivers: Et c'est le K.O. ! Spider-Man gagne par décision unanime du syndic ! Le Voisin Relou est hors-jeu, il va pouvoir râler contre l'infirmerie maintenant !",
+      "speaker": "Grand Maître du Multivers"
+    }
+  },
+  "winner": "Spider-Man",
+  "id": "1778485460463-k6cfiy",
+  "createdAt": 1778485460463
+}

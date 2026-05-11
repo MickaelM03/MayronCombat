@@ -1,0 +1,108 @@
+{
+  "id": "test-003-batman-vs-spongebob",
+  "createdAt": 1736620000000,
+  "p1Id": "batman",
+  "p1Name": "Batman",
+  "p1Img": "/images/batman_sf.png",
+  "p1Voice": "Charon",
+  "p1VoiceStyle": "froid",
+  "p2Id": "spongebob",
+  "p2Name": "Bob l'Éponge",
+  "p2Img": "/images/spongebob_sf.png",
+  "p2Voice": "Zephyr",
+  "p2VoiceStyle": "enfant",
+  "arenaId": "arena_gotham",
+  "arenaName": "Gotham City",
+  "arenaImg": "/images/arena_gotham.png",
+  "duration": 3,
+  "narrativeMode": 2,
+  "winner": "Batman",
+  "script": {
+    "intro": {
+      "text": "Arbitre: MESDAMES ET MESSIEURS ! Gotham City accueille le combat le plus ABSURDE de l'histoire ! Le Chevalier Noir contre... une éponge. Oui, une éponge. FIGHT !",
+      "speaker": "Arbitre"
+    },
+    "rounds": [
+      {
+        "title": "ROUND 1",
+        "dialogues": [
+          {
+            "speaker": "Batman",
+            "text": "Batman: Je suis la nuit. Je suis la vengeance. Je suis...",
+            "action": "Intimidation"
+          },
+          {
+            "speaker": "Bob l'Éponge",
+            "text": "Bob l'Éponge: HI HI HI HI ! T'es trop COOL avec ta cape ! On dirait Patrick en pyjama ! AHAHAHA !",
+            "action": "Rire Maniaque"
+          },
+          {
+            "speaker": "Batman",
+            "text": "Batman: ... Qui es-tu ?",
+            "action": "Confusion"
+          },
+          {
+            "speaker": "Bob l'Éponge",
+            "text": "Bob l'Éponge: JE SUIS PRÊÊÊÊÊT ! JE SUIS PRÊÊÊÊÊT ! *absorbe le batarang comme une éponge*",
+            "action": "Absorption"
+          }
+        ]
+      },
+      {
+        "title": "ROUND 2",
+        "dialogues": [
+          {
+            "speaker": "Batman",
+            "text": "Batman: Comment... tu absorbes tout ?! Alfred, prépare le Batmobile.",
+            "action": "Analyse"
+          },
+          {
+            "speaker": "Bob l'Éponge",
+            "text": "Bob l'Éponge: IMAGINATION ! ✨ *crée un arc-en-ciel* Tu veux que je te fasse un Krabby Patty ?!",
+            "action": "Magie Éponge"
+          },
+          {
+            "speaker": "Batman",
+            "text": "Batman: Non.",
+            "action": "Refus Glacial"
+          },
+          {
+            "speaker": "Bob l'Éponge",
+            "text": "Bob l'Éponge: Mais... mais... TOUT LE MONDE AIME LES KRABBY PATTY ! *pleure des océans*",
+            "action": "Tsunami Lacrymal"
+          }
+        ]
+      },
+      {
+        "title": "ROUND 3",
+        "dialogues": [
+          {
+            "speaker": "Batman",
+            "text": "Batman: Assez. *sort la Kryptonite* ... Attends, ça c'est pour Superman. *sort du gaz*",
+            "action": "Gadget"
+          },
+          {
+            "speaker": "Bob l'Éponge",
+            "text": "Bob l'Éponge: Ooooh du gaz ! Ça me rappelle les bulles ! *fait des bulles avec le gaz toxique*",
+            "action": "Immunité Éponge"
+          },
+          {
+            "speaker": "Batman",
+            "text": "Batman: ... Je démissionne.",
+            "action": "Abandon Moral"
+          }
+        ]
+      }
+    ],
+    "winner": "Batman",
+    "finishingMove": {
+      "type": "BATALITY",
+      "description": "Arbitre: BATALITY ! Batman appelle le Batmobile qui écrase Bob... mais il se regonfle ! Batman gagne aux points parce que Bob est parti faire des Krabby Patty !",
+      "speaker": "Arbitre"
+    },
+    "conclusion": {
+      "text": "Arbitre: VICTOIRE TECHNIQUE pour Batman ! Bob l'Éponge est indestructible mais il avait une commande de Krabby Patty à livrer ! GAME OVER !",
+      "speaker": "Arbitre"
+    }
+  }
+}

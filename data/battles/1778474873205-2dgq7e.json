@@ -1,0 +1,94 @@
+{
+  "p1Id": "walter",
+  "p1Name": "Walter White",
+  "p1Img": "/images/walter_sf.png",
+  "p2Id": "tonton",
+  "p2Name": "Tonton Bourré",
+  "p2Img": "/images/tonton_bourre_sf_1778416951155.png",
+  "arenaId": "forest",
+  "arenaName": "Forêt Mystique",
+  "arenaImg": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1200",
+  "duration": 3,
+  "narrativeMode": 4,
+  "script": {
+    "intro": {
+      "text": "Grand Maître du Multivers: Bienvenue dans la Forêt Mystique pour un duel entre la science pure et l'alcool pur ! D'un côté, Walter White, l'homme qui n'a jamais de temps à perdre, et de l'autre, Tonton Bourré avec sa fidèle batte !",
+      "speaker": "Grand Maître du Multivers"
+    },
+    "rounds": [
+      {
+        "title": "Round 1 : La Science contre l'Éthylisme",
+        "dialogues": [
+          {
+            "speaker": "Walter White",
+            "text": "Walter White: Écoute-moi bien, espèce d'andouille, je suis un homme très occupé. Range cette batte avant de te blesser !",
+            "action": "Ajuste ses lunettes avec agacement."
+          },
+          {
+            "speaker": "Tonton Bourré",
+            "text": "Tonton Bourré: *Hips*... Hé, m'sieur le prof ! Tu veux... tu veux voir mon swing ? C'est du grand art, ça, c'est du GTA pur jus !",
+            "action": "Balance sa batte n'importe comment en manquant de tomber."
+          },
+          {
+            "speaker": "Walter White",
+            "text": "Walter White: Quel crétin... Tu ne pourrais même pas frapper un arbre alors que nous sommes en plein milieu d'une forêt !",
+            "action": "Esquive d'un simple pas de côté."
+          }
+        ]
+      },
+      {
+        "title": "Round 2 : Brouillard Mystique et Vapeurs de Gnôle",
+        "dialogues": [
+          {
+            "speaker": "Tonton Bourré",
+            "text": "Tonton Bourré: Zuuuut ! J'ai encore raté... Le tronc d'arbre là-bas, il a... il a bougé tout seul ! C'est de la triche !",
+            "action": "Essaie de pointer Walter du doigt mais vise un écureuil."
+          },
+          {
+            "speaker": "Walter White",
+            "text": "Walter White: C'est la forêt qui est mystique, idiot ! C'est pas moi qui vais t'expliquer les lois de la physique dans ton état.",
+            "action": "Prépare discrètement une petite fiole en verre."
+          },
+          {
+            "speaker": "Tonton Bourré",
+            "text": "Tonton Bourré: Cause toujours, mon vieux Walti... Moi je vais te... te refaire le portrait en bleu ! Comme ton sucre candi !",
+            "action": "Lance un coup de batte circulaire très lent."
+          }
+        ]
+      },
+      {
+        "title": "Round 3 : La Précision du Chimiste",
+        "dialogues": [
+          {
+            "speaker": "Walter White",
+            "text": "Walter White: J'en ai par-dessus la tête de tes bêtises ! J'ai une cargaison à préparer et un planning à respecter !",
+            "action": "Lance une petite pierre au pied de son adversaire pour le faire trébucher."
+          },
+          {
+            "speaker": "Tonton Bourré",
+            "text": "Tonton Bourré: Oh là... Ça tangue ! T'as pas un petit... un petit truc à boire pour calmer le paysage ?",
+            "action": "S'appuie sur sa batte comme si c'était une canne."
+          },
+          {
+            "speaker": "Walter White",
+            "text": "Walter White: J'ai quelque chose pour toi, mais ça ne se boit pas, andouille. C'est l'heure de la sieste !",
+            "action": "S'avance d'un air menaçant avec un sachet de poudre."
+          }
+        ]
+      }
+    ],
+    "winner": "Walter White",
+    "finishingMove": {
+      "type": "Super Combo Chimico-Relou",
+      "description": "Walter jette une fiole de mercure fulminant qui crée un flash aveuglant et un gros 'BOUM' de fête foraine. Tonton Bourré, paniqué, s'emmêle les pinceaux et finit par s'endormir profondément dans un buisson de ronces magiques en ronflant comme un moteur de tracteur.",
+      "speaker": "Walter White"
+    },
+    "conclusion": {
+      "text": "Grand Maître du Multivers: Victoire par K.O. technique de Walter White ! Tonton ronfle déjà comme un sonneur. C'est ce qui arrive quand on ramène une batte à un duel de chimie. Walter, tu peux retourner à tes calculs, l'idiot du village est hors de combat !",
+      "speaker": "Grand Maître du Multivers"
+    }
+  },
+  "winner": "Walter White",
+  "id": "1778474873205-2dgq7e",
+  "createdAt": 1778474873205
+}

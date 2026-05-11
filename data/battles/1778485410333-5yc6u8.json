@@ -1,0 +1,98 @@
+{
+  "p1Id": "voisin",
+  "p1Name": "Le Voisin Relou",
+  "p1Img": "/images/voisin_relou_street_fighter_1778416835801.png",
+  "p1Voice": "Charon",
+  "p1VoiceStyle": "raleur",
+  "p2Id": "clara",
+  "p2Name": "Clara",
+  "p2Img": "https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?w=400&h=600&fit=crop",
+  "p2Voice": "Aoede",
+  "p2VoiceStyle": "ado_fille",
+  "arenaId": "caf",
+  "arenaName": "File d'Attente de la CAF",
+  "arenaImg": "https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=1200",
+  "duration": 3,
+  "narrativeMode": 4,
+  "script": {
+    "intro": {
+      "text": "Grand Maître du Multivers: Bienvenue dans l'arène la plus impitoyable du monde : la file d'attente de la CAF ! À ma gauche, l'homme qui vous parle de sa haie pendant trois heures, le Voisin Relou ! À ma droite, celle qui vit en avance rapide, Clara !",
+      "speaker": "Grand Maître du Multivers"
+    },
+    "rounds": [
+      {
+        "title": "Round 1 : L'Invasion du Périmètre Personnel",
+        "dialogues": [
+          {
+            "speaker": "Le Voisin Relou",
+            "text": "Le Voisin Relou: Salut Clara ! Dis-moi, tu savais que le compost de ma grand-mère a une odeur de noisette ? Tiens, prends mon attaque 'Projection de Sable Mouillé' !",
+            "action": "Fait semblant de lancer du sable invisible."
+          },
+          {
+            "speaker": "Clara",
+            "text": "Clara: Mais lâche-moi, j'ai pas le temps ! Je contre avec ma 'Valse du Smartphone' ! Je ne te regarde même pas et je t'ignore à une vitesse supersonique !",
+            "action": "Fait défiler son écran frénétiquement."
+          },
+          {
+            "speaker": "Le Voisin Relou",
+            "text": "Le Voisin Relou: Oh, quelle impolie ! Tu mériterais que je te montre mes photos de vacances en Lozère, ça calmerait tes ardeurs, petite crétine !",
+            "action": "Sort un portefeuille épais de photos floues."
+          }
+        ]
+      },
+      {
+        "title": "Round 2 : La Bureaucratie de l'Angoisse",
+        "dialogues": [
+          {
+            "speaker": "Clara",
+            "text": "Clara: Zut ! Le guichet n'avance pas ! C'est de ta faute avec tes bavardages de gamin ! Prends mon 'Direct de l'Agenda Surchargé' !",
+            "action": "Pousse le voisin avec son sac à main rigide."
+          },
+          {
+            "speaker": "Le Voisin Relou",
+            "text": "Le Voisin Relou: Même pas mal ! J'utilise ma botte secrète : 'Le Formulaire Cerfa Perdu' ! Tu vas devoir recommencer toute la file, andouille !",
+            "action": "Fait un croche-pied imaginaire avec un stylo qui ne marche plus."
+          },
+          {
+            "speaker": "Clara",
+            "text": "Clara: Tu es vraiment un boulet ! J'active mon mode 'Tunnel de Concentration' ! Tes paroles ricochent sur mon mépris !",
+            "action": "Met ses écouteurs en criant victoire."
+          }
+        ]
+      },
+      {
+        "title": "Round 3 : L'Ultime Attente",
+        "dialogues": [
+          {
+            "speaker": "Le Voisin Relou",
+            "text": "Le Voisin Relou: Mince, tu es coriace ! Mais attends de voir mon 'Combo de la Tondeuse à Gazon à 7h du Matin' ! Ça va briser tes tympans !",
+            "action": "Imite le bruit d'un moteur poussif juste à l'oreille de Clara."
+          },
+          {
+            "speaker": "Clara",
+            "text": "Clara: C'est la goutte d'eau ! Je lance mon attaque ultime : 'Le Regard Qui Tue du Client Pressé' ! Tu vas te transformer en statue de sel, gros nul !",
+            "action": "Lance un regard noir électrifié."
+          },
+          {
+            "speaker": "Le Voisin Relou",
+            "text": "Le Voisin Relou: Oh non ! Ma seule faiblesse ! Le silence et l'efficacité ! Je sens mes forces de bavardage m'abandonner !",
+            "action": "S'écroule contre un poteau de guidage."
+          }
+        ]
+      }
+    ],
+    "winner": "Clara",
+    "finishingMove": {
+      "type": "Super Combo : L'Appel Prioritaire",
+      "description": "Clara sort un ticket magique numéro 01, passe devant tout le monde, et claque la porte du guichet au nez du Voisin Relou avec un sourire carnassier.",
+      "speaker": "Grand Maître du Multivers"
+    },
+    "conclusion": {
+      "text": "Grand Maître du Multivers: Et c'est une victoire éclair pour Clara ! Le Voisin Relou est K.O., il va devoir expliquer ses problèmes de lierre aux chaises vides. Quelle performance piquante !",
+      "speaker": "Grand Maître du Multivers"
+    }
+  },
+  "winner": "Clara",
+  "id": "1778485410333-5yc6u8",
+  "createdAt": 1778485410333
+}

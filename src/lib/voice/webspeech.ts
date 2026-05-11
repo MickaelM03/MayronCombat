@@ -110,6 +110,8 @@ export function playWebSpeechEnhanced(
   text: string,
   voiceName: string,
   voiceStyle: string = '',
+  rateOverride?: number,
+  pitchOverride?: number,
 ): Promise<void> {
   return new Promise((resolve) => {
     if (!('speechSynthesis' in window)) { setTimeout(resolve, 1500); return; }
@@ -122,8 +124,8 @@ export function playWebSpeechEnhanced(
     const baseProfile  = BASE_PROFILES[voiceName] ?? BASE_PROFILES['Fenrir'];
 
     utterance.lang   = 'fr-FR';
-    utterance.pitch  = styleProfile ? styleProfile.pitch : baseProfile.pitch;
-    utterance.rate   = styleProfile ? styleProfile.rate  : baseProfile.rate;
+    utterance.pitch  = pitchOverride ?? (styleProfile ? styleProfile.pitch : baseProfile.pitch);
+    utterance.rate   = rateOverride  ?? (styleProfile ? styleProfile.rate  : baseProfile.rate);
     utterance.volume = 1.0;
 
     const wantFeminine = FEMININE_PROFILES.has(voiceName);

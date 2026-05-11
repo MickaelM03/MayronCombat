@@ -1,0 +1,113 @@
+{
+  "p1Id": "influenceuse",
+  "p1Name": "Influenceuse Drama",
+  "p1Img": "/images/influenceuse_drama_sf_1778416919814.png",
+  "p1Voice": "Kore",
+  "p1VoiceStyle": "drama_queen",
+  "p2Id": "papa",
+  "p2Name": "Papa",
+  "p2Img": "/images/papa_sf_1778417131723.png",
+  "p2Voice": "Fenrir",
+  "p2VoiceStyle": "papa",
+  "arenaId": "living_room",
+  "arenaName": "Le Salon de la Maison",
+  "arenaImg": "https://images.unsplash.com/photo-1567016432779-094069958ea5?w=1200",
+  "duration": 3,
+  "narrativeMode": 4,
+  "script": {
+    "intro": {
+      "text": "Grand Maître du Multivers: Mesdames et messieurs, bienvenue dans le Salon ! Aujourd'hui, un duel de titans : l'Influenceuse Drama et son style légendaire au crayon contre Papa et sa technique secrète de lutte en Crocs !",
+      "speaker": "Grand Maître du Multivers"
+    },
+    "rounds": [
+      {
+        "title": "Round 1 : Esthétique vs Confort",
+        "dialogues": [
+          {
+            "speaker": "Influenceuse Drama",
+            "text": "Influenceuse Drama: Papa, tes Crocs en plein milieu du salon, c'est juste pas possible ! Tu gâches mon esthétique 'Clean Girl' !",
+            "action": "Sort un crayon à sourcils de sa poche comme si c'était un poignard."
+          },
+          {
+            "speaker": "Papa",
+            "text": "Papa: Ma grande, ces chaussures sont le summum de l'ingénierie humaine. Regarde ce design aéré !",
+            "action": "Fait claquer ses Crocs contre le carrelage."
+          },
+          {
+            "speaker": "Influenceuse Drama",
+            "text": "Influenceuse Drama: C'est un crime contre la mode ! Je vais te 'cancel' direct sur mon prochain live !",
+            "action": "Pointe son crayon avec une précision chirurgicale."
+          },
+          {
+            "speaker": "Papa",
+            "text": "Papa: Cause toujours, ma puce ! Tes menaces glissent sur moi comme l'eau sur le plastique de mes sabots !",
+            "action": "Exécute une petite danse de provocation."
+          }
+        ]
+      },
+      {
+        "title": "Round 2 : Le Mode Sport est activé",
+        "dialogues": [
+          {
+            "speaker": "Papa",
+            "text": "Papa: Oh, tu veux jouer à ça ? Très bien. Je passe en 'Mode Sport' !",
+            "action": "Rabat les sangles de ses Crocs derrière ses talons."
+          },
+          {
+            "speaker": "Influenceuse Drama",
+            "text": "Influenceuse Drama: Oh non, pas le mode sport ! C'est trop ringard, je vais faire une syncope !",
+            "action": "Fait mine de s'évanouir dramatiquement sur le canapé."
+          },
+          {
+            "speaker": "Papa",
+            "text": "Papa: Prépare-toi au tourbillon de la daronnerie ! Je vais ranger ta chambre si tu continues !",
+            "action": "Commence à avancer en faisant des prises de lutte maladroites."
+          },
+          {
+            "speaker": "Influenceuse Drama",
+            "text": "Influenceuse Drama: Quel idiot ! Tu ne m'auras jamais, je suis plus rapide que ton Wi-Fi capricieux !",
+            "action": "Esquive Papa avec une roulade digne d'un film d'action."
+          }
+        ]
+      },
+      {
+        "title": "Round 3 : L'affrontement final",
+        "dialogues": [
+          {
+            "speaker": "Influenceuse Drama",
+            "text": "Influenceuse Drama: C'est fini, Papa ! Je vais utiliser la technique secrète du Crayon ! Un trait, et tu perds toute crédibilité !",
+            "action": "Dessine une moustache imaginaire dans l'air avec son crayon."
+          },
+          {
+            "speaker": "Papa",
+            "text": "Papa: Tu oublies une chose essentielle, andouille... C'est moi qui paie l'abonnement internet !",
+            "action": "Prend une pose héroïque près de la box Wi-Fi."
+          },
+          {
+            "speaker": "Influenceuse Drama",
+            "text": "Influenceuse Drama: Mince ! Le chantage au Wi-Fi, c'est vraiment déloyal ! T'es trop nul !",
+            "action": "Piétine le sol de frustration."
+          },
+          {
+            "speaker": "Papa",
+            "text": "Papa: C'est la loi du plus fort, et ici, le plus fort, c'est celui qui a les pieds bien maintenus !",
+            "action": "Prépare son attaque finale."
+          }
+        ]
+      }
+    ],
+    "winner": "Papa",
+    "finishingMove": {
+      "type": "SUPER COMBO : L'EXTINCTION DES FEUX",
+      "description": "Papa abaisse la sangle de ses Crocs au maximum, sprinte vers l'interrupteur et le coupe net en criant : 'On n'est pas à Versailles ici !' tout en changeant le mot de passe du Wi-Fi instantanément.",
+      "speaker": "Papa"
+    },
+    "conclusion": {
+      "text": "Grand Maître du Multivers: Victoire totale pour Papa ! L'influenceuse est plongée dans le noir et le silence numérique. Quel drame, quel spectacle ! À la prochaine dans le Multivers !",
+      "speaker": "Grand Maître du Multivers"
+    }
+  },
+  "winner": "Papa",
+  "id": "1778476578956-1obj5i",
+  "createdAt": 1778476578956
+}

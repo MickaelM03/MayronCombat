@@ -1,0 +1,98 @@
+{
+  "p1Id": "jul_alien",
+  "p1Name": "L'Alien de Marseille",
+  "p1Img": "/images/jul_alien_sf.png",
+  "p1Voice": "Fenrir",
+  "p1VoiceStyle": "gangster",
+  "p2Id": "tonton",
+  "p2Name": "Tonton Bourré",
+  "p2Img": "/images/tonton_bourre_sf_1778416951155.png",
+  "p2Voice": "Charon",
+  "p2VoiceStyle": "ivre",
+  "arenaId": "colosseum",
+  "arenaName": "Colisée de Rome",
+  "arenaImg": "https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=1200",
+  "duration": 3,
+  "narrativeMode": 4,
+  "script": {
+    "intro": {
+      "text": "Grand Maître du Multivers: Bienvenue dans l'arène historique du Colisée ! Aujourd'hui, un duel au sommet de l'absurde : le déhanché cosmique de l'Alien de Marseille contre la lenteur administrative légendaire de Tonton Bourré ! Ça va piquer !",
+      "speaker": "Grand Maître du Multivers"
+    },
+    "rounds": [
+      {
+        "title": "Round 1 : Pastis et Paperasse",
+        "dialogues": [
+          {
+            "speaker": "L'Alien de Marseille",
+            "text": "L'Alien de Marseille: Allez le vieux, regarde ce jeu de jambes ! Je bouge plus vite qu'une rumeur sur le Vieux-Port !",
+            "action": "Exécute un moonwalk latéral ultra-rapide."
+          },
+          {
+            "speaker": "Tonton Bourré",
+            "text": "Tonton Bourré: Hic... Doucement le... le schtroumpf géant... t'as pas le... le permis de... de glisser comme ça... c'est interdit par le... le décret 42...",
+            "action": "Lance mollement un vieux dossier cartonné qui s'ouvre en l'air."
+          },
+          {
+            "speaker": "L'Alien de Marseille",
+            "text": "L'Alien de Marseille: Quel nul ! Tes feuilles de papier ne peuvent pas m'arrêter, je suis en plein groove galactique !",
+            "action": "Esquive les feuilles avec une souplesse de caoutchouc."
+          }
+        ]
+      },
+      {
+        "title": "Round 2 : Le Tampon de la Colère",
+        "dialogues": [
+          {
+            "speaker": "Tonton Bourré",
+            "text": "Tonton Bourré: Mince... t'es... t'es agaçant... je vais te... te tamponner le front... 'Refusé pour... non-conformité'... andouille...",
+            "action": "Tente de viser l'alien avec un tampon encreur géant."
+          },
+          {
+            "speaker": "L'Alien de Marseille",
+            "text": "L'Alien de Marseille: Raté l'abruti ! C'est ça ton style ? On dirait une tortue qui essaie de remplir un chèque !",
+            "action": "Tournoie sur une antenne en narguant son adversaire."
+          },
+          {
+            "speaker": "Tonton Bourré",
+            "text": "Tonton Bourré: Zut de... flûte... j'vois double... c'est pas... pas juste... vous êtes trop nombreux... dans ta tête...",
+            "action": "Trébuche sur sa propre cravate mal nouée."
+          }
+        ]
+      },
+      {
+        "title": "Round 3 : Final Explosif",
+        "dialogues": [
+          {
+            "speaker": "L'Alien de Marseille",
+            "text": "L'Alien de Marseille: Allez, fin de la sieste ! Je vais te montrer comment on danse chez moi, c'est l'heure du grand final !",
+            "action": "Commence à briller d'une lueur bleue électrique."
+          },
+          {
+            "speaker": "Tonton Bourré",
+            "text": "Tonton Bourré: Attends... j'ai un... un recours gracieux... à... à déposer... t'as pas le droit de... m'éblouir... crétin...",
+            "action": "Sort un stylo qui n'a plus d'encre en tremblant."
+          },
+          {
+            "speaker": "L'Alien de Marseille",
+            "text": "L'Alien de Marseille: Trop tard pour les réclamations ! Ton dossier est classé verticalement dans le vide spatial !",
+            "action": "Se prépare pour l'ultime enchaînement de breakdance."
+          }
+        ]
+      }
+    ],
+    "winner": "L'Alien de Marseille",
+    "finishingMove": {
+      "type": "Super Combo : Tourbillon de la Canebière",
+      "description": "L'Alien de Marseille effectue une toupie sur la tête à une vitesse supersonique, créant un vortex qui aspire tous les formulaires Cerfa de Tonton Bourré avant de le projeter délicatement dans un tas de sable avec un petit coup de pied rythmé.",
+      "speaker": "Grand Maître du Multivers"
+    },
+    "conclusion": {
+      "text": "Grand Maître du Multivers: Et c'est terminé ! L'Alien de Marseille remporte la victoire par KO artistique ! Tonton Bourré est déjà en train de ronfler sur le sable du Colisée. Quel spectacle, mes amis ! On se retrouve pour le prochain duel !",
+      "speaker": "Grand Maître du Multivers"
+    }
+  },
+  "winner": "L'Alien de Marseille",
+  "id": "1778485582502-iy04r5",
+  "createdAt": 1778485582502
+}

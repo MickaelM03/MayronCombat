@@ -1,0 +1,98 @@
+{
+  "p1Id": "gilet_jaune",
+  "p1Name": "Didier la Manif",
+  "p1Img": "/images/gilet_jaune_sf.png",
+  "p1Voice": "Charon",
+  "p1VoiceStyle": "raleur",
+  "p2Id": "rat_gouttiere",
+  "p2Name": "Rat d'Égout",
+  "p2Img": "/images/rat_gouttiere_sf.png",
+  "p2Voice": "Puck",
+  "p2VoiceStyle": "creature",
+  "arenaId": "hogwarts",
+  "arenaName": "Poudlard",
+  "arenaImg": "/images/hogwarts_sf.png",
+  "duration": 3,
+  "narrativeMode": 4,
+  "script": {
+    "intro": {
+      "text": "Grand Maître du Multivers: Salut les nuls ! On est à Poudlard pour un duel qui va faire plus de bruit qu'une manif de profs ! D'un côté, Didier et son balai magique, de l'autre, un rat de bar qui bafouille !",
+      "speaker": "Grand Maître du Multivers"
+    },
+    "rounds": [
+      {
+        "title": "Round 1 : Balayage de caniveau",
+        "dialogues": [
+          {
+            "speaker": "Didier la Manif",
+            "text": "Didier la Manif: Prépare-toi à être balayé comme une vulgaire miette de chips, espèce de microbe !",
+            "action": "Agite son balai frénétiquement"
+          },
+          {
+            "speaker": "Rat d'Égout",
+            "text": "Rat d'Égout: Pika pika !",
+            "action": "Tente un saut chassé de catch vers les genoux de Didier"
+          },
+          {
+            "speaker": "Didier la Manif",
+            "text": "Didier la Manif: Mais quel abruti, il a raté sa cible de trois mètres ! C'est le catch ou le club de gym ?",
+            "action": "Se moque ouvertement"
+          }
+        ]
+      },
+      {
+        "title": "Round 2 : Embrouille à la Grande Salle",
+        "dialogues": [
+          {
+            "speaker": "Rat d'Égout",
+            "text": "Rat d'Égout: Pika pika ! Pika !",
+            "action": "Mord violemment le manche du balai de Didier"
+          },
+          {
+            "speaker": "Didier la Manif",
+            "text": "Didier la Manif: Hé ! Touche pas au matériel professionnel, sale bestiole ! C'est pas une friandise !",
+            "action": "Secoue son balai dans tous les sens"
+          },
+          {
+            "speaker": "Rat d'Égout",
+            "text": "Rat d'Égout: Pika pika...",
+            "action": "Fait une prise de soumission sur la brosse du balai"
+          }
+        ]
+      },
+      {
+        "title": "Round 3 : Le grand décrassage",
+        "dialogues": [
+          {
+            "speaker": "Didier la Manif",
+            "text": "Didier la Manif: Allez, c'est l'heure de la grève générale ! Tu vas tâter de la fibre synthétique !",
+            "action": "Arme son balai comme une batte de baseball"
+          },
+          {
+            "speaker": "Rat d'Égout",
+            "text": "Rat d'Égout: Pika pika ! Pika pika !",
+            "action": "Tourne sur lui-même pour créer un mini-tourbillon de poussière"
+          },
+          {
+            "speaker": "Didier la Manif",
+            "text": "Didier la Manif: Quel crétin, il s'étouffe tout seul avec la poussière ! C'est pitoyable !",
+            "action": "Prépare son coup final"
+          }
+        ]
+      }
+    ],
+    "winner": "Didier la Manif",
+    "finishingMove": {
+      "type": "Combo Tornade Express de Printemps",
+      "description": "Didier fait tournoyer son balai à une vitesse supersonique, aspirant le Rat d'Égout dans un tourbillon de poussière avant de l'expédier d'un revers sec directement dans un chaudron de potions bouillonnantes.",
+      "speaker": "Grand Maître du Multivers"
+    },
+    "conclusion": {
+      "text": "Grand Maître du Multivers: Et c'est la victoire pour Didier la Manif ! Le Rat d'Égout va pouvoir méditer sur sa défaite au fond d'un bouillon de limaces. Quel spectacle ridicule, j'adore !",
+      "speaker": "Grand Maître du Multivers"
+    }
+  },
+  "winner": "Didier la Manif",
+  "id": "1778485395683-b716rq",
+  "createdAt": 1778485395683
+}

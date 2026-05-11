@@ -1,0 +1,98 @@
+{
+  "p1Id": "adele",
+  "p1Name": "Mortelle Adèle",
+  "p1Img": "/images/adele_generic_sf_1778417097290.png",
+  "p1Voice": "Kore",
+  "p1VoiceStyle": "enfant_diabolique",
+  "p2Id": "maman",
+  "p2Name": "Maman",
+  "p2Img": "/images/maman_sf_1778417144541.png",
+  "p2Voice": "Kore",
+  "p2VoiceStyle": "maman",
+  "arenaId": "caf",
+  "arenaName": "File d'Attente de la CAF",
+  "arenaImg": "https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=1200",
+  "duration": 3,
+  "narrativeMode": 4,
+  "script": {
+    "intro": {
+      "text": "Arbitre: Mesdames et Messieurs, bienvenue dans l'enfer administratif de la File d'Attente de la CAF ! À ma gauche, Mortelle Adèle et son inventaire explosif ! À ma droite, Maman et ses gants en acier ! Prêts ? Baston !",
+      "speaker": "Arbitre"
+    },
+    "rounds": [
+      {
+        "title": "ROUND 1",
+        "dialogues": [
+          {
+            "speaker": "Mortelle Adèle",
+            "text": "Mortelle Adèle: Hihihi ! Regarde Maman, j'ai posé de la TNT sous le siège du conseiller ! *Creeper sound*... BOUM !",
+            "action": "Pose de TNT"
+          },
+          {
+            "speaker": "Maman",
+            "text": "Maman: Surveille ton langage, jeune fille ! Et range ces cubes tout de suite ou tu vas tâter de mon jab !",
+            "action": "Esquive et Jab"
+          },
+          {
+            "speaker": "Mortelle Adèle",
+            "text": "Mortelle Adèle: Trop tard ! Je grief tout le guichet ! Tu vas rester coincée ici pour l'éternité ! Hihihi !",
+            "action": "Destruction du décor"
+          }
+        ]
+      },
+      {
+        "title": "ROUND 2",
+        "dialogues": [
+          {
+            "speaker": "Maman",
+            "text": "Maman: On ne bouge plus ! Jeu de jambes, gauche, droite ! Tiens, prends ce crochet pour ta mauvaise humeur !",
+            "action": "Série de coups"
+          },
+          {
+            "speaker": "Mortelle Adèle",
+            "text": "Mortelle Adèle: Oh ! Un coup de poing ? Quel manque d'imagination ! Je construis un mur en obsidienne entre nous ! Na !",
+            "action": "Construction défensive"
+          },
+          {
+            "speaker": "Maman",
+            "text": "Maman: Tu crois que tes petits blocs vont m'arrêter ? Je vais les pulvériser à la force du poignet, petite maligne !",
+            "action": "Frappe lourde"
+          }
+        ]
+      },
+      {
+        "title": "ROUND 3",
+        "dialogues": [
+          {
+            "speaker": "Mortelle Adèle",
+            "text": "Mortelle Adèle: Tu es toute rouge, Maman ! C'est le stress administratif ? Tiens, mange ce seau de lave !",
+            "action": "Attaque élémentaire"
+          },
+          {
+            "speaker": "Maman",
+            "text": "Maman: Ouille ! Ça brûle ! Espèce de petite chipie ! Je vais te mettre un K.O. technique que tu n'oublieras pas !",
+            "action": "Contre-attaque furieuse"
+          },
+          {
+            "speaker": "Mortelle Adèle",
+            "text": "Mortelle Adèle: Trop lente ! Je connecte mes circuits de Redstone... Attention, ça va faire... TRÈS mal ! Hihihi !",
+            "action": "Préparation ultime"
+          }
+        ]
+      }
+    ],
+    "winner": "Mortelle Adèle",
+    "finishingMove": {
+      "type": "FATALITY",
+      "description": "Arbitre: MEGA COMBO TNT OVERLOAD ! Adèle déclenche une réaction en chaîne qui pulvérise la CAF et envoie Maman sur la lune ! K.O. EXPLOSIF !",
+      "speaker": "Arbitre"
+    },
+    "conclusion": {
+      "text": "Arbitre: Victoire totale pour Mortelle Adèle ! La file d'attente n'existe plus, et Maman a besoin d'un nouveau brushing ! Quel carnage délicieux !",
+      "speaker": "Arbitre"
+    }
+  },
+  "winner": "Mortelle Adèle",
+  "id": "1778477218867-iioug8",
+  "createdAt": 1778477218867
+}

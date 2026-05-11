@@ -1,0 +1,133 @@
+{
+  "p1Id": "john_wick",
+  "p1Name": "John Wick",
+  "p1Img": "/images/johnwick_sf.png",
+  "p1Voice": "Charon",
+  "p1VoiceStyle": "froid",
+  "p2Id": "homer",
+  "p2Name": "Homer Simpson",
+  "p2Img": "/images/homer_generic_sf_1778417069953.png",
+  "p2Voice": "Charon",
+  "p2VoiceStyle": "idiot",
+  "arenaId": "colosseum",
+  "arenaName": "Colisée de Rome",
+  "arenaImg": "https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=1200",
+  "duration": 5,
+  "narrativeMode": 4,
+  "script": {
+    "intro": {
+      "text": "Grand Maître du Multivers: Salut les sportifs du dimanche ! On est en direct du Colisée de Rome où le tueur le plus élégant du monde, John Wick, va essayer de ne pas se salir les mains face à Homer Simpson, le champion toute catégorie de la paresse. Ça va être du grand n'importe quoi !",
+      "speaker": "Grand Maître du Multivers"
+    },
+    "rounds": [
+      {
+        "title": "Round 1 : Crayon contre Donut",
+        "dialogues": [
+          {
+            "speaker": "John Wick",
+            "text": "John Wick: Tu devrais rentrer chez toi, Homer. Je n'ai pas envie de gaspiller mes munitions sur un type qui sent la friture.",
+            "action": "John Wick sort un crayon bien taillé."
+          },
+          {
+            "speaker": "Homer Simpson",
+            "text": "Homer Simpson: Oh, un petit bâton en bois ! Tu veux qu'on fasse des mots fléchés, le grand ténébreux ? Mmm... donuts...",
+            "action": "Homer ignore le danger et sort un donut de sa poche."
+          }
+        ]
+      },
+      {
+        "title": "Round 2 : L'esquive de l'andouille",
+        "dialogues": [
+          {
+            "speaker": "John Wick",
+            "text": "John Wick: Ce n'est pas un bâton, c'est ton arrêt de mort. Regarde bien, idiot !",
+            "action": "John lance le crayon avec une précision chirurgicale."
+          },
+          {
+            "speaker": "Homer Simpson",
+            "text": "Homer Simpson: Ouh ! Un centime !",
+            "action": "Homer se baisse pour ramasser une pièce imaginaire, le crayon siffle juste au-dessus de son crâne chauve."
+          },
+          {
+            "speaker": "John Wick",
+            "text": "John Wick: Mais c'est pas possible... Quelle chance de pendu !",
+            "action": "John Wick fronce les sourcils, visiblement agacé."
+          }
+        ]
+      },
+      {
+        "title": "Round 3 : La tentative de Kamehameha",
+        "dialogues": [
+          {
+            "speaker": "Homer Simpson",
+            "text": "Homer Simpson: Bon, à mon tour ! Mon gamin m'a montré un truc à la télé. Ka... Mé... Ha... Mé...",
+            "action": "Homer commence à concentrer une énergie bleue bizarre mais très instable."
+          },
+          {
+            "speaker": "John Wick",
+            "text": "John Wick: Tu es sérieux là ? Tu ressembles à un gros citron qui essaie de pondre un œuf.",
+            "action": "John Wick recharge son pistolet avec calme."
+          },
+          {
+            "speaker": "Homer Simpson",
+            "text": "Homer Simpson: ... Jambon ! Oh, mince, j'ai tout raté !",
+            "action": "Une petite étincelle ridicule sort des mains d'Homer."
+          }
+        ]
+      },
+      {
+        "title": "Round 4 : Le rebond adipeux",
+        "dialogues": [
+          {
+            "speaker": "John Wick",
+            "text": "John Wick: Allez, fini de jouer, l'abruti.",
+            "action": "John tire une rafale de balles en caoutchouc."
+          },
+          {
+            "speaker": "Homer Simpson",
+            "text": "Homer Simpson: Boing ! Boing ! Haha, ça chatouille le ventre !",
+            "action": "Les balles ricochent sur le ventre d'Homer et reviennent vers John."
+          },
+          {
+            "speaker": "John Wick",
+            "text": "John Wick: Mince ! Mes propres munitions ! Quelle humiliation !",
+            "action": "John Wick doit faire une roulade pour éviter ses propres projectiles."
+          }
+        ]
+      },
+      {
+        "title": "Round 5 : L'illumination calorique",
+        "dialogues": [
+          {
+            "speaker": "John Wick",
+            "text": "John Wick: Tu commences à m'énerver sérieusement, Simpson. Je vais te finir à l'ancienne.",
+            "action": "John fonce vers Homer pour un combat au corps à corps."
+          },
+          {
+            "speaker": "Homer Simpson",
+            "text": "Homer Simpson: Oh non ! Pas le visage ! C'est là que je mets ma bière !",
+            "action": "Homer panique et agite les bras dans tous les sens."
+          },
+          {
+            "speaker": "John Wick",
+            "text": "John Wick: Prépare-toi à... Mais qu'est-ce que c'est que cette odeur ?",
+            "action": "John s'arrête net, distrait par une odeur de bacon émanant du tablier d'Homer."
+          }
+        ]
+      }
+    ],
+    "winner": "Homer Simpson",
+    "finishingMove": {
+      "type": "Super Combo : Le Kamehameha au Sucre Glace",
+      "description": "Homer rotte si fort que l'énergie accumulée explose enfin, projetant une vague de glaçage rose collant qui immobilise John Wick au sol. John est vaincu par le diabète et la confusion.",
+      "speaker": "Homer Simpson"
+    },
+    "conclusion": {
+      "text": "Grand Maître du Multivers: Et c'est l'incroyable victoire de l'homme en blanc ! John Wick est couvert de sucre et a perdu toute crédibilité. Homer, va manger ton trophée, tu l'as mérité, espèce de génie du chaos !",
+      "speaker": "Grand Maître du Multivers"
+    }
+  },
+  "winner": "Homer Simpson",
+  "id": "1778485474529-lh0jov",
+  "createdAt": 1778485474529
+}

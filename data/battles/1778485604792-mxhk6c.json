@@ -1,0 +1,98 @@
+{
+  "p1Id": "spiderman",
+  "p1Name": "Spider-Man",
+  "p1Img": "/images/spiderman_sf.png",
+  "p1Voice": "Puck",
+  "p1VoiceStyle": "hero_jeune",
+  "p2Id": "rick",
+  "p2Name": "Rick Sanchez",
+  "p2Img": "/images/rick_sf.png",
+  "p2Voice": "Charon",
+  "p2VoiceStyle": "scientifique_fou",
+  "arenaId": "living_room",
+  "arenaName": "Le Salon de la Maison",
+  "arenaImg": "https://images.unsplash.com/photo-1567016432779-094069958ea5?w=1200",
+  "duration": 3,
+  "narrativeMode": 4,
+  "script": {
+    "intro": {
+      "text": "Grand Maître du Multivers: Mesdames et messieurs, bienvenue dans ce salon tout à fait banal pour un duel qui ne l'est pas ! À ma gauche, Spider-Man en mode loubard avec sa batte, et à ma droite, Rick Sanchez qui a probablement confondu ce combat avec une pause pipi !",
+      "speaker": "Grand Maître du Multivers"
+    },
+    "rounds": [
+      {
+        "title": "Round 1 : Échauffement entre les canapés",
+        "dialogues": [
+          {
+            "speaker": "Spider-Man",
+            "text": "Spider-Man: Hé Rick, j'ai piqué cette batte à un type bizarre dans une ruelle, tu vas voir si ça fait le même bruit que tes calculs foireux !",
+            "action": "Spider-Man balance sa batte avec un style très approximatif de voyou de quartier."
+          },
+          {
+            "speaker": "Rick Sanchez",
+            "text": "Rick Sanchez: *Rôte* Peter... t'as vraiment un costume ridicule. Tu ressembles à un pyjama de gamin de huit ans qui aurait trop regardé les vidéos de combat sur le net. Quel abruti !",
+            "action": "Rick évite le coup de batte en ouvrant un mini portail juste devant son nez."
+          },
+          {
+            "speaker": "Spider-Man",
+            "text": "Spider-Man: Zut ! T'as pas le droit de tricher avec tes trous de ver ! C'est pas du jeu, espèce de vieux grincheux !",
+            "action": "Spider-Man tente un coup de batte circulaire mais frappe accidentellement le vase de la cheminée."
+          }
+        ]
+      },
+      {
+        "title": "Round 2 : La physique contre la force brute",
+        "dialogues": [
+          {
+            "speaker": "Rick Sanchez",
+            "text": "Rick Sanchez: Écoute-moi bien, l'andouille. Pendant que tu joues aux Power Rangers avec ton morceau de bois, moi je redéfinis la réalité. Tiens, mange ça !",
+            "action": "Rick tire avec son pistolet à portails au plafond et au sol sous les pieds de Spidey."
+          },
+          {
+            "speaker": "Spider-Man",
+            "text": "Spider-Man: Oh mince, je tombe ! Ah non, je remonte ? Bordel, Rick, tu donnes le mal de mer !",
+            "action": "Spider-Man tombe en boucle infinie entre le plafond et le sol, sa batte lui échappant des mains."
+          },
+          {
+            "speaker": "Rick Sanchez",
+            "text": "Rick Sanchez: Tu vois ? T'es juste une balle de tennis qui parle. C'est d'un nul, t'imagines même pas.",
+            "action": "Rick s'assoit tranquillement sur le canapé en regardant Spider-Man tomber."
+          }
+        ]
+      },
+      {
+        "title": "Round 3 : L'ultime taquinerie",
+        "dialogues": [
+          {
+            "speaker": "Spider-Man",
+            "text": "Spider-Man: C'est fini de rigoler ! Je vais te coller au mur avec ou sans batte, espèce de scientifique en carton !",
+            "action": "Spider-Man utilise sa force pour se projeter hors du portail et fonce sur Rick."
+          },
+          {
+            "speaker": "Rick Sanchez",
+            "text": "Rick Sanchez: Oh, le petit insecte est fâché ? Tu vas faire quoi, me lancer tes petites sécrétions ? T'es qu'un crétin avec un complexe de héros.",
+            "action": "Rick manipule son pistolet à portails pour faire apparaître un essaim de guêpes géantes d'une autre dimension."
+          },
+          {
+            "speaker": "Spider-Man",
+            "text": "Spider-Man: Des guêpes ? C'est tout ce que t'as ? T'es vraiment à court d'idées, le vieux !",
+            "action": "Spider-Man tente de frapper les guêpes avec sa batte en faisant des moulinets ridicules."
+          }
+        ]
+      }
+    ],
+    "winner": "Rick Sanchez",
+    "finishingMove": {
+      "type": "SUPER COMBO : Le Vortex des Toilettes",
+      "description": "Rick crée un portail géant sous Spider-Man qui mène directement à une dimension composée uniquement de vaisselle sale, tout en lui lançant une télécommande qui change la couleur de son costume en rose bonbon.",
+      "speaker": "Rick Sanchez"
+    },
+    "conclusion": {
+      "text": "Grand Maître du Multivers: Et c'est une victoire écrasante pour Rick Sanchez ! Spider-Man est actuellement en train de faire la vaisselle dans la dimension 4-B. Quel combat ridicule, j'adore ça !",
+      "speaker": "Grand Maître du Multivers"
+    }
+  },
+  "winner": "Rick Sanchez",
+  "id": "1778485604792-mxhk6c",
+  "createdAt": 1778485604792
+}

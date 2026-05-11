@@ -1,0 +1,158 @@
+{
+  "p1Id": "rat_gouttiere",
+  "p1Name": "Rat d'Égout",
+  "p1Img": "/images/rat_gouttiere_sf.png",
+  "p1Voice": "Puck",
+  "p1VoiceStyle": "creature",
+  "p2Id": "jul_alien",
+  "p2Name": "L'Alien de Marseille",
+  "p2Img": "/images/jul_alien_sf.png",
+  "p2Voice": "Fenrir",
+  "p2VoiceStyle": "gangster",
+  "arenaId": "parking",
+  "arenaName": "Parking du Supermarché",
+  "arenaImg": "https://images.unsplash.com/photo-1506521781263-d8422e82f27a?w=1200",
+  "duration": 8,
+  "narrativeMode": 4,
+  "script": {
+    "intro": {
+      "text": "Arbitre: Salut les microbes ! Bienvenue au Parking du Supermarché pour une baston légendaire ! Préparez vos mouchoirs, ça va piquer ! Ding ding !",
+      "speaker": "Arbitre"
+    },
+    "rounds": [
+      {
+        "title": "ROUND 1",
+        "dialogues": [
+          {
+            "speaker": "L'Alien de Marseille",
+            "text": "L'Alien de Marseille: Wesh le rongeur ! Tu t'es cru dans un dessin animé ? Je vais te transformer en kebab !",
+            "action": "Provocation"
+          },
+          {
+            "speaker": "Rat d'Égout",
+            "text": "Rat d'Égout: Pika pika ? Pika-pika !",
+            "action": "Observation"
+          }
+        ]
+      },
+      {
+        "title": "ROUND 2",
+        "dialogues": [
+          {
+            "speaker": "L'Alien de Marseille",
+            "text": "L'Alien de Marseille: Prends ce jab dans tes moustaches, minot ! C'est ça la boxe de la Canebière !",
+            "action": "Attaque"
+          },
+          {
+            "speaker": "Rat d'Égout",
+            "text": "Rat d'Égout: Pikaaa-CHUUU !",
+            "action": "Contre-attaque"
+          }
+        ]
+      },
+      {
+        "title": "ROUND 3",
+        "dialogues": [
+          {
+            "speaker": "L'Alien de Marseille",
+            "text": "L'Alien de Marseille: Oh le ouf ! Il m'a envoyé du jus ! T'es une pile électrique ou quoi, espèce d'andouille ?",
+            "action": "Choc"
+          },
+          {
+            "speaker": "Rat d'Égout",
+            "text": "Rat d'Égout: Pika ? Pika pik pik !",
+            "action": "Moquerie"
+          }
+        ]
+      },
+      {
+        "title": "ROUND 4",
+        "dialogues": [
+          {
+            "speaker": "L'Alien de Marseille",
+            "text": "L'Alien de Marseille: Arrête de courir partout ! Tu me donnes le tournis, petit dégaine de peluche !",
+            "action": "Fatigue"
+          },
+          {
+            "speaker": "Rat d'Égout",
+            "text": "Rat d'Égout: PIKA-PIKA-PIKA !",
+            "action": "Attaque rapide"
+          }
+        ]
+      },
+      {
+        "title": "ROUND 5",
+        "dialogues": [
+          {
+            "speaker": "L'Alien de Marseille",
+            "text": "L'Alien de Marseille: Tiens ! Un uppercut pour ton nez ! Tu vas retourner dans ton égout en courant !",
+            "action": "Coup de poing"
+          },
+          {
+            "speaker": "Rat d'Égout",
+            "text": "Rat d'Égout: Pika... pikaaaa !",
+            "action": "Douleur"
+          }
+        ]
+      },
+      {
+        "title": "ROUND 6",
+        "dialogues": [
+          {
+            "speaker": "Rat d'Égout",
+            "text": "Rat d'Égout: Pika ? Pika-chu ?",
+            "action": "Ruse"
+          },
+          {
+            "speaker": "L'Alien de Marseille",
+            "text": "L'Alien de Marseille: Tu fais quoi là ? Tu me regardes avec tes gros yeux ? Tu vas rien faire du tout, chabraque !",
+            "action": "Incompréhension"
+          }
+        ]
+      },
+      {
+        "title": "ROUND 7",
+        "dialogues": [
+          {
+            "speaker": "L'Alien de Marseille",
+            "text": "L'Alien de Marseille: Je vais t'éteindre comme une vieille ampoule ! T'es cuit comme une merguez sur le grill !",
+            "action": "Coup final raté"
+          },
+          {
+            "speaker": "Rat d'Égout",
+            "text": "Rat d'Égout: Pika... PIKA-PIKA-PIKA !",
+            "action": "Concentration"
+          }
+        ]
+      },
+      {
+        "title": "ROUND 8",
+        "dialogues": [
+          {
+            "speaker": "L'Alien de Marseille",
+            "text": "L'Alien de Marseille: Allez, fini de rigoler ! Je t'encastre dans un caddie et c'est terminé !",
+            "action": "Charge"
+          },
+          {
+            "speaker": "Rat d'Égout",
+            "text": "Rat d'Égout: PIKAAAAA-CHUUUUUUU !",
+            "action": "Super Combo"
+          }
+        ]
+      }
+    ],
+    "winner": "Rat d'Égout",
+    "finishingMove": {
+      "type": "SUPER COMBO",
+      "description": "Arbitre: INCROYABLE ! Rat d'Égout lance son combo 'Coup de Dent Foudroyant' ! L'Alien de Marseille est k.o. debout, il voit des étoiles et des sardines !",
+      "speaker": "Arbitre"
+    },
+    "conclusion": {
+      "text": "Arbitre: Victoire du Rat d'Égout ! L'Alien de Marseille repart dans sa soucoupe avec une bosse de la taille d'un melon ! Quel spectacle, mes aïeux !",
+      "speaker": "Arbitre"
+    }
+  },
+  "winner": "Rat d'Égout",
+  "id": "1778477068452-062g51",
+  "createdAt": 1778477068452
+}

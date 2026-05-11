@@ -1,0 +1,113 @@
+{
+  "p1Id": "john_wick",
+  "p1Name": "John Wick",
+  "p1Img": "/images/johnwick_sf.png",
+  "p1Voice": "Charon",
+  "p1VoiceStyle": "froid",
+  "p2Id": "spiderman",
+  "p2Name": "Spider-Man",
+  "p2Img": "/images/spiderman_sf.png",
+  "p2Voice": "Puck",
+  "p2VoiceStyle": "hero_jeune",
+  "arenaId": "caf",
+  "arenaName": "File d'Attente de la CAF",
+  "arenaImg": "https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=1200",
+  "duration": 5,
+  "narrativeMode": 4,
+  "script": {
+    "intro": {
+      "text": "Grand Maître du Multivers: Bienvenue dans l'arène la plus redoutable de France : la file d'attente de la CAF ! À ma gauche, John Wick qui a troqué son flingue contre une batte de baseball façon Liberty City ! À ma droite, Spider-Man qui combat comme s'il était encore dans un jardin d'enfants ! Le premier qui perd son calme perd ses allocations !",
+      "speaker": "Grand Maître du Multivers"
+    },
+    "rounds": [
+      {
+        "title": "Round 1 : Le ticket de priorité",
+        "dialogues": [
+          {
+            "speaker": "John Wick",
+            "text": "John Wick: Pousse-toi le moustique, j'ai le ticket numéro 42 et je commence à perdre patience.",
+            "action": "John Wick effectue un coup de batte vertical raide comme un personnage de GTA 3."
+          },
+          {
+            "speaker": "Spider-Man",
+            "text": "Spider-Man: Oh le vilain monsieur ! Tu vas faire quoi avec ton bâton ? Me donner une fessée ? T'as le charisme d'un frigo, l'andouille !",
+            "action": "Spider-Man esquive en faisant une roulade maladroite et projette une poignée de sable imaginaire."
+          }
+        ]
+      },
+      {
+        "title": "Round 2 : La provocation gratuite",
+        "dialogues": [
+          {
+            "speaker": "Spider-Man",
+            "text": "Spider-Man: Regarde John ! Je fais la technique du 'petit chat qui gratte' ! Tu peux pas test ma souplesse de bac à sable !",
+            "action": "Spider-Man agite ses doigts devant le visage de John de façon irritante."
+          },
+          {
+            "speaker": "John Wick",
+            "text": "John Wick: Tais-toi, sale gamin. Tu cries plus fort que ton costume ne pique les yeux. Espèce d'abruti de foire !",
+            "action": "John Wick tente un coup de batte circulaire mais percute un poteau de guidage en métal."
+          }
+        ]
+      },
+      {
+        "title": "Round 3 : L'appel du guichet",
+        "dialogues": [
+          {
+            "speaker": "John Wick",
+            "text": "John Wick: C'est mon tour ! L'agent vient de lever la main ! Dégage ou je te transforme en passoire avec cette batte !",
+            "action": "John Wick sprinte de manière saccadée vers le guichet en bousculant les chaises."
+          },
+          {
+            "speaker": "Spider-Man",
+            "text": "Spider-Man: Pas si vite le retraité ! Ma maman m'a dit que les premiers seront les derniers ! Mange mon attaque 'Pâté en Croûte' !",
+            "action": "Spider-Man saute sur le dos de John et essaie de lui couvrir les yeux avec ses mains."
+          }
+        ]
+      },
+      {
+        "title": "Round 4 : Crise de nerfs administrative",
+        "dialogues": [
+          {
+            "speaker": "John Wick",
+            "text": "John Wick: Zut ! La machine à tickets est en panne ! C'est sûrement de ta faute, espèce de crétin collant !",
+            "action": "John Wick frappe la machine à tickets avec sa batte, créant des étincelles."
+          },
+          {
+            "speaker": "Spider-Man",
+            "text": "Spider-Man: Mince alors ! T'es vraiment nul en bricolage. Tu veux un bisou sur ton bobo ou tu préfères que je te siffle dans les oreilles ?",
+            "action": "Spider-Man fait des bruits de prout avec sa bouche pour déstabiliser John."
+          }
+        ]
+      },
+      {
+        "title": "Round 5 : L'ultime confrontation",
+        "dialogues": [
+          {
+            "speaker": "John Wick",
+            "text": "John Wick: J'en ai marre ! Je vais te renvoyer dans ton bac à sable à coups de batte dans le derrière !",
+            "action": "John Wick lève sa batte pour un coup final désespéré, mais il glisse sur un formulaire Cerfa."
+          },
+          {
+            "speaker": "Spider-Man",
+            "text": "Spider-Man: C'est l'heure du dodo pour le Boogeyman ! Tu vas voir la puissance de l'école maternelle !",
+            "action": "Spider-Man se prépare pour son mouvement spécial en faisant des moulinets avec ses bras."
+          }
+        ]
+      }
+    ],
+    "winner": "Spider-Man",
+    "finishingMove": {
+      "type": "SUPER COMBO : LA SIESTE DE L'ARAIGNÉE",
+      "description": "Spider-Man entoile John Wick au distributeur de gel hydroalcoolique, lui colle un autocollant 'Dossier Incomplet' sur le front et finit par lui faire une pichenette sur le nez en criant 'T'es chat !'.",
+      "speaker": "Spider-Man"
+    },
+    "conclusion": {
+      "text": "Grand Maître du Multivers: Quel carnage ! John Wick est immobilisé par de la colle et de la mauvaise foi administrative ! Spider-Man gagne le droit de passer au guichet, mais manque de bol, c'est l'heure de la pause déjeuner ! Rentrez chez vous, les nuls !",
+      "speaker": "Grand Maître du Multivers"
+    }
+  },
+  "winner": "Spider-Man",
+  "id": "1778485541400-g3e99l",
+  "createdAt": 1778485541400
+}

@@ -218,7 +218,7 @@ export default function App() {
   const [pendingMode, setPendingMode] = useState<NarrativeMode | null>(null);
   const [showConfirm, setShowConfirm] = useState(false);
   const [parentalTab, setParentalTab] = useState<'mode' | 'voix'>('mode');
-  const PARENTAL_CODE = "0001";
+  const PARENTAL_CODE = "2604";
 
   // Voice overrides — persisted in localStorage, applied on character selection
   const [voiceOverrides, setVoiceOverrides] = useState<Record<string, VoiceOverride>>(() => {
@@ -240,26 +240,47 @@ export default function App() {
     return { ...char, voice: ovr.voice, voiceStyle: ovr.voiceStyle };
   };
 
-  // Test a voice from the configurator
-  const testVoice = async (text: string, voiceName: string, voiceStyle: string) => {
-    getAudioCtx();
+  // Sync P1/P2 when overrides change
+  useEffect(() => {
+    setP1(prev => withVoiceOverride(CHARACTERS.find(c => c.id === prev.id) || prev));
+    setP2(prev => withVoiceOverride(CHARACTERS.find(c => c.id === prev.id) || prev));
+  }, [voiceOverrides]);
+
+  // Test a voice from the configurator (with fine-tuned params)
+  const testVoice = async (text: string, voiceName: string, voiceStyle: string, params: VoiceOverride) => {
+    const audioCtx = getAudioCtx();
     const apiKey = process.env.GEMINI_API_KEY || tempApiKey;
     const cleanText = text.replace(/^[^:]+:\s*/, '');
-    if (apiKey) {
-      const blob = await fetchGeminiAudio(cleanText, voiceName, voiceStyle, apiKey);
-      if (blob) { await playPcmBlob(blob); return; }
+
+    // Use custom prompt override if provided
+    const effectiveStyle = params.customPrompt?.trim() ? '__custom__' : voiceStyle;
+    const originalStylePrompts = { ...STYLE_PROMPTS };
+    if (params.customPrompt?.trim()) {
+      STYLE_PROMPTS['__custom__'] = params.customPrompt.trim();
     }
-    // Piper fallback
-    const audioCtx = getAudioCtx();
-    const gainNode = audioCtx.createGain();
-    gainNode.gain.setValueAtTime(1.0, audioCtx.currentTime);
-    gainNode.connect(audioCtx.destination);
+
     try {
-      await playPiperTTS(cleanText, voiceName, voiceStyle, audioCtx, gainNode);
-    } catch {
-      await playWebSpeechEnhanced(cleanText, voiceName, voiceStyle);
+      if (apiKey) {
+        const blob = await fetchGeminiAudio(cleanText, voiceName, effectiveStyle, apiKey);
+        if (blob) {
+          await playPcmBlobWithParams(blob, 'pcm', params);
+          return;
+        }
+      }
+      // Piper fallback
+      const gainNode = audioCtx.createGain();
+      gainNode.gain.setValueAtTime(params.volume ?? 1.0, audioCtx.currentTime);
+      gainNode.connect(audioCtx.destination);
+      try {
+        await playPiperTTS(cleanText, voiceName, voiceStyle, audioCtx, gainNode);
+      } catch {
+        await playWebSpeechEnhanced(cleanText, voiceName, voiceStyle);
+      } finally {
+        try { gainNode.disconnect(); } catch {}
+      }
     } finally {
-      try { gainNode.disconnect(); } catch {}
+      // Restore style prompts (delete the temporary custom entry)
+      delete STYLE_PROMPTS['__custom__'];
     }
   };
 
@@ -357,27 +378,32 @@ export default function App() {
     return audioContextRef.current;
   };
 
-  const getVoiceForSpeaker = (speaker: string): { voiceName: string; voiceStyle: string } => {
+  const getVoiceForSpeaker = (speaker: string): { 
+    voiceName: string; 
+    voiceStyle: string; 
+    charId?: string;
+    params?: VoiceOverride 
+  } => {
     const speakerLower = speaker.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     
     // Check P1
     const p1NameLower = p1.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     if (speakerLower.includes(p1NameLower) || p1NameLower.includes(speakerLower)) {
-      return { voiceName: p1.voice, voiceStyle: p1.voiceStyle };
+      return { voiceName: p1.voice, voiceStyle: p1.voiceStyle, charId: p1.id, params: voiceOverrides[p1.id] };
     }
     // Check P2
     const p2NameLower = p2.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     if (speakerLower.includes(p2NameLower) || p2NameLower.includes(speakerLower)) {
-      return { voiceName: p2.voice, voiceStyle: p2.voiceStyle };
+      return { voiceName: p2.voice, voiceStyle: p2.voiceStyle, charId: p2.id, params: voiceOverrides[p2.id] };
     }
-    // Also check partial names (first word) for composite names like "Spider-Man" or "Le Chat"
+    // Also check partial names
     const p1FirstWord = p1NameLower.split(/[\s-]/)[0];
     const p2FirstWord = p2NameLower.split(/[\s-]/)[0];
     if (p1FirstWord.length > 2 && speakerLower.includes(p1FirstWord)) {
-      return { voiceName: p1.voice, voiceStyle: p1.voiceStyle };
+      return { voiceName: p1.voice, voiceStyle: p1.voiceStyle, charId: p1.id, params: voiceOverrides[p1.id] };
     }
     if (p2FirstWord.length > 2 && speakerLower.includes(p2FirstWord)) {
-      return { voiceName: p2.voice, voiceStyle: p2.voiceStyle };
+      return { voiceName: p2.voice, voiceStyle: p2.voiceStyle, charId: p2.id, params: voiceOverrides[p2.id] };
     }
     // Default: Arbitre voice
     return { voiceName: 'Aoede', voiceStyle: '' };
@@ -386,6 +412,16 @@ export default function App() {
   // Fallback offline : Web Speech API avec profils de voix distinctifs par personnage
 
   const playPcmBlob = (blob: Blob, format: 'pcm' | 'wav' = 'pcm'): Promise<void> => {
+    return playPcmBlobWithParams(blob, format, {
+      voice: '', voiceStyle: '', volume: 1.0, playbackRate: 1.0, pitchShift: 0
+    });
+  };
+
+  const playPcmBlobWithParams = (
+    blob: Blob,
+    format: 'pcm' | 'wav',
+    params: VoiceOverride
+  ): Promise<void> => {
     return new Promise(async (resolve) => {
       const audioCtx = getAudioCtx();
       const arrayBuffer = await blob.arrayBuffer();
@@ -410,13 +446,23 @@ export default function App() {
       }
 
       try { currentAudioSource.current?.stop(); } catch { /* already stopped */ }
+      
       const gainNode = audioCtx.createGain();
-      gainNode.gain.setValueAtTime(1.0, audioCtx.currentTime);
+      gainNode.gain.setValueAtTime(params.volume ?? 1.0, audioCtx.currentTime);
       gainNode.connect(audioCtx.destination);
+      
       const source = audioCtx.createBufferSource();
       source.buffer = audioBuffer;
+      
+      // Pitch shift via playbackRate: semitones to ratio
+      // semitones = 12 * log2(ratio)  =>  ratio = 2^(semitones/12)
+      const pitchRatio = Math.pow(2, (params.pitchShift ?? 0) / 12);
+      const effectiveRate = (params.playbackRate ?? 1.0) * pitchRatio;
+      
+      source.playbackRate.setValueAtTime(effectiveRate, audioCtx.currentTime);
       source.connect(gainNode);
       source.start();
+      
       currentAudioSource.current = source;
       source.onended = () => {
         try { source.disconnect(); gainNode.disconnect(); } catch {}
@@ -490,9 +536,9 @@ export default function App() {
   };
 
   type PreparedAudio =
-    | { kind: 'blob'; blob: Blob; format: 'pcm' | 'wav' }
-    | { kind: 'piper'; text: string; voiceName: string; voiceStyle: string }
-    | { kind: 'webspeech'; text: string; voiceName: string; voiceStyle: string }
+    | { kind: 'blob'; blob: Blob; format: 'pcm' | 'wav'; params?: VoiceOverride }
+    | { kind: 'piper'; text: string; voiceName: string; voiceStyle: string; params?: VoiceOverride }
+    | { kind: 'webspeech'; text: string; voiceName: string; voiceStyle: string; params?: VoiceOverride }
     | { kind: 'silent' };
 
   // Phase fetch (non bloquante pour le playback) — peut être lancée en parallèle pour plusieurs lignes
@@ -501,35 +547,44 @@ export default function App() {
     voiceName: string,
     voiceStyle: string,
     lineIdx: number,
+    params?: VoiceOverride
   ): Promise<PreparedAudio> => {
     if (!voiceEnabled) return { kind: 'silent' };
 
     const battleId = currentBattleId.current;
     if (battleId && lineIdx >= 0) {
       const cached = await getAudioBlob(battleId, lineIdx, voiceName);
-      if (cached) return { kind: 'blob', blob: cached.blob, format: cached.format };
+      if (cached) return { kind: 'blob', blob: cached.blob, format: cached.format, params };
     }
 
     const apiKey = process.env.GEMINI_API_KEY || tempApiKey;
     const cleanText = text.replace(/^[^:]+:\s*/, '');
 
-    // On tente Gemini dès qu'on a une clé API, sans dépendre de navigator.onLine
-    // (faux négatif sur certains Safari → forçait à passer en Piper "robotique").
-    if (apiKey) {
-      const blob = await fetchGeminiAudio(cleanText, voiceName, voiceStyle, apiKey);
-      if (blob) {
-        console.info(`[voice] tier=gemini line=${lineIdx} voice=${voiceName} style=${voiceStyle}`);
-        if (battleId && lineIdx >= 0) {
-          saveAudioBlob(battleId, lineIdx, voiceName, blob, 'pcm').catch(() => {});
-        }
-        return { kind: 'blob', blob, format: 'pcm' };
-      }
-      console.warn(`[voice] tier=piper-fallback (Gemini KO) line=${lineIdx} voice=${voiceName}`);
-    } else {
-      console.info(`[voice] tier=piper (no API key) line=${lineIdx} voice=${voiceName}`);
+    // Handle custom prompt override
+    const effectiveStyle = params?.customPrompt?.trim() ? '__custom__' : voiceStyle;
+    if (params?.customPrompt?.trim()) {
+      STYLE_PROMPTS['__custom__'] = params.customPrompt.trim();
     }
 
-    return { kind: 'piper', text: cleanText, voiceName, voiceStyle };
+    try {
+      if (apiKey) {
+        const blob = await fetchGeminiAudio(cleanText, voiceName, effectiveStyle, apiKey);
+        if (blob) {
+          console.info(`[voice] tier=gemini line=${lineIdx} voice=${voiceName} style=${voiceStyle}`);
+          if (battleId && lineIdx >= 0) {
+            saveAudioBlob(battleId, lineIdx, voiceName, blob, 'pcm').catch(() => {});
+          }
+          return { kind: 'blob', blob, format: 'pcm', params };
+        }
+        console.warn(`[voice] tier=piper-fallback (Gemini KO) line=${lineIdx} voice=${voiceName}`);
+      } else {
+        console.info(`[voice] tier=piper (no API key) line=${lineIdx} voice=${voiceName}`);
+      }
+
+      return { kind: 'piper', text: cleanText, voiceName, voiceStyle, params };
+    } finally {
+      if (params?.customPrompt?.trim()) delete STYLE_PROMPTS['__custom__'];
+    }
   };
 
   // Phase playback (séquentielle) — joue ce qui a déjà été préparé
@@ -538,27 +593,32 @@ export default function App() {
       await new Promise(r => setTimeout(r, 600));
       return;
     }
-    if (prepared.kind === 'blob') {
-      await playPcmBlob(prepared.blob, prepared.format);
-      return;
-    }
-    // Piper / Web Speech : exécution à la lecture (déterministes en line-à-line)
+
     const audioCtx = getAudioCtx();
     const gainNode = audioCtx.createGain();
-    gainNode.gain.setValueAtTime(1.0, audioCtx.currentTime);
+    const vol = prepared.params?.volume ?? 1.0;
+    gainNode.gain.setValueAtTime(vol, audioCtx.currentTime);
     gainNode.connect(audioCtx.destination);
+
     try {
+      if (prepared.kind === 'blob') {
+        // Blob from Gemini uses playPcmBlobWithParams which handles pitch/rate/volume
+        await playPcmBlobWithParams(prepared.blob, prepared.format, prepared.params || { voice: '', voiceStyle: '', volume: vol });
+        return;
+      }
+      
+      // Piper / Web Speech : exécution à la lecture (déterministes en line-à-line)
       if (prepared.kind === 'piper') {
         try {
           await playPiperTTS(prepared.text, prepared.voiceName, prepared.voiceStyle, audioCtx, gainNode);
           return;
         } catch {
           console.warn(`[voice] Piper KO → Web Speech (voix système, peu naturelle).`);
-          await playWebSpeechEnhanced(prepared.text, prepared.voiceName, prepared.voiceStyle);
+          await playWebSpeechEnhanced(prepared.text, prepared.voiceName, prepared.voiceStyle, prepared.params?.playbackRate ?? 1.0, prepared.params?.webPitch ?? 1.0);
         }
       } else {
         console.warn(`[voice] Web Speech utilisé (voix système, peu naturelle).`);
-        await playWebSpeechEnhanced(prepared.text, prepared.voiceName, prepared.voiceStyle);
+        await playWebSpeechEnhanced(prepared.text, prepared.voiceName, prepared.voiceStyle, prepared.params?.playbackRate ?? 1.0, prepared.params?.webPitch ?? 1.0);
       }
     } finally {
       try { gainNode.disconnect(); } catch {}
@@ -813,8 +873,8 @@ FORMAT JSON REQUIS :
 
       const preparedPromises = lines.map((line, i) => {
         const textToSpeak = line.text || line.description;
-        const { voiceName, voiceStyle } = getVoiceForSpeaker(line.speaker || 'Arbitre');
-        return prepareLineAudio(textToSpeak, voiceName, voiceStyle, baseIdx + i);
+        const { voiceName, voiceStyle, params } = getVoiceForSpeaker(line.speaker || 'Arbitre');
+        return prepareLineAudio(textToSpeak, voiceName, voiceStyle, baseIdx + i, params);
       });
 
       for (let i = 0; i < lines.length; i++) {
@@ -1089,6 +1149,7 @@ FORMAT JSON REQUIS :
                 <VoiceConfigurator
                   characters={CHARACTERS}
                   overrides={voiceOverrides}
+                  stylePrompts={STYLE_PROMPTS}
                   onSave={saveVoiceOverrides}
                   onTestVoice={testVoice}
                 />

@@ -1,0 +1,113 @@
+{
+  "p1Id": "rick",
+  "p1Name": "Rick Sanchez",
+  "p1Img": "/images/rick_sf.png",
+  "p1Voice": "Charon",
+  "p1VoiceStyle": "scientifique_fou",
+  "p2Id": "papa",
+  "p2Name": "Papa",
+  "p2Img": "/images/papa_sf_1778417131723.png",
+  "p2Voice": "Fenrir",
+  "p2VoiceStyle": "papa",
+  "arenaId": "hogwarts",
+  "arenaName": "Poudlard",
+  "arenaImg": "/images/hogwarts_sf.png",
+  "duration": 5,
+  "narrativeMode": 4,
+  "script": {
+    "intro": {
+      "text": "Grand Maître du Multivers: Bienvenue à Poudlard pour le duel le plus gênant de l'histoire ! Rick Sanchez, le génie alcoolique, affronte Papa, le champion de la danse ratée. Que le désastre commence !",
+      "speaker": "Grand Maître du Multivers"
+    },
+    "rounds": [
+      {
+        "title": "Round 1 : La Grande Salle des Gaffes",
+        "dialogues": [
+          {
+            "speaker": "Rick Sanchez",
+            "text": "Rick Sanchez: *Rote* Écoute mon gars, ton pyjama de ninja du dimanche ne va pas t'aider ici. Je vais te projeter plus vite que tes espoirs de promotion.",
+            "action": "Rick titube en essayant une prise de judo mais attrape accidentellement un jambon sur la table des Gryffondor."
+          },
+          {
+            "speaker": "Papa",
+            "text": "Papa: Oh, tu parles beaucoup pour un type qui sent le cidre périmé ! Regarde ma technique de la roue du destin !",
+            "action": "Papa tente une roue de capoeira, s'emmêle dans sa propre ceinture et finit le nez dans une tourte aux rognons."
+          }
+        ]
+      },
+      {
+        "title": "Round 2 : Escalades et Glissades",
+        "dialogues": [
+          {
+            "speaker": "Rick Sanchez",
+            "text": "Rick Sanchez: T'es vraiment un abruti, Papa. Même les escaliers magiques se foutent de ta gueule tellement tu es lent.",
+            "action": "Rick utilise son pistolet à portails pour se téléporter derrière Papa, mais glisse sur une marche mouillée."
+          },
+          {
+            "speaker": "Papa",
+            "text": "Papa: Crétin de scientifique ! Je maîtrise l'équilibre ancestral ! Enfin, presque !",
+            "action": "Papa essaie de donner un coup de pied sauté, mais se cogne la tête contre un portrait qui lui crie de se taire."
+          }
+        ]
+      },
+      {
+        "title": "Round 3 : La Forêt (pas très) Interdite",
+        "dialogues": [
+          {
+            "speaker": "Rick Sanchez",
+            "text": "Rick Sanchez: *Rote* Regarde-moi ce nul. Tu ressembles à un centaure qui aurait perdu ses pattes arrière.",
+            "action": "Rick tente une balayette de judo 'Fin de Soirée' et s'écroule lourdement sur un buisson de champignons hallucinogènes."
+          },
+          {
+            "speaker": "Papa",
+            "text": "Papa: Arrête de gigoter comme une anguille bourrée ! Ma capoeira est un art, monsieur le génie de pacotille !",
+            "action": "Papa fait un mouvement de jambe circulaire tellement lent qu'un escargot passe sous son pied sans danger."
+          }
+        ]
+      },
+      {
+        "title": "Round 4 : Quidditch et Confusion",
+        "dialogues": [
+          {
+            "speaker": "Rick Sanchez",
+            "text": "Rick Sanchez: Je vais transformer ta tête en Souafle et la shooter dans le décor, espèce d'andouille !",
+            "action": "Rick essaie de faire une clé de bras, mais il finit par s'accrocher au cou de Papa comme un paresseux fatigué."
+          },
+          {
+            "speaker": "Papa",
+            "text": "Papa: Mince, lâche-moi ! Tu pèses une tonne de regrets ! Je vais te faire ma botte secrète de l'hélicoptère !",
+            "action": "Papa tourne sur lui-même comme une toupie rouillée et finit par vomir son déjeuner sur les chaussures de Rick."
+          }
+        ]
+      },
+      {
+        "title": "Round 5 : Le Final au Bord du Lac",
+        "dialogues": [
+          {
+            "speaker": "Rick Sanchez",
+            "text": "Rick Sanchez: Bon, ça suffit. T'es vraiment trop nul pour que je continue à faire semblant. Prépare-toi au choc des civilisations, idiot.",
+            "action": "Rick se stabilise, boit une dernière gorgée et active ses bottes magnétiques pour un mouvement final."
+          },
+          {
+            "speaker": "Papa",
+            "text": "Papa: On verra bien qui est l'idiot quand je t'aurai assommé avec mon déhanchement brésilien !",
+            "action": "Papa essaie une dernière acrobatie désespérée, mais son pantalon craque bruyamment dans le silence de Poudlard."
+          }
+        ]
+      }
+    ],
+    "winner": "Rick Sanchez",
+    "finishingMove": {
+      "type": "Combo Judo-Portail de l'Espace",
+      "description": "Rick attrape Papa par le collet, crée un portail juste sous ses pieds et le fait tomber en boucle infinie entre le plafond et le sol jusqu'à ce que Papa soit trop étourdi pour dire 'zut'. Rick termine par une prise d'immobilisation en s'asseyant sur lui tout en lisant le journal.",
+      "speaker": "Grand Maître du Multivers"
+    },
+    "conclusion": {
+      "text": "Grand Maître du Multivers: Quelle performance pitoyable ! Rick Sanchez l'emporte par KO technique et manque total de dignité. Papa, retourne travailler tes entrechats, c'était une catastrophe ! À la prochaine pour plus de ridicule !",
+      "speaker": "Grand Maître du Multivers"
+    }
+  },
+  "winner": "Rick Sanchez",
+  "id": "1778476562511-pfolsk",
+  "createdAt": 1778476562511
+}

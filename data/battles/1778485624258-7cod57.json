@@ -1,0 +1,133 @@
+{
+  "p1Id": "rick",
+  "p1Name": "Rick Sanchez",
+  "p1Img": "/images/rick_sf.png",
+  "p1Voice": "Charon",
+  "p1VoiceStyle": "scientifique_fou",
+  "p2Id": "papa",
+  "p2Name": "Papa",
+  "p2Img": "/images/papa_sf_1778417131723.png",
+  "p2Voice": "Fenrir",
+  "p2VoiceStyle": "papa",
+  "arenaId": "gaulois_village",
+  "arenaName": "Village des Résistants",
+  "arenaImg": "/images/gaulois_village_arena.png",
+  "duration": 5,
+  "narrativeMode": 4,
+  "script": {
+    "intro": {
+      "text": "Grand Maître du Multivers: Bienvenue au Village des Résistants ! Aujourd'hui, on oppose Rick Sanchez et sa magie noire de bazar à Papa et ses pas de danse mortels. Ça va piquer !",
+      "speaker": "Grand Maître du Multivers"
+    },
+    "rounds": [
+      {
+        "title": "Round 1 : Échauffement et Poussière",
+        "dialogues": [
+          {
+            "speaker": "Rick Sanchez",
+            "text": "Rick Sanchez: *Rote* Regarde bien Papa, j'ai acheté ce sort de boule de feu sur Wish. Ça devrait... au moins te roussir les sourcils, idiot !",
+            "action": "Invoque une minuscule étincelle qui sent le plastique brûlé."
+          },
+          {
+            "speaker": "Papa",
+            "text": "Papa: C'est ça ta magie ? On dirait un briquet en fin de vie. Observe plutôt mon déhanché défensif !",
+            "action": "Effectue un pas de chassé pour esquiver l'étincelle avec une élégance suspecte."
+          },
+          {
+            "speaker": "Rick Sanchez",
+            "text": "Rick Sanchez: Ta danse est tellement ringarde qu'elle pourrait servir d'arme biologique, espèce d'andouille.",
+            "action": "Lance un sort de 'Lévitation à 2 centimètres' qui ne sert à rien."
+          }
+        ]
+      },
+      {
+        "title": "Round 2 : Le Rythme dans la Peau",
+        "dialogues": [
+          {
+            "speaker": "Papa",
+            "text": "Papa: Ringard ? C'est du vintage, mon vieux ! Prends ce Triple-Spin-Tornado dans tes dents !",
+            "action": "Tourne sur lui-même comme une toupie de kermesse en se rapprochant de Rick."
+          },
+          {
+            "speaker": "Rick Sanchez",
+            "text": "Rick Sanchez: *Rote* Mince, j'ai le tournis rien qu'à te voir. Tiens, mange ce maléfice de 'Lacet Défait' !",
+            "action": "Pointe une baguette en plastique vers les chaussures de Papa."
+          },
+          {
+            "speaker": "Papa",
+            "text": "Papa: Zut ! Mes chaussures de claquettes ! Tu triches, espèce de crétin chevelu !",
+            "action": "Trébuche mais transforme sa chute en une roulade de breakdance stylée."
+          }
+        ]
+      },
+      {
+        "title": "Round 3 : Sortilèges de Brocante",
+        "dialogues": [
+          {
+            "speaker": "Rick Sanchez",
+            "text": "Rick Sanchez: Ma magie noire est peut-être bas de gamme, mais elle est imprévisible, comme mon taux d'alcoolémie !",
+            "action": "Invoque un nuage de fumée qui sent la chaussette sale."
+          },
+          {
+            "speaker": "Papa",
+            "text": "Papa: Pouah ! C'est déloyal ! Je vais dissiper cette odeur avec mon moulinet de bras disco !",
+            "action": "Agite ses bras frénétiquement pour chasser la fumée."
+          },
+          {
+            "speaker": "Rick Sanchez",
+            "text": "Rick Sanchez: T'as l'air d'un oiseau qui essaie de décoller d'une flaque d'huile. T'es nul, Papa.",
+            "action": "Lui jette une malédiction de 'Hoquet Éternel' qui rate sa cible."
+          }
+        ]
+      },
+      {
+        "title": "Round 4 : La Fièvre du Samedi Soir",
+        "dialogues": [
+          {
+            "speaker": "Papa",
+            "text": "Papa: *Hips* Ah non, ton sort a ricoché ! Mais ça ne m'empêchera pas de te mettre une fessée rythmique !",
+            "action": "Enchaîne des claquettes sonores qui font vibrer le sol du village."
+          },
+          {
+            "speaker": "Rick Sanchez",
+            "text": "Rick Sanchez: Oh non, pas les vibrations ! Mon portail vers la cave est en train de se fermer, abruti !",
+            "action": "Essaie de stabiliser un portail magique qui clignote comme une guirlande de Noël."
+          },
+          {
+            "speaker": "Papa",
+            "text": "Papa: Moque-toi de mes pas, mais c'est toi qui vas danser maintenant !",
+            "action": "Lance un combo de Jazz-Hands éblouissants."
+          }
+        ]
+      },
+      {
+        "title": "Round 5 : Le Grand Final",
+        "dialogues": [
+          {
+            "speaker": "Rick Sanchez",
+            "text": "Rick Sanchez: *Rote* Ok, tu l'auras voulu. J'utilise mon ultime sort Wish : 'L'Invocation du Démon-Poney en Carton' !",
+            "action": "Un poney en carton apparaît et tombe immédiatement sur le côté."
+          },
+          {
+            "speaker": "Papa",
+            "text": "Papa: C'est pathétique. Laisse un vrai professionnel clore le spectacle avec la Danse Ultime !",
+            "action": "Prend une pose dramatique en pointant le doigt vers le ciel."
+          }
+        ]
+      }
+    ],
+    "winner": "Papa",
+    "finishingMove": {
+      "type": "SUPER COMBO : LA MACARENA DE L'OUBLI",
+      "description": "Papa enchaîne une série de mouvements si synchronisés et gênants que Rick Sanchez perd toute volonté de combattre, terrassé par l'embarras pur tandis qu'une pluie de paillettes magiques Wish explose sans raison.",
+      "speaker": "Papa"
+    },
+    "conclusion": {
+      "text": "Grand Maître du Multivers: Quelle démonstration ! La danse a triomphé de la magie de contrefaçon. Rick, retourne sur ton canapé, et Papa, range ce déhanché, tu vas te faire un tour de reins ! À la prochaine pour plus de n'importe quoi !",
+      "speaker": "Grand Maître du Multivers"
+    }
+  },
+  "winner": "Papa",
+  "id": "1778485624258-7cod57",
+  "createdAt": 1778485624258
+}

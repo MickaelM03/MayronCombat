@@ -1,0 +1,128 @@
+{
+  "p1Id": "walter",
+  "p1Name": "Walter White",
+  "p1Img": "/images/walter_sf.png",
+  "p2Id": "franklin",
+  "p2Name": "Franklin",
+  "p2Img": "/images/franklin_sf_1778417110721.png",
+  "arenaId": "parking",
+  "arenaName": "Parking du Supermarché",
+  "arenaImg": "https://images.unsplash.com/photo-1506521781263-d8422e82f27a?w=1200",
+  "duration": 5,
+  "narrativeMode": 4,
+  "script": {
+    "intro": {
+      "text": "Grand Maître du Multivers: Bienvenue sur le parking du Supermarché pour un duel de génies ! D'un côté, Walter White et ses fléchettes en mousse, de l'autre, Franklin et son pistolet à portails. Ça va piquer, mais pas trop !",
+      "speaker": "Grand Maître du Multivers"
+    },
+    "rounds": [
+      {
+        "title": "Round 1 : Échauffement de Plastique",
+        "dialogues": [
+          {
+            "speaker": "Walter White",
+            "text": "Walter White: Regarde bien Franklin, j'ai calculé la trajectoire de cette fléchette Nerf avec une précision chirurgicale. Tu es déjà cuit !"
+          },
+          {
+            "speaker": "Franklin",
+            "text": "Franklin: Mec, tu parles trop. Ton petit bout de mousse va juste rebondir sur mon pull. Regarde un peu ce que fait mon portail !",
+            "action": "Franklin tire un portail sous les pieds de Walter."
+          },
+          {
+            "speaker": "Walter White",
+            "text": "Walter White: Mince ! Je tombe ! Quel petit garnement tu fais !",
+            "action": "Walter réapparaît en tombant du plafond d'un abri à caddies."
+          }
+        ]
+      },
+      {
+        "title": "Round 2 : La Chimie du Portail",
+        "dialogues": [
+          {
+            "speaker": "Franklin",
+            "text": "Franklin: Alors l'ancêtre ? C'est plus dur que de cuisiner dans un camping-car, hein ? T'as l'air d'un abruti perché là-haut."
+          },
+          {
+            "speaker": "Walter White",
+            "text": "Walter White: Ne sous-estime jamais un homme de science, crétin ! J'ai modifié mes projectiles. Attention au tir !",
+            "action": "Walter tire une rafale de fléchettes oranges qui sifflent."
+          },
+          {
+            "speaker": "Franklin",
+            "text": "Franklin: Trop lent ! Je crée un tunnel spatio-temporel entre ces deux caddies !",
+            "action": "Les fléchettes entrent dans un portail et ressortent pour viser les fesses de Franklin par erreur."
+          }
+        ]
+      },
+      {
+        "title": "Round 3 : Le Maître de la Géométrie",
+        "dialogues": [
+          {
+            "speaker": "Walter White",
+            "text": "Walter White: Haha ! Franklin, tu es aussi maladroit qu'un stagiaire ! Tu t'es auto-moussé, espèce d'andouille !"
+          },
+          {
+            "speaker": "Franklin",
+            "text": "Franklin: Zut, ça fait même pas mal ! Mais tu m'as énervé là. Je vais te téléporter directement dans le bac à légumes !",
+            "action": "Franklin court en tirant des portails partout sur le bitume."
+          },
+          {
+            "speaker": "Walter White",
+            "text": "Walter White: Je reste immobile. La probabilité que tu me touches est nulle si je ne bouge pas. Tu es un nul en calcul !",
+            "action": "Walter recharge son fusil Nerf avec un air supérieur."
+          }
+        ]
+      },
+      {
+        "title": "Round 4 : Caddies Galactiques",
+        "dialogues": [
+          {
+            "speaker": "Franklin",
+            "text": "Franklin: Tiens, mange ce caddie ! J'en envoie un par le plafond et il te tombe dessus, vieux débris !"
+          },
+          {
+            "speaker": "Walter White",
+            "text": "Walter White: Idiot ! J'ai placé une fléchette adhésive sur la roue. Elle dévie la trajectoire selon la loi de White !",
+            "action": "Le caddie rate Walter de quelques centimètres."
+          },
+          {
+            "speaker": "Franklin",
+            "text": "Franklin: T'as de la chance, mais t'es essoufflé là. On dirait que tu vas faire une sieste sur le goudron."
+          }
+        ]
+      },
+      {
+        "title": "Round 5 : L'Ultime Confrat",
+        "dialogues": [
+          {
+            "speaker": "Walter White",
+            "text": "Walter White: C'est fini, Franklin. Je suis celui qui tire ! J'ai parsemé le sol de billes de polystyrène, tes portails vont glisser !"
+          },
+          {
+            "speaker": "Franklin",
+            "text": "Franklin: Quoi ? Des billes ? Mais c'est quoi ce délire de gamin ? Espèce de grand malade !",
+            "action": "Franklin glisse et perd le contrôle de son pistolet à portails."
+          },
+          {
+            "speaker": "Walter White",
+            "text": "Walter White: Say my name... Le Roi du Nerf !",
+            "action": "Walter ajuste ses lunettes et prépare son coup final."
+          }
+        ]
+      }
+    ],
+    "winner": "Walter White",
+    "finishingMove": {
+      "type": "Super Combo : Explosion de Mousse Pure",
+      "description": "Walter sature l'entrée d'un portail avec 99,1% de fléchettes bleues ultra-rapides. Le circuit sature et explose dans un nuage de confettis et de mousse, propulsant Franklin directement dans une pile de cartons vides à l'autre bout du parking.",
+      "speaker": "Walter White"
+    },
+    "conclusion": {
+      "text": "Grand Maître du Multivers: Et c'est une victoire éclatante pour Heisenberg ! Franklin, reste dans tes voitures, la physique de lycée c'est pas pour toi. Walter, va ranger tes jouets, ta femme va râler !",
+      "speaker": "Grand Maître du Multivers"
+    }
+  },
+  "winner": "Walter White",
+  "id": "1778474887849-8nhfuk",
+  "createdAt": 1778474887849
+}

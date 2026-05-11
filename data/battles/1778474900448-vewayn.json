@@ -1,0 +1,109 @@
+{
+  "p1Id": "lara",
+  "p1Name": "Lara Croft",
+  "p1Img": "/images/lara_sf.png",
+  "p2Id": "mayron",
+  "p2Name": "Mayron",
+  "p2Img": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=600&fit=crop",
+  "arenaId": "nether",
+  "arenaName": "Le Nether",
+  "arenaImg": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=1200",
+  "duration": 5,
+  "narrativeMode": 4,
+  "script": {
+    "intro": {
+      "text": "Grand Maître du Multivers: Bienvenue dans la fournaise du Nether pour un duel totalement improbable ! Lara Croft a troqué ses bottes pour des Crocs et affronte Mayron, le maître du tonnerre. Préparez vos mouchoirs, ça va être drôle !",
+      "speaker": "Grand Maître du Multivers"
+    },
+    "rounds": [
+      {
+        "title": "Échauffement en sueur",
+        "dialogues": [
+          {
+            "speaker": "Lara Croft",
+            "text": "Lara Croft: Oh mince, le sol brûle ! Qui a eu l'idée de se battre ici ? Espèce d'abruti, c'est sûrement toi Mayron !",
+            "action": "Sautille sur place pour ne pas se brûler les pieds dans ses Crocs."
+          },
+          {
+            "speaker": "Mayron",
+            "text": "Mayron: Même pas ! Et surveille ton langage, l'aventurière en plastique. Tiens, prends une petite décharge pour te rafraîchir !",
+            "action": "Envoie une petite étincelle qui fait sauter Lara."
+          }
+        ]
+      },
+      {
+        "title": "Lutte et électricité statique",
+        "dialogues": [
+          {
+            "speaker": "Lara Croft",
+            "text": "Lara Croft: Zut, ça chatouille ! Attends que je t'attrape avec ma prise de l'anaconda version caoutchouc !",
+            "action": "Tente une clé de bras glissante à cause de la sueur."
+          },
+          {
+            "speaker": "Mayron",
+            "text": "Mayron: Mais dégage avec tes chaussures moches ! Tu vas salir ma belle armure, espèce d'andouille !",
+            "action": "Génère un champ électrique qui repousse Lara en arrière."
+          }
+        ]
+      },
+      {
+        "title": "Intervention des Ghasts",
+        "dialogues": [
+          {
+            "speaker": "Mayron",
+            "text": "Mayron: Attention derrière toi, grosse maligne ! Un Ghast va te refaire le portrait !",
+            "action": "Pointe du doigt un Ghast qui pleure au loin."
+          },
+          {
+            "speaker": "Lara Croft",
+            "text": "Lara Croft: Tu crois vraiment que je vais tomber dans le panneau ? Quel idiot ce Mayron, c'est une vieille ruse de cour de récré !",
+            "action": "Envoie un coup de pied circulaire qui frôle le nez de Mayron."
+          }
+        ]
+      },
+      {
+        "title": "Le duel des vannes",
+        "dialogues": [
+          {
+            "speaker": "Mayron",
+            "text": "Mayron: Aïe ! T'as failli m'avoir, sale gamine ! Ton style de lutte, c'est du n'importe quoi !",
+            "action": "Lance des petits éclairs au sol pour faire danser Lara."
+          },
+          {
+            "speaker": "Lara Croft",
+            "text": "Lara Croft: Au moins moi je ne ressemble pas à une pile électrique sur pattes. T'es vraiment un crétin fini, Mayron !",
+            "action": "Se jette au sol pour un tacle glissé dévastateur."
+          }
+        ]
+      },
+      {
+        "title": "Le bouquet final",
+        "dialogues": [
+          {
+            "speaker": "Lara Croft",
+            "text": "Lara Croft: Allez, c'est l'heure de la sieste pour le paratonnerre ! Je vais te montrer pourquoi les Crocs sont redoutables !",
+            "action": "Prend de l'élan en ignorant la chaleur du Nether."
+          },
+          {
+            "speaker": "Mayron",
+            "text": "Mayron: Oh non, pas le mode sérieux ! Zut, je déteste quand elle fait cette tête de chipie !",
+            "action": "Prépare un bouclier électrique en tremblant un peu."
+          }
+        ]
+      }
+    ],
+    "winner": "Lara Croft",
+    "finishingMove": {
+      "type": "SUPER COMBO CROCS-ÉCLAIR",
+      "description": "Lara Croft saute sur les épaules de Mayron, utilise l'électricité de son adversaire pour charger ses propres chaussures et lui écrase le visage avec une semelle en caoutchouc survoltée en criant 'Prends ça, espèce de pile plate !'",
+      "speaker": "Lara Croft"
+    },
+    "conclusion": {
+      "text": "Grand Maître du Multivers: Et c'est Lara Croft qui l'emporte ! Mayron est au tapis, fumant comme une vieille merguez. Quel combat ridicule mais épique ! On se retrouve au prochain tour, les loulous !",
+      "speaker": "Grand Maître du Multivers"
+    }
+  },
+  "winner": "Lara Croft",
+  "id": "1778474900448-vewayn",
+  "createdAt": 1778474900448
+}

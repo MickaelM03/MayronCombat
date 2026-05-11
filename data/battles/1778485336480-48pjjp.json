@@ -1,0 +1,98 @@
+{
+  "p1Id": "rat_gouttiere",
+  "p1Name": "Rat d'Égout",
+  "p1Img": "/images/rat_gouttiere_sf.png",
+  "p1Voice": "Puck",
+  "p1VoiceStyle": "creature",
+  "p2Id": "mme_monique",
+  "p2Name": "Mme Monique",
+  "p2Img": "/images/mme_monique_sf.png",
+  "p2Voice": "Kore",
+  "p2VoiceStyle": "raleur",
+  "arenaId": "gaulois_village",
+  "arenaName": "Village des Résistants",
+  "arenaImg": "/images/gaulois_village_arena.png",
+  "duration": 3,
+  "narrativeMode": 4,
+  "script": {
+    "intro": {
+      "text": "Grand Maître du Multivers: Salut les nuls ! On est au Village des Résistants pour un duel qui pue la défaite ! À ma gauche, un Rat d'Égout qui se prend pour une souris électrique, et à ma droite, Mme Monique, qui va nous montrer que le ménage, c'est du sérieux !",
+      "speaker": "Grand Maître du Multivers"
+    },
+    "rounds": [
+      {
+        "title": "Round 1 : La Morsure du Rédempteur",
+        "dialogues": [
+          {
+            "speaker": "Rat d'Égout",
+            "text": "Rat d'Égout: Pika pika !",
+            "action": "Le rat se jette sur les chaussures de Mme Monique et mord frénétiquement ses lacets."
+          },
+          {
+            "speaker": "Mme Monique",
+            "text": "Mme Monique: Oh, l'andouille ! Tu vas me lâcher les baskets ? Elles sont neuves, petit crétin poilu !",
+            "action": "Elle secoue violemment sa jambe pour s'en débarrasser."
+          },
+          {
+            "speaker": "Rat d'Égout",
+            "text": "Rat d'Égout: Pika pika pika !",
+            "action": "Il s'accroche avec ses griffes comme une bernique sur un rocher."
+          }
+        ]
+      },
+      {
+        "title": "Round 2 : L'Esquive de la Ménagère",
+        "dialogues": [
+          {
+            "speaker": "Mme Monique",
+            "text": "Mme Monique: Tu l'as cherché ! Prends ça, espéce d'abruti de rongeur !",
+            "action": "Elle tente un coup de sac à main circulaire mais rate lamentablement."
+          },
+          {
+            "speaker": "Rat d'Égout",
+            "text": "Rat d'Égout: Pika pika ?",
+            "action": "Le rat fait une petite danse de la victoire en se moquant d'elle."
+          },
+          {
+            "speaker": "Mme Monique",
+            "text": "Mme Monique: Ne me regarde pas avec tes petits yeux de fourbe ! C'est pas fini !",
+            "action": "Elle ajuste ses lunettes, furieuse."
+          }
+        ]
+      },
+      {
+        "title": "Round 3 : La Montée en Puissance",
+        "dialogues": [
+          {
+            "speaker": "Rat d'Égout",
+            "text": "Rat d'Égout: Pika pika !",
+            "action": "Il tente de grimper sur l'épaule de Mme Monique pour lui tirer les cheveux."
+          },
+          {
+            "speaker": "Mme Monique",
+            "text": "Mme Monique: Ah non ! Pas le brushing ! C'est la goutte d'eau, petit nul !",
+            "action": "Elle commence à accumuler une énergie bleue entre ses mains gantées de vaisselle."
+          },
+          {
+            "speaker": "Rat d'Égout",
+            "text": "Rat d'Égout: Pika... pika ?",
+            "action": "Le rat s'arrête net, sentant que l'ambiance devient électrique."
+          }
+        ]
+      }
+    ],
+    "winner": "Mme Monique",
+    "finishingMove": {
+      "type": "SUPER COMBO : Kamehameha de la Ménagère",
+      "description": "Mme Monique hurle de toutes ses forces en projetant un rayon d'énergie purifiante qui désintègre la saleté et expulse le rat dans la stratosphère.",
+      "speaker": "Mme Monique"
+    },
+    "conclusion": {
+      "text": "Grand Maître du Multivers: Et c'est le K.O. ! Le rat est reparti dans les égouts en orbite ! Mme Monique gagne par forfait capillaire. Allez, circulez, y'a rien à voir, et que quelqu'un ramasse les poils !",
+      "speaker": "Grand Maître du Multivers"
+    }
+  },
+  "winner": "Mme Monique",
+  "id": "1778485336480-48pjjp",
+  "createdAt": 1778485336480
+}

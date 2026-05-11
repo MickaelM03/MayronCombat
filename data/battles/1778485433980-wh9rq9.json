@@ -1,0 +1,108 @@
+{
+  "p1Id": "mercredi",
+  "p1Name": "Mercredi Addams",
+  "p1Img": "/images/mercredi_sf.png",
+  "p1Voice": "Aoede",
+  "p1VoiceStyle": "monotone",
+  "p2Id": "clara",
+  "p2Name": "Clara",
+  "p2Img": "https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?w=400&h=600&fit=crop",
+  "p2Voice": "Aoede",
+  "p2VoiceStyle": "ado_fille",
+  "arenaId": "hogwarts",
+  "arenaName": "Poudlard",
+  "arenaImg": "/images/hogwarts_sf.png",
+  "duration": 3,
+  "narrativeMode": 4,
+  "script": {
+    "intro": {
+      "text": "Grand Maître du Multivers: Salut les nuls ! Bienvenue à Poudlard pour un duel qui va faire plus de bruit qu'une mandragore en pleine crise d'adolescence. À ma gauche, la reine de l'ombre, Mercredi Addams, et à ma droite, Clara, la championne de catch du bar du coin !",
+      "speaker": "Grand Maître du Multivers"
+    },
+    "rounds": [
+      {
+        "title": "Round 1 : Ambiance Cimetière contre Bière de Beurre",
+        "dialogues": [
+          {
+            "speaker": "Clara",
+            "text": "Clara: Alors ma petite, t'as oublié de mettre de la couleur sur tes joues ? On dirait un aspirateur à joie de vivre ton style !",
+            "action": "Se tape les poings en sautillant comme sur un ring de foire."
+          },
+          {
+            "speaker": "Mercredi Addams",
+            "text": "Mercredi Addams: Ta présence est une agression sensorielle. Ton parfum de friture et ton optimisme m'insupportent au plus haut point.",
+            "action": "Reste immobile avec un regard noir capable de glacer du magma."
+          },
+          {
+            "speaker": "Clara",
+            "text": "Clara: Oh, la gamine fait la maligne ! Tiens, goûte à ma 'Prise du Pilier de Comptoir' ! Mince, j'ai failli te rater !",
+            "action": "Tente une manchette maladroite qui frôle une armure médiévale."
+          },
+          {
+            "speaker": "Mercredi Addams",
+            "text": "Mercredi Addams: Ton imprécision est la seule chose qui dépasse ta bêtise. Laisse-moi te montrer ce qu'est un vrai choc thermique.",
+            "action": "Effectue une balayette chirurgicale en fixant le vide."
+          }
+        ]
+      },
+      {
+        "title": "Round 2 : Catch de Foire sous les Chandelles",
+        "dialogues": [
+          {
+            "speaker": "Clara",
+            "text": "Clara: Zut ! T'es rapide pour une fille qui porte des chaussures de plombier. Mais attends de voir mon saut du crapaud !",
+            "action": "Grimpe sur un banc de la Grande Salle et saute dans le vide."
+          },
+          {
+            "speaker": "Mercredi Addams",
+            "text": "Mercredi Addams: On dirait un sac de pommes de terre qui tombe du ciel. C'est fascinant de voir autant d'effort pour un résultat si médiocre.",
+            "action": "S'écarte d'un pas lent pendant que Clara s'étale par terre."
+          },
+          {
+            "speaker": "Clara",
+            "text": "Clara: Quel idiot je fais ! Mais t'inquiète, l'andouille a de la ressource. Viens ici que je te fasse une clé de bras spéciale PMU !",
+            "action": "Se relève en ricanant et essaie d'attraper les tresses de Mercredi."
+          },
+          {
+            "speaker": "Mercredi Addams",
+            "text": "Mercredi Addams: Touche à mes tresses et je m'assure que ton prochain repas soit servi par des vers de terre enthousiastes.",
+            "action": "Bloque le poignet de Clara avec une pression nerveuse glaciale."
+          }
+        ]
+      },
+      {
+        "title": "Round 3 : Le Final Mystique et Mouillé",
+        "dialogues": [
+          {
+            "speaker": "Clara",
+            "text": "Clara: Bon, tu commences à m'énerver, petite sorcière de pacotille ! Je vais te faire un plaquage qui va te renvoyer dans ton manoir !",
+            "action": "Charge tête baissée comme un taureau après l'apéro."
+          },
+          {
+            "speaker": "Mercredi Addams",
+            "text": "Mercredi Addams: Ton intelligence est si limitée qu'elle en devient presque une curiosité biologique. Adieu, Clara.",
+            "action": "Sort un flacon d'encre noire et le brise au sol devant Clara."
+          },
+          {
+            "speaker": "Clara",
+            "text": "Clara: Mais c'est quoi ce bordel ? Je glisse ! Je glisse comme une savonnette dans une baignoire !",
+            "action": "Patine frénétiquement sur l'encre avant de perdre l'équilibre."
+          }
+        ]
+      }
+    ],
+    "winner": "Mercredi Addams",
+    "finishingMove": {
+      "type": "Le Combo de la Crypte de Sandbox",
+      "description": "Mercredi siffle La Chose qui surgit d'une manche de Clara pour lui chatouiller les pieds, tandis que Mercredi utilise une prise de judo ancestrale pour la projeter dans le chaudron de Neville Londubat.",
+      "speaker": "Mercredi Addams"
+    },
+    "conclusion": {
+      "text": "Grand Maître du Multivers: Et c'est le K.O. ! Clara termine la tête dans la potion pendant que Mercredi n'a même pas cligné des yeux une seule fois. Quel talent pour la torture psychologique ! Allez, tout le monde au lit avant que Rusard ne nous attrape !",
+      "speaker": "Grand Maître du Multivers"
+    }
+  },
+  "winner": "Mercredi Addams",
+  "id": "1778485433980-wh9rq9",
+  "createdAt": 1778485433980
+}

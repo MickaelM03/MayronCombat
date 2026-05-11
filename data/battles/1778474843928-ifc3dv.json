@@ -1,0 +1,94 @@
+{
+  "p1Id": "maman",
+  "p1Name": "Maman",
+  "p1Img": "/images/maman_sf_1778417144541.png",
+  "p2Id": "rick",
+  "p2Name": "Rick Sanchez",
+  "p2Img": "/images/rick_sf.png",
+  "arenaId": "cyberpunk",
+  "arenaName": "Neo-Tokyo 2077",
+  "arenaImg": "/images/neotokyo_sf.png",
+  "duration": 3,
+  "narrativeMode": 4,
+  "script": {
+    "intro": {
+      "text": "Grand Maître du Multivers: Bienvenue à Neo-Tokyo 2077 ! Aujourd'hui, un duel au sommet de l'absurde entre l'autorité parentale suprême et le génie le plus crasseux du cosmos !",
+      "speaker": "Grand Maître du Multivers"
+    },
+    "rounds": [
+      {
+        "title": "Round 1 : La Poussière de l'Espace",
+        "dialogues": [
+          {
+            "speaker": "Maman",
+            "text": "Maman: Rick, espèce d'andouille ! Regarde l'état de tes chaussures sur ce sol futuriste !",
+            "action": "Maman lance une poignée de sable aveuglante venue d'un bac à sable imaginaire."
+          },
+          {
+            "speaker": "Rick Sanchez",
+            "text": "Rick Sanchez: *Burp* Oh, génial, une attaque à base de silice. Tu vas faire quoi après, m'man ? Me priver de goûter ? C'est nul.",
+            "action": "Rick utilise son balai-laser pour désintégrer les grains de sable en plein vol."
+          },
+          {
+            "speaker": "Maman",
+            "text": "Maman: Ne me réponds pas sur ce ton, ou je confisque ton pistolet à portails !",
+            "action": "Maman assène un coup de sac à main lesté de briques Lego."
+          }
+        ]
+      },
+      {
+        "title": "Round 2 : Le Grand Nettoyage",
+        "dialogues": [
+          {
+            "speaker": "Rick Sanchez",
+            "text": "Rick Sanchez: Écoute, vieille branche, mon balai 'Ménage Express' a plus de technologie que tout ton quartier. Tiens, mange ce coup de brosse !",
+            "action": "Rick fait tournoyer son balai comme un bâton de combat, créant une tornade de poussière ionisée."
+          },
+          {
+            "speaker": "Maman",
+            "text": "Maman: Quel impoli ! C'est ce que nous allons voir, petit crétin !",
+            "action": "Maman déploie sa technique 'Rangement Express' et attrape le balai de Rick avec une pince à linge géante."
+          },
+          {
+            "speaker": "Rick Sanchez",
+            "text": "Rick Sanchez: Hé ! Lâche ça ! Tu vas dérégler le condensateur de flux de ma serpillère !",
+            "action": "Rick trébuche sur un robot-aspirateur qui passait par là."
+          }
+        ]
+      },
+      {
+        "title": "Round 3 : La Menace de la Pantoufle",
+        "dialogues": [
+          {
+            "speaker": "Maman",
+            "text": "Maman: Tu as fini tes bêtises ? Il est l'heure de passer aux choses sérieuses !",
+            "action": "Maman enlève sa pantoufle avec une précision chirurgicale."
+          },
+          {
+            "speaker": "Rick Sanchez",
+            "text": "Rick Sanchez: Oh non, pas la tatanne... C'est l'arme la plus primitive de la galaxie ! *Burp* C'est injuste !",
+            "action": "Rick essaie de s'enfuir en utilisant son balai comme un cheval de bois, mais il glisse sur une flaque de savon."
+          },
+          {
+            "speaker": "Maman",
+            "text": "Maman: C'est fini pour toi, grand dadais ! File dans ta chambre interdimensionnelle !",
+            "action": "Maman charge son aura de 'Colère Maternelle' qui fait trembler les néons de la ville."
+          }
+        ]
+      }
+    ],
+    "winner": "Maman",
+    "finishingMove": {
+      "type": "SUPER COMBO : Le Coin de la Honte Interdimensionnel",
+      "description": "Maman attrape Rick par l'oreille, le force à ranger l'intégralité de Neo-Tokyo avec une brosse à dents, puis l'enferme dans une dimension où l'alcool n'existe pas et où tout le monde porte des pulls qui gratte.",
+      "speaker": "Maman"
+    },
+    "conclusion": {
+      "text": "Grand Maître du Multivers: Incroyable ! La discipline l'emporte sur la science ! Rick Sanchez est officiellement puni, et Maman prouve que même en 2077, personne n'échappe au rangement !",
+      "speaker": "Grand Maître du Multivers"
+    }
+  },
+  "winner": "Maman",
+  "id": "1778474843928-ifc3dv",
+  "createdAt": 1778474843928
+}

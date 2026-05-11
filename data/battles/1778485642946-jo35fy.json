@@ -1,0 +1,98 @@
+{
+  "p1Id": "homer",
+  "p1Name": "Homer Simpson",
+  "p1Img": "/images/homer_generic_sf_1778417069953.png",
+  "p1Voice": "Charon",
+  "p1VoiceStyle": "idiot",
+  "p2Id": "goku",
+  "p2Name": "Son Goku",
+  "p2Img": "/images/goku_sf.png",
+  "p2Voice": "Fenrir",
+  "p2VoiceStyle": "guerrier",
+  "arenaId": "caf",
+  "arenaName": "File d'Attente de la CAF",
+  "arenaImg": "https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=1200",
+  "duration": 3,
+  "narrativeMode": 4,
+  "script": {
+    "intro": {
+      "text": "Grand Maître du Multivers: Bienvenue dans l'arène la plus impitoyable du monde réel : la file d'attente de la CAF ! À ma gauche, le roi du donut et de la sieste, Homer Simpson ! À ma droite, le guerrier qui hurle plus qu'il ne réfléchit, Son Goku ! Rangez vos formulaires, ça va secouer !",
+      "speaker": "Grand Maître du Multivers"
+    },
+    "rounds": [
+      {
+        "title": "Le Duel du Ticket Numéroté",
+        "dialogues": [
+          {
+            "speaker": "Homer Simpson",
+            "text": "Homer Simpson: Hé, la tignasse dorée ! Tu me passes devant ? J'ai le ticket 42 et je compte bien toucher mes allocs avant l'heure du goûter !",
+            "action": "Homer brandit un ticket froissé avec menace."
+          },
+          {
+            "speaker": "Son Goku",
+            "text": "Son Goku: Désolé Homer, mais mon estomac crie plus fort que ton ticket ! Je vais augmenter mon aura pour arriver au guichet en premier ! HAAAAA !",
+            "action": "Goku commence à charger son énergie, faisant trembler les dossiers suspendus."
+          },
+          {
+            "speaker": "Homer Simpson",
+            "text": "Homer Simpson: Ouh, le crétin ! Il va nous faire griller la priorité par la dame du guichet avec ses cris d'oiseau !",
+            "action": "Homer tente un placage de catch très lent."
+          }
+        ]
+      },
+      {
+        "title": "Tactique et Tentation",
+        "dialogues": [
+          {
+            "speaker": "Son Goku",
+            "text": "Son Goku: Tu es trop lent, Homer ! Regarde ma vitesse ! Zantoken !",
+            "action": "Goku se téléporte derrière Homer en laissant une image rémanente."
+          },
+          {
+            "speaker": "Homer Simpson",
+            "text": "Homer Simpson: Oh mince, il a disparu... Oh regarde, Son Goku ! Un buffet à volonté gratuit juste derrière le distributeur de boissons !",
+            "action": "Homer pointe du doigt une direction totalement vide."
+          },
+          {
+            "speaker": "Son Goku",
+            "text": "Son Goku: UN BUFFET ? Où ça ? Je ne sens aucune aura de poulet rôti !",
+            "action": "Goku s'arrête net, la bave aux lèvres, totalement déconcentré."
+          }
+        ]
+      },
+      {
+        "title": "L'Affrontement Final des Gros Estomacs",
+        "dialogues": [
+          {
+            "speaker": "Son Goku",
+            "text": "Son Goku: Tu m'as trompé, espèce d'andouille ! Prends ça ! KA-ME-HA-ME-HAAA !",
+            "action": "Goku lance un petit rayon d'énergie pour ne pas détruire le bâtiment."
+          },
+          {
+            "speaker": "Homer Simpson",
+            "text": "Homer Simpson: D'oh ! Trop d'effort pour un lundi... Utilise la technique du bouclier de graisse ! *Brogniouf !*",
+            "action": "Le rayon de Goku ricoche sur le ventre proéminent d'Homer et va frapper la machine à café."
+          },
+          {
+            "speaker": "Son Goku",
+            "text": "Son Goku: Quoi ? Ma technique la plus forte est inefficace contre ton gras ? C'est impossible !",
+            "action": "Goku tombe à genoux, choqué par tant d'inertie."
+          }
+        ]
+      }
+    ],
+    "winner": "Homer Simpson",
+    "finishingMove": {
+      "type": "Écrasement du Paresseux Légendaire",
+      "description": "Homer profite de la stupéfaction de Goku pour lui tomber dessus de tout son poids, l'immobilisant au sol tout en mangeant un donut qu'il avait caché dans son revers de chemise.",
+      "speaker": "Grand Maître du Multivers"
+    },
+    "conclusion": {
+      "text": "Grand Maître du Multivers: Quelle fin pathétique ! Son Goku, le sauveur de l'univers, est au tapis car il a cru à un buffet imaginaire ! Homer Simpson remporte le combat et son dossier est enfin prioritaire ! Allez, tout le monde dehors, c'est l'heure de la fermeture !",
+      "speaker": "Grand Maître du Multivers"
+    }
+  },
+  "winner": "Homer Simpson",
+  "id": "1778485642946-jo35fy",
+  "createdAt": 1778485642946
+}

@@ -1,0 +1,98 @@
+{
+  "p1Id": "maman",
+  "p1Name": "Maman",
+  "p1Img": "/images/maman_sf_1778417144541.png",
+  "p1Voice": "Kore",
+  "p1VoiceStyle": "maman",
+  "p2Id": "rick",
+  "p2Name": "Rick Sanchez",
+  "p2Img": "/images/rick_sf.png",
+  "p2Voice": "Charon",
+  "p2VoiceStyle": "scientifique_fou",
+  "arenaId": "metro_paris",
+  "arenaName": "Ligne 13",
+  "arenaImg": "/images/metro_paris_arena.png",
+  "duration": 3,
+  "narrativeMode": 4,
+  "script": {
+    "intro": {
+      "text": "Grand Maître du Multivers: Bienvenue dans l'enfer humide et bondé de la Ligne 13 ! À ma gauche, Maman, armée d'une baguette tradition bien croustillante. À ma droite, Rick Sanchez, le génie qui combat avec de vieilles savates malodorantes. Que le combat commence !",
+      "speaker": "Grand Maître du Multivers"
+    },
+    "rounds": [
+      {
+        "title": "Round 1 : Petit-déjeuner musclé",
+        "dialogues": [
+          {
+            "speaker": "Maman",
+            "text": "Maman: Rick, tiens-toi correctement à la barre ! Et regarde tes cheveux, on dirait un hérisson qui a pris une décharge !",
+            "action": "Donne un coup de baguette sec sur les doigts de Rick"
+          },
+          {
+            "speaker": "Rick",
+            "text": "Rick: *Burp* Écoute, maman... ta baguette est tellement dure qu'elle pourrait servir de barre de mine. C'est du pain ou une arme de guerre ?",
+            "action": "Esquive en faisant un pas de côté maladroit"
+          },
+          {
+            "speaker": "Maman",
+            "text": "Maman: C'est de la discipline ! Prends ça, grand dadais !",
+            "action": "Fait tournoyer sa baguette comme un nunchaku"
+          }
+        ]
+      },
+      {
+        "title": "Round 2 : Le lancer de pantoufles",
+        "dialogues": [
+          {
+            "speaker": "Rick",
+            "text": "Rick: Tu l'as voulu ! Active le mode 'Savate Laser' ! Tiens, mange mon cuir rance, espèce de ménagère en colère !",
+            "action": "Lance une savate usée qui siffle dans l'air"
+          },
+          {
+            "speaker": "Maman",
+            "text": "Maman: Oh, le petit crétin ! Tu vas ramasser ça tout de suite et t'excuser !",
+            "action": "Parre la savate avec le quignon de sa baguette"
+          },
+          {
+            "speaker": "Rick",
+            "text": "Rick: Jamais ! La liberté, c'est de lancer ses chaussures dans le métro ! T'es juste jalouse de mon style, vieille andouille !",
+            "action": "Prépare son deuxième projectile"
+          }
+        ]
+      },
+      {
+        "title": "Round 3 : Panique sur les rails",
+        "dialogues": [
+          {
+            "speaker": "Maman",
+            "text": "Maman: Ça suffit les bêtises ! Je vais te transformer en croûton, mon petit Rick !",
+            "action": "Charge en criant 'Pour la France !'"
+          },
+          {
+            "speaker": "Rick",
+            "text": "Rick: *Burp* Oh non, elle active le mode furie maternelle... Morty, aide-moi ! Ah mince, il est pas là.",
+            "action": "Tente de fuir en rampant entre les jambes des voyageurs"
+          },
+          {
+            "speaker": "Maman",
+            "text": "Maman: N'essaie pas de m'échapper, je connais tous tes tours de chenapan !",
+            "action": "Coince Rick contre une porte de wagon avec sa baguette"
+          }
+        ]
+      }
+    ],
+    "winner": "Maman",
+    "finishingMove": {
+      "type": "SUPER COMBO : LA TARTINE DE L'OUBLI",
+      "description": "Maman assène un coup de baguette rassie sur le crâne de Rick, suivi d'une claque maternelle qui le renvoie directement dans une autre dimension.",
+      "speaker": "Grand Maître du Multivers"
+    },
+    "conclusion": {
+      "text": "Grand Maître du Multivers: Maman l'emporte par KO boulanger ! Rick est éjecté du train au prochain arrêt. N'oubliez pas, rien ne bat l'autorité d'une mère en colère, surtout avec du pain de qualité. Circulez, y'a rien à voir !",
+      "speaker": "Grand Maître du Multivers"
+    }
+  },
+  "winner": "Maman",
+  "id": "1778485554094-zlf6lc",
+  "createdAt": 1778485554094
+}

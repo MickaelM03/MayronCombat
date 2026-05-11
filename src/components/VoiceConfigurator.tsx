@@ -126,7 +126,9 @@ export default function VoiceConfigurator({ characters, overrides, stylePrompts,
   const [local, setLocal] = useState<Record<string, VoiceOverride>>(() => {
     // Deep clone so we don't mutate parent
     const clone: Record<string, VoiceOverride> = {};
-    for (const [k, v] of Object.entries(overrides)) clone[k] = { ...v };
+    (Object.entries(overrides) as [string, VoiceOverride][]).forEach(([k, v]) => {
+      clone[k] = { ...v };
+    });
     return clone;
   });
   const [expanded, setExpanded] = useState<string | null>(null);
@@ -169,9 +171,9 @@ export default function VoiceConfigurator({ characters, overrides, stylePrompts,
   const handleSave = () => {
     // Clean overrides: remove entries that match defaults
     const cleaned: Record<string, VoiceOverride> = {};
-    for (const [id, ovr] of Object.entries(local)) {
+    (Object.entries(local) as [string, VoiceOverride][]).forEach(([id, ovr]) => {
       const char = characters.find(c => c.id === id);
-      if (!char) continue;
+      if (!char) return;
       const hasChanges = ovr.voice !== char.voice
         || ovr.voiceStyle !== char.voiceStyle
         || (ovr.customPrompt && ovr.customPrompt.trim())
@@ -180,7 +182,7 @@ export default function VoiceConfigurator({ characters, overrides, stylePrompts,
         || (ovr.webPitch !== undefined && Math.abs(ovr.webPitch - 1.0) > 0.01)
         || (ovr.volume !== undefined && Math.abs(ovr.volume - 1.0) > 0.01);
       if (hasChanges) cleaned[id] = ovr;
-    }
+    });
     onSave(cleaned);
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);

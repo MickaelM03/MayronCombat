@@ -1,0 +1,138 @@
+{
+  "p1Id": "tonton",
+  "p1Name": "Tonton Bourré",
+  "p1Img": "/images/tonton_bourre_sf_1778416951155.png",
+  "p1Voice": "Charon",
+  "p1VoiceStyle": "ivre",
+  "p2Id": "goku",
+  "p2Name": "Son Goku",
+  "p2Img": "/images/goku_sf.png",
+  "p2Voice": "Fenrir",
+  "p2VoiceStyle": "guerrier",
+  "arenaId": "colosseum",
+  "arenaName": "Colisée de Rome",
+  "arenaImg": "https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=1200",
+  "duration": 5,
+  "narrativeMode": 4,
+  "script": {
+    "intro": {
+      "text": "Grand Maître du Multivers: Mesdames et messieurs, bienvenue au Colisée pour un choc improbable ! À ma gauche, Tonton Bourré, armé de sa batte et de son haleine de fennec. À ma droite, Son Goku, reconverti dans l'administration fiscale ! Que le chaos commence !",
+      "speaker": "Grand Maître du Multivers"
+    },
+    "rounds": [
+      {
+        "title": "Round 1: Paperasse contre Batte",
+        "dialogues": [
+          {
+            "speaker": "Tonton Bourré",
+            "text": "Tonton Bourré: Hé l'artiste... t'as pas... une p'tite binouze pour ton tonton ?",
+            "action": "Il vacille en levant sa batte de baseball."
+          },
+          {
+            "speaker": "Son Goku",
+            "text": "Son Goku: FORMULAIRE DE DÉCLARATION D'INTENTIONS BELLIQUEUSES EN QUATRE EXEMPLAIRES !",
+            "action": "Il lance une pile de dossiers A4 à la vitesse de la lumière."
+          },
+          {
+            "speaker": "Tonton Bourré",
+            "text": "Tonton Bourré: C'est quoi... ce délire ? J'ai rien... signé moi !",
+            "action": "Il essaie de frapper les feuilles avec sa batte mais manque son coup."
+          }
+        ]
+      },
+      {
+        "title": "Round 2: L'Esprit de Los Santos",
+        "dialogues": [
+          {
+            "speaker": "Tonton Bourré",
+            "text": "Tonton Bourré: Tu vas voir... j'vais t'faire... une GTA... spécialité maison !",
+            "action": "Il court en zigzaguant de façon imprévisible vers Goku."
+          },
+          {
+            "speaker": "Son Goku",
+            "text": "Son Goku: DEMANDE DE PERMIS DE CIRCULATION PIÉTONNE DANS UNE ZONE DE COMBAT !",
+            "action": "Il crée une barrière d'énergie en forme de guichet de mairie."
+          },
+          {
+            "speaker": "Tonton Bourré",
+            "text": "Tonton Bourré: Sale gosse... arrête de gueuler... mes oreilles !",
+            "action": "Il tape sur le guichet avec sa batte, créant des étincelles bleues."
+          }
+        ]
+      },
+      {
+        "title": "Round 3: La Bureaucratie Fatale",
+        "dialogues": [
+          {
+            "speaker": "Son Goku",
+            "text": "Son Goku: TAMPONNAGE D'URGENCE POUR CONDUITE EN ÉTAT D'IVRESSE MULTIVERSELLE !",
+            "action": "Il fonce sur Tonton avec deux tampons encreurs géants."
+          },
+          {
+            "speaker": "Tonton Bourré",
+            "text": "Tonton Bourré: Trop vite... tu vas... trop vite pour moi... espèce d'andouille !",
+            "action": "Il tente un coup de batte circulaire mais finit par tourbillonner sur lui-même."
+          },
+          {
+            "speaker": "Son Goku",
+            "text": "Son Goku: VOTRE DOSSIER EST INCOMPLET, CRÉTIN !",
+            "action": "Il assène un coup de pied amical mais ferme dans le derrière de Tonton."
+          }
+        ]
+      },
+      {
+        "title": "Round 4: Le Réveil du Tonton",
+        "dialogues": [
+          {
+            "speaker": "Tonton Bourré",
+            "text": "Tonton Bourré: Oh... tu m'as cherché... j'vais t'montrer... le vrai style de la rue !",
+            "action": "Il sort une canette vide et la lance comme un projectile."
+          },
+          {
+            "speaker": "Son Goku",
+            "text": "Son Goku: REJET IMMÉDIAT POUR POLLUTION DE L'ESPACE PUBLIC ROMAIN !",
+            "action": "Il désintègre la canette avec un petit cri strident."
+          },
+          {
+            "speaker": "Tonton Bourré",
+            "text": "Tonton Bourré: Quel gâchis... t'es vraiment... un rabat-joie de première !",
+            "action": "Il essaie d'attraper la jambe de Goku en rampant."
+          }
+        ]
+      },
+      {
+        "title": "Round 5: L'Audit Final",
+        "dialogues": [
+          {
+            "speaker": "Son Goku",
+            "text": "Son Goku: IL EST TEMPS DE PASSER À LA VÉRIFICATION DES COMPTES !",
+            "action": "Il s'élève dans les airs, entouré d'une aura de stylos bille."
+          },
+          {
+            "speaker": "Tonton Bourré",
+            "text": "Tonton Bourré: J'veux juste... faire une sieste... laisse-moi... abruti...",
+            "action": "Il s'appuie sur sa batte, les yeux à moitié fermés."
+          },
+          {
+            "speaker": "Son Goku",
+            "text": "Son Goku: PAS DE REPOS SANS LE QUITUS FISCAL !",
+            "action": "Il prépare son attaque ultime en hurlant des codes juridiques."
+          }
+        ]
+      }
+    ],
+    "winner": "Son Goku",
+    "finishingMove": {
+      "type": "AUDIT FISCAL DE L'ESPACE",
+      "description": "Goku invoque une montagne de formulaires Cerfa qui tombent du ciel, emprisonnant Tonton Bourré sous une tonne de papier administratif alors qu'un tampon 'NON CONFORME' géant s'abat sur l'arène.",
+      "speaker": "Son Goku"
+    },
+    "conclusion": {
+      "text": "Grand Maître du Multivers: Incroyable ! Tonton Bourré est KO, enterré sous les taxes foncières ! Goku l'emporte par KO bureaucratique. Quel combat mes amis, j'ai presque envie de déclarer mes impôts !",
+      "speaker": "Grand Maître du Multivers"
+    }
+  },
+  "winner": "Son Goku",
+  "id": "1778485510576-akkh0v",
+  "createdAt": 1778485510576
+}

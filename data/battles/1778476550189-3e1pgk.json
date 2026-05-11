@@ -1,0 +1,98 @@
+{
+  "p1Id": "morty",
+  "p1Name": "Morty Smith",
+  "p1Img": "/images/morty_sf.png",
+  "p1Voice": "Puck",
+  "p1VoiceStyle": "nerveux",
+  "p2Id": "clara",
+  "p2Name": "Clara",
+  "p2Img": "https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?w=400&h=600&fit=crop",
+  "p2Voice": "Aoede",
+  "p2VoiceStyle": "ado_fille",
+  "arenaId": "caf",
+  "arenaName": "File d'Attente de la CAF",
+  "arenaImg": "https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=1200",
+  "duration": 3,
+  "narrativeMode": 4,
+  "script": {
+    "intro": {
+      "text": "Grand Maître du Multivers: Bienvenue dans l'arène la plus terrifiante de l'existence : la file d'attente de la CAF ! À ma gauche, Morty Smith et son attirail de griefing Minecraft. À ma droite, Clara, la reine de la lutte en Crocs. Ça va chauffer entre deux tickets numérotés !",
+      "speaker": "Grand Maître du Multivers"
+    },
+    "rounds": [
+      {
+        "title": "Round 1 : La Guerre des Guichets",
+        "dialogues": [
+          {
+            "speaker": "Clara",
+            "text": "Clara: Hé Morty, tu comptes construire une maison en terre pour cacher ta trouille ? Tes chaussures sont d'un ennui mortel !",
+            "action": "Clara bascule ses Crocs en mode 'Attaque' en rabattant la sangle derrière le talon."
+          },
+          {
+            "speaker": "Morty Smith",
+            "text": "Morty Smith: Oh mince, commence pas Clara ! Je vais poser de la TNT partout si tu te moques encore de mes baskets !",
+            "action": "Morty commence à miner frénétiquement le carrelage de la CAF avec une pioche en diamant."
+          },
+          {
+            "speaker": "Clara",
+            "text": "Clara: Quel idiot, tu vas juste miner ton propre ticket de priorité ! Prends ça, coup de semelle en plastique !",
+            "action": "Clara effectue une glissade latérale parfaite grâce à la gomme de ses Crocs et fait trébucher Morty."
+          }
+        ]
+      },
+      {
+        "title": "Round 2 : Redstone contre Caoutchouc",
+        "dialogues": [
+          {
+            "speaker": "Morty Smith",
+            "text": "Morty Smith: Aïe ! Tu vas voir, andouille ! J'active mon circuit de redstone. Attention les oreilles !",
+            "action": "Morty pose un levier et un long fil de poudre rouge qui mène directement sous la chaise de Clara."
+          },
+          {
+            "speaker": "Clara",
+            "text": "Clara: Trop lent le crétin ! Mes Crocs sont aérées, je sens les vibrations de ta poussière magique à des kilomètres !",
+            "action": "Clara saute avec agilité et atterrit sur le levier de Morty avant qu'il ne puisse l'actionner."
+          },
+          {
+            "speaker": "Morty Smith",
+            "text": "Morty Smith: Mais c'est de la triche ! Tu n'as même pas de skin personnalisé, t'es juste... normale !",
+            "action": "Morty essaie de lancer un seau de lave, mais Clara le dévie avec son jibbitz en forme de licorne."
+          }
+        ]
+      },
+      {
+        "title": "Round 3 : Le Chaos Administratif",
+        "dialogues": [
+          {
+            "speaker": "Clara",
+            "text": "Clara: Allez Morty, admets que t'es nul ! Tu ressembles à un creeper qui a raté son explosion !",
+            "action": "Clara commence à faire tournoyer ses Crocs au-dessus de sa tête comme des nunchakus."
+          },
+          {
+            "speaker": "Morty Smith",
+            "text": "Morty Smith: Bordel, j'en ai marre ! Je vais faire spawn un Wither dans cette salle d'attente, tu feras moins la maligne !",
+            "action": "Morty panique et commence à empiler du sable des âmes, mais il se trompe de bloc."
+          },
+          {
+            "speaker": "Clara",
+            "text": "Clara: Fin du jeu, petit mineur ! On ne défie pas le confort absolu de la lutte en Crocs !",
+            "action": "Clara lance une attaque bondissante en visant les pieds de Morty."
+          }
+        ]
+      }
+    ],
+    "winner": "Clara",
+    "finishingMove": {
+      "type": "Le Super Combo du Trou de Balle en Caoutchouc",
+      "description": "Clara retire ses deux Crocs, les enfile sur ses mains comme des gants de boxe, et assène un quadruple 'Plopp' sonore sur les joues de Morty avant de le ligoter avec les sangles de sécurité.",
+      "speaker": "Clara"
+    },
+    "conclusion": {
+      "text": "Grand Maître du Multivers: Quelle démonstration ! Morty finit en mode spectateur tandis que Clara récupère son allocation avec style. Rappelez-vous : dans la file d'attente de la vie, mieux vaut avoir du grip qu'un inventaire plein de sable ! À la prochaine pour plus de baffes !",
+      "speaker": "Grand Maître du Multivers"
+    }
+  },
+  "winner": "Clara",
+  "id": "1778476550189-3e1pgk",
+  "createdAt": 1778476550189
+}

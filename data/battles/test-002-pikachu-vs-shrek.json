@@ -1,0 +1,103 @@
+{
+  "id": "test-002-pikachu-vs-shrek",
+  "createdAt": 1736610000000,
+  "p1Id": "pikachu",
+  "p1Name": "Pikachu",
+  "p1Img": "/images/pikachu_sf.png",
+  "p1Voice": "Zephyr",
+  "p1VoiceStyle": "creature",
+  "p2Id": "shrek",
+  "p2Name": "Shrek",
+  "p2Img": "/images/shrek_sf.png",
+  "p2Voice": "Enceladus",
+  "p2VoiceStyle": "ogre",
+  "arenaId": "arena_marais",
+  "arenaName": "Marais Toxique",
+  "arenaImg": "/images/arena_marais.png",
+  "duration": 3,
+  "narrativeMode": 3,
+  "winner": "Pikachu",
+  "script": {
+    "intro": {
+      "text": "Arbitre: ATTENTION ! Le Marais Toxique tremble ! Un rongeur électrique contre un ogre vert ! Ça va sentir la boue et le grillé ! FIGHT !",
+      "speaker": "Arbitre"
+    },
+    "rounds": [
+      {
+        "title": "ROUND 1",
+        "dialogues": [
+          {
+            "speaker": "Pikachu",
+            "text": "Pikachu: PIKA PIKA ! Pikaaaa-CHUUUUU ! ⚡⚡⚡",
+            "action": "Tonnerre"
+          },
+          {
+            "speaker": "Shrek",
+            "text": "Shrek: Eh oh ! Les ogres c'est comme les oignons, on a des couches ! Et celle-là va te faire pleurer !",
+            "action": "Provocation"
+          },
+          {
+            "speaker": "Pikachu",
+            "text": "Pikachu: Pika pika... *renifle* Pika POUAH ! Ça pue l'oignon !",
+            "action": "Dégoût"
+          },
+          {
+            "speaker": "Shrek",
+            "text": "Shrek: C'est MON marais ici ! DÉGAAAGE !",
+            "action": "Rugissement"
+          }
+        ]
+      },
+      {
+        "title": "ROUND 2",
+        "dialogues": [
+          {
+            "speaker": "Pikachu",
+            "text": "Pikachu: PIKAAAA ! *joues qui brillent* CHUUUUUU !!!",
+            "action": "Charge Électrique"
+          },
+          {
+            "speaker": "Shrek",
+            "text": "Shrek: AAAARGH ! Mes fesses ! Ça grille comme un barbecue d'ogre !",
+            "action": "Électrocution"
+          },
+          {
+            "speaker": "Pikachu",
+            "text": "Pikachu: Pika pika ! *danse de victoire* Pi-ka-CHU !",
+            "action": "Célébration"
+          }
+        ]
+      },
+      {
+        "title": "ROUND 3",
+        "dialogues": [
+          {
+            "speaker": "Shrek",
+            "text": "Shrek: Tu crois que c'est fini ?! TONNEAU ROTATIF D'OGRE !",
+            "action": "Attaque Ultime"
+          },
+          {
+            "speaker": "Pikachu",
+            "text": "Pikachu: PIKA... PIKA... PIKAAAA-CHUUUUUU !!! ⚡⚡⚡⚡⚡",
+            "action": "Tonnerre Suprême"
+          },
+          {
+            "speaker": "Shrek",
+            "text": "Shrek: C'est pas fini... *s'effondre dans la boue* ... Fiona va me soigner...",
+            "action": "KO"
+          }
+        ]
+      }
+    ],
+    "winner": "Pikachu",
+    "finishingMove": {
+      "type": "ULTRA COMBO",
+      "description": "Arbitre: ULTRA COMBO ! Pikachu déclenche un orage sur tout le marais ! Shrek est grillé comme un steak d'ogre !",
+      "speaker": "Arbitre"
+    },
+    "conclusion": {
+      "text": "Arbitre: VICTOIRE ÉLECTRISANTE pour Pikachu ! Le Marais Toxique est devenu le Marais Électrique ! GAME OVER !",
+      "speaker": "Arbitre"
+    }
+  }
+}

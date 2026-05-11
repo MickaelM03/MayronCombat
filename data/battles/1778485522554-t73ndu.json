@@ -1,0 +1,98 @@
+{
+  "p1Id": "goku",
+  "p1Name": "Son Goku",
+  "p1Img": "/images/goku_sf.png",
+  "p1Voice": "Fenrir",
+  "p1VoiceStyle": "guerrier",
+  "p2Id": "tonton",
+  "p2Name": "Tonton Bourré",
+  "p2Img": "/images/tonton_bourre_sf_1778416951155.png",
+  "p2Voice": "Charon",
+  "p2VoiceStyle": "ivre",
+  "arenaId": "boulangerie",
+  "arenaName": "Boulangerie Tradition",
+  "arenaImg": "/images/boulangerie_arena.png",
+  "duration": 3,
+  "narrativeMode": 4,
+  "script": {
+    "intro": {
+      "text": "Grand Maître du Multivers: Bienvenue à la Boulangerie Tradition ! Aujourd'hui, le guerrier au stylet de plomb Son Goku affronte le redoutable Tonton Bourré dans un duel qui sent bon la levure et l'absurde !",
+      "speaker": "Grand Maître du Multivers"
+    },
+    "rounds": [
+      {
+        "title": "Le Réveil du Levain",
+        "dialogues": [
+          {
+            "speaker": "Son Goku",
+            "text": "Son Goku: CRAYON-KAMEHAMEHA !",
+            "action": "Goku brandit un crayon HB de deux mètres de long."
+          },
+          {
+            "speaker": "Tonton Bourré",
+            "text": "Tonton Bourré: Doucement l'astronaute... *hips* Ta mine de graphite, j'en fais des cure-dents pour mes olives !",
+            "action": "Tonton vacille dangereusement en essayant de parer avec une baguette trop cuite."
+          },
+          {
+            "speaker": "Son Goku",
+            "text": "Son Goku: IMPACT DE LA GOMME MAGIQUE !",
+            "action": "Goku frappe le sol, faisant voler des miettes de pain partout."
+          }
+        ]
+      },
+      {
+        "title": "L'Attaque du Bac à Sable",
+        "dialogues": [
+          {
+            "speaker": "Tonton Bourré",
+            "text": "Tonton Bourré: Regarde bien la technique secrète... *hips* La Pichenette du Pastis !",
+            "action": "Tonton tente de donner une pichenette mais rate et s'étale sur un présentoir de pains au chocolat."
+          },
+          {
+            "speaker": "Son Goku",
+            "text": "Son Goku: STABILO-DASH ÉCLAIR ! Tu n'es qu'un amateur de bac à sable, espèce d'andouille !",
+            "action": "Goku tourne autour de Tonton à une vitesse fulgurante en criant ses coups."
+          },
+          {
+            "speaker": "Tonton Bourré",
+            "text": "Tonton Bourré: Tu tournes trop vite, j'ai l'estomac qui fait la zumba, sale gamin !",
+            "action": "Tonton essaie de l'attraper avec une main farineuse."
+          }
+        ]
+      },
+      {
+        "title": "Chaos dans le Fournil",
+        "dialogues": [
+          {
+            "speaker": "Son Goku",
+            "text": "Son Goku: TRIPLE POINTE TAILLÉE AU MAX !",
+            "action": "Goku bondit sur le pétrin mécanique."
+          },
+          {
+            "speaker": "Tonton Bourré",
+            "text": "Tonton Bourré: Allez, viens là que j'te mette une fessée de grand-oncle, tête de brosse à récurer !",
+            "action": "Tonton jette de la farine au visage de Goku en titubant."
+          },
+          {
+            "speaker": "Son Goku",
+            "text": "Son Goku: ULTIME TAILLE-CRAYON GALACTIQUE !",
+            "action": "Goku concentre son énergie dans la pointe de son arme de bureau."
+          }
+        ]
+      }
+    ],
+    "winner": "Son Goku",
+    "finishingMove": {
+      "type": "SUPER COMBO ÉPIQUE",
+      "description": "Goku effectue une série de frappes précises avec son crayon géant avant de finir par un 'Surlignage de l'Oubli' qui enroule Tonton Bourré dans du papier sulfurisé.",
+      "speaker": "Son Goku"
+    },
+    "conclusion": {
+      "text": "Grand Maître du Multivers: Quel carnage ! Goku l'emporte, mais Tonton a quand même réussi à manger trois croissants pendant le combat. Allez, tout le monde au dodo avant que la police des boulangers n'arrive !",
+      "speaker": "Grand Maître du Multivers"
+    }
+  },
+  "winner": "Son Goku",
+  "id": "1778485522554-t73ndu",
+  "createdAt": 1778485522554
+}

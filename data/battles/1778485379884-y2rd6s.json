@@ -1,0 +1,118 @@
+{
+  "p1Id": "livreur",
+  "p1Name": "Livreur UberEats",
+  "p1Img": "/images/livreur_ubereats_sf_1778416904964.png",
+  "p1Voice": "Puck",
+  "p1VoiceStyle": "presse",
+  "p2Id": "denis_survivor",
+  "p2Name": "Denis le Survivant",
+  "p2Img": "/images/denis_survivor_sf.png",
+  "p2Voice": "Fenrir",
+  "p2VoiceStyle": "autoritaire",
+  "arenaId": "cyberpunk",
+  "arenaName": "Neo-Tokyo 2077",
+  "arenaImg": "/images/neotokyo_sf.png",
+  "duration": 5,
+  "narrativeMode": 4,
+  "script": {
+    "intro": {
+      "text": "Grand Maître du Multivers: Bienvenue sous les néons de Neo-Tokyo 2077 ! Aujourd'hui, on oppose un pro de la pédale motorisée à un pro de la survie en slip. Un duel au Nerf qui va laisser des traces... de mousse !",
+      "speaker": "Grand Maître du Multivers"
+    },
+    "rounds": [
+      {
+        "title": "Round 1 : Livraison Prioritaire",
+        "dialogues": [
+          {
+            "speaker": "Livreur UberEats",
+            "text": "Livreur UberEats: Tiens, prends ta commande de fléchettes en pleine poire, espèce d'aventurier du dimanche !",
+            "action": "Dégaine son Nerf Disruptor et tire une salve rapide."
+          },
+          {
+            "speaker": "Denis le Survivant",
+            "text": "Denis le Survivant: Mince ! Tu tires comme un pied, ton GPS doit être détraqué, pauvre idiot !",
+            "action": "Effectue une roulade de survie derrière une poubelle chromée."
+          },
+          {
+            "speaker": "Livreur UberEats",
+            "text": "Livreur UberEats: Mon GPS va très bien, c'est toi qui es hors zone de livraison !",
+            "action": "Vise le chapeau d'aventurier de Denis."
+          }
+        ]
+      },
+      {
+        "title": "Round 2 : Le Conseil des Fléchettes",
+        "dialogues": [
+          {
+            "speaker": "Denis le Survivant",
+            "text": "Denis le Survivant: Ton tir est aussi mou que tes frites froides ! À la fin, il n'en restera qu'un, et c'est pas toi, andouille !",
+            "action": "Réplique avec un tir de précision entre deux néons."
+          },
+          {
+            "speaker": "Livreur UberEats",
+            "text": "Livreur UberEats: Arrête de parler de frites, tu me donnes faim, crétin ! Reçois donc ce pourboire en mousse !",
+            "action": "Utilise son sac de livraison comme bouclier."
+          }
+        ]
+      },
+      {
+        "title": "Round 3 : Jungle de Béton et Plastique",
+        "dialogues": [
+          {
+            "speaker": "Livreur UberEats",
+            "text": "Livreur UberEats: Zut, j'ai une fléchette coincée dans mon chargeur ! C'est la faute des routes de Neo-Tokyo, ça !",
+            "action": "Secoue frénétiquement son pistolet Nerf."
+          },
+          {
+            "speaker": "Denis le Survivant",
+            "text": "Denis le Survivant: Ah ah ! Ton matos de citadin tombe en panne ? Moi, j'ai survécu à des moustiques plus redoutables que toi, nul !",
+            "action": "En profite pour arroser le Livreur de fléchettes bleues."
+          }
+        ]
+      },
+      {
+        "title": "Round 4 : Sentence Irrévocable",
+        "dialogues": [
+          {
+            "speaker": "Denis le Survivant",
+            "text": "Denis le Survivant: Je vais éteindre ton flambeau avec ce dernier chargeur ! Prépare-toi à l'élimination !",
+            "action": "Grimpe sur un distributeur de ramen pour dominer le terrain."
+          },
+          {
+            "speaker": "Livreur UberEats",
+            "text": "Livreur UberEats: Tu rêves, l'ancien ! Je vais te mettre une étoile sur ton profil de survivant, et ce sera pas pour la qualité !",
+            "action": "Glisse entre les jambes de Denis en tirant vers le haut."
+          }
+        ]
+      },
+      {
+        "title": "Round 5 : L'Ultime Recharge",
+        "dialogues": [
+          {
+            "speaker": "Livreur UberEats",
+            "text": "Livreur UberEats: C'est l'heure du rush final ! Pas de retard possible pour la victoire !",
+            "action": "S'élance dans un sprint acrobatique."
+          },
+          {
+            "speaker": "Denis le Survivant",
+            "text": "Denis le Survivant: Bordel, il est rapide pour un type qui passe sa vie dans les bouchons !",
+            "action": "Tente un dernier tir désespéré en criant Ah !"
+          }
+        ]
+      }
+    ],
+    "winner": "Livreur UberEats",
+    "finishingMove": {
+      "type": "SUPER COMBO : LIVRAISON EXPRESS SANS CONTACT",
+      "description": "Le Livreur UberEats vide trois chargeurs de Nerf Mega en un temps record tout en faisant un backflip au-dessus d'un drone de police. Denis finit recouvert de ventouses en mousse, incapable de bouger.",
+      "speaker": "Grand Maître du Multivers"
+    },
+    "conclusion": {
+      "text": "Grand Maître du Multivers: Quelle boucherie... en plastique ! Denis, ta sentence est irrévocable : tu finis avec une note de 1 étoile. Livreur, bravo, mais fais gaffe, t'as renversé le soda imaginaire dans la bagarre. Allez, circulez les enfants !",
+      "speaker": "Grand Maître du Multivers"
+    }
+  },
+  "winner": "Livreur UberEats",
+  "id": "1778485379884-y2rd6s",
+  "createdAt": 1778485379884
+}

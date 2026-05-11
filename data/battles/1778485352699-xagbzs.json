@@ -1,0 +1,129 @@
+{
+  "p1Id": "chat",
+  "p1Name": "Le Chat",
+  "p1Img": "/images/le_chat_sf_1778416951561.png",
+  "p1Voice": "Puck",
+  "p1VoiceStyle": "animal",
+  "p2Id": "mayron",
+  "p2Name": "Mayron",
+  "p2Img": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=600&fit=crop",
+  "p2Voice": "Puck",
+  "p2VoiceStyle": "ado_garcon",
+  "arenaId": "space",
+  "arenaName": "Station Spatiale Alpha",
+  "arenaImg": "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=1200",
+  "duration": 5,
+  "narrativeMode": 4,
+  "script": {
+    "intro": {
+      "text": "Grand Maître du Multivers: Salut les zozos ! Bienvenue sur la Station Spatiale Alpha. Aujourd'hui, on a un duel de précision... ou de chance, vu les deux phénomènes qu'on a là. Le Chat contre Mayron, sortez vos fléchettes en mousse, ça va piquer (un tout petit peu) !",
+      "speaker": "Grand Maître du Multivers"
+    },
+    "rounds": [
+      {
+        "title": "Round 1 : Mise en orbite des mousses",
+        "dialogues": [
+          {
+            "speaker": "Le Chat",
+            "text": "Le Chat: Prépare-toi à manger du plastique souple, Mayron ! Ma visée est légendaire dans tout le quartier."
+          },
+          {
+            "speaker": "Mayron",
+            "text": "Mayron: Cause toujours, gros chaton ! Tu tires comme un manche, c'est limite gênant à regarder.",
+            "action": "Mayron tire une fléchette qui siffle aux oreilles du Chat."
+          },
+          {
+            "speaker": "Le Chat",
+            "text": "Le Chat: Zut ! Tu m'as presque décoiffé, espèce d'andouille !"
+          }
+        ]
+      },
+      {
+        "title": "Round 2 : Apesanteur et maladresse",
+        "dialogues": [
+          {
+            "speaker": "Mayron",
+            "text": "Mayron: Regarde ça, je tire en faisant un salto arrière ! Hop... et mince !",
+            "action": "Mayron s'emmêle les pieds dans un câble et tire dans le plafond."
+          },
+          {
+            "speaker": "Le Chat",
+            "text": "Le Chat: Quel crétin ! Tu as réussi à toucher un panneau solaire alors que je suis juste devant toi. T'es vraiment nul !"
+          },
+          {
+            "speaker": "Mayron",
+            "text": "Mayron: Tais-toi un peu, c'est l'apesanteur qui bugue, c'est pas moi !"
+          }
+        ]
+      },
+      {
+        "title": "Round 3 : Panique au ravitaillement",
+        "dialogues": [
+          {
+            "speaker": "Le Chat",
+            "text": "Le Chat: Oh non, mon chargeur est coincé ! C'est pas du jeu, attends !",
+            "action": "Le Chat secoue frénétiquement son pistolet orange."
+          },
+          {
+            "speaker": "Mayron",
+            "text": "Mayron: C'est le moment de t'allumer, petit abruti ! Prends ça, et ça, et encore ça !",
+            "action": "Mayron vide son chargeur mais la plupart des fléchettes flottent mollement."
+          },
+          {
+            "speaker": "Le Chat",
+            "text": "Le Chat: Tu vises comme une patate, Mayron ! Même immobile, tu me rates. Quel gâchis !"
+          }
+        ]
+      },
+      {
+        "title": "Round 4 : Cache-cache derrière les terminaux",
+        "dialogues": [
+          {
+            "speaker": "Le Chat",
+            "text": "Le Chat: Je me cache derrière l'ordinateur central. Tu ne m'auras jamais, espèce de grand dadet !",
+            "action": "Le Chat tente un tir courbé qui finit dans sa propre figure après un ricochet."
+          },
+          {
+            "speaker": "Mayron",
+            "text": "Mayron: Ah ah ! T'es vraiment un génie, tu t'es auto-snipé ! T'es le roi des idiots, c'est officiel."
+          },
+          {
+            "speaker": "Le Chat",
+            "text": "Le Chat: Bordel, c'est le vent ! Enfin, la ventilation de la station ! Refais pas ton malin."
+          }
+        ]
+      },
+      {
+        "title": "Round 5 : L'ultime duel de plastique",
+        "dialogues": [
+          {
+            "speaker": "Mayron",
+            "text": "Mayron: C'est fini pour toi ! Je sors le mode automatique. Prépare ton testament, le Chat !"
+          },
+          {
+            "speaker": "Le Chat",
+            "text": "Le Chat: Oh la triche ! Un Nerf motorisé ? T'es vraiment un petit tricheur sans honneur !",
+            "action": "Le Chat esquive une pluie de fléchettes en glissant sur le sol métallique."
+          },
+          {
+            "speaker": "Mayron",
+            "text": "Mayron: Meurs avec style, mon vieux !"
+          }
+        ]
+      }
+    ],
+    "winner": "Le Chat",
+    "finishingMove": {
+      "type": "SUPER COMBO : Le Rebond de la Moule Insolente",
+      "description": "Le Chat tire une dernière fléchette désespérée qui rebondit sur trois conduits de ventilation, frôle un capteur de fumée et finit sa course pile entre les deux yeux de Mayron dans un bruit de ventouse ridicule.",
+      "speaker": "Grand Maître du Multivers"
+    },
+    "conclusion": {
+      "text": "Grand Maître du Multivers: Et c'est la victoire miraculeuse pour Le Chat ! Mayron, t'es vraiment une bille aujourd'hui, faut songer aux lunettes. Allez, ramassez toutes vos fléchettes avant que l'aspirateur de la station ne s'étouffe. C'était nul, mais on a bien ri !",
+      "speaker": "Grand Maître du Multivers"
+    }
+  },
+  "winner": "Le Chat",
+  "id": "1778485352699-xagbzs",
+  "createdAt": 1778485352699
+}

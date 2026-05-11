@@ -1,0 +1,98 @@
+{
+  "p1Id": "homer",
+  "p1Name": "Homer Simpson",
+  "p1Img": "/images/homer_generic_sf_1778417069953.png",
+  "p1Voice": "Charon",
+  "p1VoiceStyle": "idiot",
+  "p2Id": "bart",
+  "p2Name": "Bart Simpson",
+  "p2Img": "/images/bart_generic_sf_1778417084932.png",
+  "p2Voice": "Puck",
+  "p2VoiceStyle": "enfant",
+  "arenaId": "living_room",
+  "arenaName": "Le Salon de la Maison",
+  "arenaImg": "https://images.unsplash.com/photo-1567016432779-094069958ea5?w=1200",
+  "duration": 3,
+  "narrativeMode": 4,
+  "script": {
+    "intro": {
+      "text": "Arbitre: Bienvenue dans le salon des Simpson pour le duel du siècle ! On se bat pour la télécommande ! Que le meilleur gagne ! Ding ding !",
+      "speaker": "Arbitre"
+    },
+    "rounds": [
+      {
+        "title": "ROUND 1 : L'échauffement du canapé",
+        "dialogues": [
+          {
+            "speaker": "Bart Simpson",
+            "text": "Bart Simpson: Alors le vieux ? Trop de donuts pour bouger ? Ay caramba, tu vas goûter à mes gants !",
+            "action": "Jabs rapides"
+          },
+          {
+            "speaker": "Homer Simpson",
+            "text": "Homer Simpson: Heu... Attends une minute... Miam... *bruit de mastication*... Tu parles trop, sale petit... D'oh ! Tu m'as touché le nez !",
+            "action": "Prend un coup"
+          },
+          {
+            "speaker": "Bart Simpson",
+            "text": "Bart Simpson: C'est pas mon nez, c'est une cible géante ! Tiens ! Et bim !",
+            "action": "Provocation"
+          }
+        ]
+      },
+      {
+        "title": "ROUND 2 : La vengeance du beignet",
+        "dialogues": [
+          {
+            "speaker": "Homer Simpson",
+            "text": "Homer Simpson: Grrr... Tu vas voir ce que c'est que la boxe à l'ancienne ! Oh regardez ! Un oiseau bleu ! *Hips*",
+            "action": "Feinte maladroite"
+          },
+          {
+            "speaker": "Bart Simpson",
+            "text": "Bart Simpson: Hein ? Où ça ? Oh non ! Le vieux a triché ! C'est nul !",
+            "action": "Confusion"
+          },
+          {
+            "speaker": "Homer Simpson",
+            "text": "Homer Simpson: Pas triché... Stratégie Simpson ! Prends ce crochet... enfin, si j'arrive à lever le bras ! Ouf !",
+            "action": "Uppercut lent"
+          }
+        ]
+      },
+      {
+        "title": "ROUND 3 : Le chaos final",
+        "dialogues": [
+          {
+            "speaker": "Bart Simpson",
+            "text": "Bart Simpson: Tu t'essouffles p'pa ! On dirait une vieille bouilloire qui siffle ! Ay caramba !",
+            "action": "Esquive"
+          },
+          {
+            "speaker": "Homer Simpson",
+            "text": "Homer Simpson: Sale petit... morveux ! Reviens ici ! Je vais te... Oh ! Un donut par terre ! Ah non, c'est ton gant.",
+            "action": "S'énerve"
+          },
+          {
+            "speaker": "Bart Simpson",
+            "text": "Bart Simpson: Mince ! T'es vraiment trop lourd pour ce sport ! Regarde-moi bien, je disparais !",
+            "action": "Nargue"
+          }
+        ]
+      }
+    ],
+    "winner": "Homer Simpson",
+    "finishingMove": {
+      "type": "ULTRA COMBO DU VENTRE",
+      "description": "Arbitre: Homer utilise son ventre pour rebondir et écraser Bart contre le canapé ! K.O. technique par étouffement graisseux !",
+      "speaker": "Arbitre"
+    },
+    "conclusion": {
+      "text": "Arbitre: Victoire pour Homer Simpson ! Il gagne le droit de regarder la télé en slip en mangeant des chips ! Quel champion !",
+      "speaker": "Arbitre"
+    }
+  },
+  "winner": "Homer Simpson",
+  "id": "1778477102324-q6ali6",
+  "createdAt": 1778477102324
+}

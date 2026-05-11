@@ -1,0 +1,103 @@
+{
+  "id": "test-001-goku-vs-homer",
+  "createdAt": 1736600000000,
+  "p1Id": "goku",
+  "p1Name": "Goku",
+  "p1Img": "/images/goku_sf.png",
+  "p1Voice": "Fenrir",
+  "p1VoiceStyle": "guerrier",
+  "p2Id": "homer",
+  "p2Name": "Homer Simpson",
+  "p2Img": "/images/homer_sf.png",
+  "p2Voice": "Enceladus",
+  "p2VoiceStyle": "idiot",
+  "arenaId": "arena_dojo",
+  "arenaName": "Dojo du Destin",
+  "arenaImg": "/images/arena_dojo.png",
+  "duration": 3,
+  "narrativeMode": 2,
+  "winner": "Goku",
+  "script": {
+    "intro": {
+      "text": "Arbitre: BIENVENUE au Dojo du Destin ! Ce soir, un guerrier Saiyan affronte... un gros bonhomme jaune qui mange des donuts ! DING DING !",
+      "speaker": "Arbitre"
+    },
+    "rounds": [
+      {
+        "title": "ROUND 1",
+        "dialogues": [
+          {
+            "speaker": "Goku",
+            "text": "Goku: KAMEHAMEHAAAA ! Prépare-toi, gros jaune !!!",
+            "action": "Attaque Spéciale"
+          },
+          {
+            "speaker": "Homer Simpson",
+            "text": "Homer Simpson: D'oh ! Attends, c'est pas l'heure du buffet ?! *mange un donut*",
+            "action": "Confusion"
+          },
+          {
+            "speaker": "Goku",
+            "text": "Goku: Tu manges en plein combat ?! T'es sérieux là ?!",
+            "action": "Stupéfaction"
+          },
+          {
+            "speaker": "Homer Simpson",
+            "text": "Homer Simpson: Mmmmh... donut... *ROTE* Oups pardon !",
+            "action": "Provocation"
+          }
+        ]
+      },
+      {
+        "title": "ROUND 2",
+        "dialogues": [
+          {
+            "speaker": "Goku",
+            "text": "Goku: AAAARGH ! Ultra Instinct ACTIVÉ ! Tu vas souffrir !",
+            "action": "Transformation"
+          },
+          {
+            "speaker": "Homer Simpson",
+            "text": "Homer Simpson: Pourquoi t'as les cheveux blancs ? T'es vieux ou quoi ? D'oh !",
+            "action": "Moquerie"
+          },
+          {
+            "speaker": "Goku",
+            "text": "Goku: C'EST L'ULTRA INSTINCT, IMBÉCILE !",
+            "action": "Rage"
+          }
+        ]
+      },
+      {
+        "title": "ROUND 3",
+        "dialogues": [
+          {
+            "speaker": "Homer Simpson",
+            "text": "Homer Simpson: *lance un donut* PRENDS ÇA ! Le Donut Fatal !",
+            "action": "Attaque Désespérée"
+          },
+          {
+            "speaker": "Goku",
+            "text": "Goku: Genki Dama FINALE !!! HAAAAA !!!",
+            "action": "Finisher"
+          },
+          {
+            "speaker": "Homer Simpson",
+            "text": "Homer Simpson: Aïe aïe aïe... Marge va me tuer...",
+            "action": "KO"
+          }
+        ]
+      }
+    ],
+    "winner": "Goku",
+    "finishingMove": {
+      "type": "FATALITY",
+      "description": "Arbitre: FATALITY ! Goku pulvérise Homer avec un Kamehameha x100 ! Le donut est désintégré !",
+      "speaker": "Arbitre"
+    },
+    "conclusion": {
+      "text": "Arbitre: VICTOIRE ÉCRASANTE pour Goku ! Homer retourne manger ses donuts en enfer ! GAME OVER !",
+      "speaker": "Arbitre"
+    }
+  }
+}

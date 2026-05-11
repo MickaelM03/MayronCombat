@@ -1,0 +1,113 @@
+{
+  "p1Id": "luffy_gear5",
+  "p1Name": "Luffy Gear 5",
+  "p1Img": "/images/luffy_gear5_sf.png",
+  "p1Voice": "Puck",
+  "p1VoiceStyle": "hero_jeune",
+  "p2Id": "homer",
+  "p2Name": "Homer Simpson",
+  "p2Img": "/images/homer_generic_sf_1778417069953.png",
+  "p2Voice": "Charon",
+  "p2VoiceStyle": "idiot",
+  "arenaId": "los_santos",
+  "arenaName": "Rues de Los Santos",
+  "arenaImg": "https://images.unsplash.com/photo-1533929736458-ca588d08c8be?w=1200",
+  "duration": 5,
+  "narrativeMode": 4,
+  "script": {
+    "intro": {
+      "text": "Grand Maître du Multivers: Bienvenue dans les rues chaotiques de Los Santos ! Aujourd'hui, un duel entre le dieu de la liberté en mode élastique foireux et le roi de la paresse armé d'un balai. Ça va piquer !",
+      "speaker": "Grand Maître du Multivers"
+    },
+    "rounds": [
+      {
+        "title": "Round 1 : La danse du balai",
+        "dialogues": [
+          {
+            "speaker": "Luffy Gear 5",
+            "text": "Luffy Gear 5: Regarde ma nouvelle technique de danse, Monsieur le Gros Chauve ! Shishishi !",
+            "action": "Luffy tente une roue mais s'emmêle les jambes en rigolant."
+          },
+          {
+            "speaker": "Homer Simpson",
+            "text": "Homer Simpson: Oh, arrête de gigoter comme une nouille trop cuite ! J'essaie de nettoyer mon futur spot de sieste !",
+            "action": "Homer donne un coup de balai maladroit sur les pieds de Luffy."
+          }
+        ]
+      },
+      {
+        "title": "Round 2 : Rebondissements et Donuts",
+        "dialogues": [
+          {
+            "speaker": "Luffy Gear 5",
+            "text": "Luffy Gear 5: Hop ! Je rebondis sur ton ventre ! C'est plus mou qu'un trampoline !",
+            "action": "Luffy saute sur le ventre de Homer qui fait un bruit de coussin péteur."
+          },
+          {
+            "speaker": "Homer Simpson",
+            "text": "Homer Simpson: D'oh ! Touche pas à mon réservoir à donuts, espèce d'andouille en blanc !",
+            "action": "Homer essaie de coincer la tête de Luffy dans les poils de son balai."
+          }
+        ]
+      },
+      {
+        "title": "Round 3 : Capoeira de l'Espace",
+        "dialogues": [
+          {
+            "speaker": "Luffy Gear 5",
+            "text": "Luffy Gear 5: Gum Gum... Balayette Ratée ! Oups, je suis tombé !",
+            "action": "Luffy tourne sur lui-même comme une toupie et finit par s'enrouler autour d'un lampadaire."
+          },
+          {
+            "speaker": "Homer Simpson",
+            "text": "Homer Simpson: Sale gamin ! Tu as fait tomber ma dernière canette de Duff dans l'égout ! Tu vas tâter de la brosse !",
+            "action": "Homer court après Luffy avec son balai en criant comme un fou."
+          }
+        ]
+      },
+      {
+        "title": "Round 4 : Los Santos en Caoutchouc",
+        "dialogues": [
+          {
+            "speaker": "Luffy Gear 5",
+            "text": "Luffy Gear 5: Regarde, j'ai transformé la route en gelée ! C'est trop rigolo !",
+            "action": "Luffy tape le sol qui devient mou et fait valser les voitures de police aux alentours."
+          },
+          {
+            "speaker": "Homer Simpson",
+            "text": "Homer Simpson: Mmm... de la gelée... Oh non, je m'enfonce ! C'est de la triche, crétin d'élastique !",
+            "action": "Homer essaie d'utiliser son balai comme une rame pour sortir du goudron mou."
+          }
+        ]
+      },
+      {
+        "title": "Round 5 : L'Ultime Ménage",
+        "dialogues": [
+          {
+            "speaker": "Luffy Gear 5",
+            "text": "Luffy Gear 5: Désolé Monsieur Simpson, mais c'est l'heure de la fin du spectacle !",
+            "action": "Luffy gonfle son poing et le transforme en un balai géant en caoutchouc."
+          },
+          {
+            "speaker": "Homer Simpson",
+            "text": "Homer Simpson: Maman ! Je veux rentrer à Springfield manger des côtelettes !",
+            "action": "Homer agite son petit balai en plastique désespérément."
+          }
+        ]
+      }
+    ],
+    "winner": "Luffy Gear 5",
+    "finishingMove": {
+      "type": "SUPER COMBO : BALAYAGE DU DIEU RIGOLO",
+      "description": "Luffy s'enroule 45 fois autour de lui-même et lâche un coup de pied circulaire qui transforme Homer en une balle de bowling. Homer rebondit sur tous les immeubles de Los Santos avant de finir dans un camion de donuts.",
+      "speaker": "Luffy Gear 5"
+    },
+    "conclusion": {
+      "text": "Grand Maître du Multivers: Luffy l'emporte avec le sourire, tandis que Homer a finalement trouvé le paradis des donuts au milieu des décombres. Quelle bande d'abrutis magnifiques !",
+      "speaker": "Grand Maître du Multivers"
+    }
+  },
+  "winner": "Luffy Gear 5",
+  "id": "1778485487847-agu423",
+  "createdAt": 1778485487847
+}

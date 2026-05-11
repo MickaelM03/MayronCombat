@@ -1,0 +1,98 @@
+{
+  "p1Id": "mercredi",
+  "p1Name": "Mercredi Addams",
+  "p1Img": "/images/mercredi_sf.png",
+  "p1Voice": "Aoede",
+  "p1VoiceStyle": "monotone",
+  "p2Id": "homer",
+  "p2Name": "Homer Simpson",
+  "p2Img": "/images/homer_generic_sf_1778417069953.png",
+  "p2Voice": "Charon",
+  "p2VoiceStyle": "idiot",
+  "arenaId": "pmu",
+  "arenaName": "Le PMU du Coin",
+  "arenaImg": "/images/pmu_du_coin_sf_1778416966206.png",
+  "duration": 3,
+  "narrativeMode": 4,
+  "script": {
+    "intro": {
+      "text": "Grand Maître du Multivers: Bienvenue au PMU du Coin ! On a de la bière tiède, des tickets à gratter perdants et un duel totalement absurde. D'un côté, la reine du macabre Mercredi Addams avec un balai, de l'autre, le génie de Springfield, Homer Simpson, avec un pistolet à portails qu'il ne sait pas utiliser. Ça va être un carnage !",
+      "speaker": "Grand Maître du Multivers"
+    },
+    "rounds": [
+      {
+        "title": "Round 1: Poussière et Portails",
+        "dialogues": [
+          {
+            "speaker": "Mercredi Addams",
+            "text": "Mercredi Addams: Ta présence ici est une insulte au néant, gros homme jaune. Je vais nettoyer ce sol avec ton visage.",
+            "action": "Elle fait tournoyer son balai comme un nunchaku de combat."
+          },
+          {
+            "speaker": "Homer Simpson",
+            "text": "Homer Simpson: Oh, une petite fille toute triste ! Regarde mon jouet qui fait des trous bleus, espèce d'andouille !",
+            "action": "Il tire au hasard et un portail s'ouvre sous ses propres pieds."
+          },
+          {
+            "speaker": "Mercredi Addams",
+            "text": "Mercredi Addams: Quel crétin fini. Tu tombes dans tes propres pièges sans que j'aie à lever le petit doigt.",
+            "action": "Elle lui donne un coup de manche de balai sur le crâne alors qu'il réapparaît au plafond."
+          }
+        ]
+      },
+      {
+        "title": "Round 2: Le Duel des Inutiles",
+        "dialogues": [
+          {
+            "speaker": "Homer Simpson",
+            "text": "Homer Simpson: D'oh ! Arrête de me taper avec ton balai ! C'est pour les sorcières ou pour les gens qui travaillent, et je déteste les deux !",
+            "action": "Il essaie de viser Mercredi mais téléporte accidentellement le distributeur de cacahuètes."
+          },
+          {
+            "speaker": "Mercredi Addams",
+            "text": "Mercredi Addams: Ton incompétence est presque fascinante. Tu es aussi vide qu'une tombe fraîchement creusée.",
+            "action": "Elle utilise la brosse du balai pour lui aveugler les yeux avec de la sciure du bar."
+          },
+          {
+            "speaker": "Homer Simpson",
+            "text": "Homer Simpson: Aïe, mes yeux ! Marge, le corbeau me fait du mal ! Je vais t'envoyer dans une dimension sans bacon !",
+            "action": "Il court en rond en tirant partout, créant un chaos de portails dans tout le PMU."
+          }
+        ]
+      },
+      {
+        "title": "Round 3: L'Heure du Ménage",
+        "dialogues": [
+          {
+            "speaker": "Mercredi Addams",
+            "text": "Mercredi Addams: Assez de gamineries. Il est temps de t'éliminer, espèce d'abruti fini.",
+            "action": "Elle bloque le pistolet à portails avec le manche du balai."
+          },
+          {
+            "speaker": "Homer Simpson",
+            "text": "Homer Simpson: Pas le pistolet ! C'est le seul truc qui me rend intelligent ! Enfin, presque !",
+            "action": "Il essaie de mordre le balai dans un geste de désespoir pur."
+          },
+          {
+            "speaker": "Mercredi Addams",
+            "text": "Mercredi Addams: Tu es une erreur de la nature. Retourne dans ton canapé, le monde se portera mieux.",
+            "action": "Elle lui assène un coup de balai magistral derrière les genoux."
+          }
+        ]
+      }
+    ],
+    "winner": "Mercredi Addams",
+    "finishingMove": {
+      "type": "Super Combo: Ménage de Printemps Infernal",
+      "description": "Mercredi force Homer à se tirer dessus avec son propre pistolet, ouvrant un portail sous lui et un autre au-dessus d'une benne à ordures à l'autre bout de la ville, tout en lui mettant un dernier coup de balai derrière les oreilles pour la forme.",
+      "speaker": "Mercredi Addams"
+    },
+    "conclusion": {
+      "text": "Grand Maître du Multivers: Quel massacre ! Homer est parti rejoindre les poubelles et Mercredi n'a même pas esquissé un sourire. C'est ça qu'on aime au PMU ! Allez, tournée générale de jus de corbeau pour la gagnante !",
+      "speaker": "Grand Maître du Multivers"
+    }
+  },
+  "winner": "Mercredi Addams",
+  "id": "1778485365696-m3h8m0",
+  "createdAt": 1778485365696
+}

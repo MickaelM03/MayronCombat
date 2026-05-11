@@ -1,0 +1,134 @@
+{
+  "p1Id": "lara",
+  "p1Name": "Lara Croft",
+  "p1Img": "/images/lara_sf.png",
+  "p2Id": "john_wick",
+  "p2Name": "John Wick",
+  "p2Img": "/images/johnwick_sf.png",
+  "arenaId": "springfield",
+  "arenaName": "Springfield Centrale",
+  "arenaImg": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200",
+  "duration": 5,
+  "narrativeMode": 4,
+  "script": {
+    "intro": {
+      "text": "Grand Maître du Multivers: Bienvenue à la Centrale de Springfield ! Lara, John, essayez de ne pas déclencher une fusion nucléaire avec vos prises de judo ratées. C'est l'heure du combat le plus mou de l'histoire !",
+      "speaker": "Grand Maître du Multivers"
+    },
+    "rounds": [
+      {
+        "title": "Round 1 : Froissage de Costume",
+        "dialogues": [
+          {
+            "speaker": "Lara Croft",
+            "text": "Lara Croft: John, ton costume trois-pièces pour faire du judo ? Quel idiot, tu vas transpirer comme un bœuf.",
+            "action": "Lara tente une saisie de col maladroite."
+          },
+          {
+            "speaker": "John Wick",
+            "text": "John Wick: C'est du sur-mesure, contrairement à tes bottes de rando crottées qui puent le vieux temple.",
+            "action": "John effectue un balayage lent mais précis."
+          },
+          {
+            "speaker": "Lara Croft",
+            "text": "Lara Croft: Mince ! Tu as failli m'avoir, mais ton brushing gêne ta vision, on dirait.",
+            "action": "Lara esquive en faisant une roulade latérale un peu lourde."
+          }
+        ]
+      },
+      {
+        "title": "Round 2 : Glissade d'Uranium",
+        "dialogues": [
+          {
+            "speaker": "John Wick",
+            "text": "John Wick: Attention derrière toi, une barre d'uranium ! Oh, tu as failli glisser, quelle nulle !",
+            "action": "John pointe du doigt pour distraire Lara."
+          },
+          {
+            "speaker": "Lara Croft",
+            "text": "Lara Croft: Tu crois vraiment que je vais tomber dans ce piège de crétin ? Prends ça !",
+            "action": "Lara tente un O-Goshi qui envoie John percuter un distributeur de donuts."
+          },
+          {
+            "speaker": "John Wick",
+            "text": "John Wick: Zut, mon pantalon est déchiré. Tu vas me le payer, espèce d'andouille !",
+            "action": "John se relève en grimaçant et ajuste sa cravate."
+          }
+        ]
+      },
+      {
+        "title": "Round 3 : La Sieste du Boogeyman",
+        "dialogues": [
+          {
+            "speaker": "Lara Croft",
+            "text": "Lara Croft: On dirait que tu es fatigué, John. C'est l'heure de la sieste pour le grand méchant Boogeyman ?",
+            "action": "Lara le nargue en baillant bruyamment."
+          },
+          {
+            "speaker": "John Wick",
+            "text": "John Wick: Ce bourdonnement de réacteur me donne mal au crâne. Viens là que je te montre ma technique secrète.",
+            "action": "John attrape Lara par le bras pour un Seoi-Nage épuisé."
+          },
+          {
+            "speaker": "Lara Croft",
+            "text": "Lara Croft: Trop lent ! Tu te bats comme un papy qui a perdu ses lunettes !",
+            "action": "Lara contre la prise en s'agrippant aux épaules de John."
+          }
+        ]
+      },
+      {
+        "title": "Round 4 : Judo de Cour de Récré",
+        "dialogues": [
+          {
+            "speaker": "John Wick",
+            "text": "John Wick: Tu te bats comme une archéologue du dimanche. Allez, approche, petite joueuse !",
+            "action": "John tente une immobilisation au sol en râlant."
+          },
+          {
+            "speaker": "Lara Croft",
+            "text": "Lara Croft: Ma grand-mère ferait une meilleure balayette que toi, John. Quel gâchis de talent !",
+            "action": "Lara se dégage et lui donne une pichenette sur le nez."
+          },
+          {
+            "speaker": "John Wick",
+            "text": "John Wick: Oh, c'est bas ça ! Espèce de chipie, tu ne perds rien pour attendre !",
+            "action": "John essaie de l'attraper par les nattes, mais rate son coup."
+          }
+        ]
+      },
+      {
+        "title": "Round 5 : Le Final Radioactif",
+        "dialogues": [
+          {
+            "speaker": "Lara Croft",
+            "text": "Lara Croft: C'est fini, John ! Prépare-toi à voir les étoiles de Springfield de très près !",
+            "action": "Lara prend une grande inspiration et se concentre."
+          },
+          {
+            "speaker": "John Wick",
+            "text": "John Wick: Zut, j'aurais dû rester couché avec mon chien plutôt que de subir tes moqueries.",
+            "action": "John tente un dernier étranglement désespéré."
+          },
+          {
+            "speaker": "Lara Croft",
+            "text": "Lara Croft: Trop tard, Monsieur Wick ! C'est l'heure du grand plongeon !",
+            "action": "Lara verrouille ses bras autour de la taille de John."
+          }
+        ]
+      }
+    ],
+    "winner": "Lara Croft",
+    "finishingMove": {
+      "type": "Super Souplesse de l'Atlantide",
+      "description": "Lara exécute une projection circulaire épique qui fait tournoyer John Wick autour d'un tuyau de refroidissement, avant de le faire atterrir pile dans une caisse de déchets verts fluorescents.",
+      "speaker": "Lara Croft"
+    },
+    "conclusion": {
+      "text": "Grand Maître du Multivers: Lara l'emporte par K.O. technique ! John, va vite te doucher, tu brilles dans le noir et ton costume est bon pour la poubelle. Quelle bande d'abrutis magnifiques !",
+      "speaker": "Grand Maître du Multivers"
+    }
+  },
+  "winner": "Lara Croft",
+  "id": "1778474858055-mh150w",
+  "createdAt": 1778474858055
+}
