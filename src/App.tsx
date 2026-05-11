@@ -21,9 +21,17 @@ import {
   Clock,
   Lock,
   X,
-  AlertTriangle
+  AlertTriangle,
+  Settings2
 } from 'lucide-react';
 import { GoogleGenAI, Type } from '@google/genai';
+import NarrativeModeSelector from './components/NarrativeModeSelector';
+import BattleLibrary from './components/BattleLibrary';
+import BatchGenerator from './components/BatchGenerator';
+import { NarrativeMode, NARRATIVE_MODE_META, getNarrativeDirectives, getNarrativeModeLabel } from './lib/battles/prompts';
+import { saveBattle, saveAudioBlob, getAudioBlob, SavedBattle } from './lib/battles/store';
+import { playWebSpeechEnhanced } from './lib/voice/webspeech';
+import { playPiperTTS, warmUpPiper } from './lib/voice/piper';
 
 // --- CONFIGURATION DU ROSTER (Le Multivers) ---
 
@@ -54,6 +62,12 @@ const CHARACTERS = [
   { id: 'walter', name: 'Walter White', faction: 'Drama', img: '/images/walter_sf.png', color: 'from-yellow-600 to-slate-900', voice: 'Fenrir', voiceStyle: 'menacant' },
   { id: 'spiderman', name: 'Spider-Man', faction: 'Marvel', img: '/images/spiderman_sf.png', color: 'from-red-600 to-blue-800', voice: 'Puck', voiceStyle: 'hero_jeune' },
   { id: 'mercredi', name: 'Mercredi Addams', faction: 'Gothic', img: '/images/mercredi_sf.png', color: 'from-gray-900 to-black', voice: 'Aoede', voiceStyle: 'monotone' },
+  { id: 'denis_survivor', name: 'Denis le Survivant', faction: 'TV', img: '/images/denis_survivor_sf.png', color: 'from-orange-500 to-red-700', voice: 'Fenrir', voiceStyle: 'autoritaire' },
+  { id: 'mme_monique', name: 'Mme Monique', faction: 'Éducation', img: '/images/mme_monique_sf.png', color: 'from-blue-600 to-indigo-900', voice: 'Kore', voiceStyle: 'raleur' },
+  { id: 'luffy_gear5', name: 'Luffy Gear 5', faction: 'Anime', img: '/images/luffy_gear5_sf.png', color: 'from-yellow-200 to-slate-100', voice: 'Puck', voiceStyle: 'hero_jeune' },
+  { id: 'gilet_jaune', name: 'Didier la Manif', faction: 'Politique', img: '/images/gilet_jaune_sf.png', color: 'from-yellow-400 to-yellow-600', voice: 'Charon', voiceStyle: 'raleur' },
+  { id: 'jul_alien', name: 'L\'Alien de Marseille', faction: 'Musique', img: '/images/jul_alien_sf.png', color: 'from-blue-400 to-cyan-600', voice: 'Fenrir', voiceStyle: 'gangster' },
+  { id: 'rat_gouttiere', name: 'Rat d\'Égout', faction: 'Cuisine', img: '/images/rat_gouttiere_sf.png', color: 'from-gray-600 to-gray-800', voice: 'Puck', voiceStyle: 'creature' },
 ];
 
 const STYLES = [
@@ -76,7 +90,44 @@ const STYLES = [
   { id: 'pencil', name: 'Le Crayon (John Wick)', icon: <Sword size={16} /> },
   { id: 'thunderbolt', name: 'Tonnerre (Électrique)', icon: <Zap size={16} /> },
   { id: 'dance_battle', name: 'Danse de Combat', icon: <Music size={16} /> },
+  { id: 'baguette_style', name: 'Art de la Baguette', icon: <Sword size={16} /> },
+  { id: 'scooter_clash', name: 'Trottinette Fury', icon: <Zap size={16} /> },
+  { id: 'keyboard_bash', name: 'Guerrier du Clavier', icon: <Target size={16} /> },
+  { id: 'flip_flop_fury', name: 'Lancer de Savate', icon: <Flame size={16} /> },
+  { id: 'cerfa_attack', name: 'Bureaucratie Fatale', icon: <Skull size={16} /> },
 ];
+
+// Persona riches transmises à Gemini TTS au format documenté Google :
+// "Lis à voix haute <persona descriptive>: \"<texte>\""
+// La persona + l'émotion guident Gemini pour produire une voix naturelle et incarnée
+// plutôt qu'une simple lecture neutre.
+const STYLE_PROMPTS: Record<string, string> = {
+  idiot:             "comme un homme adulte gros et stupide, voix grasse et traînante, mâchouille les mots, intonation lente et un peu ridicule",
+  enfant:            "comme un jeune garçon insolent de 10 ans, voix aiguë et taquine, ton provocateur et espiègle",
+  enfant_diabolique: "comme une petite fille de 8 ans à la voix mignonne mais inquiétante, avec un ricanement diabolique sous-jacent",
+  gamer:             "comme un jeune gamer enthousiaste, débit rapide et nasillard, voix énergique et excitée",
+  gangster:          "comme un gangster de quartier au charisme tranquille, voix grave et nonchalante, argot relâché et menace contenue",
+  papa:              "comme un père de famille protecteur, voix grave, chaleureuse mais ferme, articulation solide",
+  maman:             "comme une mère agacée mais aimante, voix féminine chaleureuse mais autoritaire, pressée",
+  ado_fille:         "comme une adolescente de 15 ans, voix chantante et ironique, légèrement traînante, intonation montante",
+  ado_garcon:        "comme un adolescent de 14 ans dont la voix mue, un peu hésitant et frondeur, ton désinvolte",
+  animal:            "comme un chat agressif qui essaie de parler entre des miaulements et grognements féroces, voix gutturale",
+  raleur:            "comme un vieux râleur français de 60 ans, voix sèche et traînarde, soupirs agacés en début de phrase",
+  presse:            "comme un livreur essoufflé en train de courir, voix saccadée et précipitée, respiration courte",
+  drama_queen:       "comme une influenceuse hystérique au bord des larmes, voix très théâtrale, exagère chaque émotion, soupirs dramatiques",
+  autoritaire:       "comme un patron sévère, voix grave articulée et sèche, ton de commandement qui n'admet pas de réplique",
+  ivre:              "comme un homme complètement ivre qui bafouille, élocution pâteuse, hoquets, mots qui dérapent",
+  scientifique_fou:  "comme un scientifique cynique et condescendant à la voix légèrement éraillée, ton sarcastique, occasionnellement rote en parlant",
+  nerveux:           "comme un jeune homme paniqué qui bégaie, voix tremblante et aiguë, débit haché et stressé",
+  guerrier:          "comme un guerrier au combat qui crie chaque mot avec rage et puissance, voix saturée d'effort et de détermination",
+  creature:          "comme un petit pokémon mignon qui couine et piaille, voix très aiguë et stridente, sons d'animal cute",
+  froid:             "comme un tueur professionnel froid et calme, voix très basse presque chuchotée, glaçante et posée",
+  ogre:              "comme un ogre rustique grand et lourd, voix très grave et rauque, accent campagnard, articulation lourde",
+  aventuriere:       "comme une exploratrice anglaise déterminée, voix féminine assurée et légèrement essoufflée par l'action",
+  menacant:          "comme un homme dangereux qui parle très lentement, articule chaque syllabe, menace pesante et calme",
+  hero_jeune:        "comme un jeune super-héros optimiste, voix énergique enthousiaste et brave, ton positif",
+  monotone:          "comme une jeune femme gothique au ton parfaitement plat et glaçant, aucune émotion perceptible, légèrement inquiétante",
+};
 
 const ARENAS = [
   { id: 'living_room', name: 'Le Salon de la Maison', img: 'https://images.unsplash.com/photo-1567016432779-094069958ea5?w=1200' },
@@ -92,6 +143,10 @@ const ARENAS = [
   { id: 'colosseum', name: 'Colisée de Rome', img: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=1200' },
   { id: 'forest', name: 'Forêt Mystique', img: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1200' },
   { id: 'beach', name: 'Plage de Copacabana', img: 'https://images.unsplash.com/photo-1519046904884-53103b34b206?w=1200' },
+  { id: 'boulangerie', name: 'Boulangerie Tradition', img: '/images/boulangerie_arena.png' },
+  { id: 'metro_paris', name: 'Ligne 13', img: '/images/metro_paris_arena.png' },
+  { id: 'plateau_tv', name: 'Le 20 Heures', img: '/images/plateau_tv_arena.png' },
+  { id: 'gaulois_village', name: 'Village des Résistants', img: '/images/gaulois_village_arena.png' },
 ];
 
 const MOCK_BATTLE = {
@@ -132,21 +187,39 @@ export default function App() {
 
   const [battleData, setBattleData] = useState<any>(null);
   const [currentStep, setCurrentStep] = useState(0);
+  const [activeLineIdx, setActiveLineIdx] = useState<number>(-1);
   const [errorMsg, setErrorMsg] = useState("");
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [voiceEnabled, setVoiceEnabled] = useState(true);
   const [musicEnabled, setMusicEnabled] = useState(false);
-  const [tempApiKey, setTempApiKey] = useState("");
+  const [tempApiKey, setTempApiKey] = useState<string>(() =>
+    localStorage.getItem('mayron.apiKey') ?? ''
+  );
+  const saveApiKey = (key: string) => {
+    setTempApiKey(key);
+    if (key) localStorage.setItem('mayron.apiKey', key);
+    else localStorage.removeItem('mayron.apiKey');
+  };
   const [selectingPlayer, setSelectingPlayer] = useState<1 | 2>(1);
   const [matchDuration, setMatchDuration] = useState(3);
   const audioBgRef = useRef<HTMLAudioElement | null>(null);
 
-  // Trash mode (parental control)
-  const [trashMode, setTrashMode] = useState(false);
+  // Narrative mode (parental control)
+  const [narrativeMode, setNarrativeMode] = useState<NarrativeMode>(() => {
+    const saved = localStorage.getItem('mayron.narrativeMode');
+    return (saved ? Number(saved) : 1) as NarrativeMode;
+  });
   const [showParentalModal, setShowParentalModal] = useState(false);
   const [parentalCode, setParentalCode] = useState("");
   const [parentalError, setParentalError] = useState(false);
+  const [pendingMode, setPendingMode] = useState<NarrativeMode | null>(null);
+  const [showConfirm, setShowConfirm] = useState(false);
   const PARENTAL_CODE = "0001";
+
+  const applyNarrativeMode = (mode: NarrativeMode) => {
+    setNarrativeMode(mode);
+    localStorage.setItem('mayron.narrativeMode', String(mode));
+  };
 
   // Musique: online = fichier audio, offline = génération Web Audio
   useEffect(() => {
@@ -188,45 +261,9 @@ export default function App() {
   const currentAudioSource = useRef<AudioBufferSourceNode | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
   const musicNodesRef = useRef<{ osc?: OscillatorNode; gain?: GainNode; interval?: ReturnType<typeof setInterval> } | null>(null);
+  const currentBattleId = useRef<string | null>(null);
+  const currentLineIndex = useRef<number>(0);
 
-  // Profils de voix Web Speech API (fallback offline) — chaque voiceStyle a un profil unique
-  const VOICE_PROFILES: Record<string, { pitch: number; rate: number; lang: string }> = {
-    // Voix Gemini de base
-    'Charon':  { pitch: 0.5, rate: 0.8, lang: 'fr-FR' },   // Très grave, lent
-    'Fenrir':  { pitch: 0.7, rate: 0.9, lang: 'fr-FR' },   // Puissant, posé
-    'Puck':    { pitch: 1.3, rate: 1.1, lang: 'fr-FR' },   // Jeune, vif
-    'Kore':    { pitch: 1.5, rate: 1.0, lang: 'fr-FR' },   // Féminin assertif
-    'Aoede':   { pitch: 1.7, rate: 0.85, lang: 'fr-FR' },  // Féminin doux
-  };
-
-  // Profils de voix par style de personnage (pour Web Speech fallback)
-  const STYLE_VOICE_OVERRIDES: Record<string, { pitch: number; rate: number }> = {
-    'idiot':            { pitch: 0.6, rate: 0.75 },  // Homer: lent, abruti
-    'enfant':           { pitch: 1.8, rate: 1.3 },   // Bart: aigu, rapide
-    'enfant_diabolique':{ pitch: 1.6, rate: 1.15 },  // Adèle: aigu, machiavélique
-    'gamer':            { pitch: 1.2, rate: 1.05 },  // Steve: neutre, gamer
-    'gangster':         { pitch: 0.7, rate: 0.95 },  // Franklin: grave, cool
-    'papa':             { pitch: 0.8, rate: 0.9 },   // Papa: posé, autoritaire
-    'maman':            { pitch: 1.4, rate: 0.95 },  // Maman: féminin, ferme
-    'ado_fille':        { pitch: 1.6, rate: 1.15 },  // Clara: ado fille
-    'ado_garcon':       { pitch: 1.1, rate: 1.2 },   // Mayron: ado garçon, vif
-    'animal':           { pitch: 2.0, rate: 1.5 },   // Le Chat: très aigu, rapide (miaulements)
-    'raleur':           { pitch: 0.6, rate: 0.7 },   // Voisin: grave, lent, agacé
-    'presse':           { pitch: 1.3, rate: 1.4 },   // Livreur: rapide, stressé
-    'drama_queen':      { pitch: 1.7, rate: 1.2 },   // Influenceuse: aigu, théâtral
-    'autoritaire':      { pitch: 0.5, rate: 0.8 },   // Banquier: très grave, posé
-    'ivre':             { pitch: 0.7, rate: 0.65 },   // Tonton: grave, traînant, lent
-    'scientifique_fou': { pitch: 0.55, rate: 1.1 },  // Rick: grave mais rapide, sarcastique
-    'nerveux':          { pitch: 1.5, rate: 1.35 },  // Morty: aigu, bégayant, rapide
-    'guerrier':         { pitch: 0.6, rate: 1.0 },   // Goku: grave, déterminé
-    'creature':         { pitch: 2.0, rate: 1.6 },   // Pikachu: très aigu, "pika pika"
-    'froid':            { pitch: 0.4, rate: 0.7 },   // John Wick: très grave, minimal
-    'ogre':             { pitch: 0.3, rate: 0.75 },  // Shrek: ultra grave, imposant
-    'aventuriere':      { pitch: 1.3, rate: 1.0 },   // Lara: féminin déterminé
-    'menacant':         { pitch: 0.5, rate: 0.75 },  // Walter: grave, menaçant, lent
-    'hero_jeune':       { pitch: 1.4, rate: 1.25 },  // Spider-Man: jeune, blagueur
-    'monotone':         { pitch: 1.0, rate: 0.7 },   // Mercredi: plat, monotone, glaçant
-  };
 
   // Génère une musique de style jeu de combat avec Web Audio API (fonctionne hors ligne)
   const startBgMusicOffline = () => {
@@ -264,6 +301,8 @@ export default function App() {
   const getAudioCtx = () => {
     if (!audioContextRef.current) {
       audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+      // Warm up Piper models in background on first user interaction
+      warmUpPiper();
     }
     if (audioContextRef.current.state === 'suspended') {
       audioContextRef.current.resume();
@@ -298,110 +337,275 @@ export default function App() {
   };
 
   // Fallback offline : Web Speech API avec profils de voix distinctifs par personnage
-  const playWebSpeech = (text: string, voiceName: string, voiceStyle: string = ''): Promise<void> => {
-    return new Promise((resolve) => {
-      if (!('speechSynthesis' in window)) { setTimeout(resolve, 1500); return; }
-      window.speechSynthesis.cancel();
-      const cleanText = text.replace(/^[^:]+:\s*/, ''); // Enlève le préfixe "Nom: "
-      const utterance = new SpeechSynthesisUtterance(cleanText);
-      
-      // Use character-specific style override if available, otherwise fall back to Gemini voice profile
-      const styleOverride = voiceStyle && STYLE_VOICE_OVERRIDES[voiceStyle];
-      const baseProfile = VOICE_PROFILES[voiceName] || VOICE_PROFILES['Fenrir'];
-      
-      utterance.lang = baseProfile.lang;
-      utterance.pitch = styleOverride ? styleOverride.pitch : baseProfile.pitch;
-      utterance.rate = styleOverride ? styleOverride.rate : baseProfile.rate;
-      utterance.volume = 1.0;
-      
-      // Essayer de trouver une voix française
-      const voices = window.speechSynthesis.getVoices();
-      const frVoice = voices.find(v => v.lang.startsWith('fr'));
-      if (frVoice) utterance.voice = frVoice;
-      utterance.onend = () => resolve();
-      utterance.onerror = () => resolve();
-      window.speechSynthesis.speak(utterance);
-    });
-  };
 
-  const playGeminiAudio = async (text: string, voiceName: string, voiceStyle: string = '') => {
-    if (!voiceEnabled) {
-      await new Promise(r => setTimeout(r, 800));
-      return;
-    }
-
-    const apiKey = process.env.GEMINI_API_KEY || tempApiKey;
-
-    // Mode hors-ligne ou sans clé API : utiliser Web Speech API
-    if (!apiKey || !navigator.onLine) {
-      await playWebSpeech(text, voiceName, voiceStyle);
-      return;
-    }
-
-    try {
-      const ai = new GoogleGenAI({ apiKey });
-      const response = await ai.models.generateContent({
-        model: "gemini-3.1-flash-tts-preview",
-        contents: text,
-        config: {
-          responseModalities: ["AUDIO"],
-          speechConfig: {
-            voiceConfig: {
-              prebuiltVoiceConfig: {
-                voiceName: voiceName
-              }
-            }
-          }
-        }
-      });
-
-      const parts = response.candidates?.[0]?.content?.parts;
-      if (!parts) { await playWebSpeech(text, voiceName, voiceStyle); return; }
-
-      const audioPart = parts.find(p => p.inlineData && p.inlineData.mimeType.includes("audio"));
-      if (!audioPart) { await playWebSpeech(text, voiceName, voiceStyle); return; }
-
-      const base64Audio = audioPart.inlineData.data;
+  const playPcmBlob = (blob: Blob, format: 'pcm' | 'wav' = 'pcm'): Promise<void> => {
+    return new Promise(async (resolve) => {
       const audioCtx = getAudioCtx();
-      const binaryString = window.atob(base64Audio);
-      const len = binaryString.length;
-      const bytes = new Uint8Array(len);
-      for (let i = 0; i < len; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
+      const arrayBuffer = await blob.arrayBuffer();
+
+      let audioBuffer: AudioBuffer;
+      if (format === 'wav') {
+        audioBuffer = await audioCtx.decodeAudioData(arrayBuffer.slice(0));
+      } else {
+        const int16Array = new Int16Array(arrayBuffer);
+        audioBuffer = audioCtx.createBuffer(1, int16Array.length, 24000);
+        const channelData = audioBuffer.getChannelData(0);
+        for (let i = 0; i < int16Array.length; i++) {
+          channelData[i] = int16Array[i] / 32768.0;
+        }
       }
 
-      // Decode PCM 16-bit 24kHz Mono (standard Gemini audio format)
-      const int16Array = new Int16Array(bytes.buffer);
-      const audioBuffer = audioCtx.createBuffer(1, int16Array.length, 24000);
-      const channelData = audioBuffer.getChannelData(0);
-      for (let i = 0; i < int16Array.length; i++) {
-        channelData[i] = int16Array[i] / 32768.0;
-      }
-
-      if (currentAudioSource.current) {
-        currentAudioSource.current.stop();
-      }
-
-      // Gain node pour amplifier le son
+      try { currentAudioSource.current?.stop(); } catch { /* déjà arrêtée */ }
+      // Gain 1.0 (unity) : Gemini PCM est déjà à pleine échelle, tout boost > 1.0
+      // produit du soft-clipping qui sonne "métallique/robotique" sur les pics.
       const gainNode = audioCtx.createGain();
-      gainNode.gain.setValueAtTime(2.0, audioCtx.currentTime); // x2 volume
+      gainNode.gain.setValueAtTime(1.0, audioCtx.currentTime);
       gainNode.connect(audioCtx.destination);
-
       const source = audioCtx.createBufferSource();
       source.buffer = audioBuffer;
       source.connect(gainNode);
       source.start();
       currentAudioSource.current = source;
+      source.onended = () => {
+        try { source.disconnect(); gainNode.disconnect(); } catch {}
+        resolve();
+      };
+    });
+  };
 
-      return new Promise<void>((resolve) => {
-        source.onended = () => resolve();
-      });
+  // Récupère un Blob audio Gemini avec retry court (429, network transitoires)
+  const fetchGeminiAudio = async (
+    cleanText: string,
+    voiceName: string,
+    voiceStyle: string,
+    apiKey: string,
+  ): Promise<Blob | null> => {
+    const persona = STYLE_PROMPTS[voiceStyle];
+    // Format documenté Gemini TTS : guillemets pour délimiter le texte à lire
+    // de la directive de style (sinon la directive peut être prononcée).
+    const prompted = persona
+      ? `Lis à voix haute en parlant ${persona}: "${cleanText}"`
+      : cleanText;
 
-    } catch (e) {
-      console.warn("Gemini TTS échoué, fallback Web Speech:", e);
-      // Fallback automatique sur Web Speech en cas d'erreur réseau
-      await playWebSpeech(text, voiceName, voiceStyle);
+    const ai = new GoogleGenAI({ apiKey });
+    const delays = [0, 500, 1500];
+
+    for (let attempt = 0; attempt < delays.length; attempt++) {
+      if (delays[attempt] > 0) await new Promise(r => setTimeout(r, delays[attempt]));
+      try {
+        const response = await ai.models.generateContent({
+          model: "gemini-2.5-flash-preview-tts",
+          contents: [{ parts: [{ text: prompted }] }],
+          config: {
+            responseModalities: ["AUDIO"],
+            speechConfig: {
+              voiceConfig: { prebuiltVoiceConfig: { voiceName } },
+            },
+          },
+        });
+        const parts = response.candidates?.[0]?.content?.parts;
+        const audioPart = parts?.find(p => p.inlineData && p.inlineData.mimeType.includes("audio"));
+        if (!audioPart?.inlineData?.data) {
+          if (attempt < delays.length - 1) continue;
+          return null;
+        }
+        const binaryString = window.atob(audioPart.inlineData.data);
+        const bytes = new Uint8Array(binaryString.length);
+        for (let i = 0; i < binaryString.length; i++) bytes[i] = binaryString.charCodeAt(i);
+        return new Blob([bytes.buffer], { type: 'audio/pcm' });
+      } catch (e: any) {
+        const msg = String(e?.message || e);
+        const retriable = /429|rate|timeout|fetch|network|502|503|504/i.test(msg);
+        if (!retriable) {
+          console.warn(`Gemini TTS échec non récupérable:`, msg);
+          return null;
+        }
+        if (attempt === delays.length - 1) {
+          console.warn(`Gemini TTS échec après ${delays.length} tentatives:`, msg);
+          return null;
+        }
+      }
     }
+    return null;
+  };
+
+  type PreparedAudio =
+    | { kind: 'blob'; blob: Blob; format: 'pcm' | 'wav' }
+    | { kind: 'piper'; text: string; voiceName: string; voiceStyle: string }
+    | { kind: 'webspeech'; text: string; voiceName: string; voiceStyle: string }
+    | { kind: 'silent' };
+
+  // Phase fetch (non bloquante pour le playback) — peut être lancée en parallèle pour plusieurs lignes
+  const prepareLineAudio = async (
+    text: string,
+    voiceName: string,
+    voiceStyle: string,
+    lineIdx: number,
+  ): Promise<PreparedAudio> => {
+    if (!voiceEnabled) return { kind: 'silent' };
+
+    const battleId = currentBattleId.current;
+    if (battleId && lineIdx >= 0) {
+      const cached = await getAudioBlob(battleId, lineIdx, voiceName);
+      if (cached) return { kind: 'blob', blob: cached.blob, format: cached.format };
+    }
+
+    const apiKey = process.env.GEMINI_API_KEY || tempApiKey;
+    const cleanText = text.replace(/^[^:]+:\s*/, '');
+
+    // On tente Gemini dès qu'on a une clé API, sans dépendre de navigator.onLine
+    // (faux négatif sur certains Safari → forçait à passer en Piper "robotique").
+    if (apiKey) {
+      const blob = await fetchGeminiAudio(cleanText, voiceName, voiceStyle, apiKey);
+      if (blob) {
+        console.info(`[voice] tier=gemini line=${lineIdx} voice=${voiceName} style=${voiceStyle}`);
+        if (battleId && lineIdx >= 0) {
+          saveAudioBlob(battleId, lineIdx, voiceName, blob, 'pcm').catch(() => {});
+        }
+        return { kind: 'blob', blob, format: 'pcm' };
+      }
+      console.warn(`[voice] tier=piper-fallback (Gemini KO) line=${lineIdx} voice=${voiceName}`);
+    } else {
+      console.info(`[voice] tier=piper (no API key) line=${lineIdx} voice=${voiceName}`);
+    }
+
+    return { kind: 'piper', text: cleanText, voiceName, voiceStyle };
+  };
+
+  // Phase playback (séquentielle) — joue ce qui a déjà été préparé
+  const playPreparedAudio = async (prepared: PreparedAudio): Promise<void> => {
+    if (prepared.kind === 'silent') {
+      await new Promise(r => setTimeout(r, 600));
+      return;
+    }
+    if (prepared.kind === 'blob') {
+      await playPcmBlob(prepared.blob, prepared.format);
+      return;
+    }
+    // Piper / Web Speech : exécution à la lecture (déterministes en line-à-line)
+    const audioCtx = getAudioCtx();
+    const gainNode = audioCtx.createGain();
+    gainNode.gain.setValueAtTime(1.0, audioCtx.currentTime);
+    gainNode.connect(audioCtx.destination);
+    try {
+      if (prepared.kind === 'piper') {
+        try {
+          await playPiperTTS(prepared.text, prepared.voiceName, prepared.voiceStyle, audioCtx, gainNode);
+          return;
+        } catch {
+          console.warn(`[voice] Piper KO → Web Speech (voix système, peu naturelle).`);
+          await playWebSpeechEnhanced(prepared.text, prepared.voiceName, prepared.voiceStyle);
+        }
+      } else {
+        console.warn(`[voice] Web Speech utilisé (voix système, peu naturelle).`);
+        await playWebSpeechEnhanced(prepared.text, prepared.voiceName, prepared.voiceStyle);
+      }
+    } finally {
+      try { gainNode.disconnect(); } catch {}
+    }
+  };
+
+  const generateBatch = async (count: number): Promise<{ ok: number; fail: number }> => {
+    let ok = 0;
+    let fail = 0;
+    const apiKey = process.env.GEMINI_API_KEY || tempApiKey;
+    if (!apiKey) return { ok: 0, fail: count };
+    const ai = new GoogleGenAI({ apiKey });
+
+    for (let i = 0; i < count; i++) {
+      try {
+        const rp1 = CHARACTERS[Math.floor(Math.random() * CHARACTERS.length)];
+        let rp2 = CHARACTERS[Math.floor(Math.random() * CHARACTERS.length)];
+        while (rp2.id === rp1.id) rp2 = CHARACTERS[Math.floor(Math.random() * CHARACTERS.length)];
+        const rStyle1 = STYLES[Math.floor(Math.random() * STYLES.length)];
+        const rStyle2 = STYLES[Math.floor(Math.random() * STYLES.length)];
+        const rArena = ARENAS[Math.floor(Math.random() * ARENAS.length)];
+        const dur = [3, 5][Math.floor(Math.random() * 2)];
+
+        const directives = getNarrativeDirectives(narrativeMode, rp1.name, rp2.name, dur);
+        const voiceStyleDesc = (vs: string) =>
+          vs === 'idiot' ? 'lent, stupide' : vs === 'enfant' ? 'gamin insolent' :
+          vs === 'guerrier' ? 'crie ses attaques' : vs === 'creature' ? 'dit uniquement Pika pika' :
+          vs === 'ivre' ? 'parle de façon pâteuse' : vs === 'scientifique_fou' ? 'sarcastique, rote' :
+          vs === 'monotone' ? 'plat et glaçant' : 'personnalité standard';
+
+        const prompt = `Tu es le "Grand Maître du Multivers". Génère un script de combat JSON.
+- Combattant 1 : ${rp1.name} (Style : ${rStyle1.name}) → ${voiceStyleDesc(rp1.voiceStyle)}
+- Combattant 2 : ${rp2.name} (Style : ${rStyle2.name}) → ${voiceStyleDesc(rp2.voiceStyle)}
+- Arène : ${rArena.name}
+- Rounds : EXACTEMENT ${dur}
+- Mode : ${getNarrativeModeLabel(narrativeMode)}
+DIRECTIVES :
+${directives}
+FORMAT JSON identique au schéma standard (intro, rounds, winner, finishingMove, conclusion).`;
+
+        const response = await ai.models.generateContent({
+          model: 'gemini-flash-latest',
+          contents: prompt,
+          config: {
+            responseMimeType: 'application/json',
+            responseSchema: {
+              type: Type.OBJECT,
+              properties: {
+                intro: { type: Type.OBJECT, properties: { text: { type: Type.STRING }, speaker: { type: Type.STRING } }, required: ['text', 'speaker'] },
+                rounds: { type: Type.ARRAY, items: { type: Type.OBJECT, properties: { title: { type: Type.STRING }, dialogues: { type: Type.ARRAY, items: { type: Type.OBJECT, properties: { speaker: { type: Type.STRING }, text: { type: Type.STRING }, action: { type: Type.STRING } }, required: ['speaker', 'text'] } } }, required: ['title', 'dialogues'] } },
+                winner: { type: Type.STRING },
+                finishingMove: { type: Type.OBJECT, properties: { type: { type: Type.STRING }, description: { type: Type.STRING }, speaker: { type: Type.STRING } }, required: ['type', 'description', 'speaker'] },
+                conclusion: { type: Type.OBJECT, properties: { text: { type: Type.STRING }, speaker: { type: Type.STRING } }, required: ['text', 'speaker'] },
+              },
+              required: ['intro', 'rounds', 'winner', 'finishingMove', 'conclusion'],
+            },
+          },
+        });
+
+        const data = JSON.parse(response.text?.trim() || '{}');
+        await saveBattle({
+          p1Id: rp1.id, p1Name: rp1.name, p1Img: rp1.img,
+          p1Voice: rp1.voice, p1VoiceStyle: rp1.voiceStyle,
+          p2Id: rp2.id, p2Name: rp2.name, p2Img: rp2.img,
+          p2Voice: rp2.voice, p2VoiceStyle: rp2.voiceStyle,
+          arenaId: rArena.id, arenaName: rArena.name, arenaImg: rArena.img,
+          duration: dur, narrativeMode, script: data, winner: data.winner ?? '',
+        });
+        ok++;
+        // Brief pause to avoid rate limiting
+        await new Promise(r => setTimeout(r, 1200));
+      } catch {
+        fail++;
+      }
+    }
+    return { ok, fail };
+  };
+
+  const handleReplay = (saved: SavedBattle) => {
+    getAudioCtx();
+    currentBattleId.current = saved.id;
+    currentLineIndex.current = 0;
+    // Priorité aux voix persistées dans SavedBattle, fallback sur CHARACTERS, puis défaut
+    const findChar = (
+      id: string,
+      name: string,
+      img: string,
+      savedVoice?: string,
+      savedStyle?: string,
+    ) => {
+      const base = CHARACTERS.find(c => c.id === id);
+      return {
+        id,
+        name,
+        img,
+        color: base?.color ?? 'from-gray-700 to-black',
+        faction: base?.faction ?? '',
+        voice: savedVoice ?? base?.voice ?? 'Fenrir',
+        voiceStyle: savedStyle ?? base?.voiceStyle ?? '',
+      };
+    };
+    setP1(findChar(saved.p1Id, saved.p1Name, saved.p1Img, saved.p1Voice, saved.p1VoiceStyle) as typeof CHARACTERS[0]);
+    setP2(findChar(saved.p2Id, saved.p2Name, saved.p2Img, saved.p2Voice, saved.p2VoiceStyle) as typeof CHARACTERS[0]);
+    setArena(ARENAS.find(a => a.id === saved.arenaId) ?? ARENAS[0]);
+    setBattleData(saved.script);
+    setCurrentStep(0);
+    setGameState('COMBAT');
   };
 
   const generateCombat = async (isDemo = false) => {
@@ -421,24 +625,12 @@ export default function App() {
       const apiKey = process.env.GEMINI_API_KEY || tempApiKey;
       if (!apiKey) {
         setGameState('SETUP');
-        throw new Error("Clé API manquante. Veuillez l'entrer ou lancer la démo.");
+        throw new Error("Clé API manquante. Entre-la dans le menu 🔒 Contrôle Parental, ou lance la Démo.");
       }
 
       const ai = new GoogleGenAI({ apiKey });
 
-      const trashDirectives = trashMode
-        ? `1. TON TRASH ET HUMOUR NOIR : Lâche-toi ! C'est un jeu pour adultes. Utilise des gros mots (putain, merde, bâtard, salaud, bordel...), du trashtalk violent, cynique et humoristique. Les insultes doivent fuser et être créatives.
-2. INTONATIONS ET ÉMOTIONS : Ajoute beaucoup d'expressions sonores, de cris (Aaaargh, D'oh, Grrr), d'onomatopées. Utilise une ponctuation forte (!, ?, ...) pour la synthèse vocale.
-3. PERSONNAGES : Respecte les personnalités à 100% mais en version énervée et trash.
-4. STRUCTURE TTS : Chaque valeur du champ "text" DOIT commencer par "Nom: ". Exemple: "${p1.name}: Prends ça dans ta gueule ! Boom !".
-5. DYNAMISME : Fais EXACTEMENT ${matchDuration} rounds. Chaque round doit comporter plusieurs échanges de coups.
-6. FINITION : Termine par une FATALITY épique, absurde et violente.`
-        : `1. TON FAMILIAL ET HUMORISTIQUE : Le jeu est en mode FAMILLE. Utilise un humour bon enfant, des vannes gentilles, des jeux de mots rigolos. AUCUN gros mot, AUCUNE insulte. C'est fun mais respectueux !
-2. INTONATIONS ET ÉMOTIONS : Ajoute des expressions amusantes, des cris rigolos (Ouille, Aïe, Waouh), des onomatopées fun. Utilise une ponctuation forte (!, ?, ...) pour la synthèse vocale.
-3. PERSONNAGES : Respecte les personnalités à 100% mais en version amusante et bienveillante.
-4. STRUCTURE TTS : Chaque valeur du champ "text" DOIT commencer par "Nom: ". Exemple: "${p1.name}: Prends ça mon ami ! Boing !".
-5. DYNAMISME : Fais EXACTEMENT ${matchDuration} rounds. Chaque round doit comporter plusieurs échanges de coups.
-6. FINITION : Termine par un SUPER MOVE épique, spectaculaire et drôle (pas de violence gratuite).`;
+      const trashDirectives = getNarrativeDirectives(narrativeMode, p1.name, p2.name, matchDuration);
 
       const prompt = `Tu es le "Grand Maître du Multivers", le narrateur officiel d'un tournoi de combat ultime. Génère un script de combat en JSON.
 
@@ -449,7 +641,7 @@ PARAMÈTRES D'ENTRÉE :
   → Personnalité vocale : ${p2.voiceStyle === 'idiot' ? 'Parle de manière lente et stupide, fait des "D\'oh!", mange en parlant' : p2.voiceStyle === 'enfant' ? 'Voix de gamin insolent, dit "Ay caramba!"' : p2.voiceStyle === 'enfant_diabolique' ? 'Voix de petite fille terrifiante, ricane de façon démoniaque' : p2.voiceStyle === 'gangster' ? 'Parle comme un gangster de quartier, argot de rue' : p2.voiceStyle === 'animal' ? 'Fait des miaulements agressifs "Miiaaou! Pschh!", griffes' : p2.voiceStyle === 'ivre' ? 'Parle de manière pâteuse, bafouille, rote, hoquets "Hic!"' : p2.voiceStyle === 'scientifique_fou' ? 'Sarcastique, rote en parlant "*buuurp*", condescendant' : p2.voiceStyle === 'nerveux' ? 'Bégaie, stressé "Oh j-je-jeez Rick!", paniqué' : p2.voiceStyle === 'guerrier' ? 'Crie ses attaques "KAMEHAMEHA!!!", déterminé' : p2.voiceStyle === 'creature' ? 'Dit uniquement "Pika pika! Pikaaa-CHUUU!" avec des variations' : p2.voiceStyle === 'froid' ? 'Phrases courtes, calme mortel, peu de mots' : p2.voiceStyle === 'ogre' ? 'Parle avec un accent rustique, fait des blagues d\'ogre' : p2.voiceStyle === 'menacant' ? 'Parle lentement avec menace "Je suis celui qui frappe à la porte"' : p2.voiceStyle === 'monotone' ? 'Ton plat et glaçant, pas d\'émotion visible, terrifiant' : p2.voiceStyle === 'drama_queen' ? 'Exagère tout "Oh mon Dieuuu!", théâtral' : p2.voiceStyle === 'presse' ? 'Parle vite, stressé, toujours pressé "J\'ai une commande!"' : 'Personnalité standard'}
 - Arène : ${arena.name}
 - Nombre de rounds requis : EXACTEMENT ${matchDuration} rounds.
-- Mode : ${trashMode ? 'TRASH (adultes, gros mots autorisés)' : 'FAMILLE (tout public, zéro gros mot)'}
+- Mode : ${getNarrativeModeLabel(narrativeMode)}
 
 DIRECTIVES DE RÉDACTION :
 ${trashDirectives}
@@ -514,6 +706,19 @@ FORMAT JSON REQUIS :
       });
 
       const data = JSON.parse(response.text?.trim() || "{}");
+      const battleId = await saveBattle({
+        p1Id: p1.id, p1Name: p1.name, p1Img: p1.img,
+        p1Voice: p1.voice, p1VoiceStyle: p1.voiceStyle,
+        p2Id: p2.id, p2Name: p2.name, p2Img: p2.img,
+        p2Voice: p2.voice, p2VoiceStyle: p2.voiceStyle,
+        arenaId: arena.id, arenaName: arena.name, arenaImg: arena.img,
+        duration: matchDuration,
+        narrativeMode,
+        script: data,
+        winner: data.winner ?? '',
+      });
+      currentBattleId.current = battleId;
+      currentLineIndex.current = 0;
       setBattleData(data);
       setCurrentStep(0);
       setGameState('COMBAT');
@@ -541,14 +746,26 @@ FORMAT JSON REQUIS :
         lines = [battleData.finishingMove, battleData.conclusion];
       }
 
-      for (const line of lines) {
-        if (!isActive) break;
+      // PREFETCH PARALLÈLE : on lance le fetch des N lignes en même temps,
+      // puis on joue séquentiellement → lignes 2..N déjà prêtes pendant que la 1 joue.
+      const baseIdx = currentLineIndex.current;
+      currentLineIndex.current += lines.length;
+
+      const preparedPromises = lines.map((line, i) => {
         const textToSpeak = line.text || line.description;
         const { voiceName, voiceStyle } = getVoiceForSpeaker(line.speaker || 'Arbitre');
+        return prepareLineAudio(textToSpeak, voiceName, voiceStyle, baseIdx + i);
+      });
 
-        await playGeminiAudio(textToSpeak, voiceName, voiceStyle);
+      for (let i = 0; i < lines.length; i++) {
+        if (!isActive) break;
+        setActiveLineIdx(i);
+        const prepared = await preparedPromises[i];
+        if (!isActive) break;
+        await playPreparedAudio(prepared);
       }
 
+      if (isActive) setActiveLineIdx(-1);
       setIsSpeaking(false);
       if (isActive && currentStep < totalSteps - 1) {
         await new Promise(r => setTimeout(r, 500));
@@ -558,16 +775,21 @@ FORMAT JSON REQUIS :
     runStep();
     return () => {
       isActive = false;
-      if (currentAudioSource.current) {
-        currentAudioSource.current.stop();
-      }
     };
   }, [currentStep, gameState, battleData, voiceEnabled]);
+
+  // Stoppe l'audio uniquement quand on quitte le combat (vrai reset)
+  useEffect(() => {
+    if (gameState !== 'COMBAT' && currentAudioSource.current) {
+      try { currentAudioSource.current.stop(); } catch {}
+      currentAudioSource.current = null;
+    }
+  }, [gameState]);
 
   if (gameState === 'COMBAT') {
     return (
       <div className="relative">
-        <CombatView p1={p1} p2={p2} arena={arena} battleData={battleData} currentStep={currentStep} onReset={() => setGameState('SETUP')} />
+        <CombatView p1={p1} p2={p2} arena={arena} battleData={battleData} currentStep={currentStep} activeLineIdx={activeLineIdx} onReset={() => setGameState('SETUP')} />
         <button
           onClick={() => setVoiceEnabled(!voiceEnabled)}
           className="fixed bottom-4 right-4 z-50 p-3 bg-gray-900/80 rounded-full border border-gray-700 text-white hover:bg-red-600 transition-colors"
@@ -599,13 +821,21 @@ FORMAT JSON REQUIS :
       
       {/* Top-right buttons */}
       <div className="fixed top-4 right-4 z-50 flex items-center gap-2">
-        {/* Bouton Parental / Trash Mode */}
+        {/* Bibliothèque de combats sauvegardés */}
+        <BattleLibrary onReplay={handleReplay} />
+
+        {/* Bouton Parental / Mode Narratif */}
         <button
           onClick={() => setShowParentalModal(true)}
-          className={`p-3 bg-gray-900/80 rounded-full border text-white transition-colors shadow-lg ${trashMode ? 'border-red-500 hover:bg-red-900/60' : 'border-gray-700 hover:bg-gray-700'}`}
-          title={trashMode ? 'Mode Trash: ACTIVÉ' : 'Mode Trash: Désactivé'}
+          className={`p-3 bg-gray-900/80 rounded-full border text-white transition-colors shadow-lg ${narrativeMode >= 5 ? 'border-red-500 hover:bg-red-900/60' : narrativeMode >= 4 ? 'border-orange-500 hover:bg-orange-900/60' : narrativeMode >= 2 ? 'border-blue-500 hover:bg-blue-900/60' : 'border-gray-700 hover:bg-gray-700'}`}
+          title={`Mode: ${NARRATIVE_MODE_META[narrativeMode].name}`}
         >
-          {trashMode ? <AlertTriangle size={22} className="text-red-500 animate-pulse" /> : <Lock size={22} className="opacity-40" />}
+          {narrativeMode >= 5
+            ? <AlertTriangle size={22} className="text-red-500 animate-pulse" />
+            : narrativeMode >= 2
+              ? <Settings2 size={22} className="text-blue-400" />
+              : <Lock size={22} className="opacity-40" />
+          }
         </button>
 
         {/* Bouton Musique */}
@@ -631,71 +861,143 @@ FORMAT JSON REQUIS :
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm"
-            onClick={() => { setShowParentalModal(false); setParentalCode(""); setParentalError(false); }}
+            onClick={() => { setShowParentalModal(false); setParentalCode(""); setParentalError(false); setPendingMode(null); setShowConfirm(false); }}
           >
             <motion.div
               initial={{ scale: 0.8, y: 40 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.8, y: 40 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-gray-900 border-2 border-red-600/60 rounded-3xl p-6 w-full max-w-sm shadow-[0_0_60px_rgba(220,38,38,0.3)] relative"
+              className="bg-gray-900 border-2 border-red-600/60 rounded-3xl p-6 w-full max-w-sm shadow-[0_0_60px_rgba(220,38,38,0.3)] relative max-h-[90vh] overflow-y-auto"
             >
-              <button onClick={() => { setShowParentalModal(false); setParentalCode(""); setParentalError(false); }} className="absolute top-3 right-3 p-1 text-gray-500 hover:text-white transition-colors">
+              <button
+                onClick={() => { setShowParentalModal(false); setParentalCode(""); setParentalError(false); setPendingMode(null); setShowConfirm(false); }}
+                className="absolute top-3 right-3 p-1 text-gray-500 hover:text-white transition-colors"
+              >
                 <X size={20} />
               </button>
+
               <div className="text-center mb-4">
                 <AlertTriangle size={40} className="text-red-500 mx-auto mb-2" />
                 <h3 className="sf-title text-xl text-red-500 uppercase">Contrôle Parental</h3>
-                <p className="text-gray-400 text-xs mt-1">Activer/Désactiver le mode trash (gros mots, insultes créatives)</p>
+                <p className="text-gray-400 text-xs mt-1">Choisissez le mode narratif du combat</p>
               </div>
 
-              <div className={`text-center mb-4 px-4 py-2 rounded-xl ${trashMode ? 'bg-red-900/30 border border-red-700/50' : 'bg-gray-800 border border-gray-700'}`}>
-                <span className="text-xs uppercase tracking-wider font-bold">Statut actuel : </span>
-                <span className={`font-black text-sm ${trashMode ? 'text-red-400' : 'text-green-400'}`}>
-                  {trashMode ? '🔥 MODE TRASH ACTIVÉ' : '😇 MODE FAMILLE'}
-                </span>
+              {/* Current mode badge */}
+              <div className="text-center mb-4 px-4 py-2 rounded-xl bg-gray-800 border border-gray-700">
+                <span className="text-xs uppercase tracking-wider font-bold text-gray-400">Mode actuel : </span>
+                <span className="font-black text-sm text-white">{NARRATIVE_MODE_META[narrativeMode].icon} {NARRATIVE_MODE_META[narrativeMode].name}</span>
               </div>
 
-              <label className="text-[10px] text-gray-500 uppercase tracking-wider block mb-2">Code Parental (4 chiffres)</label>
-              <div className="flex gap-2 mb-3">
-                <input
-                  type="password"
-                  maxLength={4}
-                  value={parentalCode}
-                  onChange={(e) => { setParentalCode(e.target.value.replace(/\D/g, '')); setParentalError(false); }}
-                  placeholder="● ● ● ●"
-                  className={`flex-1 bg-black border-2 rounded-xl px-4 py-3 text-center text-lg tracking-[0.5em] font-mono outline-none transition-colors ${parentalError ? 'border-red-500 animate-shake' : 'border-gray-700 focus:border-red-500'}`}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      if (parentalCode === PARENTAL_CODE) {
-                        setTrashMode(!trashMode);
-                        setShowParentalModal(false);
-                        setParentalCode("");
-                        setParentalError(false);
-                      } else {
-                        setParentalError(true);
-                      }
-                    }
-                  }}
-                />
-              </div>
-              {parentalError && <p className="text-red-400 text-[10px] text-center mb-2 animate-pulse">❌ Code incorrect !</p>}
+              {/* API Key — behind PIN, stored in localStorage only */}
+              {!process.env.GEMINI_API_KEY && (
+                <div className="mb-4">
+                  <label className="text-[10px] text-gray-500 uppercase tracking-wider block mb-1">
+                    Clé API Gemini
+                  </label>
+                  <div className="flex gap-2">
+                    <input
+                      type="password"
+                      placeholder="AIza…"
+                      value={tempApiKey}
+                      onChange={e => saveApiKey(e.target.value)}
+                      className="flex-1 bg-black border border-gray-700 rounded-xl px-3 py-2 text-xs font-mono outline-none focus:border-blue-500 transition-colors"
+                    />
+                    {tempApiKey && (
+                      <button
+                        onClick={() => saveApiKey('')}
+                        className="px-2 py-1 rounded-lg text-[10px] text-gray-500 hover:text-red-400 border border-gray-700 hover:border-red-700 transition-colors"
+                        title="Supprimer la clé"
+                      >
+                        <X size={12} />
+                      </button>
+                    )}
+                  </div>
+                  <p className="text-[9px] text-gray-600 mt-1">
+                    {tempApiKey
+                      ? '✓ Clé sauvegardée localement (jamais sur GitHub)'
+                      : 'Sauvegardée dans le navigateur uniquement'}
+                  </p>
+                </div>
+              )}
 
-              <button
-                onClick={() => {
-                  if (parentalCode === PARENTAL_CODE) {
-                    setTrashMode(!trashMode);
+              {/* Mode selector — always visible, PIN required for modes 2-6 */}
+              <NarrativeModeSelector
+                current={pendingMode ?? narrativeMode}
+                onChange={(mode) => {
+                  if (mode === 1) {
+                    applyNarrativeMode(1);
                     setShowParentalModal(false);
                     setParentalCode("");
                     setParentalError(false);
+                    setPendingMode(null);
+                    setShowConfirm(false);
                   } else {
-                    setParentalError(true);
+                    setPendingMode(mode);
+                    setParentalCode("");
+                    setParentalError(false);
+                    setShowConfirm(false);
                   }
                 }}
-                className="w-full py-3 rounded-xl bg-red-700 hover:bg-red-600 text-white font-black uppercase text-sm tracking-wider transition-colors"
-              >
-                {trashMode ? 'Désactiver le Mode Trash' : 'Activer le Mode Trash'}
-              </button>
+              />
+
+              {/* PIN zone — appears when a locked mode is selected */}
+              {pendingMode !== null && pendingMode > 1 && (
+                <div className="mt-4">
+                  <label className="text-[10px] text-gray-500 uppercase tracking-wider block mb-2">
+                    Code Parental pour {NARRATIVE_MODE_META[pendingMode].icon} {NARRATIVE_MODE_META[pendingMode].name}
+                  </label>
+                  <input
+                    type="password"
+                    maxLength={4}
+                    value={parentalCode}
+                    onChange={(e) => { setParentalCode(e.target.value.replace(/\D/g, '')); setParentalError(false); }}
+                    placeholder="● ● ● ●"
+                    className={`w-full bg-black border-2 rounded-xl px-4 py-3 text-center text-lg tracking-[0.5em] font-mono outline-none transition-colors ${parentalError ? 'border-red-500 animate-shake' : 'border-gray-700 focus:border-red-500'}`}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && parentalCode === PARENTAL_CODE) {
+                        if (NARRATIVE_MODE_META[pendingMode].requiresConfirm && !showConfirm) {
+                          setShowConfirm(true);
+                        } else {
+                          applyNarrativeMode(pendingMode);
+                          setShowParentalModal(false);
+                          setParentalCode(""); setPendingMode(null); setShowConfirm(false);
+                        }
+                      } else if (e.key === 'Enter') {
+                        setParentalError(true);
+                      }
+                    }}
+                  />
+                  {parentalError && <p className="text-red-400 text-[10px] text-center mt-1 animate-pulse">❌ Code incorrect !</p>}
+
+                  {showConfirm && (
+                    <p className="text-orange-400 text-[10px] text-center mt-2 animate-pulse">
+                      ⚠️ Mode {NARRATIVE_MODE_META[pendingMode].name} — Contenu adulte. Confirmer ?
+                    </p>
+                  )}
+
+                  <button
+                    onClick={() => {
+                      if (parentalCode !== PARENTAL_CODE) { setParentalError(true); return; }
+                      if (NARRATIVE_MODE_META[pendingMode].requiresConfirm && !showConfirm) {
+                        setShowConfirm(true);
+                        return;
+                      }
+                      applyNarrativeMode(pendingMode);
+                      setShowParentalModal(false);
+                      setParentalCode(""); setPendingMode(null); setShowConfirm(false);
+                    }}
+                    className="w-full mt-3 py-3 rounded-xl bg-red-700 hover:bg-red-600 text-white font-black uppercase text-sm tracking-wider transition-colors"
+                  >
+                    {showConfirm ? '⚠️ Confirmer' : `Activer ${NARRATIVE_MODE_META[pendingMode].icon} ${NARRATIVE_MODE_META[pendingMode].name}`}
+                  </button>
+                </div>
+              )}
+
+              {/* Batch pre-generation — visible only when PIN already unlocked (mode > 1) */}
+              {narrativeMode > 1 && (
+                <BatchGenerator onGenerate={generateBatch} />
+              )}
             </motion.div>
           </motion.div>
         )}
@@ -854,13 +1156,11 @@ FORMAT JSON REQUIS :
               <button onClick={() => setMatchDuration(8)} className={`flex-1 py-1 text-[9px] uppercase font-bold rounded-full transition-colors ${matchDuration === 8 ? 'bg-red-600 text-white' : 'text-gray-500 hover:text-white'}`}>8 Rnds</button>
             </div>
 
-            {/* API Key */}
-            {!process.env.GEMINI_API_KEY && (
-              <div className="flex items-center gap-2 w-full max-w-xs">
-                <input type="password" placeholder="Clé API Gemini" value={tempApiKey} onChange={(e) => setTempApiKey(e.target.value)}
-                  className="flex-1 bg-gray-900/80 border border-gray-700 rounded-lg px-3 py-1.5 text-[10px] text-center focus:border-red-500 outline-none" />
-                <button onClick={() => generateCombat(true)} className="text-[9px] text-gray-500 hover:text-yellow-400 uppercase tracking-wider whitespace-nowrap">Démo</button>
-              </div>
+            {/* Démo button when no API key */}
+            {!process.env.GEMINI_API_KEY && !tempApiKey && (
+              <button onClick={() => generateCombat(true)} className="text-[9px] text-gray-500 hover:text-yellow-400 uppercase tracking-wider">
+                ▶ Démo sans clé API
+              </button>
             )}
 
             {/* Fight Button */}
@@ -978,23 +1278,23 @@ function SelectionCard({ player, active, style, onStyleChange, isSelecting, onSe
   );
 }
 
-function CombatView({ p1, p2, arena, battleData, currentStep, onReset }) {
+function CombatView({ p1, p2, arena, battleData, currentStep, activeLineIdx, onReset }) {
   return (
-    <div className="min-h-screen bg-black text-white relative overflow-hidden flex flex-col items-center p-4 md:p-12">
-      <div className="absolute inset-0 z-0 opacity-40">
+    <div className="min-h-screen bg-black text-white relative flex flex-col items-center p-3 md:p-12 overflow-x-hidden">
+      <div className="fixed inset-0 z-0 opacity-40 pointer-events-none">
         <img src={arena.img} className="w-full h-full object-cover" alt="Arena" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-transparent to-black" />
       </div>
 
       <div className="relative z-10 w-full max-w-6xl">
         {/* Top Health Bars Style Header */}
-        <div className="flex justify-between items-center mb-16 gap-4 md:gap-12">
+        <div className="flex justify-between items-center mb-6 md:mb-12 gap-2 md:gap-12">
           <FighterHeader fighter={p1} side="left" color="blue" />
-          <div className="text-5xl md:text-7xl font-black italic text-red-600 animate-pulse drop-shadow-[0_0_30px_rgba(239,68,68,0.8)] z-10">VS</div>
+          <div className="text-3xl md:text-7xl font-black italic text-red-600 animate-pulse drop-shadow-[0_0_30px_rgba(239,68,68,0.8)] z-10 shrink-0">VS</div>
           <FighterHeader fighter={p2} side="right" color="red" />
         </div>
 
-        <div className="bg-gray-900/60 backdrop-blur-xl border-2 border-gray-800/50 rounded-[2.5rem] p-6 md:p-12 shadow-2xl min-h-[450px] relative overflow-hidden">
+        <div className="bg-gray-900/60 backdrop-blur-xl border-2 border-gray-800/50 rounded-3xl md:rounded-[2.5rem] p-4 md:p-12 shadow-2xl min-h-[280px] md:min-h-[450px] max-h-[65vh] md:max-h-[70vh] overflow-y-auto custom-scroll relative">
           <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-red-600 to-transparent opacity-50" />
 
           <AnimatePresence mode="wait">
@@ -1006,9 +1306,9 @@ function CombatView({ p1, p2, arena, battleData, currentStep, onReset }) {
               transition={{ type: 'spring', damping: 20 }}
               className="space-y-8"
             >
-              {currentStep === 0 && <Dialogue lines={battleData.intro} p1={p1} p2={p2} />}
+              {currentStep === 0 && <Dialogue lines={battleData.intro} p1={p1} p2={p2} activeLineIdx={activeLineIdx} />}
               {currentStep > 0 && currentStep <= (battleData.rounds?.length || 0) && (
-                <Dialogue lines={battleData.rounds[currentStep - 1].dialogues} p1={p1} p2={p2} title={battleData.rounds[currentStep - 1].title} />
+                <Dialogue lines={battleData.rounds[currentStep - 1].dialogues} p1={p1} p2={p2} title={battleData.rounds[currentStep - 1].title} activeLineIdx={activeLineIdx} />
               )}
               {currentStep === (battleData.rounds?.length || 0) + 1 && (
                 <div className="text-center py-4">
@@ -1019,7 +1319,7 @@ function CombatView({ p1, p2, arena, battleData, currentStep, onReset }) {
                   >
                     {battleData.finishingMove.type} !
                   </motion.div>
-                  <Dialogue lines={[battleData.finishingMove, battleData.conclusion]} p1={p1} p2={p2} />
+                  <Dialogue lines={[battleData.finishingMove, battleData.conclusion]} p1={p1} p2={p2} activeLineIdx={activeLineIdx} />
                   <motion.div
                     initial={{ y: 50, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
@@ -1034,12 +1334,12 @@ function CombatView({ p1, p2, arena, battleData, currentStep, onReset }) {
           </AnimatePresence>
         </div>
 
-        <div className="mt-12 flex justify-center">
+        <div className="mt-6 md:mt-12 mb-4 flex justify-center">
           <button
             onClick={onReset}
-            className="group flex items-center gap-3 px-12 py-4 bg-white text-black font-black uppercase italic rounded-full hover:bg-red-600 hover:text-white transition-all duration-300 transform hover:scale-105"
+            className="group flex items-center gap-2 md:gap-3 px-6 md:px-12 py-3 md:py-4 bg-white text-black font-black uppercase italic text-sm md:text-base rounded-full hover:bg-red-600 hover:text-white transition-all duration-300 transform hover:scale-105"
           >
-            <RefreshCw size={20} className="group-hover:rotate-180 transition-transform duration-500" />
+            <RefreshCw size={18} className="group-hover:rotate-180 transition-transform duration-500" />
             Nouveau Match
           </button>
         </div>
@@ -1051,16 +1351,16 @@ function CombatView({ p1, p2, arena, battleData, currentStep, onReset }) {
 function FighterHeader({ fighter, side, color }) {
   const isLeft = side === 'left';
   return (
-    <div className={`flex items-center gap-4 md:gap-8 ${!isLeft ? 'flex-row-reverse' : ''} w-full`}>
+    <div className={`flex items-center gap-2 md:gap-8 ${!isLeft ? 'flex-row-reverse' : ''} w-full min-w-0`}>
       <motion.div
         whileHover={{ scale: 1.1 }}
-        className={`relative w-20 h-20 md:w-32 md:h-32 rounded-full border-4 ${isLeft ? 'border-blue-500 shadow-[0_0_20px_rgba(59,130,246,0.5)]' : 'border-red-500 shadow-[0_0_20px_rgba(239,68,68,0.5)]'} overflow-hidden flex-shrink-0`}
+        className={`relative w-14 h-14 md:w-32 md:h-32 rounded-full border-4 ${isLeft ? 'border-blue-500 shadow-[0_0_20px_rgba(59,130,246,0.5)]' : 'border-red-500 shadow-[0_0_20px_rgba(239,68,68,0.5)]'} overflow-hidden flex-shrink-0`}
       >
         <img src={fighter.img} className="w-full h-full object-cover" alt={fighter.name} />
       </motion.div>
-      <div className={`flex-grow ${!isLeft ? 'text-right' : 'text-left'}`}>
-        <div className="text-xl md:text-3xl font-black uppercase italic leading-none mb-3">{fighter.name}</div>
-        <div className="w-full max-w-[300px] h-4 bg-gray-900 rounded-full overflow-hidden border border-gray-800 shadow-inner">
+      <div className={`flex-grow min-w-0 ${!isLeft ? 'text-right' : 'text-left'}`}>
+        <div className="text-sm md:text-3xl font-black uppercase italic leading-none mb-2 md:mb-3 truncate">{fighter.name}</div>
+        <div className="w-full max-w-[300px] h-3 md:h-4 bg-gray-900 rounded-full overflow-hidden border border-gray-800 shadow-inner">
           <motion.div
             initial={{ width: 0 }}
             animate={{ width: '100%' }}
@@ -1073,40 +1373,55 @@ function FighterHeader({ fighter, side, color }) {
   );
 }
 
-function Dialogue({ lines, p1, p2, title }) {
+function Dialogue({ lines, p1, p2, title = undefined, activeLineIdx = -1 }: { lines: any; p1: any; p2: any; title?: any; activeLineIdx?: number }) {
   const linesArray = Array.isArray(lines) ? lines : [lines];
+  const activeRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (activeLineIdx >= 0 && activeRef.current) {
+      activeRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [activeLineIdx]);
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 md:space-y-6">
       {title && (
-        <div className="flex items-center justify-center gap-4 mb-8">
+        <div className="flex items-center justify-center gap-2 md:gap-4 mb-4 md:mb-8">
           <div className="h-[2px] flex-grow bg-gradient-to-r from-transparent to-gray-700" />
-          <div className="text-2xl font-black text-gray-500 tracking-[0.5em] italic">{title}</div>
+          <div className="text-lg md:text-2xl font-black text-gray-500 tracking-[0.3em] md:tracking-[0.5em] italic">{title}</div>
           <div className="h-[2px] flex-grow bg-gradient-to-l from-transparent to-gray-700" />
         </div>
       )}
       {linesArray.map((l, i) => {
         const isP1 = l.speaker?.toLowerCase().includes(p1.name.toLowerCase());
         const isP2 = l.speaker?.toLowerCase().includes(p2.name.toLowerCase());
-        const isArbitre = l.speaker?.toLowerCase().includes('arbitre');
+        const isActive = i === activeLineIdx;
+        const dimmed = activeLineIdx >= 0 && !isActive;
 
         return (
           <motion.div
             key={i}
+            ref={isActive ? activeRef : undefined}
             initial={{ x: isP1 ? -20 : isP2 ? 20 : 0, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            transition={{ delay: i * 0.1 }}
+            animate={{
+              x: 0,
+              opacity: dimmed ? 0.4 : 1,
+              scale: isActive ? 1.02 : 1,
+            }}
+            transition={{ delay: activeLineIdx < 0 ? i * 0.1 : 0, type: 'spring', stiffness: 260, damping: 22 }}
             className={`flex flex-col ${isP1 ? 'items-start' : isP2 ? 'items-end' : 'items-center'}`}
           >
             <div className={`flex items-center gap-2 mb-2 ${isP2 ? 'flex-row-reverse' : ''}`}>
-              <span className={`text-xs font-black uppercase tracking-widest ${isP1 ? 'text-blue-400' : isP2 ? 'text-red-400' : 'text-yellow-500'}`}>
+              <span className={`text-[10px] md:text-xs font-black uppercase tracking-widest ${isP1 ? 'text-blue-400' : isP2 ? 'text-red-400' : 'text-yellow-500'}`}>
                 {l.speaker}
               </span>
-              {l.action && <span className="text-[10px] text-gray-500 italic uppercase">({l.action})</span>}
+              {l.action && <span className="text-[9px] md:text-[10px] text-gray-500 italic uppercase">({l.action})</span>}
             </div>
-            <div className={`max-w-2xl p-5 rounded-2xl text-lg md:text-xl font-medium leading-relaxed shadow-xl
+            <div className={`max-w-full md:max-w-2xl p-3 md:p-5 rounded-2xl text-base md:text-xl font-medium leading-relaxed shadow-xl transition-all
               ${isP1 ? 'bg-blue-950/40 border-l-4 border-blue-500 rounded-tl-none' :
                 isP2 ? 'bg-red-950/40 border-r-4 border-red-500 rounded-tr-none text-right' :
-                  'bg-gray-800/50 border-t-4 border-yellow-500 italic text-center'}`}
+                  'bg-gray-800/50 border-t-4 border-yellow-500 italic text-center'}
+              ${isActive ? 'ring-2 ring-yellow-400/70 shadow-[0_0_25px_rgba(250,204,21,0.35)]' : ''}`}
             >
               {l.text || l.description}
             </div>
