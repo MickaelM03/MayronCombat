@@ -5,11 +5,27 @@
 import { predict, type VoiceId } from '@diffusionstudio/vits-web';
 
 const MODEL_IDS: Record<string, VoiceId> = {
-  Charon: 'fr_FR-tom-medium',
-  Fenrir: 'fr_FR-tom-medium',
-  Puck:   'fr_FR-gilles-low',
-  Kore:   'fr_FR-siwis-medium',
-  Aoede:  'fr_FR-siwis-medium',
+  // Masculine deep/menacing
+  Charon:     'fr_FR-tom-medium',
+  Orus:       'fr_FR-tom-medium',
+  Enceladus:  'fr_FR-tom-medium',
+  Iapetus:    'fr_FR-tom-medium',
+  Gacrux:     'fr_FR-tom-medium',
+  Rasalgethi: 'fr_FR-tom-medium',
+  // Masculine mid/heroic
+  Fenrir:     'fr_FR-tom-medium',
+  Sadachbia:  'fr_FR-tom-medium',
+  // Young/agile masculine
+  Puck:       'fr_FR-gilles-low',
+  Zephyr:     'fr_FR-gilles-low',
+  Umbriel:    'fr_FR-gilles-low',
+  // Feminine voices
+  Kore:       'fr_FR-siwis-medium',
+  Aoede:      'fr_FR-siwis-medium',
+  Leda:       'fr_FR-siwis-medium',
+  Erinome:    'fr_FR-siwis-medium',
+  Despina:    'fr_FR-siwis-medium',
+  Autonoe:    'fr_FR-siwis-medium',
 };
 
 // [pitchShift semitones, rateMultiplier]

@@ -28,6 +28,7 @@ import { GoogleGenAI, Type } from '@google/genai';
 import NarrativeModeSelector from './components/NarrativeModeSelector';
 import BattleLibrary from './components/BattleLibrary';
 import BatchGenerator from './components/BatchGenerator';
+import VoiceConfigurator, { VoiceOverride } from './components/VoiceConfigurator';
 import { NarrativeMode, NARRATIVE_MODE_META, getNarrativeDirectives, getNarrativeModeLabel } from './lib/battles/prompts';
 import { saveBattle, saveAudioBlob, getAudioBlob, SavedBattle } from './lib/battles/store';
 import { playWebSpeechEnhanced } from './lib/voice/webspeech';
@@ -36,37 +37,39 @@ import { playPiperTTS, warmUpPiper } from './lib/voice/piper';
 // --- CONFIGURATION DU ROSTER (Le Multivers) ---
 
 const CHARACTERS = [
-  // VOIX GEMINI TTS: Charon (grave, menaçant), Fenrir (puissant, héroïque), Puck (jeune, agile), Kore (féminin assertif), Aoede (féminin doux)
-  { id: 'homer', name: 'Homer Simpson', faction: 'Simpsons', img: '/images/homer_generic_sf_1778417069953.png', color: 'from-yellow-400 to-orange-500', voice: 'Charon', voiceStyle: 'idiot' },
-  { id: 'bart', name: 'Bart Simpson', faction: 'Simpsons', img: '/images/bart_generic_sf_1778417084932.png', color: 'from-orange-500 to-red-500', voice: 'Puck', voiceStyle: 'enfant' },
-  { id: 'adele', name: 'Mortelle Adèle', faction: 'Cartoon', img: '/images/adele_generic_sf_1778417097290.png', color: 'from-red-600 to-purple-800', voice: 'Kore', voiceStyle: 'enfant_diabolique' },
-  { id: 'steve', name: 'Steve', faction: 'Minecraft', img: '/images/steve_sf_1778417051770.png', color: 'from-green-700 to-emerald-900', voice: 'Puck', voiceStyle: 'gamer' },
-  { id: 'franklin', name: 'Franklin', faction: 'GTA', img: '/images/franklin_sf_1778417110721.png', color: 'from-emerald-800 to-black', voice: 'Fenrir', voiceStyle: 'gangster' },
+  // VOIX GEMINI TTS diversifiées : 15+ voix uniques parmi les 30 disponibles
+  // Graves/menaçantes : Charon, Orus, Enceladus | Puissantes : Fenrir, Sadachbia, Rasalgethi
+  // Jeunes/agiles : Puck, Zephyr, Umbriel | Féminines : Kore, Aoede, Leda, Erinome, Despina, Autonoe
+  { id: 'homer', name: 'Homer Simpson', faction: 'Simpsons', img: '/images/homer_generic_sf_1778417069953.png', color: 'from-yellow-400 to-orange-500', voice: 'Enceladus', voiceStyle: 'idiot' },
+  { id: 'bart', name: 'Bart Simpson', faction: 'Simpsons', img: '/images/bart_generic_sf_1778417084932.png', color: 'from-orange-500 to-red-500', voice: 'Zephyr', voiceStyle: 'enfant' },
+  { id: 'adele', name: 'Mortelle Adèle', faction: 'Cartoon', img: '/images/adele_generic_sf_1778417097290.png', color: 'from-red-600 to-purple-800', voice: 'Erinome', voiceStyle: 'enfant_diabolique' },
+  { id: 'steve', name: 'Steve', faction: 'Minecraft', img: '/images/steve_sf_1778417051770.png', color: 'from-green-700 to-emerald-900', voice: 'Umbriel', voiceStyle: 'gamer' },
+  { id: 'franklin', name: 'Franklin', faction: 'GTA', img: '/images/franklin_sf_1778417110721.png', color: 'from-emerald-800 to-black', voice: 'Sadachbia', voiceStyle: 'gangster' },
   { id: 'papa', name: 'Papa', faction: 'Family', img: '/images/papa_sf_1778417131723.png', color: 'from-blue-800 to-indigo-900', voice: 'Fenrir', voiceStyle: 'papa' },
-  { id: 'maman', name: 'Maman', faction: 'Family', img: '/images/maman_sf_1778417144541.png', color: 'from-pink-600 to-purple-600', voice: 'Kore', voiceStyle: 'maman' },
-  { id: 'clara', name: 'Clara', faction: 'Family', img: 'https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?w=400&h=600&fit=crop', color: 'from-purple-500 to-fuchsia-700', voice: 'Aoede', voiceStyle: 'ado_fille' },
+  { id: 'maman', name: 'Maman', faction: 'Family', img: '/images/maman_sf_1778417144541.png', color: 'from-pink-600 to-purple-600', voice: 'Leda', voiceStyle: 'maman' },
+  { id: 'clara', name: 'Clara', faction: 'Family', img: 'https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?w=400&h=600&fit=crop', color: 'from-purple-500 to-fuchsia-700', voice: 'Despina', voiceStyle: 'ado_fille' },
   { id: 'mayron', name: 'Mayron', faction: 'Family', img: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=600&fit=crop', color: 'from-cyan-500 to-blue-700', voice: 'Puck', voiceStyle: 'ado_garcon' },
-  { id: 'chat', name: 'Le Chat', faction: 'Animals', img: '/images/le_chat_sf_1778416951561.png', color: 'from-gray-800 to-black', voice: 'Puck', voiceStyle: 'animal' },
-  { id: 'voisin', name: 'Le Voisin Relou', faction: 'Banlieue', img: '/images/voisin_relou_street_fighter_1778416835801.png', color: 'from-gray-400 to-gray-600', voice: 'Charon', voiceStyle: 'raleur' },
-  { id: 'livreur', name: 'Livreur UberEats', faction: 'Précaire', img: '/images/livreur_ubereats_sf_1778416904964.png', color: 'from-green-500 to-green-700', voice: 'Puck', voiceStyle: 'presse' },
-  { id: 'influenceuse', name: 'Influenceuse Drama', faction: 'Réseaux', img: '/images/influenceuse_drama_sf_1778416919814.png', color: 'from-pink-400 to-pink-600', voice: 'Kore', voiceStyle: 'drama_queen' },
-  { id: 'banquier', name: 'Le Banquier', faction: 'Capitalisme', img: '/images/le_banquier_sf_1778416934105.png', color: 'from-slate-700 to-slate-900', voice: 'Fenrir', voiceStyle: 'autoritaire' },
-  { id: 'tonton', name: 'Tonton Bourré', faction: 'Family', img: '/images/tonton_bourre_sf_1778416951155.png', color: 'from-amber-600 to-orange-800', voice: 'Charon', voiceStyle: 'ivre' },
-  { id: 'rick', name: 'Rick Sanchez', faction: 'Sci-Fi', img: '/images/rick_sf.png', color: 'from-cyan-400 to-blue-600', voice: 'Charon', voiceStyle: 'scientifique_fou' },
+  { id: 'chat', name: 'Le Chat', faction: 'Animals', img: '/images/le_chat_sf_1778416951561.png', color: 'from-gray-800 to-black', voice: 'Zephyr', voiceStyle: 'animal' },
+  { id: 'voisin', name: 'Le Voisin Relou', faction: 'Banlieue', img: '/images/voisin_relou_street_fighter_1778416835801.png', color: 'from-gray-400 to-gray-600', voice: 'Gacrux', voiceStyle: 'raleur' },
+  { id: 'livreur', name: 'Livreur UberEats', faction: 'Précaire', img: '/images/livreur_ubereats_sf_1778416904964.png', color: 'from-green-500 to-green-700', voice: 'Umbriel', voiceStyle: 'presse' },
+  { id: 'influenceuse', name: 'Influenceuse Drama', faction: 'Réseaux', img: '/images/influenceuse_drama_sf_1778416919814.png', color: 'from-pink-400 to-pink-600', voice: 'Autonoe', voiceStyle: 'drama_queen' },
+  { id: 'banquier', name: 'Le Banquier', faction: 'Capitalisme', img: '/images/le_banquier_sf_1778416934105.png', color: 'from-slate-700 to-slate-900', voice: 'Orus', voiceStyle: 'autoritaire' },
+  { id: 'tonton', name: 'Tonton Bourré', faction: 'Family', img: '/images/tonton_bourre_sf_1778416951155.png', color: 'from-amber-600 to-orange-800', voice: 'Iapetus', voiceStyle: 'ivre' },
+  { id: 'rick', name: 'Rick Sanchez', faction: 'Sci-Fi', img: '/images/rick_sf.png', color: 'from-cyan-400 to-blue-600', voice: 'Rasalgethi', voiceStyle: 'scientifique_fou' },
   { id: 'morty', name: 'Morty Smith', faction: 'Sci-Fi', img: '/images/morty_sf.png', color: 'from-yellow-300 to-yellow-500', voice: 'Puck', voiceStyle: 'nerveux' },
   { id: 'goku', name: 'Son Goku', faction: 'Anime', img: '/images/goku_sf.png', color: 'from-orange-400 to-blue-600', voice: 'Fenrir', voiceStyle: 'guerrier' },
-  { id: 'pikachu', name: 'Pikachu', faction: 'Pokemon', img: '/images/pikachu_sf.png', color: 'from-yellow-400 to-yellow-600', voice: 'Puck', voiceStyle: 'creature' },
+  { id: 'pikachu', name: 'Pikachu', faction: 'Pokemon', img: '/images/pikachu_sf.png', color: 'from-yellow-400 to-yellow-600', voice: 'Zephyr', voiceStyle: 'creature' },
   { id: 'john_wick', name: 'John Wick', faction: 'Action', img: '/images/johnwick_sf.png', color: 'from-gray-700 to-black', voice: 'Charon', voiceStyle: 'froid' },
-  { id: 'shrek', name: 'Shrek', faction: 'Fantasy', img: '/images/shrek_sf.png', color: 'from-green-500 to-lime-700', voice: 'Fenrir', voiceStyle: 'ogre' },
+  { id: 'shrek', name: 'Shrek', faction: 'Fantasy', img: '/images/shrek_sf.png', color: 'from-green-500 to-lime-700', voice: 'Enceladus', voiceStyle: 'ogre' },
   { id: 'lara', name: 'Lara Croft', faction: 'Adventure', img: '/images/lara_sf.png', color: 'from-brown-500 to-gray-800', voice: 'Kore', voiceStyle: 'aventuriere' },
-  { id: 'walter', name: 'Walter White', faction: 'Drama', img: '/images/walter_sf.png', color: 'from-yellow-600 to-slate-900', voice: 'Fenrir', voiceStyle: 'menacant' },
-  { id: 'spiderman', name: 'Spider-Man', faction: 'Marvel', img: '/images/spiderman_sf.png', color: 'from-red-600 to-blue-800', voice: 'Puck', voiceStyle: 'hero_jeune' },
+  { id: 'walter', name: 'Walter White', faction: 'Drama', img: '/images/walter_sf.png', color: 'from-yellow-600 to-slate-900', voice: 'Orus', voiceStyle: 'menacant' },
+  { id: 'spiderman', name: 'Spider-Man', faction: 'Marvel', img: '/images/spiderman_sf.png', color: 'from-red-600 to-blue-800', voice: 'Umbriel', voiceStyle: 'hero_jeune' },
   { id: 'mercredi', name: 'Mercredi Addams', faction: 'Gothic', img: '/images/mercredi_sf.png', color: 'from-gray-900 to-black', voice: 'Aoede', voiceStyle: 'monotone' },
-  { id: 'denis_survivor', name: 'Denis le Survivant', faction: 'TV', img: '/images/denis_survivor_sf.png', color: 'from-orange-500 to-red-700', voice: 'Fenrir', voiceStyle: 'autoritaire' },
-  { id: 'mme_monique', name: 'Mme Monique', faction: 'Éducation', img: '/images/mme_monique_sf.png', color: 'from-blue-600 to-indigo-900', voice: 'Kore', voiceStyle: 'raleur' },
-  { id: 'luffy_gear5', name: 'Luffy Gear 5', faction: 'Anime', img: '/images/luffy_gear5_sf.png', color: 'from-yellow-200 to-slate-100', voice: 'Puck', voiceStyle: 'hero_jeune' },
-  { id: 'gilet_jaune', name: 'Didier la Manif', faction: 'Politique', img: '/images/gilet_jaune_sf.png', color: 'from-yellow-400 to-yellow-600', voice: 'Charon', voiceStyle: 'raleur' },
-  { id: 'jul_alien', name: 'L\'Alien de Marseille', faction: 'Musique', img: '/images/jul_alien_sf.png', color: 'from-blue-400 to-cyan-600', voice: 'Fenrir', voiceStyle: 'gangster' },
+  { id: 'denis_survivor', name: 'Denis le Survivant', faction: 'TV', img: '/images/denis_survivor_sf.png', color: 'from-orange-500 to-red-700', voice: 'Sadachbia', voiceStyle: 'autoritaire' },
+  { id: 'mme_monique', name: 'Mme Monique', faction: 'Éducation', img: '/images/mme_monique_sf.png', color: 'from-blue-600 to-indigo-900', voice: 'Leda', voiceStyle: 'raleur' },
+  { id: 'luffy_gear5', name: 'Luffy Gear 5', faction: 'Anime', img: '/images/luffy_gear5_sf.png', color: 'from-yellow-200 to-slate-100', voice: 'Zephyr', voiceStyle: 'hero_jeune' },
+  { id: 'gilet_jaune', name: 'Didier la Manif', faction: 'Politique', img: '/images/gilet_jaune_sf.png', color: 'from-yellow-400 to-yellow-600', voice: 'Gacrux', voiceStyle: 'raleur' },
+  { id: 'jul_alien', name: 'L\'Alien de Marseille', faction: 'Musique', img: '/images/jul_alien_sf.png', color: 'from-blue-400 to-cyan-600', voice: 'Sadachbia', voiceStyle: 'gangster' },
   { id: 'rat_gouttiere', name: 'Rat d\'Égout', faction: 'Cuisine', img: '/images/rat_gouttiere_sf.png', color: 'from-gray-600 to-gray-800', voice: 'Puck', voiceStyle: 'creature' },
 ];
 
@@ -102,31 +105,31 @@ const STYLES = [
 // La persona + l'émotion guident Gemini pour produire une voix naturelle et incarnée
 // plutôt qu'une simple lecture neutre.
 const STYLE_PROMPTS: Record<string, string> = {
-  idiot:             "comme un homme adulte gros et stupide, voix grasse et traînante, mâchouille les mots, intonation lente et un peu ridicule",
-  enfant:            "comme un jeune garçon insolent de 10 ans, voix aiguë et taquine, ton provocateur et espiègle",
-  enfant_diabolique: "comme une petite fille de 8 ans à la voix mignonne mais inquiétante, avec un ricanement diabolique sous-jacent",
-  gamer:             "comme un jeune gamer enthousiaste, débit rapide et nasillard, voix énergique et excitée",
-  gangster:          "comme un gangster de quartier au charisme tranquille, voix grave et nonchalante, argot relâché et menace contenue",
-  papa:              "comme un père de famille protecteur, voix grave, chaleureuse mais ferme, articulation solide",
-  maman:             "comme une mère agacée mais aimante, voix féminine chaleureuse mais autoritaire, pressée",
-  ado_fille:         "comme une adolescente de 15 ans, voix chantante et ironique, légèrement traînante, intonation montante",
-  ado_garcon:        "comme un adolescent de 14 ans dont la voix mue, un peu hésitant et frondeur, ton désinvolte",
-  animal:            "comme un chat agressif qui essaie de parler entre des miaulements et grognements féroces, voix gutturale",
-  raleur:            "comme un vieux râleur français de 60 ans, voix sèche et traînarde, soupirs agacés en début de phrase",
-  presse:            "comme un livreur essoufflé en train de courir, voix saccadée et précipitée, respiration courte",
-  drama_queen:       "comme une influenceuse hystérique au bord des larmes, voix très théâtrale, exagère chaque émotion, soupirs dramatiques",
-  autoritaire:       "comme un patron sévère, voix grave articulée et sèche, ton de commandement qui n'admet pas de réplique",
-  ivre:              "comme un homme complètement ivre qui bafouille, élocution pâteuse, hoquets, mots qui dérapent",
-  scientifique_fou:  "comme un scientifique cynique et condescendant à la voix légèrement éraillée, ton sarcastique, occasionnellement rote en parlant",
-  nerveux:           "comme un jeune homme paniqué qui bégaie, voix tremblante et aiguë, débit haché et stressé",
-  guerrier:          "comme un guerrier au combat qui crie chaque mot avec rage et puissance, voix saturée d'effort et de détermination",
-  creature:          "comme un petit pokémon mignon qui couine et piaille, voix très aiguë et stridente, sons d'animal cute",
-  froid:             "comme un tueur professionnel froid et calme, voix très basse presque chuchotée, glaçante et posée",
-  ogre:              "comme un ogre rustique grand et lourd, voix très grave et rauque, accent campagnard, articulation lourde",
-  aventuriere:       "comme une exploratrice anglaise déterminée, voix féminine assurée et légèrement essoufflée par l'action",
-  menacant:          "comme un homme dangereux qui parle très lentement, articule chaque syllabe, menace pesante et calme",
-  hero_jeune:        "comme un jeune super-héros optimiste, voix énergique enthousiaste et brave, ton positif",
-  monotone:          "comme une jeune femme gothique au ton parfaitement plat et glaçant, aucune émotion perceptible, légèrement inquiétante",
+  idiot:             "comme un homme adulte gros et très bête qui articule mal. Voix grasse, traînante, lente. Il mâchouille ses mots et semble confus en permanence. Ton ridicule et naïf",
+  enfant:            "comme un gamin insolent de 10 ans plein d'énergie. Voix aiguë, provocatrice, moqueuse. Il ricane entre ses phrases et parle vite avec un ton espiègle",
+  enfant_diabolique: "comme une petite fille de 8 ans à la voix douce et mignonne, mais avec une intention sinistre qui transparaît. Elle passe d'un ton adorable à un rire inquiétant",
+  gamer:             "comme un jeune gamer surexcité en plein stream. Débit rapide, voix nasillarde et énergique. Il crie les moments épiques avec enthousiasme",
+  gangster:          "comme un gangster de quartier charismatique et tranquille. Voix grave, nonchalante avec une menace sous-jacente. Argot relâché, pauses calculées entre les phrases",
+  papa:              "comme un père de famille protecteur et bienveillant. Voix grave, chaleureuse mais ferme. Articulation solide, ton rassurant qui peut devenir autoritaire",
+  maman:             "comme une mère agacée mais aimante. Voix féminine autoritaire et pressée, avec des soupirs entre les phrases. Puis redevient douce et maternelle",
+  ado_fille:         "comme une adolescente de 15 ans sarcastique qui lève les yeux au ciel. Voix chantante et traînante avec une intonation montante en fin de phrase. Ton ironique",
+  ado_garcon:        "comme un adolescent de 14 ans dont la voix mue. Il alterne entre le grave et l'aigu involontairement. Un peu hésitant mais essaie d'être cool et désinvolte",
+  animal:            "comme un chat agressif qui gronde et feule. Voix gutturale mélangée à des miaulements féroces et des grognements. Il crache entre les mots avec hostilité",
+  raleur:            "comme un vieux Français de 60 ans qui râle sur tout. Voix sèche et traînarde. Il commence chaque phrase par un soupir agacé et marmonne avec mécontentement",
+  presse:            "comme un livreur essoufflé qui court partout. Voix saccadée et précipitée avec une respiration courte audible entre les mots. Il est stressé par le temps",
+  drama_queen:       "comme une influenceuse hystérique au bord des larmes. Elle exagère absolument tout. Soupirs dramatiques, voix qui tremble d'émotion et qui monte dans les aigus",
+  autoritaire:       "comme un patron sévère et intransigeant. Voix grave, très articulée et sèche. Chaque mot tombe comme un verdict. Ton de commandement absolu",
+  ivre:              "comme un homme complètement ivre qui bafouille. Élocution très pâteuse, les mots dérapent et se mélangent. Il perd le fil de ses phrases et hoquète",
+  scientifique_fou:  "comme un génie cynique et intellectuellement supérieur. Voix légèrement éraillée, ton sarcastique et méprisant. Il parle vite et de manière condescendante",
+  nerveux:           "comme un jeune homme paniqué et très anxieux. Voix tremblante et aiguë, il bégaie et hésite. Débit haché et stressé comme s'il hyperventilait",
+  guerrier:          "comme un guerrier puissant en plein combat qui crie chaque attaque avec rage et puissance. Voix forte saturée d'effort et de détermination absolue",
+  creature:          "comme un petit pokémon mignon qui couine. Voix très aiguë et stridente mais adorable. Il ne dit que des variations de sons mignons avec différentes émotions",
+  froid:             "comme un tueur professionnel d'un calme mortel. Voix très basse, presque chuchotée, glaçante. Chaque mot est prononcé lentement avec des pauses menaçantes",
+  ogre:              "comme un ogre rustique massif. Voix très grave et rauque avec un accent campagnard épais. Il rit grassement et articule de manière lourde et pesante",
+  aventuriere:       "comme une exploratrice intrépide en pleine action. Voix féminine assurée et déterminée, légèrement essoufflée. Enthousiaste face au danger et à l'aventure",
+  menacant:          "comme un homme dangereux et calculateur qui parle très lentement. Il articule chaque syllabe avec une menace pesante et calme qui fait froid dans le dos",
+  hero_jeune:        "comme un jeune super-héros optimiste et courageux. Voix énergique, enthousiaste et brave. Ton positif et déterminé, prêt à sauver le monde",
+  monotone:          "comme une jeune femme gothique au ton parfaitement plat sans aucune émotion. Aucune variation dans la voix, légèrement inquiétant par son absence totale d'affect",
 };
 
 const ARENAS = [
@@ -214,7 +217,51 @@ export default function App() {
   const [parentalError, setParentalError] = useState(false);
   const [pendingMode, setPendingMode] = useState<NarrativeMode | null>(null);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [parentalTab, setParentalTab] = useState<'mode' | 'voix'>('mode');
   const PARENTAL_CODE = "0001";
+
+  // Voice overrides — persisted in localStorage, applied on character selection
+  const [voiceOverrides, setVoiceOverrides] = useState<Record<string, VoiceOverride>>(() => {
+    try {
+      const saved = localStorage.getItem('mayron.voiceOverrides');
+      return saved ? JSON.parse(saved) : {};
+    } catch { return {}; }
+  });
+
+  const saveVoiceOverrides = (ovr: Record<string, VoiceOverride>) => {
+    setVoiceOverrides(ovr);
+    localStorage.setItem('mayron.voiceOverrides', JSON.stringify(ovr));
+  };
+
+  // Apply voice overrides to a character
+  const withVoiceOverride = (char: typeof CHARACTERS[0]) => {
+    const ovr = voiceOverrides[char.id];
+    if (!ovr) return char;
+    return { ...char, voice: ovr.voice, voiceStyle: ovr.voiceStyle };
+  };
+
+  // Test a voice from the configurator
+  const testVoice = async (text: string, voiceName: string, voiceStyle: string) => {
+    getAudioCtx();
+    const apiKey = process.env.GEMINI_API_KEY || tempApiKey;
+    const cleanText = text.replace(/^[^:]+:\s*/, '');
+    if (apiKey) {
+      const blob = await fetchGeminiAudio(cleanText, voiceName, voiceStyle, apiKey);
+      if (blob) { await playPcmBlob(blob); return; }
+    }
+    // Piper fallback
+    const audioCtx = getAudioCtx();
+    const gainNode = audioCtx.createGain();
+    gainNode.gain.setValueAtTime(1.0, audioCtx.currentTime);
+    gainNode.connect(audioCtx.destination);
+    try {
+      await playPiperTTS(cleanText, voiceName, voiceStyle, audioCtx, gainNode);
+    } catch {
+      await playWebSpeechEnhanced(cleanText, voiceName, voiceStyle);
+    } finally {
+      try { gainNode.disconnect(); } catch {}
+    }
+  };
 
   const applyNarrativeMode = (mode: NarrativeMode) => {
     setNarrativeMode(mode);
@@ -353,11 +400,16 @@ export default function App() {
         for (let i = 0; i < int16Array.length; i++) {
           channelData[i] = int16Array[i] / 32768.0;
         }
+        // Micro fade-in/out (3ms) to prevent clicks between lines
+        const fade = Math.min(72, Math.floor(int16Array.length / 8));
+        for (let i = 0; i < fade; i++) {
+          const t = i / fade;
+          channelData[i] *= t;
+          channelData[int16Array.length - 1 - i] *= t;
+        }
       }
 
-      try { currentAudioSource.current?.stop(); } catch { /* déjà arrêtée */ }
-      // Gain 1.0 (unity) : Gemini PCM est déjà à pleine échelle, tout boost > 1.0
-      // produit du soft-clipping qui sonne "métallique/robotique" sur les pics.
+      try { currentAudioSource.current?.stop(); } catch { /* already stopped */ }
       const gainNode = audioCtx.createGain();
       gainNode.gain.setValueAtTime(1.0, audioCtx.currentTime);
       gainNode.connect(audioCtx.destination);
@@ -381,11 +433,19 @@ export default function App() {
     apiKey: string,
   ): Promise<Blob | null> => {
     const persona = STYLE_PROMPTS[voiceStyle];
-    // Format documenté Gemini TTS : guillemets pour délimiter le texte à lire
-    // de la directive de style (sinon la directive peut être prononcée).
+    // Clean text for TTS: remove emojis, asterisks, and stage directions that confuse speech
+    const ttsText = cleanText
+      .replace(/[\u{1F600}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}⚡✨🏆]/gu, '')
+      .replace(/\*[^*]+\*/g, '')  // remove *actions* stage directions
+      .replace(/\s{2,}/g, ' ')
+      .trim();
+    if (!ttsText) return null;
+
+    // Gemini TTS directorial prompt: persona wraps the text for character voice acting
     const prompted = persona
-      ? `Lis à voix haute en parlant ${persona}: "${cleanText}"`
-      : cleanText;
+      ? `Dis ceci ${persona}:\n"${ttsText}"`
+      : `Dis ceci avec énergie et expressivité, comme un commentateur sportif:\n"${ttsText}"`;
+
 
     const ai = new GoogleGenAI({ apiKey });
     const delays = [0, 500, 1500];
@@ -868,21 +928,45 @@ FORMAT JSON REQUIS :
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.8, y: 40 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-gray-900 border-2 border-red-600/60 rounded-3xl p-6 w-full max-w-sm shadow-[0_0_60px_rgba(220,38,38,0.3)] relative max-h-[90vh] overflow-y-auto"
+              className={`bg-gray-900 border-2 border-red-600/60 rounded-3xl p-6 w-full shadow-[0_0_60px_rgba(220,38,38,0.3)] relative max-h-[90vh] overflow-y-auto transition-all ${parentalTab === 'voix' ? 'max-w-lg' : 'max-w-sm'}`}
             >
               <button
-                onClick={() => { setShowParentalModal(false); setParentalCode(""); setParentalError(false); setPendingMode(null); setShowConfirm(false); }}
-                className="absolute top-3 right-3 p-1 text-gray-500 hover:text-white transition-colors"
+                onClick={() => { setShowParentalModal(false); setParentalCode(""); setParentalError(false); setPendingMode(null); setShowConfirm(false); setParentalTab('mode'); }}
+                className="absolute top-3 right-3 p-1 text-gray-500 hover:text-white transition-colors z-10"
               >
                 <X size={20} />
               </button>
 
-              <div className="text-center mb-4">
-                <AlertTriangle size={40} className="text-red-500 mx-auto mb-2" />
+              <div className="text-center mb-3">
                 <h3 className="sf-title text-xl text-red-500 uppercase">Contrôle Parental</h3>
-                <p className="text-gray-400 text-xs mt-1">Choisissez le mode narratif du combat</p>
               </div>
 
+              {/* Tab bar */}
+              <div className="flex gap-1 mb-4 bg-gray-800 rounded-xl p-1">
+                <button
+                  onClick={() => setParentalTab('mode')}
+                  className={`flex-1 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${
+                    parentalTab === 'mode'
+                      ? 'bg-red-700 text-white shadow-lg'
+                      : 'text-gray-400 hover:text-white'
+                  }`}
+                >
+                  🎮 Mode
+                </button>
+                <button
+                  onClick={() => setParentalTab('voix')}
+                  className={`flex-1 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${
+                    parentalTab === 'voix'
+                      ? 'bg-purple-700 text-white shadow-lg'
+                      : 'text-gray-400 hover:text-white'
+                  }`}
+                >
+                  🎙️ Voix
+                </button>
+              </div>
+
+              {/* ─── MODE TAB ─── */}
+              {parentalTab === 'mode' && (<>
               {/* Current mode badge */}
               <div className="text-center mb-4 px-4 py-2 rounded-xl bg-gray-800 border border-gray-700">
                 <span className="text-xs uppercase tracking-wider font-bold text-gray-400">Mode actuel : </span>
@@ -998,6 +1082,17 @@ FORMAT JSON REQUIS :
               {narrativeMode > 1 && (
                 <BatchGenerator onGenerate={generateBatch} />
               )}
+              </>)}
+
+              {/* ─── VOIX TAB ─── */}
+              {parentalTab === 'voix' && (
+                <VoiceConfigurator
+                  characters={CHARACTERS}
+                  overrides={voiceOverrides}
+                  onSave={saveVoiceOverrides}
+                  onTestVoice={testVoice}
+                />
+              )}
             </motion.div>
           </motion.div>
         )}
@@ -1089,8 +1184,9 @@ FORMAT JSON REQUIS :
               <button
                 key={char.id}
                 onClick={() => {
-                  if (selectingPlayer === 1) { setP1(char); setSelectingPlayer(2); }
-                  else { setP2(char); setSelectingPlayer(1); }
+                  const c = withVoiceOverride(char);
+                  if (selectingPlayer === 1) { setP1(c); setSelectingPlayer(2); }
+                  else { setP2(c); setSelectingPlayer(1); }
                 }}
                 className={`w-11 h-11 sm:w-12 sm:h-12 md:w-13 md:h-13 rounded-lg border-2 overflow-hidden transition-all duration-300 hover:scale-110 active:scale-95 group relative
                   ${p1.id === char.id ? 'border-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.6)] z-10 scale-105' : 'border-gray-700/50 opacity-50 hover:opacity-100'}

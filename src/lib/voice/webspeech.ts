@@ -5,11 +5,23 @@ type VoiceProfile = { pitch: number; rate: number };
 
 // Maps Gemini voice names to Web Speech pitch/rate adjustments
 const BASE_PROFILES: Record<string, VoiceProfile> = {
-  Charon: { pitch: 0.5, rate: 0.8 },
-  Fenrir: { pitch: 0.7, rate: 0.9 },
-  Puck:   { pitch: 1.3, rate: 1.1 },
-  Kore:   { pitch: 1.5, rate: 1.0 },
-  Aoede:  { pitch: 1.7, rate: 0.85 },
+  Charon:      { pitch: 0.5, rate: 0.8 },
+  Orus:        { pitch: 0.5, rate: 0.75 },
+  Enceladus:   { pitch: 0.6, rate: 0.85 },
+  Iapetus:     { pitch: 0.55, rate: 0.8 },
+  Gacrux:      { pitch: 0.65, rate: 0.9 },
+  Rasalgethi:  { pitch: 0.6, rate: 0.95 },
+  Fenrir:      { pitch: 0.7, rate: 0.9 },
+  Sadachbia:   { pitch: 0.75, rate: 0.95 },
+  Puck:        { pitch: 1.3, rate: 1.1 },
+  Zephyr:      { pitch: 1.2, rate: 1.05 },
+  Umbriel:     { pitch: 1.1, rate: 1.0 },
+  Kore:        { pitch: 1.5, rate: 1.0 },
+  Aoede:       { pitch: 1.7, rate: 0.85 },
+  Leda:        { pitch: 1.4, rate: 0.9 },
+  Erinome:     { pitch: 1.6, rate: 1.05 },
+  Despina:     { pitch: 1.5, rate: 1.1 },
+  Autonoe:     { pitch: 1.55, rate: 1.0 },
 };
 
 const STYLE_OVERRIDES: Record<string, VoiceProfile> = {
@@ -92,7 +104,7 @@ if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
   window.speechSynthesis.onvoiceschanged = () => voiceCache.clear();
 }
 
-const FEMININE_PROFILES = new Set(['Kore', 'Aoede']);
+const FEMININE_PROFILES = new Set(['Kore', 'Aoede', 'Leda', 'Erinome', 'Despina', 'Autonoe']);
 
 export function playWebSpeechEnhanced(
   text: string,
