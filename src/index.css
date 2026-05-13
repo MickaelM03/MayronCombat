@@ -1,5 +1,5 @@
-@import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&family=Inter:wght@400;600;700;900&display=swap');
+@import "tailwindcss";
 
 * {
   box-sizing: border-box;
@@ -123,4 +123,10 @@ body {
 }
 .animate-shake {
   animation: shake 0.4s ease-in-out;
+}
+
+/* Karaoke text sweep animation */
+@keyframes sweep {
+  0% { background-size: 0% 100%; }
+  100% { background-size: 100% 100%; }
 }

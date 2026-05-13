@@ -72,9 +72,10 @@ async function getDB() {
 }
 
 // ─── API URL ────────────────────────────────────────────────
-// In production the API runs on the same host (or a VPS URL).
-// In dev it's localhost:3001. Override with VITE_API_URL env var.
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:3002';
+// Default to relative URL so requests go to the same host as the page,
+// then Vite (dev/preview) proxies /api → backend. Works on mobile via LAN IP.
+// Override with VITE_API_URL only when the backend runs on a different origin.
+const API_BASE = import.meta.env.VITE_API_URL || '';
 
 async function apiPost(path: string, body: unknown): Promise<Response | null> {
   try {
@@ -215,6 +216,19 @@ export async function saveAudioBlob(
     blob,
     format,
   });
+
+  // Sync to backend (fire-and-forget)
+  try {
+    const safeVoice = encodeURIComponent(voiceName);
+    const buffer = await blob.arrayBuffer();
+    fetch(`${API_BASE}/api/battles/${battleId}/audio/${lineIndex}/${safeVoice}?format=${format}`, {
+      method: 'POST',
+      body: buffer,
+      headers: { 'Content-Type': 'application/octet-stream' }
+    }).catch(e => console.warn('[store] Failed to sync audio to backend:', e));
+  } catch (e) {
+    console.warn('[store] Failed to prepare audio for backend sync:', e);
+  }
 }
 
 export async function getAudioBlob(
@@ -223,7 +237,35 @@ export async function getAudioBlob(
   voiceName: string,
 ): Promise<{ blob: Blob; format: AudioFormat } | undefined> {
   const db = await getDB();
-  const entry = await db.get('audio', `${battleId}__${lineIndex}__${voiceName}`);
-  if (!entry) return undefined;
-  return { blob: entry.blob, format: entry.format ?? 'pcm' };
+  const id = `${battleId}__${lineIndex}__${voiceName}`;
+  const entry = await db.get('audio', id);
+  if (entry) {
+    return { blob: entry.blob, format: entry.format ?? 'pcm' };
+  }
+
+  // Try backend
+  try {
+    const safeVoice = encodeURIComponent(voiceName);
+    const res = await fetch(`${API_BASE}/api/battles/${battleId}/audio/${lineIndex}/${safeVoice}`);
+    if (res.ok) {
+      const blob = await res.blob();
+      const formatHeader = res.headers.get('X-Audio-Format') as AudioFormat | null;
+      const format = formatHeader ?? 'pcm';
+      
+      // Save locally to avoid future network requests
+      await db.put('audio', {
+        id,
+        battleId,
+        lineIndex,
+        voiceName,
+        blob,
+        format
+      });
+      return { blob, format };
+    }
+  } catch (e) {
+    console.warn('[store] Failed to fetch audio from backend:', e);
+  }
+
+  return undefined;
 }

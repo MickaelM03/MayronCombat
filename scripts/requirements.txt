@@ -1,0 +1,34 @@
+# MayronCombat — XTTS v2 TTS Server
+# Versions validées sur macOS Intel (Python 3.11, AMD Radeon Pro 580X)
+#
+# INSTALLATION COMPLÈTE :
+#   cd /Volumes/sauv/VPS/MayronCombat/scripts
+#   python3.11 -m venv venv
+#   venv/bin/pip install numba==0.60.0 --only-binary=:all:
+#   venv/bin/pip install -r requirements.txt
+#   COQUI_TOS_AGREED=1 venv/bin/python -c "from TTS.api import TTS; TTS('tts_models/multilingual/multi-dataset/xtts_v2')"
+#   npm run voices   (génère les 31 échantillons vocaux)
+#
+# ENSUITE : npm run dev   (démarre les 3 serveurs d'un coup)
+#
+# Python requis : 3.11 (TTS 0.22.0 exige Python >=3.9,<3.12)
+# NE PAS utiliser Python 3.12+
+
+TTS==0.22.0
+
+# Transformers épinglé <4.50 : 4.50+ retire GenerationMixin de PreTrainedModel,
+# ce qui casse GPT2InferenceModel dans XTTS v2.
+transformers>=4.33.0,<4.50.0
+
+# FastAPI server
+fastapi>=0.111.0
+uvicorn[standard]>=0.30.0
+
+# Audio I/O + pitch shift
+soundfile>=0.12.1
+librosa>=0.10.0
+
+# PyTorch CPU — XTTS v2 utilise ComplexFloat (STFT) non supporté par MPS.
+# Inference forcée sur CPU ; charge correctement sur macOS Intel.
+torch==2.2.2
+torchaudio==2.2.2

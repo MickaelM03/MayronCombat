@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   Sword,
@@ -22,138 +22,38 @@ import {
   Lock,
   X,
   AlertTriangle,
-  Settings2
+  Settings2,
+  Home
 } from 'lucide-react';
 import { GoogleGenAI, Type } from '@google/genai';
+import HomePage from './components/HomePage';
 import NarrativeModeSelector from './components/NarrativeModeSelector';
 import BattleLibrary from './components/BattleLibrary';
 import BatchGenerator from './components/BatchGenerator';
-import VoiceConfigurator, { VoiceOverride } from './components/VoiceConfigurator';
+import VoiceConfigurator, { VoiceOverride, getDefaultAudioSettings, getDefaultEdgeVoice } from './components/VoiceConfigurator';
 import { NarrativeMode, NARRATIVE_MODE_META, getNarrativeDirectives, getNarrativeModeLabel } from './lib/battles/prompts';
 import { saveBattle, saveAudioBlob, getAudioBlob, SavedBattle } from './lib/battles/store';
+import StoryConfigurator from './components/StoryMode/StoryConfigurator';
+import StoryViewer from './components/StoryMode/StoryViewer';
+import StoryLibrary from './components/StoryMode/StoryLibrary';
+import { getStoryDirectives, StoryChapterJSON } from './lib/story/prompts';
+import { saveStory, updateStory, getStory, getStoryAudio, saveStoryAudio, SavedStory, StoryLine } from './lib/story/store';
 import { playWebSpeechEnhanced } from './lib/voice/webspeech';
-import { playPiperTTS, warmUpPiper } from './lib/voice/piper';
+import { playPiperTTS, getPiperBlob, PIPER_STYLE_ADJUSTMENTS } from './lib/voice/piper';
+import { tryXttsAudio, xttsSynthesize } from './lib/voice/xtts';
+import { tryElevenLabsAudio, fetchElevenLabsStatus } from './lib/voice/elevenlabs';
+import { tryEdgeAudio } from './lib/voice/edgetts';
+import { tryGCloudAudio } from './lib/voice/gcloudtts';
+import { tryHuggingFaceAudio } from './lib/voice/huggingface';
+import { CHARACTERS, ARENAS, STYLES, STYLE_PROMPTS } from './lib/constants';
 
 // --- CONFIGURATION DU ROSTER (Le Multivers) ---
 
-const CHARACTERS = [
-  // VOIX GEMINI TTS diversifiées : 15+ voix uniques parmi les 30 disponibles
-  // Graves/menaçantes : Charon, Orus, Enceladus | Puissantes : Fenrir, Sadachbia, Rasalgethi
-  // Jeunes/agiles : Puck, Zephyr, Umbriel | Féminines : Kore, Aoede, Leda, Erinome, Despina, Autonoe
-  { id: 'homer', name: 'Homer Simpson', faction: 'Simpsons', img: '/images/homer_generic_sf_1778417069953.png', color: 'from-yellow-400 to-orange-500', voice: 'Enceladus', voiceStyle: 'idiot' },
-  { id: 'bart', name: 'Bart Simpson', faction: 'Simpsons', img: '/images/bart_generic_sf_1778417084932.png', color: 'from-orange-500 to-red-500', voice: 'Zephyr', voiceStyle: 'enfant' },
-  { id: 'adele', name: 'Mortelle Adèle', faction: 'Cartoon', img: '/images/adele_generic_sf_1778417097290.png', color: 'from-red-600 to-purple-800', voice: 'Erinome', voiceStyle: 'enfant_diabolique' },
-  { id: 'steve', name: 'Steve', faction: 'Minecraft', img: '/images/steve_sf_1778417051770.png', color: 'from-green-700 to-emerald-900', voice: 'Umbriel', voiceStyle: 'gamer' },
-  { id: 'franklin', name: 'Franklin', faction: 'GTA', img: '/images/franklin_sf_1778417110721.png', color: 'from-emerald-800 to-black', voice: 'Sadachbia', voiceStyle: 'gangster' },
-  { id: 'papa', name: 'Papa', faction: 'Family', img: '/images/papa_sf_1778417131723.png', color: 'from-blue-800 to-indigo-900', voice: 'Fenrir', voiceStyle: 'papa' },
-  { id: 'maman', name: 'Maman', faction: 'Family', img: '/images/maman_sf_1778417144541.png', color: 'from-pink-600 to-purple-600', voice: 'Leda', voiceStyle: 'maman' },
-  { id: 'clara', name: 'Clara', faction: 'Family', img: 'https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?w=400&h=600&fit=crop', color: 'from-purple-500 to-fuchsia-700', voice: 'Despina', voiceStyle: 'ado_fille' },
-  { id: 'mayron', name: 'Mayron', faction: 'Family', img: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=600&fit=crop', color: 'from-cyan-500 to-blue-700', voice: 'Puck', voiceStyle: 'ado_garcon' },
-  { id: 'chat', name: 'Le Chat', faction: 'Animals', img: '/images/le_chat_sf_1778416951561.png', color: 'from-gray-800 to-black', voice: 'Zephyr', voiceStyle: 'animal' },
-  { id: 'voisin', name: 'Le Voisin Relou', faction: 'Banlieue', img: '/images/voisin_relou_street_fighter_1778416835801.png', color: 'from-gray-400 to-gray-600', voice: 'Gacrux', voiceStyle: 'raleur' },
-  { id: 'livreur', name: 'Livreur UberEats', faction: 'Précaire', img: '/images/livreur_ubereats_sf_1778416904964.png', color: 'from-green-500 to-green-700', voice: 'Umbriel', voiceStyle: 'presse' },
-  { id: 'influenceuse', name: 'Influenceuse Drama', faction: 'Réseaux', img: '/images/influenceuse_drama_sf_1778416919814.png', color: 'from-pink-400 to-pink-600', voice: 'Autonoe', voiceStyle: 'drama_queen' },
-  { id: 'banquier', name: 'Le Banquier', faction: 'Capitalisme', img: '/images/le_banquier_sf_1778416934105.png', color: 'from-slate-700 to-slate-900', voice: 'Orus', voiceStyle: 'autoritaire' },
-  { id: 'tonton', name: 'Tonton Bourré', faction: 'Family', img: '/images/tonton_bourre_sf_1778416951155.png', color: 'from-amber-600 to-orange-800', voice: 'Iapetus', voiceStyle: 'ivre' },
-  { id: 'rick', name: 'Rick Sanchez', faction: 'Sci-Fi', img: '/images/rick_sf.png', color: 'from-cyan-400 to-blue-600', voice: 'Rasalgethi', voiceStyle: 'scientifique_fou' },
-  { id: 'morty', name: 'Morty Smith', faction: 'Sci-Fi', img: '/images/morty_sf.png', color: 'from-yellow-300 to-yellow-500', voice: 'Puck', voiceStyle: 'nerveux' },
-  { id: 'goku', name: 'Son Goku', faction: 'Anime', img: '/images/goku_sf.png', color: 'from-orange-400 to-blue-600', voice: 'Fenrir', voiceStyle: 'guerrier' },
-  { id: 'pikachu', name: 'Pikachu', faction: 'Pokemon', img: '/images/pikachu_sf.png', color: 'from-yellow-400 to-yellow-600', voice: 'Zephyr', voiceStyle: 'creature' },
-  { id: 'john_wick', name: 'John Wick', faction: 'Action', img: '/images/johnwick_sf.png', color: 'from-gray-700 to-black', voice: 'Charon', voiceStyle: 'froid' },
-  { id: 'shrek', name: 'Shrek', faction: 'Fantasy', img: '/images/shrek_sf.png', color: 'from-green-500 to-lime-700', voice: 'Enceladus', voiceStyle: 'ogre' },
-  { id: 'lara', name: 'Lara Croft', faction: 'Adventure', img: '/images/lara_sf.png', color: 'from-brown-500 to-gray-800', voice: 'Kore', voiceStyle: 'aventuriere' },
-  { id: 'walter', name: 'Walter White', faction: 'Drama', img: '/images/walter_sf.png', color: 'from-yellow-600 to-slate-900', voice: 'Orus', voiceStyle: 'menacant' },
-  { id: 'spiderman', name: 'Spider-Man', faction: 'Marvel', img: '/images/spiderman_sf.png', color: 'from-red-600 to-blue-800', voice: 'Umbriel', voiceStyle: 'hero_jeune' },
-  { id: 'mercredi', name: 'Mercredi Addams', faction: 'Gothic', img: '/images/mercredi_sf.png', color: 'from-gray-900 to-black', voice: 'Aoede', voiceStyle: 'monotone' },
-  { id: 'denis_survivor', name: 'Denis le Survivant', faction: 'TV', img: '/images/denis_survivor_sf.png', color: 'from-orange-500 to-red-700', voice: 'Sadachbia', voiceStyle: 'autoritaire' },
-  { id: 'mme_monique', name: 'Mme Monique', faction: 'Éducation', img: '/images/mme_monique_sf.png', color: 'from-blue-600 to-indigo-900', voice: 'Leda', voiceStyle: 'raleur' },
-  { id: 'luffy_gear5', name: 'Luffy Gear 5', faction: 'Anime', img: '/images/luffy_gear5_sf.png', color: 'from-yellow-200 to-slate-100', voice: 'Zephyr', voiceStyle: 'hero_jeune' },
-  { id: 'gilet_jaune', name: 'Didier la Manif', faction: 'Politique', img: '/images/gilet_jaune_sf.png', color: 'from-yellow-400 to-yellow-600', voice: 'Gacrux', voiceStyle: 'raleur' },
-  { id: 'jul_alien', name: 'L\'Alien de Marseille', faction: 'Musique', img: '/images/jul_alien_sf.png', color: 'from-blue-400 to-cyan-600', voice: 'Sadachbia', voiceStyle: 'gangster' },
-  { id: 'rat_gouttiere', name: 'Rat d\'Égout', faction: 'Cuisine', img: '/images/rat_gouttiere_sf.png', color: 'from-gray-600 to-gray-800', voice: 'Puck', voiceStyle: 'creature' },
-];
+// Constants are now imported from ./lib/constants
 
-const STYLES = [
-  { id: 'boxing', name: 'Boxe Anglaise', icon: <Zap size={16} /> },
-  { id: 'griefing', name: 'Minecraft Griefing (TNT)', icon: <Trash2 size={16} /> },
-  { id: 'cleaning', name: 'Ménage Express (Balai)', icon: <Sword size={16} /> },
-  { id: 'brawl', name: 'GTA Brawl (Batte)', icon: <User size={16} /> },
-  { id: 'sarcasm', name: 'Sarcasme Mortel', icon: <Shield size={16} /> },
-  { id: 'krav_maga', name: 'Krav Maga de Comptoir', icon: <Target size={16} /> },
-  { id: 'capoeira', name: 'Capoeira Foirée', icon: <Swords size={16} /> },
-  { id: 'catch', name: 'Catch PMU', icon: <Flame size={16} /> },
-  { id: 'bac_sable', name: 'Arts Martiaux de Bac à Sable', icon: <User size={16} /> },
-  { id: 'judo_soiree', name: 'Judo de Fin de Soirée', icon: <Zap size={16} /> },
-  { id: 'lutte_crocs', name: 'Lutte en Crocs', icon: <Zap size={16} /> },
-  { id: 'fuite', name: 'Technique "J\'ai pas le temps"', icon: <Clock size={16} /> },
-  { id: 'nerf', name: 'Tir au Pigeon (Nerf)', icon: <Target size={16} /> },
-  { id: 'magie_noire', name: 'Magie Noire de Wish', icon: <Skull size={16} /> },
-  { id: 'kamehameha', name: 'Kamehameha', icon: <Zap size={16} /> },
-  { id: 'portal_gun', name: 'Pistolet à Portails', icon: <MapPin size={16} /> },
-  { id: 'pencil', name: 'Le Crayon (John Wick)', icon: <Sword size={16} /> },
-  { id: 'thunderbolt', name: 'Tonnerre (Électrique)', icon: <Zap size={16} /> },
-  { id: 'dance_battle', name: 'Danse de Combat', icon: <Music size={16} /> },
-  { id: 'baguette_style', name: 'Art de la Baguette', icon: <Sword size={16} /> },
-  { id: 'scooter_clash', name: 'Trottinette Fury', icon: <Zap size={16} /> },
-  { id: 'keyboard_bash', name: 'Guerrier du Clavier', icon: <Target size={16} /> },
-  { id: 'flip_flop_fury', name: 'Lancer de Savate', icon: <Flame size={16} /> },
-  { id: 'cerfa_attack', name: 'Bureaucratie Fatale', icon: <Skull size={16} /> },
-];
-
-// Persona riches transmises à Gemini TTS au format documenté Google :
-// "Lis à voix haute <persona descriptive>: \"<texte>\""
-// La persona + l'émotion guident Gemini pour produire une voix naturelle et incarnée
-// plutôt qu'une simple lecture neutre.
-const STYLE_PROMPTS: Record<string, string> = {
-  idiot:             "comme un homme adulte gros et très bête qui articule mal. Voix grasse, traînante, lente. Il mâchouille ses mots et semble confus en permanence. Ton ridicule et naïf",
-  enfant:            "comme un gamin insolent de 10 ans plein d'énergie. Voix aiguë, provocatrice, moqueuse. Il ricane entre ses phrases et parle vite avec un ton espiègle",
-  enfant_diabolique: "comme une petite fille de 8 ans à la voix douce et mignonne, mais avec une intention sinistre qui transparaît. Elle passe d'un ton adorable à un rire inquiétant",
-  gamer:             "comme un jeune gamer surexcité en plein stream. Débit rapide, voix nasillarde et énergique. Il crie les moments épiques avec enthousiasme",
-  gangster:          "comme un gangster de quartier charismatique et tranquille. Voix grave, nonchalante avec une menace sous-jacente. Argot relâché, pauses calculées entre les phrases",
-  papa:              "comme un père de famille protecteur et bienveillant. Voix grave, chaleureuse mais ferme. Articulation solide, ton rassurant qui peut devenir autoritaire",
-  maman:             "comme une mère agacée mais aimante. Voix féminine autoritaire et pressée, avec des soupirs entre les phrases. Puis redevient douce et maternelle",
-  ado_fille:         "comme une adolescente de 15 ans sarcastique qui lève les yeux au ciel. Voix chantante et traînante avec une intonation montante en fin de phrase. Ton ironique",
-  ado_garcon:        "comme un adolescent de 14 ans dont la voix mue. Il alterne entre le grave et l'aigu involontairement. Un peu hésitant mais essaie d'être cool et désinvolte",
-  animal:            "comme un chat agressif qui gronde et feule. Voix gutturale mélangée à des miaulements féroces et des grognements. Il crache entre les mots avec hostilité",
-  raleur:            "comme un vieux Français de 60 ans qui râle sur tout. Voix sèche et traînarde. Il commence chaque phrase par un soupir agacé et marmonne avec mécontentement",
-  presse:            "comme un livreur essoufflé qui court partout. Voix saccadée et précipitée avec une respiration courte audible entre les mots. Il est stressé par le temps",
-  drama_queen:       "comme une influenceuse hystérique au bord des larmes. Elle exagère absolument tout. Soupirs dramatiques, voix qui tremble d'émotion et qui monte dans les aigus",
-  autoritaire:       "comme un patron sévère et intransigeant. Voix grave, très articulée et sèche. Chaque mot tombe comme un verdict. Ton de commandement absolu",
-  ivre:              "comme un homme complètement ivre qui bafouille. Élocution très pâteuse, les mots dérapent et se mélangent. Il perd le fil de ses phrases et hoquète",
-  scientifique_fou:  "comme un génie cynique et intellectuellement supérieur. Voix légèrement éraillée, ton sarcastique et méprisant. Il parle vite et de manière condescendante",
-  nerveux:           "comme un jeune homme paniqué et très anxieux. Voix tremblante et aiguë, il bégaie et hésite. Débit haché et stressé comme s'il hyperventilait",
-  guerrier:          "comme un guerrier puissant en plein combat qui crie chaque attaque avec rage et puissance. Voix forte saturée d'effort et de détermination absolue",
-  creature:          "comme un petit pokémon mignon qui couine. Voix très aiguë et stridente mais adorable. Il ne dit que des variations de sons mignons avec différentes émotions",
-  froid:             "comme un tueur professionnel d'un calme mortel. Voix très basse, presque chuchotée, glaçante. Chaque mot est prononcé lentement avec des pauses menaçantes",
-  ogre:              "comme un ogre rustique massif. Voix très grave et rauque avec un accent campagnard épais. Il rit grassement et articule de manière lourde et pesante",
-  aventuriere:       "comme une exploratrice intrépide en pleine action. Voix féminine assurée et déterminée, légèrement essoufflée. Enthousiaste face au danger et à l'aventure",
-  menacant:          "comme un homme dangereux et calculateur qui parle très lentement. Il articule chaque syllabe avec une menace pesante et calme qui fait froid dans le dos",
-  hero_jeune:        "comme un jeune super-héros optimiste et courageux. Voix énergique, enthousiaste et brave. Ton positif et déterminé, prêt à sauver le monde",
-  monotone:          "comme une jeune femme gothique au ton parfaitement plat sans aucune émotion. Aucune variation dans la voix, légèrement inquiétant par son absence totale d'affect",
-};
-
-const ARENAS = [
-  { id: 'living_room', name: 'Le Salon de la Maison', img: 'https://images.unsplash.com/photo-1567016432779-094069958ea5?w=1200' },
-  { id: 'springfield', name: 'Springfield Centrale', img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200' },
-  { id: 'los_santos', name: 'Rues de Los Santos', img: 'https://images.unsplash.com/photo-1533929736458-ca588d08c8be?w=1200' },
-  { id: 'nether', name: 'Le Nether', img: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=1200' },
-  { id: 'pmu', name: 'Le PMU du Coin', img: '/images/pmu_du_coin_sf_1778416966206.png' },
-  { id: 'parking', name: 'Parking du Supermarché', img: 'https://images.unsplash.com/photo-1506521781263-d8422e82f27a?w=1200' },
-  { id: 'caf', name: 'File d\'Attente de la CAF', img: 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=1200' },
-  { id: 'space', name: 'Station Spatiale Alpha', img: 'https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?w=1200' },
-  { id: 'cyberpunk', name: 'Neo-Tokyo 2077', img: '/images/neotokyo_sf.png' },
-  { id: 'hogwarts', name: 'Poudlard', img: '/images/hogwarts_sf.png' },
-  { id: 'colosseum', name: 'Colisée de Rome', img: 'https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=1200' },
-  { id: 'forest', name: 'Forêt Mystique', img: 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1200' },
-  { id: 'beach', name: 'Plage de Copacabana', img: 'https://images.unsplash.com/photo-1519046904884-53103b34b206?w=1200' },
-  { id: 'boulangerie', name: 'Boulangerie Tradition', img: '/images/boulangerie_arena.png' },
-  { id: 'metro_paris', name: 'Ligne 13', img: '/images/metro_paris_arena.png' },
-  { id: 'plateau_tv', name: 'Le 20 Heures', img: '/images/plateau_tv_arena.png' },
-  { id: 'gaulois_village', name: 'Village des Résistants', img: '/images/gaulois_village_arena.png' },
-];
 
 const MOCK_BATTLE = {
-  intro: { text: "Arbitre: Bienvenue dans l'arène pour ce combat de DÉMONSTRATION ! Préparez-vous, ça va chier !", speaker: "Arbitre" },
+  intro: { text: "Bienvenue dans l'arène pour ce combat de DÉMONSTRATION ! Préparez-vous, ça va chier !", speaker: "Arbitre" },
   rounds: [
     {
       title: "ROUND 1",
@@ -165,21 +65,24 @@ const MOCK_BATTLE = {
     {
       title: "ROUND 2",
       dialogues: [
-        { speaker: "Arbitre", text: "Arbitre: ROUND 2... BASTON !", action: "Gong" },
+        { speaker: "Arbitre", text: "ROUND 2... BASTON !", action: "Gong" },
         { speaker: "Joueur 1", text: "Joueur 1: COMBO D'IMAGES ! PRENDS ÇA DANS TES DENTS !", action: "Attaque Spéciale" },
         { speaker: "Joueur 2", text: "Joueur 2: Aïe ! Putain ça pique !", action: "Encaisse" }
       ]
     }
   ],
   winner: "Le Joueur de Démo",
-  finishingMove: { type: "FATALITY", description: "Arbitre: DEMO-TALITY! Le combat se termine dans un bain de sang pixelisé !", speaker: "Arbitre" },
-  conclusion: { text: "Arbitre: Mettez une clé API si vous voulez la vraie violence !", speaker: "Arbitre" }
+  finishingMove: { type: "FATALITY", description: "DEMO-TALITY! Le combat se termine dans un bain de sang pixelisé !", speaker: "Arbitre" },
+  conclusion: { text: "Mettez une clé API si vous voulez la vraie violence !", speaker: "Arbitre" }
 };
 
 // --- COMPOSANT PRINCIPAL ---
 
 export default function App() {
+  const [appMode, setAppMode] = useState<'HOME' | 'BRAWLER' | 'STORY_CONFIG' | 'STORY_PLAY' | 'STORY_LIBRARY'>('HOME');
   const [gameState, setGameState] = useState<'SETUP' | 'LOADING' | 'COMBAT' | 'ERROR'>('SETUP');
+  const [currentStory, setCurrentStory] = useState<SavedStory | null>(null);
+  const [isGeneratingStory, setIsGeneratingStory] = useState(false);
 
   const [p1, setP1] = useState(CHARACTERS[0]);
   const [p2, setP2] = useState(CHARACTERS[1]);
@@ -191,8 +94,16 @@ export default function App() {
   const [battleData, setBattleData] = useState<any>(null);
   const [currentStep, setCurrentStep] = useState(0);
   const [activeLineIdx, setActiveLineIdx] = useState<number>(-1);
+  const [bufferingIdx, setBufferingIdx] = useState<number>(-1);
+  // Index up to which dialogue lines have been revealed in the current step.
+  // Prevents the on-screen text from racing ahead of the voice playback.
+  const [revealedIdx, setRevealedIdx] = useState<number>(-1);
+  // Tier (moteur TTS) en cours pour la ligne active — alimente le badge.
+  const [currentTier, setCurrentTier] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState("");
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [activeLineDuration, setActiveLineDuration] = useState<number>(0);
+  const [storySpeed, setStorySpeed] = useState<number>(1.0);
   const [voiceEnabled, setVoiceEnabled] = useState(true);
   const [musicEnabled, setMusicEnabled] = useState(false);
   const [tempApiKey, setTempApiKey] = useState<string>(() =>
@@ -246,40 +157,123 @@ export default function App() {
     setP2(prev => withVoiceOverride(CHARACTERS.find(c => c.id === prev.id) || prev));
   }, [voiceOverrides]);
 
+  // Piper warmup désactivé au démarrage : déclenche une SecurityError OPFS dans vits-web
+  // (le worker cross-origin ne peut pas accéder à OPFS).
+  // Les modèles Piper se chargent à la première utilisation réelle, c'est acceptable.
+
+  // Détection ElevenLabs au démarrage (clé API + nombre de voix mappées)
+  useEffect(() => {
+    fetchElevenLabsStatus().catch(() => {});
+  }, []);
+
   // Test a voice from the configurator (with fine-tuned params)
-  const testVoice = async (text: string, voiceName: string, voiceStyle: string, params: VoiceOverride) => {
+  const testVoice = async (text: string, voiceName: string, voiceStyle: string, params: VoiceOverride, charId?: string) => {
     const audioCtx = getAudioCtx();
-    const apiKey = process.env.GEMINI_API_KEY || tempApiKey;
     const cleanText = text.replace(/^[^:]+:\s*/, '');
 
-    // Use custom prompt override if provided
-    const effectiveStyle = params.customPrompt?.trim() ? '__custom__' : voiceStyle;
-    const originalStylePrompts = { ...STYLE_PROMPTS };
     if (params.customPrompt?.trim()) {
       STYLE_PROMPTS['__custom__'] = params.customPrompt.trim();
     }
 
+    // When the user has flipped "voix par défaut" we bypass every cloning tier
+    // so the preview matches what the combat will actually play.
+    const useDefault = params.useDefaultVoice === true;
+    const forcedProvider = params.provider && params.provider !== 'auto' ? params.provider : null;
+
     try {
-      if (apiKey) {
-        const blob = await fetchGeminiAudio(cleanText, voiceName, effectiveStyle, apiKey);
-        if (blob) {
-          await playPcmBlobWithParams(blob, 'pcm', params);
+      // ─── Provider forcé en premier (préview = combat réel) ───
+      if (forcedProvider === 'edge') {
+        const b = await tryEdgeAudio(cleanText, params.providerVoiceId);
+        if (b) { await playPcmBlobWithParams(b, 'wav', params); return; }
+        throw new Error('Edge TTS failed or returned empty blob');
+      } else if (forcedProvider === 'gcloud') {
+        const b = await tryGCloudAudio(cleanText, params.providerVoiceId);
+        if (b) { await playPcmBlobWithParams(b, 'wav', params); return; }
+        throw new Error('GCloud TTS failed');
+      } else if (forcedProvider === 'hf') {
+        const b = await tryHuggingFaceAudio(cleanText);
+        if (b) { await playPcmBlobWithParams(b, 'wav', params); return; }
+        throw new Error('HF TTS failed');
+      } else if (forcedProvider === 'piper') {
+        const b = await getPiperBlob(cleanText, voiceName);
+        if (b) { await playPcmBlobWithParams(b, 'wav', params); return; }
+        throw new Error('Piper TTS failed');
+      } else if (forcedProvider === 'elevenlabs') {
+        const b = await tryElevenLabsAudio(cleanText, charId);
+        if (b) { await playPcmBlobWithParams(b, 'wav', params); return; }
+        throw new Error('ElevenLabs TTS failed');
+      } else if (forcedProvider === 'xtts') {
+        const b = await tryXttsAudio(cleanText, charId);
+        if (b) { await playPcmBlobWithParams(b, 'wav', params); return; }
+        throw new Error('XTTS failed');
+      }
+      // forcedProvider === 'gemini' → tombera sur le bloc Gemini ci-dessous.
+
+      // Priorité 1 : ElevenLabs (voix clonée pro, ~1-2s, qualité maximale)
+      if (!useDefault && !forcedProvider) {
+        const elBlob = await tryElevenLabsAudio(cleanText, charId);
+        if (elBlob) {
+          await playPcmBlobWithParams(elBlob, 'wav', params);
+          return;
+        }
+
+        // Priorité 2 : sample WAV pré-généré (instantané, 100% local — sonne authentique
+        // mais NE clone PAS : c'est l'extrait original, le combat utilisera autre chose)
+        if (charId) {
+          try {
+            const sampleRes = await fetch(`/api/voice-sample/${encodeURIComponent(charId)}`, {
+              signal: AbortSignal.timeout(3_000),
+            });
+            if (sampleRes.ok) {
+              const blob = await sampleRes.blob();
+              await playPcmBlobWithParams(blob, 'wav', params);
+              return;
+            }
+          } catch { /* sample absent ou serveur hors ligne → fallback */ }
+        }
+
+        // Priorité 3 : XTTS local (voix clonée, requiert le serveur Python)
+        const xttsBlob = await tryXttsAudio(cleanText, charId);
+        if (xttsBlob) {
+          await playPcmBlobWithParams(xttsBlob, 'wav', params);
           return;
         }
       }
-      // Piper fallback
+
+      // Priorité Gemini (si clé API) — applique la persona/style sur la voix curatée.
+      const apiKey = process.env.GEMINI_API_KEY || tempApiKey;
+      if (apiKey) {
+        const effectiveStyle = params?.customPrompt?.trim() ? '__custom__' : voiceStyle;
+        const gBlob = await fetchGeminiAudio(cleanText, voiceName, effectiveStyle, apiKey);
+        if (gBlob) {
+          await playPcmBlobWithParams(gBlob, 'pcm', params);
+          return;
+        }
+      }
+
+      // Edge TTS — gratuit, illimité, voix française fluide. Fallback de luxe
+      // si Gemini a épuisé son quota du jour.
+      {
+        const edgeBlob = await tryEdgeAudio(cleanText, params.providerVoiceId);
+        if (edgeBlob) {
+          await playPcmBlobWithParams(edgeBlob, 'wav', params);
+          return;
+        }
+      }
+
+      // Priorité 3 : Piper WASM (synthèse locale, chargement initial ~10s)
       const gainNode = audioCtx.createGain();
-      gainNode.gain.setValueAtTime(params.volume ?? 1.0, audioCtx.currentTime);
-      gainNode.connect(audioCtx.destination);
+      gainNode.gain.setValueAtTime((params.volume ?? 1.0) * 0.75, audioCtx.currentTime);
+      gainNode.connect(getCompressor(audioCtx));
       try {
         await playPiperTTS(cleanText, voiceName, voiceStyle, audioCtx, gainNode);
       } catch {
+        // Priorité 4 : Web Speech API (voix système, toujours dispo)
         await playWebSpeechEnhanced(cleanText, voiceName, voiceStyle);
       } finally {
         try { gainNode.disconnect(); } catch {}
       }
     } finally {
-      // Restore style prompts (delete the temporary custom entry)
       delete STYLE_PROMPTS['__custom__'];
     }
   };
@@ -369,14 +363,35 @@ export default function App() {
   const getAudioCtx = () => {
     if (!audioContextRef.current) {
       audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
-      // Warm up Piper models in background on first user interaction
-      warmUpPiper();
     }
     if (audioContextRef.current.state === 'suspended') {
       audioContextRef.current.resume();
     }
     return audioContextRef.current;
   };
+
+  // Helper to merge overrides with sensible defaults based on voiceStyle and voiceName
+  const buildParams = useCallback((charId: string, charVoice: string, charVoiceStyle: string) => {
+    const ovr = voiceOverrides[charId];
+    const defaultAudio = getDefaultAudioSettings(charVoiceStyle);
+    const defaultEdge = getDefaultEdgeVoice(charVoice, charVoiceStyle);
+    
+    return {
+      voice: ovr?.voice ?? charVoice,
+      voiceStyle: ovr?.voiceStyle ?? charVoiceStyle,
+      customPrompt: ovr?.customPrompt ?? '',
+      pitchShift: ovr?.pitchShift ?? defaultAudio.pitchShift,
+      playbackRate: ovr?.playbackRate ?? defaultAudio.playbackRate,
+      webPitch: ovr?.webPitch ?? 1.0,
+      volume: ovr?.volume ?? 1.0,
+      useDefaultVoice: ovr?.useDefaultVoice ?? false,
+      provider: ovr?.provider ?? 'edge',
+      providerVoiceId: ovr?.providerVoiceId ?? defaultEdge,
+      bass: ovr?.bass ?? defaultAudio.bass,
+      mid: ovr?.mid ?? defaultAudio.mid,
+      treble: ovr?.treble ?? defaultAudio.treble,
+    } as VoiceOverride;
+  }, [voiceOverrides]);
 
   const getVoiceForSpeaker = (speaker: string): { 
     voiceName: string; 
@@ -385,28 +400,52 @@ export default function App() {
     params?: VoiceOverride 
   } => {
     const speakerLower = speaker.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-    
+
     // Check P1
     const p1NameLower = p1.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     if (speakerLower.includes(p1NameLower) || p1NameLower.includes(speakerLower)) {
-      return { voiceName: p1.voice, voiceStyle: p1.voiceStyle, charId: p1.id, params: voiceOverrides[p1.id] };
+      return { voiceName: p1.voice, voiceStyle: p1.voiceStyle, charId: p1.id, params: buildParams(p1.id, p1.voice, p1.voiceStyle) };
     }
     // Check P2
     const p2NameLower = p2.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     if (speakerLower.includes(p2NameLower) || p2NameLower.includes(speakerLower)) {
-      return { voiceName: p2.voice, voiceStyle: p2.voiceStyle, charId: p2.id, params: voiceOverrides[p2.id] };
+      return { voiceName: p2.voice, voiceStyle: p2.voiceStyle, charId: p2.id, params: buildParams(p2.id, p2.voice, p2.voiceStyle) };
     }
     // Also check partial names
     const p1FirstWord = p1NameLower.split(/[\s-]/)[0];
     const p2FirstWord = p2NameLower.split(/[\s-]/)[0];
     if (p1FirstWord.length > 2 && speakerLower.includes(p1FirstWord)) {
-      return { voiceName: p1.voice, voiceStyle: p1.voiceStyle, charId: p1.id, params: voiceOverrides[p1.id] };
+      return { voiceName: p1.voice, voiceStyle: p1.voiceStyle, charId: p1.id, params: buildParams(p1.id, p1.voice, p1.voiceStyle) };
     }
     if (p2FirstWord.length > 2 && speakerLower.includes(p2FirstWord)) {
-      return { voiceName: p2.voice, voiceStyle: p2.voiceStyle, charId: p2.id, params: voiceOverrides[p2.id] };
+      return { voiceName: p2.voice, voiceStyle: p2.voiceStyle, charId: p2.id, params: buildParams(p2.id, p2.voice, p2.voiceStyle) };
     }
+
+    // Story Mode Characters (fallback if not p1/p2)
+    if (currentStory) {
+      for (const id of currentStory.characterIds) {
+        const char = CHARACTERS.find(c => c.id === id);
+        if (char) {
+          const nameLower = char.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+          if (speakerLower.includes(nameLower) || nameLower.includes(speakerLower)) {
+            return { voiceName: char.voice, voiceStyle: char.voiceStyle, charId: char.id, params: buildParams(char.id, char.voice, char.voiceStyle) };
+          }
+        }
+      }
+    }
+
     // Default: Arbitre voice
-    return { voiceName: 'Aoede', voiceStyle: '' };
+    const arbitreStyle = '';
+    return { voiceName: 'Aoede', voiceStyle: arbitreStyle, params: {
+      voice: 'Aoede',
+      voiceStyle: arbitreStyle,
+      pitchShift: 0,
+      playbackRate: 1.0,
+      volume: 1.0,
+      provider: 'edge',
+      providerVoiceId: getDefaultEdgeVoice('Aoede', arbitreStyle),
+      bass: 0, mid: 0, treble: 0
+    } as VoiceOverride };
   };
 
   // Fallback offline : Web Speech API avec profils de voix distinctifs par personnage
@@ -417,58 +456,155 @@ export default function App() {
     });
   };
 
+  // Loudness normalization: bring every source (ElevenLabs, sample WAV, XTTS,
+  // Piper, etc.) to a comparable RMS so a quiet ElevenLabs line is not followed
+  // by a thundering Piper one. Target ~ -16 dBFS, clamped to a safe range.
+  const computeNormGain = (buffer: AudioBuffer, targetRms = 0.15): number => {
+    let sum = 0;
+    let count = 0;
+    for (let c = 0; c < buffer.numberOfChannels; c++) {
+      const d = buffer.getChannelData(c);
+      // Sample every 4th frame — plenty for an RMS estimate, 4x cheaper.
+      for (let i = 0; i < d.length; i += 4) {
+        sum += d[i] * d[i];
+        count++;
+      }
+    }
+    if (count === 0) return 1.0;
+    const rms = Math.sqrt(sum / count);
+    if (rms < 1e-4) return 1.0;
+    return Math.min(3.5, Math.max(0.4, targetRms / rms));
+  };
+
+  // Shared compressor: tames peaks, keeps perceived loudness steady across sources.
+  const compressorRef = useRef<DynamicsCompressorNode | null>(null);
+  const getCompressor = (audioCtx: AudioContext): DynamicsCompressorNode => {
+    if (compressorRef.current && (compressorRef.current as any).context === audioCtx) {
+      return compressorRef.current;
+    }
+    const comp = audioCtx.createDynamicsCompressor();
+    comp.threshold.setValueAtTime(-20, audioCtx.currentTime);
+    comp.knee.setValueAtTime(8, audioCtx.currentTime);
+    comp.ratio.setValueAtTime(4, audioCtx.currentTime);
+    comp.attack.setValueAtTime(0.005, audioCtx.currentTime);
+    comp.release.setValueAtTime(0.12, audioCtx.currentTime);
+    comp.connect(audioCtx.destination);
+    compressorRef.current = comp;
+    return comp;
+  };
+
   const playPcmBlobWithParams = (
     blob: Blob,
     format: 'pcm' | 'wav',
-    params: VoiceOverride
+    params: VoiceOverride,
+    speedMultiplier: number = 1.0,
+    onStart?: (durationSeconds: number) => void
   ): Promise<void> => {
-    return new Promise(async (resolve) => {
+    return new Promise(async (resolve, reject) => {
       const audioCtx = getAudioCtx();
       const arrayBuffer = await blob.arrayBuffer();
 
       let audioBuffer: AudioBuffer;
-      if (format === 'wav') {
-        audioBuffer = await audioCtx.decodeAudioData(arrayBuffer.slice(0));
-      } else {
-        const int16Array = new Int16Array(arrayBuffer);
-        audioBuffer = audioCtx.createBuffer(1, int16Array.length, 24000);
-        const channelData = audioBuffer.getChannelData(0);
-        for (let i = 0; i < int16Array.length; i++) {
-          channelData[i] = int16Array[i] / 32768.0;
+      try {
+        if (format === 'wav') {
+          audioBuffer = await audioCtx.decodeAudioData(arrayBuffer.slice(0));
+        } else {
+          const int16Array = new Int16Array(arrayBuffer);
+          audioBuffer = audioCtx.createBuffer(1, int16Array.length, 24000);
+          const channelData = audioBuffer.getChannelData(0);
+          for (let i = 0; i < int16Array.length; i++) {
+            channelData[i] = int16Array[i] / 32768.0;
+          }
+          // Micro fade-in/out (3ms) to prevent clicks between lines
+          const fade = Math.min(72, Math.floor(int16Array.length / 8));
+          for (let i = 0; i < fade; i++) {
+            const t = i / fade;
+            channelData[i] *= t;
+            channelData[int16Array.length - 1 - i] *= t;
+          }
         }
-        // Micro fade-in/out (3ms) to prevent clicks between lines
-        const fade = Math.min(72, Math.floor(int16Array.length / 8));
-        for (let i = 0; i < fade; i++) {
-          const t = i / fade;
-          channelData[i] *= t;
-          channelData[int16Array.length - 1 - i] *= t;
-        }
+      } catch (err) {
+        console.error('[voice] Error decoding audio blob. Invalid format or corrupted cache:', err);
+        reject(err);
+        return;
       }
 
       try { currentAudioSource.current?.stop(); } catch { /* already stopped */ }
-      
+
+      const normGain = computeNormGain(audioBuffer);
       const gainNode = audioCtx.createGain();
-      gainNode.gain.setValueAtTime(params.volume ?? 1.0, audioCtx.currentTime);
-      gainNode.connect(audioCtx.destination);
-      
+      gainNode.gain.setValueAtTime((params.volume ?? 1.0) * normGain, audioCtx.currentTime);
+      gainNode.connect(getCompressor(audioCtx));
+
       const source = audioCtx.createBufferSource();
       source.buffer = audioBuffer;
-      
+
       // Pitch shift via playbackRate: semitones to ratio
       // semitones = 12 * log2(ratio)  =>  ratio = 2^(semitones/12)
       const pitchRatio = Math.pow(2, (params.pitchShift ?? 0) / 12);
-      const effectiveRate = (params.playbackRate ?? 1.0) * pitchRatio;
-      
+      const effectiveRate = (params.playbackRate ?? 1.0) * pitchRatio * speedMultiplier;
+
       source.playbackRate.setValueAtTime(effectiveRate, audioCtx.currentTime);
-      source.connect(gainNode);
-      source.start();
       
+      // --- Auto-trim silence ---
+      const channelData = audioBuffer.getChannelData(0);
+      let startIndex = 0;
+      let endIndex = channelData.length - 1;
+      const threshold = 0.02; // 2% amplitude seuil de bruit
+      while (startIndex < channelData.length && Math.abs(channelData[startIndex]) < threshold) startIndex++;
+      while (endIndex > startIndex && Math.abs(channelData[endIndex]) < threshold) endIndex--;
+      
+      // On garde 50ms de marge de sécurité pour ne pas couper de consonnes
+      const padding = Math.floor(0.05 * audioBuffer.sampleRate);
+      const safeStartIndex = Math.max(0, startIndex - padding);
+      const safeEndIndex = Math.min(channelData.length, endIndex + padding);
+      const safeActiveSamples = safeEndIndex - safeStartIndex;
+
+      const offsetSeconds = safeStartIndex / audioBuffer.sampleRate;
+      const trueDuration = safeActiveSamples > 0 ? safeActiveSamples / audioBuffer.sampleRate : audioBuffer.duration;
+
+      const durationSeconds = trueDuration / effectiveRate;
+      onStart?.(durationSeconds);
+
+      // --- NEW: Add EQ filters ---
+      const bassNode = audioCtx.createBiquadFilter();
+      bassNode.type = 'lowshelf';
+      bassNode.frequency.value = 200;
+      bassNode.gain.value = params.bass ?? 0;
+
+      const midNode = audioCtx.createBiquadFilter();
+      midNode.type = 'peaking';
+      midNode.frequency.value = 1000;
+      midNode.Q.value = 0.5;
+      midNode.gain.value = params.mid ?? 0;
+
+      const trebleNode = audioCtx.createBiquadFilter();
+      trebleNode.type = 'highshelf';
+      trebleNode.frequency.value = 3000;
+      trebleNode.gain.value = params.treble ?? 0;
+
+      source.connect(bassNode);
+      bassNode.connect(midNode);
+      midNode.connect(trebleNode);
+      trebleNode.connect(gainNode);
+      // On commence la lecture exactement au début du son (sans le silence)
+      source.start(0, offsetSeconds, trueDuration);
+
       currentAudioSource.current = source;
       source.onended = () => {
         try { source.disconnect(); gainNode.disconnect(); } catch {}
         resolve();
       };
     });
+  };
+
+  // Once Gemini's free-tier daily quota is exhausted there's no point hammering
+  // it for every line — each call wastes ~500ms+ and burns the user's patience.
+  // Use a session-level kill switch so the whole replay just bypasses Gemini.
+  const geminiDeadUntilRef = useRef<number>(0);
+  const isGeminiDead = () => Date.now() < geminiDeadUntilRef.current;
+  const markGeminiDead = (ms: number) => {
+    geminiDeadUntilRef.current = Math.max(geminiDeadUntilRef.current, Date.now() + ms);
   };
 
   // Récupère un Blob audio Gemini avec retry court (429, network transitoires)
@@ -478,13 +614,11 @@ export default function App() {
     voiceStyle: string,
     apiKey: string,
   ): Promise<Blob | null> => {
+    if (isGeminiDead()) return null;
+
     const persona = STYLE_PROMPTS[voiceStyle];
-    // Clean text for TTS: remove emojis, asterisks, and stage directions that confuse speech
-    const ttsText = cleanText
-      .replace(/[\u{1F600}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}⚡✨🏆]/gu, '')
-      .replace(/\*[^*]+\*/g, '')  // remove *actions* stage directions
-      .replace(/\s{2,}/g, ' ')
-      .trim();
+    // Text is already cleaned in prepareLineAudio
+    const ttsText = cleanText;
     if (!ttsText) return null;
 
     // Gemini TTS directorial prompt: persona wraps the text for character voice acting
@@ -494,7 +628,10 @@ export default function App() {
 
 
     const ai = new GoogleGenAI({ apiKey });
-    const delays = [0, 500, 1500];
+    // Reduced from 3 tries to 2 — hard quota errors are detected explicitly and
+    // shouldn't trigger any retry at all, so the only thing left is the very
+    // occasional transient network hiccup.
+    const delays = [0, 800];
 
     for (let attempt = 0; attempt < delays.length; attempt++) {
       if (delays[attempt] > 0) await new Promise(r => setTimeout(r, delays[attempt]));
@@ -521,13 +658,21 @@ export default function App() {
         return new Blob([bytes.buffer], { type: 'audio/pcm' });
       } catch (e: any) {
         const msg = String(e?.message || e);
-        const retriable = /429|rate|timeout|fetch|network|502|503|504/i.test(msg);
+        // Hard daily quota → no retry, kill Gemini for the rest of the session.
+        // Free-tier resets at midnight Pacific, but 30 min is enough to stop
+        // pestering the API even if the user reopens the tab quickly.
+        if (/RESOURCE_EXHAUSTED|quota|free_tier_requests/i.test(msg)) {
+          console.warn('[gemini] daily quota épuisée → Gemini désactivé pour 30 min, fallback Piper/Web Speech');
+          markGeminiDead(30 * 60_000);
+          return null;
+        }
+        const retriable = /timeout|fetch|network|502|503|504|ECONNRESET/i.test(msg);
         if (!retriable) {
-          console.warn(`Gemini TTS échec non récupérable:`, msg);
+          console.warn('[gemini] échec non récupérable:', msg);
           return null;
         }
         if (attempt === delays.length - 1) {
-          console.warn(`Gemini TTS échec après ${delays.length} tentatives:`, msg);
+          console.warn(`[gemini] échec après ${delays.length} tentatives:`, msg);
           return null;
         }
       }
@@ -535,11 +680,24 @@ export default function App() {
     return null;
   };
 
+  // Quel "tier" (moteur TTS) a réellement servi la ligne — propagé jusqu'à
+  // l'UI pour afficher un petit badge sur la bulle active.
+  type Tier =
+    | 'cache'
+    | 'elevenlabs'
+    | 'gemini'
+    | 'edge'
+    | 'gcloud'
+    | 'hf'
+    | 'xtts'
+    | 'piper'
+    | 'webspeech';
+
   type PreparedAudio =
-    | { kind: 'blob'; blob: Blob; format: 'pcm' | 'wav'; params?: VoiceOverride }
-    | { kind: 'piper'; text: string; voiceName: string; voiceStyle: string; params?: VoiceOverride }
-    | { kind: 'webspeech'; text: string; voiceName: string; voiceStyle: string; params?: VoiceOverride }
-    | { kind: 'silent' };
+    | { kind: 'blob'; tier: Tier; blob: Blob; format: 'pcm' | 'wav'; params?: VoiceOverride }
+    | { kind: 'piper'; tier: Tier; text: string; voiceName: string; voiceStyle: string; params?: VoiceOverride }
+    | { kind: 'webspeech'; tier: Tier; text: string; voiceName: string; voiceStyle: string; params?: VoiceOverride }
+    | { kind: 'silent'; tier: Tier };
 
   // Phase fetch (non bloquante pour le playback) — peut être lancée en parallèle pour plusieurs lignes
   const prepareLineAudio = async (
@@ -547,18 +705,52 @@ export default function App() {
     voiceName: string,
     voiceStyle: string,
     lineIdx: number,
-    params?: VoiceOverride
+    params?: VoiceOverride,
+    charId?: string,
   ): Promise<PreparedAudio> => {
-    if (!voiceEnabled) return { kind: 'silent' };
+    if (!voiceEnabled) return { kind: 'silent', tier: 'webspeech' };
 
     const battleId = currentBattleId.current;
+    const forcedProvider = params?.provider && params.provider !== 'auto' ? params.provider : null;
+
+    // Compute Piper-specific pitch/rate adjustments (used for both cache retrieval and fresh synthesis)
+    const [piperPitch, piperRate] = PIPER_STYLE_ADJUSTMENTS[voiceStyle] ?? [0, 1];
+    const piperParams: VoiceOverride = {
+      voice: voiceName,
+      voiceStyle,
+      ...(params ?? {}),
+      pitchShift: (params?.pitchShift ?? 0) + piperPitch,
+      playbackRate: (params?.playbackRate ?? 1.0) * piperRate,
+    };
+
+    // Cache lookup — quand un provider est forcé, on regarde aussi son slot dédié.
     if (battleId && lineIdx >= 0) {
+      if (forcedProvider) {
+        const providerCached = await getAudioBlob(battleId, lineIdx, voiceName + '__' + forcedProvider);
+        if (providerCached && providerCached.blob.size > 500) {
+          return { kind: 'blob', tier: 'cache', blob: providerCached.blob, format: providerCached.format, params };
+        }
+      }
+      // Check main cache: Gemini (PCM) ou ElevenLabs (MP3 décodable en WAV)
       const cached = await getAudioBlob(battleId, lineIdx, voiceName);
-      if (cached) return { kind: 'blob', blob: cached.blob, format: cached.format, params };
+      if (cached && cached.blob.size > 500) return { kind: 'blob', tier: 'cache', blob: cached.blob, format: cached.format, params };
+
+      // Check Piper cache (saved under voiceName + '__piper' to avoid collision with Gemini/XTTS)
+      const piperCached = await getAudioBlob(battleId, lineIdx, voiceName + '__piper');
+      if (piperCached && piperCached.blob.size > 500) {
+        console.info(`[voice] tier=piper-cache line=${lineIdx}`);
+        return { kind: 'blob', tier: 'cache', blob: piperCached.blob, format: 'wav', params: piperParams };
+      }
     }
 
     const apiKey = process.env.GEMINI_API_KEY || tempApiKey;
-    const cleanText = text.replace(/^[^:]+:\s*/, '');
+    // Clean text for ALL TTS providers: remove speaker prefix, emojis, and *actions*
+    const cleanText = text
+      .replace(/^[^:]+:\s*/, '')
+      .replace(/[\u{1F600}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}⚡✨🏆]/gu, '')
+      .replace(/\*[^*]+\*/g, '')
+      .replace(/\s{2,}/g, ' ')
+      .trim();
 
     // Handle custom prompt override
     const effectiveStyle = params?.customPrompt?.trim() ? '__custom__' : voiceStyle;
@@ -566,59 +758,175 @@ export default function App() {
       STYLE_PROMPTS['__custom__'] = params.customPrompt.trim();
     }
 
+    // When the user has flipped "voix par défaut" for this character, we skip
+    // every cloning tier (ElevenLabs + XTTS) and use the curated Gemini/Piper
+    // voice directly — same pipeline as the Arbitre's intonation-rich voice.
+    const useDefault = params?.useDefaultVoice === true;
+
+    // Helper : persiste le blob dans le slot de cache approprié.
+    const persist = (key: string, blob: Blob, fmt: 'pcm' | 'wav') => {
+      if (battleId && lineIdx >= 0) {
+        saveAudioBlob(battleId, lineIdx, key, blob, fmt).catch(() => {});
+      }
+    };
+
     try {
+      // ─── Étape 1 : provider forcé en priorité (zéro régression : si KO → cascade) ───
+      if (forcedProvider === 'edge') {
+        const blob = await tryEdgeAudio(cleanText, params?.providerVoiceId);
+        if (blob && blob.size > 500) {
+          console.info(`[voice] tier=edge line=${lineIdx} voice=${params?.providerVoiceId}`);
+          persist(voiceName + '__edge', blob, 'wav');
+          return { kind: 'blob', tier: 'edge', blob, format: 'wav', params };
+        }
+      } else if (forcedProvider === 'gcloud') {
+        const blob = await tryGCloudAudio(cleanText, params?.providerVoiceId);
+        if (blob) {
+          console.info(`[voice] tier=gcloud line=${lineIdx} voice=${params?.providerVoiceId}`);
+          persist(voiceName + '__gcloud', blob, 'wav');
+          return { kind: 'blob', tier: 'gcloud', blob, format: 'wav', params };
+        }
+      } else if (forcedProvider === 'hf') {
+        const blob = await tryHuggingFaceAudio(cleanText);
+        if (blob) {
+          console.info(`[voice] tier=hf line=${lineIdx}`);
+          persist(voiceName + '__hf', blob, 'wav');
+          return { kind: 'blob', tier: 'hf', blob, format: 'wav', params };
+        }
+      } else if (forcedProvider === 'piper') {
+        const blob = await getPiperBlob(cleanText, voiceName);
+        if (blob) {
+          console.info(`[voice] tier=piper(forced) line=${lineIdx}`);
+          persist(voiceName + '__piper', blob, 'wav');
+          return { kind: 'blob', tier: 'piper', blob, format: 'wav', params: piperParams };
+        }
+      } else if (forcedProvider === 'gemini' && apiKey) {
+        const blob = await fetchGeminiAudio(cleanText, voiceName, effectiveStyle, apiKey);
+        if (blob) {
+          console.info(`[voice] tier=gemini(forced) line=${lineIdx}`);
+          persist(voiceName, blob, 'pcm');
+          return { kind: 'blob', tier: 'gemini', blob, format: 'pcm', params };
+        }
+      } else if (forcedProvider === 'elevenlabs') {
+        const blob = await tryElevenLabsAudio(cleanText, charId);
+        if (blob) {
+          console.info(`[voice] tier=elevenlabs(forced) line=${lineIdx}`);
+          persist(voiceName, blob, 'wav');
+          return { kind: 'blob', tier: 'elevenlabs', blob, format: 'wav', params };
+        }
+      } else if (forcedProvider === 'xtts') {
+        const blob = await tryXttsAudio(cleanText, charId);
+        if (blob) {
+          console.info(`[voice] tier=xtts(forced) line=${lineIdx}`);
+          persist(voiceName, blob, 'wav');
+          return { kind: 'blob', tier: 'xtts', blob, format: 'wav', params };
+        }
+      }
+
+      // ─── Étape 2 : cascade par défaut (= mode 'auto') ───
+      // Priorité 0 : ElevenLabs (voix clonée, ~1s, qualité maximale).
+      if (!useDefault) {
+        const elBlob = await tryElevenLabsAudio(cleanText, charId);
+        if (elBlob) {
+          console.info(`[voice] tier=elevenlabs line=${lineIdx} char=${charId}`);
+          persist(voiceName, elBlob, 'wav');
+          return { kind: 'blob', tier: 'elevenlabs', blob: elBlob, format: 'wav', params };
+        }
+      }
+
       if (apiKey) {
         const blob = await fetchGeminiAudio(cleanText, voiceName, effectiveStyle, apiKey);
         if (blob) {
-          console.info(`[voice] tier=gemini line=${lineIdx} voice=${voiceName} style=${voiceStyle}`);
-          if (battleId && lineIdx >= 0) {
-            saveAudioBlob(battleId, lineIdx, voiceName, blob, 'pcm').catch(() => {});
-          }
-          return { kind: 'blob', blob, format: 'pcm', params };
+          console.info(`[voice] tier=gemini line=${lineIdx} voice=${voiceName} style=${voiceStyle} default=${useDefault}`);
+          persist(voiceName, blob, 'pcm');
+          return { kind: 'blob', tier: 'gemini', blob, format: 'pcm', params };
         }
-        console.warn(`[voice] tier=piper-fallback (Gemini KO) line=${lineIdx} voice=${voiceName}`);
-      } else {
-        console.info(`[voice] tier=piper (no API key) line=${lineIdx} voice=${voiceName}`);
+        console.warn(`[voice] tier=fallback (Gemini KO) line=${lineIdx} voice=${voiceName}`);
+      } else if (!useDefault) {
+        console.info(`[voice] tier=xtts (no API key) line=${lineIdx} voice=${voiceName}`);
       }
 
-      return { kind: 'piper', text: cleanText, voiceName, voiceStyle, params };
+      // Edge TTS — gratuit illimité, excellente qualité, voix française par défaut.
+      // Inséré ici dans la cascade pour combler le trou quand Gemini est mort.
+      {
+        const edgeBlob = await tryEdgeAudio(cleanText, params?.providerVoiceId);
+        if (edgeBlob) {
+          console.info(`[voice] tier=edge(cascade) line=${lineIdx}`);
+          persist(voiceName + '__edge', edgeBlob, 'wav');
+          return { kind: 'blob', tier: 'edge', blob: edgeBlob, format: 'wav', params };
+        }
+      }
+
+      // XTTS v2 local voice cloning (requires scripts/tts_server.py running).
+      // Skipped entirely when "voix par défaut" is on.
+      if (!useDefault) {
+        const xttsBlob = await tryXttsAudio(cleanText, charId);
+        if (xttsBlob) {
+          persist(voiceName, xttsBlob, 'wav');
+          return { kind: 'blob', tier: 'xtts', blob: xttsBlob, format: 'wav', params };
+        }
+      }
+
+      // Piper: synthesize eagerly and cache in IndexedDB for offline replay
+      const piperBlob = await getPiperBlob(cleanText, voiceName);
+      if (piperBlob && piperBlob.size > 500) {
+        console.info(`[voice] tier=piper line=${lineIdx} voice=${voiceName}`);
+        persist(voiceName + '__piper', piperBlob, 'wav');
+        return { kind: 'blob', tier: 'piper', blob: piperBlob, format: 'wav', params: piperParams };
+      }
+
+      // Last resort: lazy Piper (plays at playback time, not cached)
+      return { kind: 'piper', tier: 'webspeech', text: cleanText, voiceName, voiceStyle, params };
     } finally {
       if (params?.customPrompt?.trim()) delete STYLE_PROMPTS['__custom__'];
     }
   };
 
-  // Phase playback (séquentielle) — joue ce qui a déjà été préparé
-  const playPreparedAudio = async (prepared: PreparedAudio): Promise<void> => {
+  const playPreparedAudio = async (
+    prepared: PreparedAudio, 
+    fallbackText: string,
+    fallbackVoice: string,
+    fallbackStyle: string,
+    speedMultiplier: number = 1.0, 
+    onStart?: (dur: number) => void
+  ) => {
     if (prepared.kind === 'silent') {
-      await new Promise(r => setTimeout(r, 600));
+      onStart?.(2.0 / speedMultiplier);
+      await new Promise(r => setTimeout(r, 2000 / speedMultiplier));
       return;
     }
 
     const audioCtx = getAudioCtx();
     const gainNode = audioCtx.createGain();
     const vol = prepared.params?.volume ?? 1.0;
-    gainNode.gain.setValueAtTime(vol, audioCtx.currentTime);
-    gainNode.connect(audioCtx.destination);
+    gainNode.gain.setValueAtTime(vol * 0.75, audioCtx.currentTime);
+    gainNode.connect(getCompressor(audioCtx));
 
     try {
       if (prepared.kind === 'blob') {
-        // Blob from Gemini uses playPcmBlobWithParams which handles pitch/rate/volume
-        await playPcmBlobWithParams(prepared.blob, prepared.format, prepared.params || { voice: '', voiceStyle: '', volume: vol });
-        return;
+        try {
+          await playPcmBlobWithParams(prepared.blob, prepared.format, prepared.params || { voice: '', voiceStyle: '', volume: vol }, speedMultiplier, onStart);
+          return;
+        } catch (err) {
+          console.warn('[voice] Blob playback failed (corrupted cache?), falling back to webspeech', err);
+        }
       }
       
-      // Piper / Web Speech : exécution à la lecture (déterministes en line-à-line)
+      // Fallback ou WebSpeech natif
       if (prepared.kind === 'piper') {
         try {
-          await playPiperTTS(prepared.text, prepared.voiceName, prepared.voiceStyle, audioCtx, gainNode);
+          await playPiperTTS(prepared.text, prepared.voiceName, prepared.voiceStyle, audioCtx, gainNode, speedMultiplier, onStart);
           return;
         } catch {
           console.warn(`[voice] Piper KO → Web Speech (voix système, peu naturelle).`);
-          await playWebSpeechEnhanced(prepared.text, prepared.voiceName, prepared.voiceStyle, prepared.params?.playbackRate ?? 1.0, prepared.params?.webPitch ?? 1.0);
+          await playWebSpeechEnhanced(prepared.text, prepared.voiceName, prepared.voiceStyle, prepared.params?.playbackRate ?? 1.0, prepared.params?.webPitch ?? 1.0, onStart);
         }
       } else {
+        const text = prepared.kind === 'webspeech' ? prepared.text : fallbackText;
+        const voice = prepared.kind === 'webspeech' ? prepared.voiceName : fallbackVoice;
+        const style = prepared.kind === 'webspeech' ? prepared.voiceStyle : fallbackStyle;
         console.warn(`[voice] Web Speech utilisé (voix système, peu naturelle).`);
-        await playWebSpeechEnhanced(prepared.text, prepared.voiceName, prepared.voiceStyle, prepared.params?.playbackRate ?? 1.0, prepared.params?.webPitch ?? 1.0);
+        await playWebSpeechEnhanced(text, voice, style, prepared.params?.playbackRate ?? 1.0, prepared.params?.webPitch ?? 1.0, onStart);
       }
     } finally {
       try { gainNode.disconnect(); } catch {}
@@ -725,7 +1033,141 @@ FORMAT JSON identique au schéma standard (intro, rounds, winner, finishingMove,
     setArena(ARENAS.find(a => a.id === saved.arenaId) ?? ARENAS[0]);
     setBattleData(saved.script);
     setCurrentStep(0);
+    setRevealedIdx(-1);
     setGameState('COMBAT');
+  };
+
+  // Pré-génère via XTTS toutes les répliques d'un combat sauvegardé.
+  // Une fois en cache IDB, le replay est instantané et 100% offline.
+  // Renvoie le rapport (ok / total). Émet la progression via onProgress.
+  const preGenerateBattleVoices = async (
+    saved: SavedBattle,
+    onProgress?: (done: number, total: number, label: string) => void,
+  ): Promise<{ ok: number; total: number; skipped: number; failed: number }> => {
+    const script: any = saved.script;
+    if (!script) return { ok: 0, total: 0, skipped: 0, failed: 0 };
+
+    // Active temporairement l'ID du combat pour que prepareLineAudio mette en cache
+    const previousBattleId = currentBattleId.current;
+    currentBattleId.current = saved.id;
+
+    const norm = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+    const p1Name = norm(saved.p1Name);
+    const p2Name = norm(saved.p2Name);
+    const p1V = saved.p1Voice ?? CHARACTERS.find(c => c.id === saved.p1Id)?.voice ?? 'Fenrir';
+    const p2V = saved.p2Voice ?? CHARACTERS.find(c => c.id === saved.p2Id)?.voice ?? 'Fenrir';
+
+    const resolveSpeaker = (speaker: string): { voiceName: string; voiceStyle: string; charId?: string; params: VoiceOverride } => {
+      const s = norm(speaker || '');
+      if (s.includes(p1Name) || p1Name.includes(s)) return { voiceName: p1V, voiceStyle: saved.p1VoiceStyle || '', charId: saved.p1Id, params: buildParams(saved.p1Id, p1V, saved.p1VoiceStyle || '') };
+      if (s.includes(p2Name) || p2Name.includes(s)) return { voiceName: p2V, voiceStyle: saved.p2VoiceStyle || '', charId: saved.p2Id, params: buildParams(saved.p2Id, p2V, saved.p2VoiceStyle || '') };
+      const p1First = p1Name.split(/[\s-]/)[0];
+      const p2First = p2Name.split(/[\s-]/)[0];
+      if (p1First.length > 2 && s.includes(p1First)) return { voiceName: p1V, voiceStyle: saved.p1VoiceStyle || '', charId: saved.p1Id, params: buildParams(saved.p1Id, p1V, saved.p1VoiceStyle || '') };
+      if (p2First.length > 2 && s.includes(p2First)) return { voiceName: p2V, voiceStyle: saved.p2VoiceStyle || '', charId: saved.p2Id, params: buildParams(saved.p2Id, p2V, saved.p2VoiceStyle || '') };
+      const arbitreStyle = '';
+      return { voiceName: 'Aoede', voiceStyle: arbitreStyle, params: {
+        voice: 'Aoede',
+        voiceStyle: arbitreStyle,
+        pitchShift: 0,
+        playbackRate: 1.0,
+        volume: 1.0,
+        provider: 'edge',
+        providerVoiceId: getDefaultEdgeVoice('Aoede', arbitreStyle),
+        bass: 0, mid: 0, treble: 0
+      } as VoiceOverride };
+    };
+
+    // Reconstruit la liste de lignes dans le MÊME ordre que la lecture (runStep)
+    const lines: { text: string; speaker: string }[] = [];
+    if (script.intro) lines.push({ text: script.intro.text, speaker: script.intro.speaker || 'Arbitre' });
+    for (const round of (script.rounds ?? [])) {
+      lines.push({ text: `${round.title} !`, speaker: 'Arbitre' });
+      for (const d of (round.dialogues ?? [])) {
+        lines.push({ text: d.text, speaker: d.speaker });
+      }
+    }
+    if (script.finishingMove) {
+      lines.push({
+        text: script.finishingMove.text || script.finishingMove.description || '',
+        speaker: script.finishingMove.speaker || 'Arbitre',
+      });
+    }
+    if (script.conclusion) {
+      lines.push({ text: script.conclusion.text, speaker: script.conclusion.speaker || 'Arbitre' });
+    }
+
+    const total = lines.length;
+    let ok = 0, skipped = 0, failed = 0;
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      const { voiceName, voiceStyle, charId, params } = resolveSpeaker(line.speaker);
+      onProgress?.(i, total, line.speaker);
+
+      const cleanText = (line.text || '')
+        .replace(/^[^:]+:\s*/, '')
+        .replace(/[\u{1F600}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}⚡✨🏆]/gu, '')
+        .replace(/\*[^*]+\*/g, '')
+        .replace(/\s{2,}/g, ' ')
+        .trim();
+
+      if (!cleanText) {
+        skipped++;
+        continue;
+      }
+
+      const forcedProvider = params?.provider && params.provider !== 'auto' ? params.provider : null;
+      let cacheKey = voiceName;
+      if (forcedProvider === 'edge') cacheKey = voiceName + '__edge';
+      else if (forcedProvider === 'gcloud') cacheKey = voiceName + '__gcloud';
+      else if (forcedProvider === 'hf') cacheKey = voiceName + '__hf';
+      else if (forcedProvider === 'piper') cacheKey = voiceName + '__piper';
+
+      const existing = await getAudioBlob(saved.id, i, cacheKey);
+      if (existing && existing.blob.size > 500) { ok++; continue; }
+
+      // Try the requested provider exactly like prepareLineAudio
+      let blob: Blob | null = null;
+      let format: 'pcm' | 'wav' = 'wav';
+
+      try {
+        if (forcedProvider === 'edge') {
+          blob = await tryEdgeAudio(cleanText, params?.providerVoiceId);
+        } else if (forcedProvider === 'piper') {
+          blob = await getPiperBlob(cleanText, voiceName);
+        } else if (forcedProvider === 'gemini') {
+          const apiKey = process.env.GEMINI_API_KEY || tempApiKey;
+          if (apiKey) {
+            blob = await fetchGeminiAudio(apiKey, cleanText, voiceStyle, 'WAV');
+          }
+        } else if (forcedProvider === 'elevenlabs' && charId) {
+          blob = await tryElevenLabsAudio(cleanText, charId);
+        } else if (forcedProvider === 'xtts' && charId) {
+          blob = await tryXttsAudio(cleanText, charId);
+        }
+
+        if (blob && blob.size > 500) {
+          await saveAudioBlob(saved.id, i, cacheKey, blob, format);
+          ok++;
+        } else {
+          // Si on n'a pas pu forcer, on tente le fallback prepareLineAudio standard
+          const prepared = await prepareLineAudio(line.text || '', voiceName, voiceStyle, i, params, charId);
+          if (prepared.kind === 'blob') {
+            ok++;
+          } else {
+            failed++;
+          }
+        }
+      } catch (err) {
+        failed++;
+      }
+    }
+    onProgress?.(total, total, '');
+    
+    // Restaure l'ID du combat
+    currentBattleId.current = previousBattleId;
+    return { ok, total, skipped, failed };
   };
 
   const generateCombat = async (isDemo = false) => {
@@ -737,6 +1179,7 @@ FORMAT JSON identique au schéma standard (intro, rounds, winner, finishingMove,
       await new Promise(r => setTimeout(r, 1500));
       setBattleData(MOCK_BATTLE);
       setCurrentStep(0);
+      setRevealedIdx(-1);
       setGameState('COMBAT');
       return;
     }
@@ -770,7 +1213,7 @@ IMPORTANT POUR LA VOIX : Chaque réplique sera lue par un moteur de synthèse vo
 
 FORMAT JSON REQUIS :
 {
-  "intro": { "text": "Arbitre: Bienvenue dans l'arène de ${arena.name} ! Que le combat commence ! Ding ding !", "speaker": "Arbitre" },
+  "intro": { "text": "Bienvenue dans l'arène de ${arena.name} ! Que le combat commence ! Ding ding !", "speaker": "Arbitre" },
   "rounds": [
     {
       "title": "ROUND 1",
@@ -781,49 +1224,66 @@ FORMAT JSON REQUIS :
     }
   ],
   "winner": "${p1.name}",
-  "finishingMove": { "type": "FATALITY", "description": "Arbitre: FATALITY! ${p1.name} détruit son adversaire ! K.O. !", "speaker": "Arbitre" },
-  "conclusion": { "text": "Arbitre: La victoire est absolue pour ${p1.name} ! Mwahaha !", "speaker": "Arbitre" }
+  "finishingMove": { "type": "FATALITY", "description": "FATALITY! ${p1.name} détruit son adversaire ! K.O. !", "speaker": "Arbitre" },
+  "conclusion": { "text": "La victoire est absolue pour ${p1.name} ! Mwahaha !", "speaker": "Arbitre" }
 }`;
 
-      const response = await ai.models.generateContent({
-        model: "gemini-flash-latest",
-        contents: prompt,
-        config: {
-          responseMimeType: "application/json",
-          responseSchema: {
-            type: Type.OBJECT,
-            properties: {
-              intro: { type: Type.OBJECT, properties: { text: { type: Type.STRING }, speaker: { type: Type.STRING } }, required: ["text", "speaker"] },
-              rounds: { 
-                type: Type.ARRAY, 
-                items: { 
-                  type: Type.OBJECT, 
-                  properties: { 
-                    title: { type: Type.STRING },
-                    dialogues: { 
-                      type: Type.ARRAY, 
-                      items: { 
-                        type: Type.OBJECT, 
-                        properties: { 
-                          speaker: { type: Type.STRING }, 
-                          text: { type: Type.STRING }, 
-                          action: { type: Type.STRING } 
-                        }, 
-                        required: ["speaker", "text"] 
-                      } 
-                    } 
-                  }, 
-                  required: ["title", "dialogues"] 
-                } 
-              },
-              winner: { type: Type.STRING },
-              finishingMove: { type: Type.OBJECT, properties: { type: { type: Type.STRING }, description: { type: Type.STRING }, speaker: { type: Type.STRING } }, required: ["type", "description", "speaker"] },
-              conclusion: { type: Type.OBJECT, properties: { text: { type: Type.STRING }, speaker: { type: Type.STRING } }, required: ["text", "speaker"] }
-            },
-            required: ["intro", "rounds", "winner", "finishingMove", "conclusion"]
-          }
+      // Retry on 503 (model overloaded) with exponential backoff
+      let response: Awaited<ReturnType<typeof ai.models.generateContent>>;
+      const retryDelays = [0, 2000, 5000, 10000];
+      for (let attempt = 0; attempt < retryDelays.length; attempt++) {
+        if (retryDelays[attempt] > 0) {
+          setErrorMsg(`Gemini surchargé, nouvelle tentative ${attempt}/${retryDelays.length - 1}…`);
+          await new Promise(r => setTimeout(r, retryDelays[attempt]));
+          setErrorMsg(null);
         }
-      });
+        try {
+          response = await ai.models.generateContent({
+            model: "gemini-flash-latest",
+            contents: prompt,
+            config: {
+              responseMimeType: "application/json",
+              responseSchema: {
+                type: Type.OBJECT,
+                properties: {
+                  intro: { type: Type.OBJECT, properties: { text: { type: Type.STRING }, speaker: { type: Type.STRING } }, required: ["text", "speaker"] },
+                  rounds: {
+                    type: Type.ARRAY,
+                    items: {
+                      type: Type.OBJECT,
+                      properties: {
+                        title: { type: Type.STRING },
+                        dialogues: {
+                          type: Type.ARRAY,
+                          items: {
+                            type: Type.OBJECT,
+                            properties: {
+                              speaker: { type: Type.STRING },
+                              text: { type: Type.STRING },
+                              action: { type: Type.STRING }
+                            },
+                            required: ["speaker", "text"]
+                          }
+                        }
+                      },
+                      required: ["title", "dialogues"]
+                    }
+                  },
+                  winner: { type: Type.STRING },
+                  finishingMove: { type: Type.OBJECT, properties: { type: { type: Type.STRING }, description: { type: Type.STRING }, speaker: { type: Type.STRING } }, required: ["type", "description", "speaker"] },
+                  conclusion: { type: Type.OBJECT, properties: { text: { type: Type.STRING }, speaker: { type: Type.STRING } }, required: ["text", "speaker"] }
+                },
+                required: ["intro", "rounds", "winner", "finishingMove", "conclusion"]
+              }
+            }
+          });
+          break; // success
+        } catch (e: any) {
+          const is503 = /503|unavailable|overloaded|high demand/i.test(String(e?.message || e));
+          if (!is503 || attempt === retryDelays.length - 1) throw e;
+          console.warn(`[gemini] 503 tentative ${attempt + 1}/${retryDelays.length}, retry dans ${retryDelays[attempt + 1]}ms`);
+        }
+      }
 
       const data = JSON.parse(response.text?.trim() || "{}");
       const battleId = await saveBattle({
@@ -841,6 +1301,7 @@ FORMAT JSON REQUIS :
       currentLineIndex.current = 0;
       setBattleData(data);
       setCurrentStep(0);
+      setRevealedIdx(-1);
       setGameState('COMBAT');
     } catch (err: any) {
       console.error(err);
@@ -855,13 +1316,15 @@ FORMAT JSON REQUIS :
       const totalSteps = battleData?.rounds ? battleData.rounds.length + 2 : 0;
       if (gameState !== 'COMBAT' || !battleData || currentStep >= totalSteps) return;
       setIsSpeaking(true);
+      // Hide every line of the upcoming step until its voice catches up.
+      setRevealedIdx(-1);
 
       let lines = [];
       if (currentStep === 0) {
         lines = [battleData.intro];
       } else if (currentStep > 0 && currentStep <= battleData.rounds.length) {
         const round = battleData.rounds[currentStep - 1];
-        lines = [{ text: `Arbitre: ${round.title} !`, speaker: "Arbitre" }, ...round.dialogues];
+        lines = [{ text: `${round.title} !`, speaker: "Arbitre" }, ...round.dialogues];
       } else {
         lines = [battleData.finishingMove, battleData.conclusion];
       }
@@ -873,22 +1336,32 @@ FORMAT JSON REQUIS :
 
       const preparedPromises = lines.map((line, i) => {
         const textToSpeak = line.text || line.description;
-        const { voiceName, voiceStyle, params } = getVoiceForSpeaker(line.speaker || 'Arbitre');
-        return prepareLineAudio(textToSpeak, voiceName, voiceStyle, baseIdx + i, params);
+        const { voiceName, voiceStyle, charId, params } = getVoiceForSpeaker(line.speaker || 'Arbitre');
+        return prepareLineAudio(textToSpeak, voiceName, voiceStyle, baseIdx + i, params, charId);
       });
 
       for (let i = 0; i < lines.length; i++) {
         if (!isActive) break;
-        setActiveLineIdx(i);
+        // Reveal this line just before its voice starts (or during buffering).
+        setRevealedIdx(i);
+        setBufferingIdx(i);
         const prepared = await preparedPromises[i];
+        setBufferingIdx(-1);
         if (!isActive) break;
-        await playPreparedAudio(prepared);
+        setActiveLineIdx(i);
+        setCurrentTier(prepared.tier);
+        const { voiceName, voiceStyle } = getVoiceForSpeaker(lines[i].speaker || 'Arbitre');
+        const textToSpeak = lines[i].text || lines[i].description;
+        await playPreparedAudio(prepared, textToSpeak, voiceName, voiceStyle, storySpeed, (dur) => setActiveLineDuration(dur));
+        setActiveLineIdx(-1);
+        setCurrentTier(null);
+        setActiveLineDuration(0);
       }
 
-      if (isActive) setActiveLineIdx(-1);
+      if (isActive) { setBufferingIdx(-1); setCurrentTier(null); }
       setIsSpeaking(false);
       if (isActive && currentStep < totalSteps - 1) {
-        await new Promise(r => setTimeout(r, 500));
+        await new Promise(r => setTimeout(r, 500 / storySpeed));
         setCurrentStep(prev => prev + 1);
       }
     };
@@ -906,10 +1379,199 @@ FORMAT JSON REQUIS :
     }
   }, [gameState]);
 
+  // Si mode Accueil, on affiche la nouvelle HomePage
+  if (appMode === 'HOME') {
+    return <HomePage onSelectMode={setAppMode} />;
+  }
+
+  // --- LOGIQUE STORY MODE ---
+  
+  const handleStartStory = async (config: any) => {
+    setAppMode('STORY_PLAY');
+    setIsGeneratingStory(true);
+    setErrorMsg("");
+    
+    const apiKey = process.env.GEMINI_API_KEY || tempApiKey;
+    if (!apiKey) {
+      setErrorMsg("Une clé API Gemini est requise pour générer des histoires.");
+      setAppMode('STORY_CONFIG');
+      return;
+    }
+
+    try {
+      const charNames = config.characters.map((c: any) => c.name);
+      const prompt = getStoryDirectives(narrativeMode, charNames, config.arena.name, config.theme, config.isInteractive);
+      
+      const ai = new GoogleGenAI({ apiKey });
+      const response = await ai.models.generateContent({
+        model: "gemini-flash-latest",
+        contents: [{ parts: [{ text: prompt }] }],
+        config: {
+          responseMimeType: 'application/json'
+        }
+      });
+      const text = response.text || "";
+      const jsonMatch = text.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) throw new Error("Format JSON invalide reçu de l'IA.");
+      
+      const storyJson: StoryChapterJSON = JSON.parse(jsonMatch[0]);
+      
+      const newStory: Omit<SavedStory, 'id' | 'createdAt'> = {
+        title: storyJson.title || "Une Nouvelle Chronique",
+        characterIds: config.characters.map((c: any) => c.id),
+        arenaId: config.arena.id,
+        arenaName: config.arena.name,
+        arenaImg: config.arena.img,
+        theme: config.theme,
+        isInteractive: config.isInteractive,
+        isFinished: !!storyJson.isEnd,
+        script: storyJson.lines
+      };
+
+      const id = await saveStory(newStory);
+      const saved = await getStory(id);
+      if (saved) setCurrentStory(saved);
+    } catch (err: any) {
+      console.error(err);
+      setErrorMsg("Échec de la génération de l'histoire: " + err.message);
+      setGameState('ERROR');
+    } finally {
+      setIsGeneratingStory(false);
+    }
+  };
+
+  const handleChoice = async (choiceText: string, choiceAction: string) => {
+    if (!currentStory) return;
+    setIsGeneratingStory(true);
+
+    const apiKey = process.env.GEMINI_API_KEY || tempApiKey;
+    try {
+      const charNames = currentStory.characterIds.map(id => CHARACTERS.find(c => c.id === id)?.name || id);
+      const previousContext = currentStory.script.map(l => `${l.speaker}: ${l.text}`).join('\n');
+      const choiceContext = `Le lecteur a choisi : "${choiceText}" (${choiceAction})`;
+      
+      const prompt = getStoryDirectives(
+        narrativeMode, 
+        charNames, 
+        currentStory.arenaName, 
+        currentStory.theme, 
+        true, 
+        `${previousContext}\n\n${choiceContext}`
+      );
+
+      const ai = new GoogleGenAI({ apiKey });
+      const response = await ai.models.generateContent({
+        model: "gemini-flash-latest",
+        contents: [{ parts: [{ text: prompt }] }],
+        config: {
+          responseMimeType: 'application/json'
+        }
+      });
+      const text = response.text || "";
+      const jsonMatch = text.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) throw new Error("Format JSON invalide reçu de l'IA.");
+      
+      const storyJson: StoryChapterJSON = JSON.parse(jsonMatch[0]);
+      
+      const updatedStory = {
+        ...currentStory,
+        isFinished: !!storyJson.isEnd,
+        script: [...currentStory.script, ...storyJson.lines]
+      };
+
+      await updateStory(updatedStory);
+      setCurrentStory(updatedStory);
+    } catch (err: any) {
+      console.error(err);
+      setErrorMsg("Échec de la suite de l'histoire: " + err.message);
+      setGameState('ERROR');
+    } finally {
+      setIsGeneratingStory(false);
+    }
+  };
+
+  const playStoryVoice = async (line: StoryLine, index: number, storyId: string) => {
+    if (!voiceEnabled) return;
+    
+    // Check cache first
+    const cached = await getStoryAudio(storyId, index, line.speaker);
+    if (cached) {
+      const params = getVoiceForSpeaker(line.speaker).params || ({} as VoiceOverride);
+      await playPcmBlobWithParams(cached.blob, cached.format, params);
+      return;
+    }
+
+    // Generate and save
+    const { voiceName, voiceStyle, charId, params } = getVoiceForSpeaker(line.speaker);
+    const cleanText = line.text.replace(/^[^:]+:\s*/, '');
+    
+    const apiKey = process.env.GEMINI_API_KEY || tempApiKey;
+    let blob: Blob | null = null;
+    let format: 'pcm' | 'wav' = 'pcm';
+
+    if (apiKey) {
+      blob = await fetchGeminiAudio(cleanText, voiceName, voiceStyle, apiKey);
+      format = 'pcm';
+    }
+
+    if (!blob) {
+      blob = await tryEdgeAudio(cleanText, params?.providerVoiceId || getDefaultEdgeVoice(voiceName, voiceStyle));
+      format = 'wav';
+    }
+
+    if (blob) {
+      await saveStoryAudio(storyId, index, line.speaker, blob, format);
+      await playPcmBlobWithParams(blob, format, params || ({} as VoiceOverride));
+    }
+  };
+
+  if (appMode === 'STORY_CONFIG') {
+    return (
+      <div className="relative">
+        <StoryConfigurator onStart={handleStartStory} onBack={() => setAppMode('HOME')} />
+        <button
+          onClick={() => setAppMode('STORY_LIBRARY')}
+          className="fixed top-4 right-4 z-50 p-3 bg-amber-900/80 rounded-full border border-amber-600 text-white hover:bg-amber-700 transition-colors shadow-lg"
+          title="Bibliothèque"
+        >
+          <History size={24} />
+        </button>
+      </div>
+    );
+  }
+
+  if (appMode === 'STORY_LIBRARY') {
+    return <StoryLibrary onReplay={(story) => { setCurrentStory(story); setAppMode('STORY_PLAY'); }} onBack={() => setAppMode('STORY_CONFIG')} />;
+  }
+
+  if (appMode === 'STORY_PLAY') {
+    if (!currentStory) {
+      return (
+        <div className="h-screen bg-[#1a140f] flex flex-col items-center justify-center text-[#e2d1b3] font-serif">
+          <RefreshCw size={48} className="animate-spin text-amber-500 mb-4" />
+          <p className="text-xl italic animate-pulse tracking-widest">L'histoire s'écrit dans les étoiles...</p>
+        </div>
+      );
+    }
+    return (
+      <StoryViewer 
+        story={currentStory} 
+        onChoice={handleChoice} 
+        onBack={() => {
+          setCurrentStory(null);
+          setAppMode('STORY_CONFIG');
+        }} 
+        playVoice={playStoryVoice}
+        isGenerating={isGeneratingStory}
+      />
+    );
+  }
+
+  // Sinon, c'est le mode BRAWLER (le comportement existant)
   if (gameState === 'COMBAT') {
     return (
       <div className="relative">
-        <CombatView p1={p1} p2={p2} arena={arena} battleData={battleData} currentStep={currentStep} activeLineIdx={activeLineIdx} onReset={() => setGameState('SETUP')} />
+        <CombatView p1={p1} p2={p2} arena={arena} battleData={battleData} currentStep={currentStep} activeLineIdx={activeLineIdx} activeLineDuration={activeLineDuration} bufferingIdx={bufferingIdx} revealedIdx={revealedIdx} currentTier={currentTier} storySpeed={storySpeed} setStorySpeed={setStorySpeed} onReset={() => setGameState('SETUP')} />
         <button
           onClick={() => setVoiceEnabled(!voiceEnabled)}
           className="fixed bottom-4 right-4 z-50 p-3 bg-gray-900/80 rounded-full border border-gray-700 text-white hover:bg-red-600 transition-colors"
@@ -941,8 +1603,17 @@ FORMAT JSON REQUIS :
       
       {/* Top-right buttons */}
       <div className="fixed top-4 right-4 z-50 flex items-center gap-2">
+        {/* Retour à l'accueil */}
+        <button
+          onClick={() => setAppMode('HOME')}
+          className="p-3 bg-gray-900/80 rounded-full border border-gray-700 text-white transition-colors shadow-lg hover:bg-gray-700 hover:border-gray-500"
+          title="Retour à l'accueil"
+        >
+          <Home size={22} />
+        </button>
+
         {/* Bibliothèque de combats sauvegardés */}
-        <BattleLibrary onReplay={handleReplay} />
+        <BattleLibrary onReplay={handleReplay} onPreGenerate={preGenerateBattleVoices} />
 
         {/* Bouton Parental / Mode Narratif */}
         <button
@@ -1435,7 +2106,7 @@ function SelectionCard({ player, active, style, onStyleChange, isSelecting, onSe
   );
 }
 
-function CombatView({ p1, p2, arena, battleData, currentStep, activeLineIdx, onReset }) {
+function CombatView({ p1, p2, arena, battleData, currentStep, activeLineIdx, activeLineDuration, bufferingIdx, revealedIdx, currentTier, storySpeed, setStorySpeed, onReset }) {
   return (
     <div className="min-h-screen bg-black text-white relative flex flex-col items-center p-3 md:p-12 overflow-x-hidden">
       <div className="fixed inset-0 z-0 opacity-40 pointer-events-none">
@@ -1463,9 +2134,9 @@ function CombatView({ p1, p2, arena, battleData, currentStep, activeLineIdx, onR
               transition={{ type: 'spring', damping: 20 }}
               className="space-y-8"
             >
-              {currentStep === 0 && <Dialogue lines={battleData.intro} p1={p1} p2={p2} activeLineIdx={activeLineIdx} />}
+              {currentStep === 0 && <Dialogue lines={battleData.intro} p1={p1} p2={p2} activeLineIdx={activeLineIdx} activeLineDuration={activeLineDuration} bufferingIdx={bufferingIdx} revealedIdx={revealedIdx} currentTier={currentTier} />}
               {currentStep > 0 && currentStep <= (battleData.rounds?.length || 0) && (
-                <Dialogue lines={battleData.rounds[currentStep - 1].dialogues} p1={p1} p2={p2} title={battleData.rounds[currentStep - 1].title} activeLineIdx={activeLineIdx} />
+                <Dialogue lines={[{ text: `${battleData.rounds[currentStep - 1].title} !`, speaker: "Arbitre" }, ...battleData.rounds[currentStep - 1].dialogues]} p1={p1} p2={p2} title={battleData.rounds[currentStep - 1].title} activeLineIdx={activeLineIdx} activeLineDuration={activeLineDuration} bufferingIdx={bufferingIdx} revealedIdx={revealedIdx} currentTier={currentTier} />
               )}
               {currentStep === (battleData.rounds?.length || 0) + 1 && (
                 <div className="text-center py-4">
@@ -1476,7 +2147,7 @@ function CombatView({ p1, p2, arena, battleData, currentStep, activeLineIdx, onR
                   >
                     {battleData.finishingMove.type} !
                   </motion.div>
-                  <Dialogue lines={[battleData.finishingMove, battleData.conclusion]} p1={p1} p2={p2} activeLineIdx={activeLineIdx} />
+                  <Dialogue lines={[battleData.finishingMove, battleData.conclusion]} p1={p1} p2={p2} activeLineIdx={activeLineIdx} activeLineDuration={activeLineDuration} bufferingIdx={bufferingIdx} revealedIdx={revealedIdx} currentTier={currentTier} />
                   <motion.div
                     initial={{ y: 50, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
@@ -1491,7 +2162,7 @@ function CombatView({ p1, p2, arena, battleData, currentStep, activeLineIdx, onR
           </AnimatePresence>
         </div>
 
-        <div className="mt-6 md:mt-12 mb-4 flex justify-center">
+        <div className="mt-6 md:mt-12 mb-4 flex flex-col md:flex-row justify-center items-center gap-6">
           <button
             onClick={onReset}
             className="group flex items-center gap-2 md:gap-3 px-6 md:px-12 py-3 md:py-4 bg-white text-black font-black uppercase italic text-sm md:text-base rounded-full hover:bg-red-600 hover:text-white transition-all duration-300 transform hover:scale-105"
@@ -1499,6 +2170,18 @@ function CombatView({ p1, p2, arena, battleData, currentStep, activeLineIdx, onR
             <RefreshCw size={18} className="group-hover:rotate-180 transition-transform duration-500" />
             Nouveau Match
           </button>
+
+          <div className="flex items-center gap-4 bg-gray-900/80 px-6 py-3 rounded-full border border-gray-700 shadow-xl">
+            <span className="text-sm font-bold text-gray-400 uppercase tracking-widest">Vitesse</span>
+            <input 
+              type="range" 
+              min="0.5" max="2.0" step="0.1" 
+              value={storySpeed} 
+              onChange={(e) => setStorySpeed(parseFloat(e.target.value))}
+              className="w-24 md:w-32 accent-yellow-500 cursor-pointer"
+            />
+            <span className="text-sm font-bold text-yellow-500 w-8 text-right font-mono">{storySpeed.toFixed(1)}x</span>
+          </div>
         </div>
       </div>
     </div>
@@ -1530,15 +2213,38 @@ function FighterHeader({ fighter, side, color }) {
   );
 }
 
-function Dialogue({ lines, p1, p2, title = undefined, activeLineIdx = -1 }: { lines: any; p1: any; p2: any; title?: any; activeLineIdx?: number }) {
+// Mapping label de tier — affiché en mini badge sur la bulle active pour que
+// l'utilisateur voie en direct quel moteur TTS sert chaque ligne.
+const TIER_LABELS: Record<string, string> = {
+  elevenlabs: '🎭 ElevenLabs',
+  gemini:     '✨ Gemini',
+  edge:       '🎙️ Edge',
+  gcloud:     '☁️ Google',
+  hf:         '🤗 HF',
+  xtts:       '🐍 XTTS',
+  piper:      '🧠 Piper',
+  webspeech:  '💬 Système',
+  cache:      '💾 Cache',
+};
+
+function Dialogue({ lines, p1, p2, title = undefined, activeLineIdx = -1, activeLineDuration = 0, bufferingIdx = -1, revealedIdx = -1, currentTier = null }: { lines: any; p1: any; p2: any; title?: any; activeLineIdx?: number; activeLineDuration?: number; bufferingIdx?: number; revealedIdx?: number; currentTier?: string | null }) {
   const linesArray = Array.isArray(lines) ? lines : [lines];
   const activeRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (activeLineIdx >= 0 && activeRef.current) {
       activeRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else if (bufferingIdx >= 0 && activeRef.current) {
+      activeRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
-  }, [activeLineIdx]);
+  }, [activeLineIdx, bufferingIdx]);
+
+  // Only display lines that the voice has already reached. While a step is in
+  // flight (revealedIdx >= 0) we hide upcoming lines so the text doesn't run
+  // ahead of the audio. Once the step is done (revealedIdx < 0) — e.g. when
+  // voice is muted — we show everything as before.
+  const visibleCount = revealedIdx < 0 ? linesArray.length : revealedIdx + 1;
+  const visibleLines = linesArray.slice(0, visibleCount);
 
   return (
     <div className="space-y-4 md:space-y-6">
@@ -1549,23 +2255,27 @@ function Dialogue({ lines, p1, p2, title = undefined, activeLineIdx = -1 }: { li
           <div className="h-[2px] flex-grow bg-gradient-to-l from-transparent to-gray-700" />
         </div>
       )}
-      {linesArray.map((l, i) => {
+      {visibleLines.map((l, i) => {
         const isP1 = l.speaker?.toLowerCase().includes(p1.name.toLowerCase());
         const isP2 = l.speaker?.toLowerCase().includes(p2.name.toLowerCase());
         const isActive = i === activeLineIdx;
-        const dimmed = activeLineIdx >= 0 && !isActive;
+        const isBuffering = i === bufferingIdx;
+        const dimmed = (activeLineIdx >= 0 || bufferingIdx >= 0) && !isActive && !isBuffering;
+        
+        // Clé unique basée sur le texte pour forcer le remount (évite la désyncro des animations framer-motion)
+        const uniqueKey = `line-${i}-${(l.text || l.description || '').substring(0, 20)}`;
 
         return (
           <motion.div
-            key={i}
-            ref={isActive ? activeRef : undefined}
+            key={uniqueKey}
+            ref={isActive ? activeRef : isBuffering ? activeRef : undefined}
             initial={{ x: isP1 ? -20 : isP2 ? 20 : 0, opacity: 0 }}
             animate={{
               x: 0,
               opacity: dimmed ? 0.4 : 1,
               scale: isActive ? 1.02 : 1,
             }}
-            transition={{ delay: activeLineIdx < 0 ? i * 0.1 : 0, type: 'spring', stiffness: 260, damping: 22 }}
+            transition={{ delay: activeLineIdx < 0 && bufferingIdx < 0 ? i * 0.1 : 0, type: 'spring', stiffness: 260, damping: 22 }}
             className={`flex flex-col ${isP1 ? 'items-start' : isP2 ? 'items-end' : 'items-center'}`}
           >
             <div className={`flex items-center gap-2 mb-2 ${isP2 ? 'flex-row-reverse' : ''}`}>
@@ -1573,14 +2283,58 @@ function Dialogue({ lines, p1, p2, title = undefined, activeLineIdx = -1 }: { li
                 {l.speaker}
               </span>
               {l.action && <span className="text-[9px] md:text-[10px] text-gray-500 italic uppercase">({l.action})</span>}
+              {isBuffering && (
+                <span className="text-[10px] text-gray-500 animate-pulse tracking-widest">···</span>
+              )}
+              {/* Mini-badge "tier" sur la ligne active : indique en direct
+                  quel moteur TTS lit la ligne (Gemini / Edge / Piper / …). */}
+              {isActive && currentTier && TIER_LABELS[currentTier] && (
+                <span className="text-[9px] text-gray-400 px-1.5 py-0.5 rounded bg-black/50 border border-gray-700/60 font-medium tracking-tight">
+                  {TIER_LABELS[currentTier]}
+                </span>
+              )}
             </div>
-            <div className={`max-w-full md:max-w-2xl p-3 md:p-5 rounded-2xl text-base md:text-xl font-medium leading-relaxed shadow-xl transition-all
+            <div className={`max-w-full md:max-w-2xl p-3 md:p-5 rounded-2xl text-base md:text-xl font-medium leading-relaxed shadow-xl transition-all relative overflow-hidden
               ${isP1 ? 'bg-blue-950/40 border-l-4 border-blue-500 rounded-tl-none' :
                 isP2 ? 'bg-red-950/40 border-r-4 border-red-500 rounded-tr-none text-right' :
                   'bg-gray-800/50 border-t-4 border-yellow-500 italic text-center'}
-              ${isActive ? 'ring-2 ring-yellow-400/70 shadow-[0_0_25px_rgba(250,204,21,0.35)]' : ''}`}
+              ${isActive ? 'ring-2 ring-yellow-400/70 shadow-[0_0_25px_rgba(250,204,21,0.35)]' : ''}
+              ${isBuffering ? 'ring-1 ring-gray-600/50' : ''}`}
             >
-              {l.text || l.description}
+              {/* Karaoke Text Highlighting Effect */}
+              {isActive && activeLineDuration > 0 ? (
+                <div className="leading-relaxed">
+                  {(() => {
+                    const rawText = l.text || l.description || '';
+                    const text = rawText.replace(/^[^:]+:\s*/, '');
+                    const words = text.split(' ');
+                    const totalChars = text.length;
+                    // On garde 5% de marge à la fin
+                    const timePerChar = (activeLineDuration * 0.95) / Math.max(totalChars, 1);
+                    let runningCharCount = 0;
+                    
+                    return words.map((word: string, wIdx: number) => {
+                      const delay = runningCharCount * timePerChar;
+                      const wordDuration = Math.max(word.length * timePerChar, 0.1);
+                      runningCharCount += word.length + 1; // +1 pour l'espace
+                      
+                      return (
+                        <motion.span
+                          key={wIdx}
+                          initial={{ color: '#9ca3af' }}
+                          animate={{ color: '#ffffff' }}
+                          transition={{ delay, duration: wordDuration * 0.8 }}
+                          className="inline-block mr-[0.25em]"
+                        >
+                          {word}
+                        </motion.span>
+                      );
+                    });
+                  })()}
+                </div>
+              ) : (
+                <span className={dimmed ? 'text-gray-400' : 'text-white'}>{(l.text || l.description || '').replace(/^[^:]+:\s*/, '')}</span>
+              )}
             </div>
           </motion.div>
         );

@@ -1,0 +1,157 @@
+{
+  "p1Id": "homer",
+  "p1Name": "Homer Simpson",
+  "p1Img": "/images/homer_generic_sf_1778417069953.png",
+  "p1Voice": "Enceladus",
+  "p1VoiceStyle": "idiot",
+  "p2Id": "adele",
+  "p2Name": "Mortelle Adèle",
+  "p2Img": "/images/adele_generic_sf_1778417097290.png",
+  "p2Voice": "Erinome",
+  "p2VoiceStyle": "enfant_diabolique",
+  "arenaId": "nether",
+  "arenaName": "Le Nether",
+  "arenaImg": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=1200",
+  "duration": 8,
+  "narrativeMode": 2,
+  "script": {
+    "intro": {
+      "text": "Arbitre: Bienvenue dans les flammes éternelles du Nether ! Préparez-vous pour un duel absurde ! À ma gauche, le roi du donut, Homer Simpson ! À ma droite, la gamine la plus terrifiante du monde, Mortelle Adèle ! Que le grand n'importe quoi commence ! Ding ding !",
+      "speaker": "Arbitre"
+    },
+    "rounds": [
+      {
+        "title": "ROUND 1",
+        "dialogues": [
+          {
+            "speaker": "Homer Simpson",
+            "text": "Homer Simpson: Oh... c'est chaud ici... on dirait le four de la centrale... *Miam*... Ça sent le bacon grillé...",
+            "action": "Se gratte le ventre"
+          },
+          {
+            "speaker": "Mortelle Adèle",
+            "text": "Mortelle Adèle: Hi hi hi ! Je vais transformer tes fesses en punching-ball, gros boudin jaune ! Prépare-toi à souffrir !",
+            "action": "Boxe l'air"
+          }
+        ]
+      },
+      {
+        "title": "ROUND 2",
+        "dialogues": [
+          {
+            "speaker": "Homer Simpson",
+            "text": "Homer Simpson: Prends ça ! *ZING* ! Oups... ma batte en bois a pris feu... D'oh ! Ça brûle les doigts !",
+            "action": "Agite sa batte en feu"
+          },
+          {
+            "speaker": "Mortelle Adèle",
+            "text": "Mortelle Adèle: *PAF* ! *POF* ! Dans tes dents ! Tu es aussi lent qu'un escargot asthmatique ! *Hé hé hé* !",
+            "action": "Enchaîne les directs"
+          }
+        ]
+      },
+      {
+        "title": "ROUND 3",
+        "dialogues": [
+          {
+            "speaker": "Mortelle Adèle",
+            "text": "Mortelle Adèle: Alors le gros ? Tu fatigues ? Je vais te faire un nouveau sourire avec mes gants de boxe !",
+            "action": "Ricane de façon démoniaque"
+          },
+          {
+            "speaker": "Homer Simpson",
+            "text": "Homer Simpson: *SCRUNCH*... Attend... je mange un donut au magma... C'est épicé ! *Wouhou* ! Ma langue pétille !",
+            "action": "Mange bruyamment"
+          }
+        ]
+      },
+      {
+        "title": "ROUND 4",
+        "dialogues": [
+          {
+            "speaker": "Homer Simpson",
+            "text": "Homer Simpson: *BOING* ! *BOING* ! Regarde Adèle, je rebondis sur mon ventre comme un ballon de basket ! *Hi hi* !",
+            "action": "Saute sur place"
+          },
+          {
+            "speaker": "Mortelle Adèle",
+            "text": "Mortelle Adèle: Grrr ! Arrête de faire le ressort ! *SPLAT* ! Un uppercut dans ton triple menton ! C'est tout mou !",
+            "action": "Frappe avec rage"
+          }
+        ]
+      },
+      {
+        "title": "ROUND 5",
+        "dialogues": [
+          {
+            "speaker": "Mortelle Adèle",
+            "text": "Mortelle Adèle: Tu as l'air d'un gros flan à la vanille ! Je vais t'étaler par terre et te transformer en paillasson !",
+            "action": "Prise de karaté surprise"
+          },
+          {
+            "speaker": "Homer Simpson",
+            "text": "Homer Simpson: D'oh ! Tu m'as fait tomber ma canette de Duff ! C'est la guerre ! *Rooo-te* ! Oups... pardon...",
+            "action": "Rote bruyamment"
+          }
+        ]
+      },
+      {
+        "title": "ROUND 6",
+        "dialogues": [
+          {
+            "speaker": "Homer Simpson",
+            "text": "Homer Simpson: *Vlan* ! J'ai essayé de te taper mais j'ai frappé un zombie-cochon... Il a pas l'air content du tout...",
+            "action": "Regarde derrière lui"
+          },
+          {
+            "speaker": "Mortelle Adèle",
+            "text": "Mortelle Adèle: Imbécile ! *KICK* ! Pendant que tu regardes ailleurs, je t'envoie dans la lave ! Au revoir le thon !",
+            "action": "Coup de pied chassé"
+          }
+        ]
+      },
+      {
+        "title": "ROUND 7",
+        "dialogues": [
+          {
+            "speaker": "Mortelle Adèle",
+            "text": "Mortelle Adèle: Pourquoi tu souris ? Je t'ai mis KO dix fois ! Tu es increvable ou quoi ? C'est énervant !",
+            "action": "Frappe ses gants l'un contre l'autre"
+          },
+          {
+            "speaker": "Homer Simpson",
+            "text": "Homer Simpson: C'est le secret Simpson... le cerveau est trop petit pour sentir la douleur... *Gniii*... Regarde, un poney !"
+          }
+        ]
+      },
+      {
+        "title": "ROUND 8",
+        "dialogues": [
+          {
+            "speaker": "Homer Simpson",
+            "text": "Homer Simpson: *Hips*... J'ai une idée ! Si je m'assois sur toi, le combat est fini ? Attention... Poids lourd en approche !",
+            "action": "Se prépare à sauter"
+          },
+          {
+            "speaker": "Mortelle Adèle",
+            "text": "Mortelle Adèle: Quoi ?! Non ! C'est pas du jeu ! Au secours ! On m'écrase avec du gras ! *Aaaaah* !",
+            "action": "Essaie de s'enfuir"
+          }
+        ]
+      }
+    ],
+    "winner": "Homer Simpson",
+    "finishingMove": {
+      "type": "COMEDY FINISH",
+      "description": "Arbitre: COMEDY FINISH ! Homer Simpson glisse sur un donut, tombe en arrière et s'assoit accidentellement sur Adèle ! Elle est aplatie comme une crêpe ! K.O. !",
+      "speaker": "Arbitre"
+    },
+    "conclusion": {
+      "text": "Arbitre: La victoire revient à Homer Simpson ! Il gagne un trophée en bacon et une vie supplémentaire... qu'il a déjà mangée ! Quel champion ridicule ! Mwahaha !",
+      "speaker": "Arbitre"
+    }
+  },
+  "winner": "Homer Simpson",
+  "id": "1778508748110-sfatzm",
+  "createdAt": 1778508748110
+}

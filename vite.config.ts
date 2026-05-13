@@ -6,7 +6,10 @@ import { VitePWA } from 'vite-plugin-pwa';
 
 const WASM_HEADERS = {
   'Cross-Origin-Opener-Policy': 'same-origin',
-  'Cross-Origin-Embedder-Policy': 'require-corp',
+  // 'credentialless' active cross-origin isolation (SharedArrayBuffer + OPFS pour Piper)
+  // sans bloquer les ressources cross-origin (images Unsplash, HuggingFace models...)
+  // 'require-corp' était trop strict → OPFS échouait avec SecurityError dans vits-web
+  'Cross-Origin-Embedder-Policy': 'credentialless',
 };
 
 export default defineConfig(({ mode }) => {
@@ -59,9 +62,21 @@ export default defineConfig(({ mode }) => {
     server: {
       hmr: process.env.DISABLE_HMR !== 'true',
       headers: WASM_HEADERS,
+      proxy: {
+        '/api': {
+          target: `http://localhost:${process.env.API_PORT || '3061'}`,
+          changeOrigin: true,
+        },
+      },
     },
     preview: {
       headers: WASM_HEADERS,
+      proxy: {
+        '/api': {
+          target: `http://localhost:${process.env.API_PORT || '3061'}`,
+          changeOrigin: true,
+        },
+      },
     },
   };
 });

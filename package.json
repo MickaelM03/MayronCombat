@@ -4,11 +4,15 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --port=3000 --host=0.0.0.0",
-    "server": "tsx server.ts",
-    "dev:all": "concurrently -n vite,api -c cyan,yellow \"npm run dev\" \"npm run server\"",
+    "dev": "concurrently --raw -n vite,api,xtts -c cyan,yellow,magenta \"vite --port=3060 --strictPort --host=0.0.0.0\" \"API_PORT=3061 tsx server.ts\" \"COQUI_TOS_AGREED=1 scripts/venv/bin/python scripts/tts_server.py 2>&1 || echo '[xtts] serveur Python non dispo, fallback Piper actif'\"",
+    "dev:no-xtts": "concurrently --raw -n vite,api -c cyan,yellow \"vite --port=3060 --strictPort --host=0.0.0.0\" \"API_PORT=3061 tsx server.ts\"",
+    "dev:frontend": "vite --port=3060 --strictPort --host=0.0.0.0",
+    "server": "API_PORT=3061 tsx server.ts",
+    "xtts": "COQUI_TOS_AGREED=1 scripts/venv/bin/python scripts/tts_server.py",
+    "stop": "pkill -f 'vite.*3060' 2>/dev/null; pkill -f 'tsx server.ts' 2>/dev/null; pkill -f 'tts_server.py' 2>/dev/null; echo 'Tous les serveurs arrêtés'",
+    "voices": "scripts/venv/bin/python scripts/generate_voice_samples.py",
     "build": "vite build",
-    "preview": "vite preview",
+    "preview": "vite preview --port=3060 --strictPort --host=0.0.0.0",
     "clean": "rm -rf dist",
     "lint": "tsc --noEmit"
   },
@@ -22,6 +26,7 @@
     "idb": "^8.0.3",
     "lucide-react": "^0.546.0",
     "motion": "^12.23.24",
+    "msedge-tts": "^2.0.5",
     "react": "^19.0.1",
     "react-dom": "^19.0.1",
     "vite": "^6.2.3"

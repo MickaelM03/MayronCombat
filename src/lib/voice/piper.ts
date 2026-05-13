@@ -12,20 +12,33 @@ const MODEL_IDS: Record<string, VoiceId> = {
   Iapetus:    'fr_FR-tom-medium',
   Gacrux:     'fr_FR-tom-medium',
   Rasalgethi: 'fr_FR-tom-medium',
-  // Masculine mid/heroic
+  Achernar:   'fr_FR-tom-medium',
+  Algenib:    'fr_FR-tom-medium',
+  Schedar:    'fr_FR-tom-medium',
+  Zubenelgenubi: 'fr_FR-tom-medium',
+  // Masculine mid/heroic / narrator-warm
   Fenrir:     'fr_FR-tom-medium',
   Sadachbia:  'fr_FR-tom-medium',
+  Algieba:    'fr_FR-tom-medium',
+  Alnilam:    'fr_FR-tom-medium',
+  Achird:     'fr_FR-tom-medium',
+  Sadaltager: 'fr_FR-tom-medium',
   // Young/agile masculine
   Puck:       'fr_FR-gilles-low',
   Zephyr:     'fr_FR-gilles-low',
   Umbriel:    'fr_FR-gilles-low',
   // Feminine voices
-  Kore:       'fr_FR-siwis-medium',
-  Aoede:      'fr_FR-siwis-medium',
-  Leda:       'fr_FR-siwis-medium',
-  Erinome:    'fr_FR-siwis-medium',
-  Despina:    'fr_FR-siwis-medium',
-  Autonoe:    'fr_FR-siwis-medium',
+  Kore:        'fr_FR-siwis-medium',
+  Aoede:       'fr_FR-siwis-medium',
+  Leda:        'fr_FR-siwis-medium',
+  Erinome:     'fr_FR-siwis-medium',
+  Despina:     'fr_FR-siwis-medium',
+  Autonoe:     'fr_FR-siwis-medium',
+  Callirrhoe:  'fr_FR-siwis-medium',
+  Pulcherrima: 'fr_FR-siwis-medium',
+  Laomedeia:   'fr_FR-siwis-medium',
+  Sulafat:     'fr_FR-siwis-medium',
+  Vindemiatrix:'fr_FR-siwis-medium',
 };
 
 // [pitchShift semitones, rateMultiplier]
@@ -73,6 +86,34 @@ function pitchShift(data: Float32Array, semitones: number): Float32Array {
   return out;
 }
 
+// Exposed for App.tsx so it can merge Piper style adjustments into cached blob params
+export { STYLE_ADJUSTMENTS as PIPER_STYLE_ADJUSTMENTS };
+
+// Some browsers (notably Firefox) can refuse OPFS GetDirectory with a
+// SecurityError, which makes vits-web's predict() throw on every call. Once we
+// know Piper is broken in this session, skip it immediately instead of paying
+// the multi-second model-download + WASM-init + throw cycle every line.
+let piperDisabled = false;
+export function isPiperDisabled(): boolean { return piperDisabled; }
+export function resetPiperDisabled(): void { piperDisabled = false; }
+
+// Returns the raw WAV blob from Piper (no pitch/rate applied — caller handles params)
+export async function getPiperBlob(text: string, voiceName: string): Promise<Blob | null> {
+  if (piperDisabled) return null;
+  try {
+    const voiceId = MODEL_IDS[voiceName] ?? 'fr_FR-tom-medium';
+    return await predict({ text, voiceId });
+  } catch (err: any) {
+    const msg = String(err?.message || err);
+    // OPFS / SecurityError / WASM init failure → permanently disable for session.
+    if (/security|opfs|getdirectory|wasm/i.test(msg)) {
+      console.warn('[voice] Piper disabled for this session (OPFS/WASM error):', msg);
+      piperDisabled = true;
+    }
+    return null;
+  }
+}
+
 // Warm up models in the background after first user interaction
 export function warmUpPiper(): void {
   // Fire and forget — errors are silent
@@ -92,6 +133,8 @@ export async function playPiperTTS(
   voiceStyle: string,
   audioContext: AudioContext,
   outputNode: AudioNode,
+  speedMultiplier: number = 1.0,
+  onStart?: (duration: number) => void
 ): Promise<void> {
   const voiceId = MODEL_IDS[voiceName] ?? 'fr_FR-tom-medium';
   const cleanText = text.replace(/^[^:]+:\s*/, '');
@@ -101,6 +144,7 @@ export async function playPiperTTS(
   const decoded = await audioContext.decodeAudioData(arrayBuffer);
 
   const [semitones, rate] = STYLE_ADJUSTMENTS[voiceStyle] ?? [0, 1];
+  const effectiveRate = rate * speedMultiplier;
 
   const channels: Float32Array[] = [];
   for (let c = 0; c < decoded.numberOfChannels; c++) {
@@ -119,8 +163,11 @@ export async function playPiperTTS(
   return new Promise<void>((resolve) => {
     const source = audioContext.createBufferSource();
     source.buffer = buffer;
-    source.playbackRate.value = rate;
+    source.playbackRate.value = effectiveRate;
     source.connect(outputNode);
+    
+    onStart?.(buffer.duration / effectiveRate);
+    
     source.start();
     source.onended = () => resolve();
   });

@@ -1,0 +1,158 @@
+{
+  "p1Id": "voisin",
+  "p1Name": "Le Voisin Relou",
+  "p1Img": "/images/voisin_relou_street_fighter_1778416835801.png",
+  "p1Voice": "Aoede",
+  "p1VoiceStyle": "raleur",
+  "p2Id": "livreur",
+  "p2Name": "Livreur UberEats",
+  "p2Img": "/images/livreur_ubereats_sf_1778416904964.png",
+  "p2Voice": "Aoede",
+  "p2VoiceStyle": "presse",
+  "arenaId": "los_santos",
+  "arenaName": "Rues de Los Santos",
+  "arenaImg": "https://images.unsplash.com/photo-1533929736458-ca588d08c8be?w=1200",
+  "duration": 8,
+  "narrativeMode": 5,
+  "script": {
+    "intro": {
+      "text": "Grand Maître du Multivers: Bienvenue dans l'enfer bitumé de Los Santos ! Un combat à mort entre la haine de voisinage et le stress de la livraison ! Ça va saigner !",
+      "speaker": "Grand Maître du Multivers"
+    },
+    "rounds": [
+      {
+        "title": "ROUND 1: Premier Contact",
+        "dialogues": [
+          {
+            "speaker": "Le Voisin Relou",
+            "text": "Le Voisin Relou: Hé le livreur ! Tu t'es garé devant mon garage, espèce de petit connard ! Je vais t'éclater la tronche !",
+            "action": "Sort sa batte en alu"
+          },
+          {
+            "speaker": "Livreur UberEats",
+            "text": "Livreur UberEats: Pousse-toi le vieux ! J'ai une commande de sushis à livrer dans deux minutes ou je perds mon bonus ! Vite, vite, dégage de là !",
+            "action": "Agite son smartphone frénétiquement"
+          }
+        ]
+      },
+      {
+        "title": "ROUND 2: Le Choc des Cultures",
+        "dialogues": [
+          {
+            "speaker": "Le Voisin Relou",
+            "text": "Le Voisin Relou: Tes sushis, je vais te les faire bouffer par le cul ! Prends ça dans tes dents ! BAM !",
+            "action": "Coup de batte dans le sac thermique"
+          },
+          {
+            "speaker": "Livreur UberEats",
+            "text": "Livreur UberEats: Putain ! Mon sac ! Tu vas me le payer, sale déchet de la société ! Aaaargh !",
+            "action": "Coup de casque intégral dans le pif"
+          }
+        ]
+      },
+      {
+        "title": "ROUND 3: Trash Talk à Gogo",
+        "dialogues": [
+          {
+            "speaker": "Le Voisin Relou",
+            "text": "Le Voisin Relou: Tu pues la friture et la défaite, gamin ! Ta mère travaille pour Deliveroo ou quoi ?",
+            "action": "Crache par terre"
+          },
+          {
+            "speaker": "Livreur UberEats",
+            "text": "Livreur UberEats: Ta gueule le boomer ! Tu passes tes journées à espionner les gens derrière tes rideaux, sale pervers ! Merde !",
+            "action": "Jet de frites froides au visage"
+          }
+        ]
+      },
+      {
+        "title": "ROUND 4: La Vengeance du Scooter",
+        "dialogues": [
+          {
+            "speaker": "Livreur UberEats",
+            "text": "Livreur UberEats: Vroum vroum ! Je vais te rouler sur les orteils avec mon scoot électrique de merde ! Meurs !",
+            "action": "Fonce avec son scooter"
+          },
+          {
+            "speaker": "Le Voisin Relou",
+            "text": "Le Voisin Relou: Raté, espèce de manchot ! Je vais te démonter ton deux-roues comme je démonte ta femme le dimanche ! Ha ha !",
+            "action": "Esquive de justesse"
+          }
+        ]
+      },
+      {
+        "title": "ROUND 5: Tension Maximale",
+        "dialogues": [
+          {
+            "speaker": "Le Voisin Relou",
+            "text": "Le Voisin Relou: Tu commences à fatiguer, le coursier ? C'est le manque de pourboires qui te donne cet air de victime ?",
+            "action": "Frappe les chevilles avec sa batte"
+          },
+          {
+            "speaker": "Livreur UberEats",
+            "text": "Livreur UberEats: J'ai pas le temps pour tes conneries ! L'appli sonne ! Merde, merde, une autre commande ! Je stresse bordel !",
+            "action": "Crise de panique et coups de poing désordonnés"
+          }
+        ]
+      },
+      {
+        "title": "ROUND 6: Bain de Sang Urbain",
+        "dialogues": [
+          {
+            "speaker": "Livreur UberEats",
+            "text": "Livreur UberEats: Tiens ! Prends ce Coca ! Explosion de sucre dans ta face de rat ! Crevure !",
+            "action": "Secoue et ouvre un soda géant sous le nez du voisin"
+          },
+          {
+            "speaker": "Le Voisin Relou",
+            "text": "Le Voisin Relou: Ça colle, sale bâtard ! Tu vas tâter du métal ! Je vais te refaire le portrait façon GTA !",
+            "action": "Série de coups de batte dans les côtes"
+          }
+        ]
+      },
+      {
+        "title": "ROUND 7: L'Agonie du Livreur",
+        "dialogues": [
+          {
+            "speaker": "Livreur UberEats",
+            "text": "Livreur UberEats: Nooon... ma note va descendre... 4 étoiles... 3 étoiles... Je... je vais être banni de l'appli !",
+            "action": "Tombe à genoux en pleurant"
+          },
+          {
+            "speaker": "Le Voisin Relou",
+            "text": "Le Voisin Relou: C'est ça, chiale ! C'est le moment de te faire payer pour toutes les fois où t'as mal garé ton épave !",
+            "action": "Prépare un coup de circuit"
+          }
+        ]
+      },
+      {
+        "title": "ROUND 8: Le Final Cruel",
+        "dialogues": [
+          {
+            "speaker": "Le Voisin Relou",
+            "text": "Le Voisin Relou: T'as plus de batterie ? T'as plus de réseau ? C'est fini pour toi, le livreur de mes deux !",
+            "action": "Attrape le livreur par le col"
+          },
+          {
+            "speaker": "Livreur UberEats",
+            "text": "Livreur UberEats: Attends... j'ai... j'ai un code promo... pitié... Ne me tue pas... Aaaargh !",
+            "action": "Tente désespérément de donner son téléphone"
+          }
+        ]
+      }
+    ],
+    "winner": "Le Voisin Relou",
+    "finishingMove": {
+      "type": "FATALITY",
+      "description": "Grand Maître du Multivers: FATALITY ! Le Voisin Relou enfonce la batte dans le sac isotherme, y fourre la tête du livreur et l'écrase contre un poteau ! Le Livreur UberEats est livré... en pièces détachées ! K.O. !",
+      "speaker": "Grand Maître du Multivers"
+    },
+    "conclusion": {
+      "text": "Grand Maître du Multivers: Le Voisin Relou gagne par pure méchanceté gratuite ! Ne traînez jamais devant son garage ou vous finirez en carpaccio ! À plus les nazes !",
+      "speaker": "Grand Maître du Multivers"
+    }
+  },
+  "winner": "Le Voisin Relou",
+  "id": "1778516839595-t9b9cy",
+  "createdAt": 1778516839596
+}

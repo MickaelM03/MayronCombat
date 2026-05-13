@@ -1,17 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { BookOpen, Play, Trash2, X, Trophy } from 'lucide-react';
+import { BookOpen, Play, Trash2, X, Trophy, Mic, Loader2, Check } from 'lucide-react';
 import { listBattles, deleteBattle, SavedBattle } from '../lib/battles/store';
 import { NARRATIVE_MODE_META } from '../lib/battles/prompts';
 
 interface Props {
   onReplay: (battle: SavedBattle) => void;
+  onPreGenerate?: (
+    battle: SavedBattle,
+    onProgress: (done: number, total: number, label: string) => void,
+  ) => Promise<{ ok: number; total: number; skipped: number; failed: number }>;
 }
 
-export default function BattleLibrary({ onReplay }: Props) {
+type GenStatus = { done: number; total: number; label: string } | { result: string };
+
+export default function BattleLibrary({ onReplay, onPreGenerate }: Props) {
   const [open, setOpen] = useState(false);
   const [battles, setBattles] = useState<SavedBattle[]>([]);
   const [loading, setLoading] = useState(false);
+  const [genStatus, setGenStatus] = useState<Record<string, GenStatus>>({});
 
   const load = async () => {
     setLoading(true);
@@ -27,6 +34,30 @@ export default function BattleLibrary({ onReplay }: Props) {
     e.stopPropagation();
     await deleteBattle(id);
     setBattles(prev => prev.filter(b => b.id !== id));
+  };
+
+  const handlePreGenerate = async (battle: SavedBattle, e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!onPreGenerate) return;
+    if (genStatus[battle.id] && 'done' in genStatus[battle.id]) return; // déjà en cours
+    setGenStatus(prev => ({ ...prev, [battle.id]: { done: 0, total: 0, label: 'Init…' } }));
+    try {
+      const report = await onPreGenerate(battle, (done, total, label) => {
+        setGenStatus(prev => ({ ...prev, [battle.id]: { done, total, label } }));
+      });
+      const summary = `${report.ok}/${report.total} ✓${report.failed > 0 ? ` (${report.failed} échec)` : ''}`;
+      setGenStatus(prev => ({ ...prev, [battle.id]: { result: summary } }));
+      setTimeout(() => {
+        setGenStatus(prev => {
+          const next = { ...prev };
+          delete next[battle.id];
+          return next;
+        });
+      }, 4000);
+    } catch (err) {
+      console.error('[lib] pre-generate failed', err);
+      setGenStatus(prev => ({ ...prev, [battle.id]: { result: 'Erreur' } }));
+    }
   };
 
   const fmt = (ts: number) =>
@@ -82,14 +113,18 @@ export default function BattleLibrary({ onReplay }: Props) {
                 )}
                 {battles.map(b => {
                   const meta = NARRATIVE_MODE_META[b.narrativeMode] ?? NARRATIVE_MODE_META[1];
+                  const status = genStatus[b.id];
+                  const isGenerating = status && 'done' in status;
+                  const isDone = status && 'result' in status;
                   return (
                     <motion.div
                       key={b.id}
                       initial={{ opacity: 0, y: 8 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="flex items-center gap-3 bg-gray-900 border border-gray-800 rounded-2xl p-3 hover:border-purple-700/50 transition-colors group cursor-pointer"
+                      className="flex flex-col gap-2 bg-gray-900 border border-gray-800 rounded-2xl p-3 hover:border-purple-700/50 transition-colors group cursor-pointer"
                       onClick={() => { onReplay(b); setOpen(false); }}
                     >
+                    <div className="flex items-center gap-3">
                       {/* Avatars */}
                       <div className="flex -space-x-3 flex-shrink-0">
                         <img src={b.p1Img} alt={b.p1Name} className="w-10 h-10 rounded-full object-cover border-2 border-gray-800" />
@@ -115,6 +150,24 @@ export default function BattleLibrary({ onReplay }: Props) {
 
                       {/* Actions */}
                       <div className="flex items-center gap-1 flex-shrink-0">
+                        {onPreGenerate && (
+                          <button
+                            onClick={e => handlePreGenerate(b, e)}
+                            disabled={!!isGenerating}
+                            className={`p-2 rounded-xl transition-colors ${
+                              isGenerating
+                                ? 'bg-purple-700 text-white'
+                                : isDone
+                                ? 'bg-green-800/40 text-green-300'
+                                : 'bg-gray-800 hover:bg-purple-700/50 text-purple-400 hover:text-white'
+                            }`}
+                            title="Pré-générer les vraies voix (XTTS) pour replay offline"
+                          >
+                            {isGenerating ? <Loader2 size={14} className="animate-spin" />
+                              : isDone ? <Check size={14} />
+                              : <Mic size={14} />}
+                          </button>
+                        )}
                         <button
                           onClick={e => { e.stopPropagation(); onReplay(b); setOpen(false); }}
                           className="p-2 rounded-xl bg-purple-800/40 hover:bg-purple-700 text-purple-300 transition-colors"
@@ -130,6 +183,27 @@ export default function BattleLibrary({ onReplay }: Props) {
                           <Trash2 size={14} />
                         </button>
                       </div>
+                      </div>
+                      {/* Progress / résultat de la pré-génération */}
+                      {status && (
+                        <div onClick={e => e.stopPropagation()} className="px-1">
+                          {'done' in status ? (
+                            <div className="flex items-center gap-2">
+                              <div className="flex-1 h-1.5 bg-gray-800 rounded-full overflow-hidden">
+                                <div
+                                  className="h-full bg-purple-500 transition-all"
+                                  style={{ width: status.total > 0 ? `${(status.done / status.total) * 100}%` : '0%' }}
+                                />
+                              </div>
+                              <span className="text-[9px] text-purple-300 font-mono whitespace-nowrap">
+                                {status.done}/{status.total || '?'} · {status.label || '…'}
+                              </span>
+                            </div>
+                          ) : (
+                            <p className="text-[10px] text-green-400">Voix prêtes : {status.result}</p>
+                          )}
+                        </div>
+                      )}
                     </motion.div>
                   );
                 })}

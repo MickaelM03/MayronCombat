@@ -112,9 +112,14 @@ export function playWebSpeechEnhanced(
   voiceStyle: string = '',
   rateOverride?: number,
   pitchOverride?: number,
+  onStart?: (duration: number) => void
 ): Promise<void> {
   return new Promise((resolve) => {
-    if (!('speechSynthesis' in window)) { setTimeout(resolve, 1500); return; }
+    if (!('speechSynthesis' in window)) { 
+      onStart?.(2.0);
+      setTimeout(resolve, 1500); 
+      return; 
+    }
     window.speechSynthesis.cancel();
 
     const cleanText = text.replace(/^[^:]+:\s*/, '');
@@ -132,8 +137,18 @@ export function playWebSpeechEnhanced(
     const best = pickBestFrenchVoice(wantFeminine);
     if (best) utterance.voice = best;
 
+    utterance.onstart = () => {
+      const estimatedDurationSeconds = (cleanText.length * 0.08) / utterance.rate;
+      onStart?.(estimatedDurationSeconds);
+    };
     utterance.onend   = () => resolve();
     utterance.onerror = () => resolve();
+    
     window.speechSynthesis.speak(utterance);
+    
+    // Fallback if onstart never fires (browser bug)
+    setTimeout(() => {
+      onStart?.((cleanText.length * 0.08) / utterance.rate);
+    }, 500);
   });
 }

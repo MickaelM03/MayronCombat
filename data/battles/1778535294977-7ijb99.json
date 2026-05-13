@@ -1,0 +1,98 @@
+{
+  "p1Id": "papa",
+  "p1Name": "Papa",
+  "p1Img": "/images/papa_sf_1778417131723.png",
+  "p1Voice": "Fenrir",
+  "p1VoiceStyle": "papa",
+  "p2Id": "cetautomatix",
+  "p2Name": "Cétautomatix",
+  "p2Img": "/images/cetautomatix_sf_1778507441190.png",
+  "p2Voice": "Iapetus",
+  "p2VoiceStyle": "guerrier",
+  "arenaId": "colosseum",
+  "arenaName": "Colisée de Rome",
+  "arenaImg": "https://images.unsplash.com/photo-1552832230-c0197dd311b5?w=1200",
+  "duration": 3,
+  "narrativeMode": 5,
+  "script": {
+    "intro": {
+      "text": "Grand Maître du Multivers: Bienvenue dans l'arène sanglante du Colisée, bande de dégénérés ! Ce soir, on n'est pas là pour trier des lentilles. On va voir qui a la plus grosse... paire de pompes ! Papa contre le gros bourrin gaulois Cétautomatix ! Ça va chier des bulles carrées, bordel !",
+      "speaker": "Grand Maître du Multivers"
+    },
+    "rounds": [
+      {
+        "title": "Round 1 : L'échauffement des semelles",
+        "dialogues": [
+          {
+            "speaker": "Papa",
+            "text": "Papa: Alors comme ça on joue avec des marteaux parce qu'on a une petite bite ? Tiens, bouffe ma charentaise dans tes dents, connard !",
+            "action": "Lance une pantoufle à 120 km/h"
+          },
+          {
+            "speaker": "Cétautomatix",
+            "text": "Cétautomatix: LANCER DE SANDALE EN FER FORGÉ DANS TES DENTS DE LAIT !!!",
+            "action": "Balance une sandale métallique massive"
+          },
+          {
+            "speaker": "Papa",
+            "text": "Papa: Putain ! Tu vises comme un manche, espèce de sac à merde ! Ma daronne lance mieux ses sabots quand elle est bourrée au rouge !",
+            "action": "Esquive avec une grâce insultante"
+          }
+        ]
+      },
+      {
+        "title": "Round 2 : La foire à la torgnole",
+        "dialogues": [
+          {
+            "speaker": "Cétautomatix",
+            "text": "Cétautomatix: TRIPLE VOLÉE DE SABOTS GAULOIS DANS TA GUEULE DE CITADIN !!!",
+            "action": "Enchaîne trois lancers violents"
+          },
+          {
+            "speaker": "Papa",
+            "text": "Papa: Aaaargh ! Merde, mon nez ! Tu vas me le payer, sale forgeron de mes deux ! Tiens, prends cette tong de l'enfer dans tes valseuses !",
+            "action": "Vise les parties génitales avec une précision chirurgicale"
+          },
+          {
+            "speaker": "Cétautomatix",
+            "text": "Cétautomatix: BORDEL DE MERDE ! MES COUIIIIILLLES !!! TU VAS CREVER, BÂTARD !",
+            "action": "Se tord de douleur en écumant de rage"
+          }
+        ]
+      },
+      {
+        "title": "Round 3 : Le désespoir du cuir",
+        "dialogues": [
+          {
+            "speaker": "Papa",
+            "text": "Papa: T'es essoufflé, le tas de muscles ? Tu pues la sueur, le fer rouillé et l'échec. T'as plus rien dans le slip ou quoi ?",
+            "action": "Nargue son adversaire en ajustant sa chaussette"
+          },
+          {
+            "speaker": "Cétautomatix",
+            "text": "Cétautomatix: ULTIME ATTAQUE DE LA BOTTINE À CLOUS DANS TES GLOBES OCULAIRES !!!",
+            "action": "Lance une botte hérissée de pointes"
+          },
+          {
+            "speaker": "Papa",
+            "text": "Papa: D'oh ! Trop lent, trou du cul ! C'est l'heure de te renvoyer au village des fous avec un nouvel orifice !",
+            "action": "Récupère la botte au vol avec un sourire carnassier"
+          }
+        ]
+      }
+    ],
+    "winner": "Papa",
+    "finishingMove": {
+      "type": "FATALITY : LE SUPPOSITOIRE DE CUIR",
+      "description": "Papa concentre toute sa haine dans une savate en cuir de buffle renforcée au plomb. Il l'expédie avec une force surhumaine directement dans la gorge de Cétautomatix qui étouffe en gargouillant du sang avant que sa tête n'explose sous la pression.",
+      "speaker": "Grand Maître du Multivers"
+    },
+    "conclusion": {
+      "text": "Grand Maître du Multivers: Et voilà le travail ! Cétautomatix finit en kit et Papa rentre à la maison pour l'apéro. C'était violent, c'était gratuit, et c'est pour ça qu'on kiffe ! Allez, dégagez maintenant, j'ai une orgie qui m'attend !",
+      "speaker": "Grand Maître du Multivers"
+    }
+  },
+  "winner": "Papa",
+  "id": "1778535294977-7ijb99",
+  "createdAt": 1778535294977
+}
