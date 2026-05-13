@@ -23,7 +23,10 @@ import {
   X,
   AlertTriangle,
   Settings2,
-  Home
+  Home,
+  History,
+  Save,
+  BookOpen
 } from 'lucide-react';
 import { GoogleGenAI, Type } from '@google/genai';
 import HomePage from './components/HomePage';
