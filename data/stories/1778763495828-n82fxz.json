@@ -1,0 +1,67 @@
+{
+  "title": "Ma Première Aventure : En quête du Dragon",
+  "characterIds": [
+    "lina",
+    "sachat",
+    "timon"
+  ],
+  "arenaId": "foret_dragon",
+  "arenaName": "La Forêt du Dragon",
+  "arenaImg": "/images/foret_dragon_arena_1778750742162.png",
+  "theme": "Ma Première Aventure : En quête du Dragon",
+  "isInteractive": true,
+  "isFinished": false,
+  "script": [
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Bienvenue dans cette nouvelle aventure : \"Ma Première Aventure : En quête du Dragon\". Avant de partir, tu dois choisir ton héros. Qui vas-tu incarner ?",
+      "action": "Choix du Héros",
+      "choices": [
+        {
+          "text": "Incarner Lina la bagarreuse",
+          "action": "Le joueur choisit d'incarner Lina la bagarreuse. Ce personnage sera le héros principal et commence avec son équipement de base."
+        },
+        {
+          "text": "Incarner Sachat le chapardeur",
+          "action": "Le joueur choisit d'incarner Sachat le chapardeur. Ce personnage sera le héros principal et commence avec son équipement de base."
+        },
+        {
+          "text": "Incarner Timon le magicien",
+          "action": "Le joueur choisit d'incarner Timon le magicien. Ce personnage sera le héros principal et commence avec son équipement de base."
+        }
+      ]
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Les arbres millénaires de la Forêt du Dragon se dressent comme des sentinelles de pierre, leurs branches griffant un ciel chargé de nuages noirs.",
+      "action": "Lina regarde l'horizon sombre."
+    },
+    {
+      "speaker": "Lina",
+      "text": "Lina: L'air est lourd... l'odeur du soufre et du bois brûlé ne trompe pas. La bête est proche, je le sens dans mes poings.",
+      "action": "Lina serre les sangles de ses gantelets."
+    },
+    {
+      "speaker": "Sachat",
+      "text": "Sachat: Pas si vite, la cogneuse. On ne fonce pas sur un dragon sans un minimum de préparation. J'ai... disons... 'emprunté' quelques articles au campement pour nous aider.",
+      "action": "Sachat étale trois objets sur une souche."
+    },
+    {
+      "speaker": "Timon",
+      "text": "Timon: Les courants magiques de cette forêt sont instables. Un équipement adéquat pourrait être la seule chose nous séparant d'une fin tragique.",
+      "action": "Timon agite son bâton au-dessus des objets."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Lina doit choisir un outil pour cette quête. Lequel de ces objets sera le plus utile ?",
+      "action": "Le vent siffle entre les arbres."
+    }
+  ],
+  "id": "1778763495828-n82fxz",
+  "createdAt": 1778763495828,
+  "inventory": {
+    "items": [],
+    "allies": [],
+    "heroId": "lina"
+  }
+}

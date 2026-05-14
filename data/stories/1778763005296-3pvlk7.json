@@ -1,0 +1,112 @@
+{
+  "title": "Ma Première Aventure : En quête du Dragon",
+  "characterIds": [
+    "lina",
+    "sachat",
+    "timon"
+  ],
+  "arenaId": "foret_dragon",
+  "arenaName": "La Forêt du Dragon",
+  "arenaImg": "/images/foret_dragon_arena_1778750742162.png",
+  "theme": "Ma Première Aventure : En quête du Dragon",
+  "isInteractive": true,
+  "isFinished": false,
+  "script": [
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Bienvenue dans cette nouvelle aventure : \"Ma Première Aventure : En quête du Dragon\". Avant de partir, tu dois choisir ton héros. Qui vas-tu incarner ?",
+      "action": "Choix du Héros",
+      "choices": [
+        {
+          "text": "Incarner Lina la bagarreuse",
+          "action": "Le joueur choisit d'incarner Lina la bagarreuse. Ce personnage sera le héros principal et commence avec son équipement de base."
+        },
+        {
+          "text": "Incarner Sachat le chapardeur",
+          "action": "Le joueur choisit d'incarner Sachat le chapardeur. Ce personnage sera le héros principal et commence avec son équipement de base."
+        },
+        {
+          "text": "Incarner Timon le magicien",
+          "action": "Le joueur choisit d'incarner Timon le magicien. Ce personnage sera le héros principal et commence avec son équipement de base."
+        }
+      ]
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: L'air devient lourd et chargé d'électricité statique alors que Timon, Lina et Sachat se tiennent à la lisière de la Forêt du Dragon. Les arbres millénaires semblent murmurer des avertissements dans une langue oubliée.",
+      "action": "Le vent se lève brusquement."
+    },
+    {
+      "speaker": "Lina",
+      "text": "Lina: Arrête de fixer ces ombres, magicien. Mon épée démange, mais on ne fera pas un pas de plus si tu n'es pas prêt à canaliser tes sorts. On n'est pas ici pour une promenade de santé.",
+      "action": "Elle frappe son poing dans sa paume."
+    },
+    {
+      "speaker": "Sachat",
+      "text": "Sachat: Elle a raison, pour une fois. Cette forêt est un nid à pièges. Si on veut s'approcher du grand reptile sans finir en brochettes, il nous faut un avantage. Alors, Timon, qu'as-tu sorti de tes coffres scellés ?",
+      "action": "Il vérifie discrètement ses sacoches."
+    },
+    {
+      "speaker": "Timon",
+      "text": "Timon: Silence. La magie de cet endroit exige un ancrage solide. J'ai préparé trois artefacts puissants pour notre quête, mais l'équilibre des énergies est précaire : je ne peux en emporter qu'un seul avec moi.",
+      "action": "Il dépose trois objets enveloppés de soie sur une souche."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Sous la canopée oppressante de la Forêt du Dragon, le silence n'est interrompu que par le crépitement de l'énergie résiduelle de Timon.",
+      "action": "Le vent siffle entre les arbres tordus."
+    },
+    {
+      "speaker": "Timon",
+      "text": "Timon: Mes compagnons, la voie vers le repaire de l'écailleux est pavée de périls que seule une préparation rigoureuse peut écarter. Voici les reliques de mon ordre.",
+      "action": "Timon ouvre sa sacoche, révélant trois objets mystiques."
+    },
+    {
+      "speaker": "Lina",
+      "text": "Lina: Je n'aime pas attendre, Timon. La forêt semble se refermer sur nous. Choisis vite, que je puisse enfin dégainer mon acier si une bête se montre.",
+      "action": "Lina pose la main sur la garde de son épée, aux aguets."
+    },
+    {
+      "speaker": "Sachat",
+      "text": "Sachat: Regardez ces reflets... Ils ont l'air précieux. Mais restons concentrés. Si on veut subtiliser un trésor au dragon, il nous faut l'outil adéquat.",
+      "action": "Sachat scrute les fourrés environnants avec nervosité."
+    },
+    {
+      "speaker": "Timon",
+      "text": "Timon: Le destin de notre quête repose sur ce choix. Que l'arcane nous guide.",
+      "action": "Timon désigne les trois objets posés devant lui."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: La brume s'épaissit, s'enroulant autour des troncs noueux comme des serpents spectraux. Timon déploie un linge de velours sombre sur une souche pétrifiée, révélant trois reliques palpitantes d'une lueur éthérée.",
+      "action": "La brume s'agite au rythme des pulsations magiques des artefacts."
+    },
+    {
+      "speaker": "Timon",
+      "text": "Timon: Le temps presse. Les courants d'éther de cette forêt sont instables. L'Oeil de Vérité peut percer les illusions et les pièges. Le Sceptre de Givre permet de dompter la fureur élémentaire. La Cape de Dissimulation, quant à elle, offre le silence des ombres.",
+      "action": "Timon passe sa main au-dessus des objets, ses yeux brillant d'un éclat bleuté."
+    },
+    {
+      "speaker": "Lina",
+      "text": "Lina: Laisse tomber la dentelle, magicien ! Prends le Sceptre. Si un rejeton de dragon nous barre la route, je veux qu'il soit gelé avant que mon épée ne le brise en mille morceaux.",
+      "action": "Lina frappe le pommeau de sa lame avec impatience."
+    },
+    {
+      "speaker": "Sachat",
+      "text": "Sachat: Toujours aussi subtile, Lina... Timon, la discrétion est la mère de la survie. Avec la Cape, nous pourrions traverser ces bois sans même réveiller un oiseau de proie. Réfléchis bien.",
+      "action": "Sachat vérifie ses dagues en fixant la Cape avec convoitise."
+    },
+    {
+      "speaker": "Timon",
+      "text": "Timon: Mon choix est fait. Un seul de ces objets nous accompagnera vers l'antre de la bête.",
+      "action": "Timon s'apprête à saisir l'artefact choisi."
+    }
+  ],
+  "id": "1778763005296-3pvlk7",
+  "createdAt": 1778763005296,
+  "inventory": {
+    "items": [],
+    "allies": [],
+    "heroId": "timon"
+  }
+}

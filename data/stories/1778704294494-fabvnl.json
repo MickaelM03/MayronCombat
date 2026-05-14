@@ -1,0 +1,57 @@
+{
+  "title": "Le Chaos Multidimensionnel des Tronches de Cake",
+  "characterIds": [
+    "homer",
+    "bart",
+    "adele"
+  ],
+  "arenaId": "living_room",
+  "arenaName": "Le Salon de la Maison",
+  "arenaImg": "https://images.unsplash.com/photo-1567016432779-094069958ea5?w=1200",
+  "theme": "Une aventure épique à travers les dimensions",
+  "isInteractive": true,
+  "script": [
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Le salon des Simpson, d'ordinaire calme, est soudainement secoué par une faille spatio-temporelle violette qui déchire le papier peint.",
+      "action": "Le décor tremble violemment et les tableaux se décrochent"
+    },
+    {
+      "speaker": "Homer Simpson",
+      "text": "Homer Simpson: Oh punaise ! Ma télé est en train d'aspirer mon bol de chips ! Revenez ici, mes précieuses !",
+      "action": "Tente désespérément de rattraper des chips qui lévitent vers le portail"
+    },
+    {
+      "speaker": "Bart Simpson",
+      "text": "Bart Simpson: Ay Caramba ! C'est mieux que la 3D, on dirait que l'univers fait un rot massif !",
+      "action": "S'accroche au canapé tout en riant"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Une petite fille rousse aux yeux plissés de colère et de mépris surgit du vortex et atterrit lourdement sur le ventre d'Homer.",
+      "action": "Atterrissage bruyant avec un bruit de ressort"
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Poussez-vous, les têtes de citrouilles ! Mon Vortex-O-Matic a encore confondu 'Planète de la Mort' avec 'Salon de Gros Bêtas' !",
+      "action": "Se relève et ajuste ses couettes avec un air féroce"
+    },
+    {
+      "speaker": "Homer Simpson",
+      "text": "Homer Simpson: Hé ! Tu as écrasé mon dernier donut ! C'est une déclaration de guerre, gamine ! Je vais te... D'oh !",
+      "action": "Tente d'attraper Adèle mais s'emmêle les pieds dans le tapis"
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Silence, créature primitive ! Si on ne stabilise pas cette faille avec une dose massive de bêtise pure, une armée de poneys pailletés va envahir votre maison !",
+      "action": "Sort une télécommande pleine de boutons rouges de sa poche"
+    },
+    {
+      "speaker": "Bart Simpson",
+      "text": "Bart Simpson: Des poneys ? Beurk ! C'est pire que d'étudier ! On fait quoi, la rousse ?",
+      "action": "Arme son lance-pierre vers le vortex"
+    }
+  ],
+  "id": "1778704294494-fabvnl",
+  "createdAt": 1778704294494
+}

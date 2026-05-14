@@ -1642,6 +1642,11 @@ FORMAT JSON REQUIS :
       
       const storyJson: StoryChapterJSON = JSON.parse(jsonMatch[0]);
       
+      const newLines = [...storyJson.lines];
+      if (storyJson.choices && newLines.length > 0) {
+        newLines[newLines.length - 1].choices = storyJson.choices;
+      }
+      
       const newStory: Omit<SavedStory, 'id' | 'createdAt'> = {
         title: storyJson.title || "Une Nouvelle Chronique",
         characterIds: config.characters.map((c: any) => c.id),
@@ -1651,7 +1656,7 @@ FORMAT JSON REQUIS :
         theme: config.theme,
         isInteractive: config.isInteractive,
         isFinished: !!storyJson.isEnd,
-        script: storyJson.lines
+        script: newLines
       };
 
       const id = await saveStory(newStory);
@@ -1723,10 +1728,15 @@ FORMAT JSON REQUIS :
       
       const storyJson: StoryChapterJSON = JSON.parse(jsonMatch[0]);
       
+      const newLines = [...storyJson.lines];
+      if (storyJson.choices && newLines.length > 0) {
+        newLines[newLines.length - 1].choices = storyJson.choices;
+      }
+      
       const updatedStory = {
         ...currentStory,
         isFinished: !!storyJson.isEnd,
-        script: [...currentStory.script, ...storyJson.lines],
+        script: [...currentStory.script, ...newLines],
         inventory: updatedInventory
       };
 

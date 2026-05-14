@@ -1,0 +1,137 @@
+{
+  "title": "Ma Première Aventure : En quête du Dragon",
+  "characterIds": [
+    "lina",
+    "sachat",
+    "timon"
+  ],
+  "arenaId": "foret_dragon",
+  "arenaName": "La Forêt du Dragon",
+  "arenaImg": "/images/foret_dragon_arena_1778750742162.png",
+  "theme": "Ma Première Aventure : En quête du Dragon",
+  "isInteractive": true,
+  "isFinished": false,
+  "script": [
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Bienvenue dans cette nouvelle aventure : \"Ma Première Aventure : En quête du Dragon\". Avant de partir, tu dois choisir ton héros. Qui vas-tu incarner ?",
+      "action": "Choix du Héros",
+      "choices": [
+        {
+          "text": "Incarner Lina la bagarreuse",
+          "action": "Le joueur choisit d'incarner Lina la bagarreuse. Ce personnage sera le héros principal et commence avec son équipement de base."
+        },
+        {
+          "text": "Incarner Sachat le chapardeur",
+          "action": "Le joueur choisit d'incarner Sachat le chapardeur. Ce personnage sera le héros principal et commence avec son équipement de base."
+        },
+        {
+          "text": "Incarner Timon le magicien",
+          "action": "Le joueur choisit d'incarner Timon le magicien. Ce personnage sera le héros principal et commence avec son équipement de base."
+        }
+      ]
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Les frondaisons de la Forêt du Dragon se dressent comme une muraille de basalte devant vous. L'air est lourd d'une odeur de soufre et d'humus ancien.",
+      "action": "La caméra survole la forêt sombre et brumeuse."
+    },
+    {
+      "speaker": "Lina",
+      "text": "Lina: Cesse de triturer tes gants, Sachat. Si nous voulons rattraper cette bête avant qu'elle ne rase le prochain village, nous devons pénétrer dans ce labyrinthe de ronces.",
+      "action": "Lina ajuste la sangle de sa hache avec un regard déterminé."
+    },
+    {
+      "speaker": "Timon",
+      "text": "Timon: Les courants magiques sont chaotiques ici. Mes sens picotent... Sachat, tu es le plus agile d'entre nous. C'est à toi de mener la marche, mais ne pars pas les mains vides.",
+      "action": "Timon consulte un vieux parchemin qui brille d'une lueur bleutée."
+    },
+    {
+      "speaker": "Sachat",
+      "text": "Sachat: Un bon chapardeur n'est rien sans ses outils. Je connais cette forêt, elle ne pardonne aucune hésitation. Laissez-moi juste choisir de quoi assurer notre survie.",
+      "action": "Sachat examine son sac de voyage ouvert sur le sol."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Pour affronter les périls de la Forêt du Dragon, Sachat doit choisir une pièce d'équipement cruciale. Ce choix définira tes capacités pour la suite de l'aventure.",
+      "action": "Trois objets brillent faiblement sur le sol.",
+      "choices": [
+        {
+          "text": "Prendre le Grapin de soie (Idéal pour franchir les obstacles verticaux).",
+          "action": "Sachat enroule la cordelette autour de sa taille.",
+          "inventoryUpdate": {
+            "type": "ITEM",
+            "name": "Grapin de soie"
+          }
+        },
+        {
+          "text": "Prendre la Dague de verre (Une arme silencieuse capable de trancher les écailles).",
+          "action": "Sachat glisse la lame translucide dans sa botte.",
+          "inventoryUpdate": {
+            "type": "ITEM",
+            "name": "Dague de verre"
+          }
+        },
+        {
+          "text": "Prendre la Poudre d'ombre (Permet de s'évaporer dans l'obscurité en cas de fuite).",
+          "action": "Sachat range soigneusement la bourse de cuir à sa ceinture.",
+          "inventoryUpdate": {
+            "type": "ITEM",
+            "name": "Poudre d'ombre"
+          }
+        }
+      ]
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Les trois compagnons s'enfoncent sous la canopée oppressante. La lumière du soleil peine à percer le dôme de feuilles sombres, laissant place à une pénombre verdâtre et étouffante.",
+      "action": "La caméra plonge dans les ombres de la forêt."
+    },
+    {
+      "speaker": "Sachat",
+      "text": "Sachat: Restez sur vos gardes. Les ronces ici ne se contentent pas de griffer, elles semblent chercher à nous entraver. J'ai le Grapin de soie prêt si le terrain se dérobe.",
+      "action": "Sachat vérifie la tension de sa cordelette à sa ceinture."
+    },
+    {
+      "speaker": "Lina",
+      "text": "Lina: Ne t'inquiète pas pour les plantes, Sachat. Si une seule de ces racines bouge, je la sectionne. Mais sentez-vous cette odeur ? Le soufre devient insupportable.",
+      "action": "Lina pose la main sur la garde de son épée."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Soudain, le sentier s'arrête net. Devant vous, une faille béante déchire la terre, profonde et large de plusieurs mètres. De la vapeur brûlante s'en échappe, masquant le fond de l'abîme.",
+      "action": "Une vue plongeante montre l'immensité du gouffre."
+    },
+    {
+      "speaker": "Timon",
+      "text": "Timon: Les courants telluriques ont été brisés ici. C'est l'œuvre du dragon, sa puissance a fracturé le sol lors de son passage. Traverser à la nage dans ces vapeurs serait suicidaire.",
+      "action": "Timon observe les émanations magiques avec inquiétude.",
+      "choices": [
+        {
+          "text": "Lancer le Grapin de soie vers une branche robuste de l'autre côté pour traverser en rappel.",
+          "action": "Traversée acrobatique",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Chercher un passage plus stable en longeant la crevasse vers l'est.",
+          "action": "Contournement prudent",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Demander à Timon de canaliser son énergie pour créer un pont de glace éphémère.",
+          "action": "Recours à la magie",
+          "inventoryUpdate": null
+        }
+      ]
+    }
+  ],
+  "id": "1778763756970-j6mfou",
+  "createdAt": 1778763756970,
+  "inventory": {
+    "items": [
+      "Grapin de soie"
+    ],
+    "allies": [],
+    "heroId": "sachat"
+  }
+}

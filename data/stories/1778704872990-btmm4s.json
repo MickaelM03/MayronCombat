@@ -1,0 +1,48 @@
+{
+  "title": "Chaos en Direct : L'Évasion du Siècle au 20 Heures",
+  "characterIds": [
+    "spiderman",
+    "mayron",
+    "adele"
+  ],
+  "arenaId": "plateau_tv",
+  "arenaName": "Le 20 Heures",
+  "arenaImg": "/images/plateau_tv_arena.png",
+  "theme": "Une évasion spectaculaire d'une prison de haute sécurité",
+  "isInteractive": true,
+  "isFinished": false,
+  "script": [
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Les gyrophares balaient le plateau du 20 Heures alors que les écrans géants diffusent en boucle le carnage sanglant de la prison de haute sécurité située juste à côté du studio.",
+      "action": "La caméra vacille sous le souffle d'une explosion proche."
+    },
+    {
+      "speaker": "Spider-Man",
+      "text": "Spider-Man: Putain de bordel de merde ! Je m'attendais à une interview promo pour mon nouveau gel douche anti-transpi, pas à voir des psychopathes s'évader en direct sur TF1 !",
+      "action": "Il vérifie ses lance-toiles avec une nervosité visible."
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Enfin un programme qui ne pue pas la guimauve et le bonheur forcé. Regarde Mayron, ce détenu est en train de transformer le crâne du gardien en cendrier. C'est... rafraîchissant.",
+      "action": "Elle sourit de manière sadique en pointant les moniteurs du doigt."
+    },
+    {
+      "speaker": "Mayron",
+      "text": "Mayron: Oh non ! C'est affreux, Adèle ! On devrait leur apporter des cookies et leur faire un gros câlin pour qu'ils se calment. Le sucre, ça apaise les pulsions de meurtre, non ?",
+      "action": "Il tremble comme une feuille en serrant son doudou contre son cœur."
+    },
+    {
+      "speaker": "Spider-Man",
+      "text": "Spider-Man: Les cookies ? Mais t'es con comme un manche à balai, le môme ! Mes détecteurs d'araignée s'affolent, ils sont déjà dans les conduits d'aération du studio. On va se faire découper en rondelles !",
+      "action": "Il saute sur le bureau du présentateur pour scruter le plafond qui craque."
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Si un seul de ces clochards en cavale touche à mon sac à dos, je lui fais bouffer ses propres dents avec une paille. Spider-Naze, bouge ton gros cul en spandex et fais quelque chose !",
+      "action": "Elle sort une grenade artisanale cachée dans sa boîte à goûter."
+    }
+  ],
+  "id": "1778704872990-btmm4s",
+  "createdAt": 1778704872990
+}

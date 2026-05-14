@@ -323,14 +323,17 @@ export default function StoryConfigurator({ onStart, onBack }: StoryConfigurator
               onClick={() => setShowCharModal(null)}
               className="absolute inset-0 bg-black/95 backdrop-blur-md"
             />
-            <motion.div 
-              initial={{ scale: 0.9, opacity: 0, y: 30 }}
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.9, opacity: 0, y: 30 }}
-              className="relative glass-card border-2 border-amber-500/40 rounded-[2.5rem] p-6 md:p-10 max-w-5xl w-full max-h-[85vh] overflow-hidden flex flex-col"
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className="relative glass-card border-2 border-amber-500/40 rounded-[2rem] md:rounded-[3rem] p-4 md:p-10 max-w-5xl w-[95%] md:w-full max-h-[90vh] overflow-hidden flex flex-col shadow-[0_0_50px_rgba(0,0,0,0.5)]"
             >
-              <h3 className="text-3xl md:text-5xl font-black text-amber-500 uppercase italic mb-8 tracking-tighter text-center">Choisir un <span className="text-white">Protagoniste</span></h3>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 overflow-y-auto pr-2 custom-scroll pb-4">
+              <h3 className="text-2xl md:text-5xl font-black text-amber-500 uppercase italic mb-6 md:mb-10 tracking-tighter text-center leading-none">
+                Choisir un <span className="text-white">Protagoniste</span>
+              </h3>
+              
+              <div className="flex flex-wrap gap-3 overflow-y-auto pr-2 custom-scroll pb-6 justify-center content-start">
                 {CHARACTERS.map((char) => (
                   <button
                     key={char.id}
@@ -340,17 +343,29 @@ export default function StoryConfigurator({ onStart, onBack }: StoryConfigurator
                       setSelectedChars(newChars);
                       setShowCharModal(null);
                     }}
-                    className="group relative aspect-[3/4] rounded-2xl overflow-hidden border-2 border-amber-900/30 hover:border-amber-400 transition-all shadow-lg hover:shadow-amber-500/20"
+                    className="group relative w-[calc(50%-8px)] sm:w-[calc(33.33%-8px)] md:w-[160px] aspect-[3/4] min-h-[160px] md:min-h-[220px] rounded-xl md:rounded-2xl overflow-hidden border-2 border-amber-900/30 hover:border-amber-400 transition-all shadow-lg bg-black/40 flex-shrink-0 flex flex-col"
                   >
-                    <img src={char.img} className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt={char.name} />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-90" />
-                    <div className="absolute bottom-3 left-3 right-3 text-center">
-                      <div className="text-[10px] font-black text-amber-500 uppercase tracking-widest mb-0.5">{char.faction}</div>
-                      <div className="text-sm font-bold text-white uppercase italic">{char.name}</div>
+                    <img 
+                      src={char.img} 
+                      className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" 
+                      alt={char.name} 
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80 group-hover:opacity-60 transition-opacity" />
+                    <div className="absolute bottom-2 left-2 right-2 md:bottom-4 md:left-4 md:right-4 text-center">
+                      <div className="text-[8px] md:text-[10px] font-black text-amber-500 uppercase tracking-widest mb-0.5">{char.faction}</div>
+                      <div className="text-xs md:text-base font-bold text-white uppercase italic truncate">{char.name}</div>
                     </div>
                   </button>
                 ))}
               </div>
+
+              {/* Close Button for better UX on mobile */}
+              <button 
+                onClick={() => setShowCharModal(null)}
+                className="mt-4 py-3 bg-amber-900/20 border border-amber-500/30 rounded-xl text-amber-500 text-xs font-black uppercase tracking-widest hover:bg-amber-500 hover:text-black transition-all md:hidden"
+              >
+                Fermer
+              </button>
             </motion.div>
           </div>
         )}

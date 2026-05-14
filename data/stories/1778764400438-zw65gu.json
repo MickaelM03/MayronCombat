@@ -1,0 +1,93 @@
+{
+  "title": "Ma Première Aventure : En quête du Dragon",
+  "characterIds": [
+    "lina",
+    "sachat",
+    "timon"
+  ],
+  "arenaId": "foret_dragon",
+  "arenaName": "La Forêt du Dragon",
+  "arenaImg": "/images/foret_dragon_arena_1778750742162.png",
+  "theme": "Ma Première Aventure : En quête du Dragon",
+  "isInteractive": true,
+  "isFinished": false,
+  "script": [
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Bienvenue dans cette nouvelle aventure : \"Ma Première Aventure : En quête du Dragon\". Avant de partir, tu dois choisir ton héros. Qui vas-tu incarner ?",
+      "action": "Choix du Héros",
+      "choices": [
+        {
+          "text": "Incarner Lina la bagarreuse",
+          "action": "Le joueur choisit d'incarner Lina la bagarreuse. Ce personnage sera le héros principal et commence avec son équipement de base."
+        },
+        {
+          "text": "Incarner Sachat le chapardeur",
+          "action": "Le joueur choisit d'incarner Sachat le chapardeur. Ce personnage sera le héros principal et commence avec son équipement de base."
+        },
+        {
+          "text": "Incarner Timon le magicien",
+          "action": "Le joueur choisit d'incarner Timon le magicien. Ce personnage sera le héros principal et commence avec son équipement de base."
+        }
+      ]
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Les arbres de la Forêt du Dragon se dressent comme des griffes de pierre contre le ciel rougeoyant. Lina, Sachat et Timon observent le sentier qui s'enfonce dans les ténèbres végétales.",
+      "action": "Le vent souffle violemment à travers les branches, soulevant une poussière cendrée."
+    },
+    {
+      "speaker": "Lina",
+      "text": "Lina: Regardez ces traces de brûlure sur l'écorce. Il est proche, je le sens dans mes poings. Personne ne terrorise mon village sans en payer le prix.",
+      "action": "Lina serre les poings, le regard fixé sur l'obscurité de la forêt."
+    },
+    {
+      "speaker": "Sachat",
+      "text": "Sachat: On pourrait aussi... ne pas se faire brûler vifs ? Juste une suggestion comme ça. Mais si on y va, restons légers. Le moindre bruit pourrait alerter la bête.",
+      "action": "Sachat vérifie la souplesse de ses bottes avec nervosité."
+    },
+    {
+      "speaker": "Timon",
+      "text": "Timon: Les énergies arcaniques sont saturées de soufre. Lina, ton courage est notre fer de lance, mais une telle quête exige une préparation rigoureuse avant de franchir cette lisière.",
+      "action": "Timon consulte un grimoire poussiéreux dont les pages s'agitent sous la brise."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Devant vous, un coffre marqué du sceau de la garde royale contient des fournitures oubliées. En tant que meneuse, Lina doit choisir l'unique objet qu'elle emportera pour cette mission périlleuse.",
+      "action": "Le couvercle du coffre gémit en s'ouvrant, révélant trois objets distincts.",
+      "choices": [
+        {
+          "text": "Saisir l'Épée de Fer (Une arme robuste pour fendre les écailles)",
+          "action": "S'enfoncer dans la forêt armée de l'épée.",
+          "inventoryUpdate": {
+            "type": "ITEM",
+            "name": "Épée de Fer"
+          }
+        },
+        {
+          "text": "Prendre le Bouclier Renforcé (Pour parer les flammes et les griffes)",
+          "action": "S'enfoncer dans la forêt protégée par le bouclier.",
+          "inventoryUpdate": {
+            "type": "ITEM",
+            "name": "Bouclier Renforcé"
+          }
+        },
+        {
+          "text": "Choisir la Potion de Force (Un élixir pour décupler sa puissance)",
+          "action": "S'enfoncer dans la forêt avec la fiole en réserve.",
+          "inventoryUpdate": {
+            "type": "ITEM",
+            "name": "Potion de Force"
+          }
+        }
+      ]
+    }
+  ],
+  "id": "1778764400438-zw65gu",
+  "createdAt": 1778764400438,
+  "inventory": {
+    "items": [],
+    "allies": [],
+    "heroId": "lina"
+  }
+}

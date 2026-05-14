@@ -30,20 +30,20 @@ export function getStoryDirectives(
 5. INVENTAIRE : Si le joueur fait un choix qui mérite un objet ou un allié, ajoute un champ "inventoryUpdate" dans le choix.
 6. TTS : Chaque valeur de "text" DOIT commencer par "Nom: ".
 7. COHÉRENCE NARRATIVE : L'histoire doit suivre une progression logique. Chaque chapitre doit s'appuyer sur le contexte précédent pour construire une intrigue riche et cohérente.
-8. ÉCHEC ET RÉUSSITE : Le joueur ne gagne pas automatiquement. Ses choix doivent avoir des conséquences réelles. Une mauvaise décision peut mener à un échec (ex: perdre la trace du dragon, se perdre dans la forêt) ou à une fin prématurée ("isEnd": true).
+8. ÉCHEC ET RÉUSSITE : Le joueur ne gagne pas automatiquement. Ses choix doivent avoir des conséquences réelles. Une mauvaise décision peut mener à un échec (ex: perdre la trace du dragon, se perdre dans la forêt) ou à une fin prématurée ("isEnd": true). Cependant, l'aventure doit idéalement durer entre 5 et 8 chapitres pour être satisfaisante.
+9. DUREE : Ne termine PAS l'aventure avant au moins 5 interactions significatives, sauf en cas de décision catastrophique du joueur.
 `;
 
   const mpaRules = isMaPremiereAventure ? `
-7. RÈGLES MA PREMIÈRE AVENTURE : 
+7. RÈGLES MA PREMIÈRE AVENTURE (IMPÉRATIF) : 
 - STRUCTURE : Cette aventure suit un format livre-jeu. 
 - PHASE 1 (Héros) : Déjà accomplie. Le héros est ${currentHero}.
 - PHASE 2 (Équipement) : Si c'est le TOUT PREMIER choix (choix du héros), le chapitre suivant DOIT proposer au joueur de choisir UN objet parmi 3 choix distincts. Chaque choix DOIT avoir un "inventoryUpdate" de type "ITEM".
-- PHASE 3 (Aventure) : Une fois l'objet choisi, l'aventure continue. Chaque chapitre doit se terminer par un choix binaire ou ternaire.
-- OBLIGATION ABSOLUE : Tu DOIS TOUJOURS inclure le champ "choices" (liste d'objets) à la fin de chaque réponse, sauf si "isEnd" est true. Ne jamais laisser l'histoire sans choix.
-- INVENTAIRE : Objets possédés: [${inventory?.items?.join(', ') || 'Aucun'}]. Propose des objets différents de ceux déjà possédés.
-- UTILISATION DES OBJETS : Les choix proposés doivent parfois dépendre des objets possédés dans l'inventaire (ex: "Utiliser l'objet [Nom] pour résoudre la situation").
-- ÉVITE LA RÉPÉTITION : Ne répète pas les questions précédentes.
-- DÉNOUEMENT : L'aventure doit comporter plusieurs étapes (rencontres, obstacles, énigmes) avant d'arriver au grand final (ex: le face-à-face avec le dragon).` : "";
+- PHASE 3 (Aventure) : Chaque chapitre DOIT se terminer par un choix binaire ou ternaire (champ "choices").
+- OBLIGATION DE CHOIX : Ne termine JAMAIS un chapitre sans proposer de nouveaux choix dans le champ "choices", sauf si "isEnd" est true.
+- INVENTAIRE : Objets possédés: [${inventory?.items?.join(', ') || 'Aucun'}].
+- UTILISATION DES OBJETS : Propose parfois des choix utilisant les objets possédés.
+- DÉNOUEMENT : Plusieurs étapes avant le grand final.` : "";
 
   const modeDirectives = {
     1: isMaPremiereAventure 
