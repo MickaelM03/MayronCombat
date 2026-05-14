@@ -591,5 +591,6 @@ app.get('/api/voice-sample/:charId', (req, res) => {
 
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`⚔️  MayronCombat API running on http://0.0.0.0:${PORT}`);
-  console.log(`   Data directory: ${DATA_DIR}`);
+  console.log(`   Battles directory: ${DATA_DIR}`);
+  console.log(`   Stories directory: ${STORY_DIR}`);
 });
