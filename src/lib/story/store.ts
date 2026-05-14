@@ -112,15 +112,22 @@ export async function updateStory(story: SavedStory): Promise<void> {
 
 export async function listStories(): Promise<SavedStory[]> {
   const res = await apiGet('/api/stories');
+  const db = await getDB();
+  const allLocal = await db.getAllFromIndex('stories', 'byDate');
+  
+  apiPost('/api/log', { 
+    msg: 'listStories called', 
+    localCount: allLocal.length, 
+    serverOk: !!res?.ok 
+  }).catch(() => {});
+
   if (res && res.ok) {
     try {
       const serverStories: SavedStory[] = await res.json();
-      const db = await getDB();
       const localIds = new Set((await db.getAllKeys('stories')));
       for (const s of serverStories) {
         if (!localIds.has(s.id)) await db.put('stories', s);
       }
-      const allLocal = await db.getAllFromIndex('stories', 'byDate');
       const serverIds = new Set(serverStories.map(s => s.id));
       for (const s of allLocal) {
         if (!serverIds.has(s.id)) {
@@ -130,12 +137,12 @@ export async function listStories(): Promise<SavedStory[]> {
       }
       serverStories.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
       return serverStories;
-    } catch { }
+    } catch (e) { 
+      apiPost('/api/log', { error: 'Failed to parse server stories', detail: String(e) }).catch(() => {});
+    }
   }
 
-  const db = await getDB();
-  const all = await db.getAllFromIndex('stories', 'byDate');
-  return all.reverse();
+  return allLocal.reverse();
 }
 
 export async function getStory(id: string): Promise<SavedStory | undefined> {

@@ -587,6 +587,11 @@ app.get('/api/voice-sample/:charId', (req, res) => {
   fs.createReadStream(wavPath).pipe(res);
 });
 
+app.post('/api/log', (req, res) => {
+  console.log(`[CLIENT] ${JSON.stringify(req.body)}`);
+  res.json({ ok: true });
+});
+
 // ─── Start ──────────────────────────────────────────────────
 
 app.listen(PORT, '0.0.0.0', () => {
