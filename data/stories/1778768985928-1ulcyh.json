@@ -1,0 +1,37 @@
+{
+  "title": "Ma Première Aventure : La découverte de l’Atlantide",
+  "characterIds": [
+    "manta",
+    "behemoth",
+    "espadon"
+  ],
+  "arenaId": "atlantide",
+  "arenaName": "Cité d'Atlantide",
+  "arenaImg": "/images/atlantide_arena_1778750773189.png",
+  "theme": "Ma Première Aventure : La découverte de l’Atlantide",
+  "isInteractive": true,
+  "isFinished": false,
+  "script": [
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Bienvenue dans cette nouvelle aventure : \"Ma Première Aventure : La découverte de l’Atlantide\". Avant de partir, tu dois choisir ton héros. Qui vas-tu incarner ?",
+      "action": "Choix du Héros",
+      "choices": [
+        {
+          "text": "Incarner La Manta",
+          "action": "Le joueur choisit d'incarner La Manta. Ce personnage sera le héros principal et commence avec son équipement de base."
+        },
+        {
+          "text": "Incarner Le Béhémoth",
+          "action": "Le joueur choisit d'incarner Le Béhémoth. Ce personnage sera le héros principal et commence avec son équipement de base."
+        },
+        {
+          "text": "Incarner L’Espadon",
+          "action": "Le joueur choisit d'incarner L’Espadon. Ce personnage sera le héros principal et commence avec son équipement de base."
+        }
+      ]
+    }
+  ],
+  "id": "1778768985928-1ulcyh",
+  "createdAt": 1778768985928
+}
