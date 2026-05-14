@@ -300,7 +300,7 @@ export default function App() {
       const apiKey = process.env.GEMINI_API_KEY || tempApiKey;
       if (apiKey) {
         const effectiveStyle = params?.customPrompt?.trim() ? '__custom__' : voiceStyle;
-        const gBlob = await fetchGeminiAudio(cleanText, voiceName, effectiveStyle, apiKey);
+        const gBlob = await fetchGeminiAudio(cleanText, voiceName, effectiveStyle, getAIConfig());
         if (gBlob) {
           await playPcmBlobWithParams(gBlob, 'pcm', params);
           return;
@@ -663,37 +663,30 @@ export default function App() {
     geminiDeadUntilRef.current = Math.max(geminiDeadUntilRef.current, Date.now() + ms);
   };
 
-  // Récupère un Blob audio Gemini avec retry court (429, network transitoires)
   const fetchGeminiAudio = async (
     cleanText: string,
     voiceName: string,
     voiceStyle: string,
-    apiKey: string,
+    aiConfig: AICascadeConfig,
   ): Promise<Blob | null> => {
     if (isGeminiDead()) return null;
 
     const persona = STYLE_PROMPTS[voiceStyle];
-    // Text is already cleaned in prepareLineAudio
     const ttsText = cleanText;
     if (!ttsText) return null;
 
-    // Gemini TTS directorial prompt: persona wraps the text for character voice acting
     const prompted = persona
       ? `Dis ceci ${persona}:\n"${ttsText}"`
       : `Dis ceci avec énergie et expressivité, comme un commentateur sportif:\n"${ttsText}"`;
 
-
-    const ai = new GoogleGenAI({ apiKey });
-    // Reduced from 3 tries to 2 — hard quota errors are detected explicitly and
-    // shouldn't trigger any retry at all, so the only thing left is the very
-    // occasional transient network hiccup.
-    const delays = [0, 800];
-
-    for (let attempt = 0; attempt < delays.length; attempt++) {
-      if (delays[attempt] > 0) await new Promise(r => setTimeout(r, delays[attempt]));
+    for (let i = 0; i < aiConfig.geminiKeys.length; i++) {
+      const apiKey = aiConfig.geminiKeys[i].trim();
+      if (!apiKey) continue;
+      const ai = new GoogleGenAI({ apiKey });
+      
       try {
         const response = await ai.models.generateContent({
-          model: "gemini-2.5-flash-preview-tts",
+          model: "gemini-1.5-flash",
           contents: [{ parts: [{ text: prompted }] }],
           config: {
             responseModalities: ["AUDIO"],
@@ -704,32 +697,22 @@ export default function App() {
         });
         const parts = response.candidates?.[0]?.content?.parts;
         const audioPart = parts?.find(p => p.inlineData && p.inlineData.mimeType.includes("audio"));
-        if (!audioPart?.inlineData?.data) {
-          if (attempt < delays.length - 1) continue;
-          return null;
-        }
+        if (!audioPart?.inlineData?.data) continue;
+
         const binaryString = window.atob(audioPart.inlineData.data);
         const bytes = new Uint8Array(binaryString.length);
-        for (let i = 0; i < binaryString.length; i++) bytes[i] = binaryString.charCodeAt(i);
+        for (let j = 0; j < binaryString.length; j++) bytes[j] = binaryString.charCodeAt(j);
+        
         return new Blob([bytes.buffer], { type: 'audio/pcm' });
       } catch (e: any) {
         const msg = String(e?.message || e);
-        // Hard daily quota → no retry, kill Gemini for the rest of the session.
-        // Free-tier resets at midnight Pacific, but 30 min is enough to stop
-        // pestering the API even if the user reopens the tab quickly.
-        if (/RESOURCE_EXHAUSTED|quota|free_tier_requests/i.test(msg)) {
-          console.warn('[gemini] daily quota épuisée → Gemini désactivé pour 30 min, fallback Piper/Web Speech');
-          markGeminiDead(30 * 60_000);
-          return null;
-        }
-        const retriable = /timeout|fetch|network|502|503|504|ECONNRESET/i.test(msg);
-        if (!retriable) {
-          console.warn('[gemini] échec non récupérable:', msg);
-          return null;
-        }
-        if (attempt === delays.length - 1) {
-          console.warn(`[gemini] échec après ${delays.length} tentatives:`, msg);
-          return null;
+        console.warn(`[ai-audio] Gemini #${i + 1} échoué:`, msg);
+        if (/RESOURCE_EXHAUSTED|quota|free_tier_requests|429/i.test(msg)) {
+          if (i === aiConfig.geminiKeys.length - 1) {
+            console.warn('[gemini] quota épuisée pour TOUTES les clés → Gemini désactivé pour 30 min');
+            markGeminiDead(30 * 60000);
+          }
+          continue;
         }
       }
     }
@@ -857,7 +840,7 @@ export default function App() {
           return { kind: 'blob', tier: 'piper', blob, format: 'wav', params: piperParams };
         }
       } else if (forcedProvider === 'gemini' && apiKey) {
-        const blob = await fetchGeminiAudio(cleanText, voiceName, effectiveStyle, apiKey);
+        const blob = await fetchGeminiAudio(cleanText, voiceName, effectiveStyle, getAIConfig());
         if (blob) {
           console.info(`[voice] tier=gemini(forced) line=${lineIdx}`);
           persist(voiceName, blob, 'pcm');
@@ -891,7 +874,7 @@ export default function App() {
       }
 
       if (apiKey) {
-        const blob = await fetchGeminiAudio(cleanText, voiceName, effectiveStyle, apiKey);
+        const blob = await fetchGeminiAudio(cleanText, voiceName, effectiveStyle, getAIConfig());
         if (blob) {
           console.info(`[voice] tier=gemini line=${lineIdx} voice=${voiceName} style=${voiceStyle} default=${useDefault}`);
           persist(voiceName, blob, 'pcm');
@@ -1290,7 +1273,7 @@ Réponds UNIQUEMENT par le JSON.`;
         } else if (forcedProvider === 'gemini') {
           const apiKey = process.env.GEMINI_API_KEY || tempApiKey;
           if (apiKey) {
-            blob = await fetchGeminiAudio(apiKey, cleanText, voiceStyle, 'WAV');
+            blob = await fetchGeminiAudio(cleanText, voiceName, voiceStyle, getAIConfig());
           }
         } else if (forcedProvider === 'elevenlabs' && charId) {
           blob = await tryElevenLabsAudio(cleanText, charId);
@@ -1799,7 +1782,7 @@ FORMAT JSON REQUIS :
     let format: 'pcm' | 'wav' = 'pcm';
 
     if (apiKey) {
-      blob = await fetchGeminiAudio(cleanText, voiceName, voiceStyle, apiKey);
+      blob = await fetchGeminiAudio(cleanText, voiceName, voiceStyle, getAIConfig());
       format = 'pcm';
     }
 

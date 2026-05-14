@@ -1,0 +1,1097 @@
+{
+  "title": "Ma Première Aventure : En quête du Dragon",
+  "characterIds": [
+    "lina",
+    "sachat",
+    "timon",
+    "adele"
+  ],
+  "arenaId": "foret_dragon",
+  "arenaName": "La Forêt du Dragon",
+  "arenaImg": "/images/foret_dragon_arena_1778750742162.png",
+  "theme": "Ma Première Aventure : En quête du Dragon",
+  "isInteractive": true,
+  "isFinished": false,
+  "script": [
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Bienvenue dans cette nouvelle aventure : \"Ma Première Aventure : En quête du Dragon\". Avant de partir, tu dois choisir ton héros. Qui vas-tu incarner ?",
+      "action": "Choix du Héros",
+      "choices": [
+        {
+          "text": "Incarner Lina la bagarreuse",
+          "action": "Le joueur choisit d'incarner Lina la bagarreuse. Ce personnage sera le héros principal et commence avec son équipement de base."
+        },
+        {
+          "text": "Incarner Sachat le chapardeur",
+          "action": "Le joueur choisit d'incarner Sachat le chapardeur. Ce personnage sera le héros principal et commence avec son équipement de base."
+        },
+        {
+          "text": "Incarner Timon le magicien",
+          "action": "Le joueur choisit d'incarner Timon le magicien. Ce personnage sera le héros principal et commence avec son équipement de base."
+        },
+        {
+          "text": "Incarner Mortelle Adèle",
+          "action": "Le joueur choisit d'incarner Mortelle Adèle. Ce personnage sera le héros principal et commence avec son équipement de base."
+        }
+      ]
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je suis prête à affronter ce dragon légendaire !",
+      "action": "Adèle se tient debout, prête à partir"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Vous vous trouvez maintenant à l'orée de la Forêt du Dragon, un lieu de légendes et de danger. La forêt s'étend devant vous, dense et sombre.",
+      "action": "La forêt se dresse devant Adèle, menaçante",
+      "choices": [
+        {
+          "text": "Mortelle Adèle: Je vais explorer la forêt pour trouver des indices sur le dragon",
+          "action": "Entrer dans la forêt",
+          "inventoryUpdate": {
+            "type": "ITEM",
+            "name": "Carte de la forêt"
+          }
+        },
+        {
+          "text": "Mortelle Adèle: Je dois d'abord me procurer des objets pour me protéger",
+          "action": "Rechercher des objets",
+          "inventoryUpdate": {}
+        }
+      ]
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je dois choisir des objets qui me seront utiles pour cette quête périlleuse.",
+      "action": "Examine les objets disponibles"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Vous avez trouvé trois objets qui pourraient vous être utiles : une épée à deux mains, un arc et un carquois plein de flèches, et un bouclier en bois renforcé de métal.",
+      "action": "Présente les objets",
+      "choices": [
+        {
+          "text": "Mortelle Adèle: Je choisis l'épée à deux mains.",
+          "action": "Prendre l'épée",
+          "inventoryUpdate": {
+            "type": "ITEM",
+            "name": "Épée à deux mains"
+          }
+        },
+        {
+          "text": "Mortelle Adèle: Je préfère l'arc et le carquois.",
+          "action": "Prendre l'arc et le carquois",
+          "inventoryUpdate": {
+            "type": "ITEM",
+            "name": "Arc et carquois"
+          }
+        },
+        {
+          "text": "Mortelle Adèle: Le bouclier en bois renforcé de métal me semble plus prudent.",
+          "action": "Prendre le bouclier",
+          "inventoryUpdate": {
+            "type": "ITEM",
+            "name": "Bouclier en bois renforcé"
+          }
+        }
+      ]
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je tiens maintenant cette épée à deux mains, elle me semble solide et prête à affronter les dangers de la Forêt du Dragon.",
+      "action": "prend l'épée à deux mains"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Avec votre nouvelle arme, vous vous sentez plus confiante pour affronter ce qui vous attend dans la forêt.",
+      "action": "observe les environs"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: La Forêt du Dragon s'étend devant vous, dense et sombre, avec des arbres qui semblent vous observer. Vous pouvez entendre des bruits étranges et lointains.",
+      "action": "écoute les bruits de la forêt",
+      "choices": [
+        {
+          "text": "Mortelle Adèle: Je vais suivre le chemin qui s'enfonce dans la forêt, peut-être que je trouverai des indices sur le dragon.",
+          "action": "suit le chemin",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Je préfère monter sur cet arbre pour avoir une meilleure vue de la forêt et peut-être apercevoir le dragon ou d'autres dangers.",
+          "action": "monte sur l'arbre",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Je vais utiliser mon épée pour couper des branches et créer un feu, pour me réchauffer et peut-être attirer de la compagnie... ou des ennemis.",
+          "action": "crée un feu",
+          "inventoryUpdate": null
+        }
+      ]
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je suis aux branches de cet arbre et je regarde autour de moi pour évaluer la situation.",
+      "action": "Regarde autour d'elle"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: La vue depuis cet arbre est impressionnante, mais vous ne voyez pas le dragon. Cependant, vous remarquez que la forêt semble se diviser en deux chemins : l'un sombre et étroit, l'autre éclairé par la lumière filtrant à travers les feuilles.",
+      "action": "Observe les chemins"
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je dois choisir le chemin le plus prometteur pour retrouver le dragon.",
+      "action": "Réfléchit",
+      "choices": [
+        {
+          "text": "Mortelle Adèle: Je descends et emprunte le chemin sombre, peut-être est-ce là que se cache le danger.",
+          "action": "Descendre et prendre le chemin sombre",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Je descends et emprunte le chemin éclairé, il semble plus sûr et peut m'amener au dragon.",
+          "action": "Descendre et prendre le chemin éclairé",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Je reste dans l'arbre pour observer les alentours et attendre que quelque chose se passe.",
+          "action": "Reste dans l'arbre",
+          "inventoryUpdate": null
+        }
+      ]
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je descends de l'arbre et m'engage sur le chemin sombre, mon épée à deux mains prête à affronter tout danger.",
+      "action": "Descendre de l'arbre et s'engager sur le chemin sombre"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Le chemin sombre et étroit vous entoure d'ombre, les arbres semblent se refermer derrière vous comme pour vous empêcher de faire demi-tour.",
+      "action": "Avancer sur le chemin"
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je sens un frisson dans le dos, mais je ne reculerai pas. Je vais continuer à avancer et voir où ce chemin me mène.",
+      "action": "Continuer à avancer"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Au fur et à mesure que vous avancez, les bruits de la forêt changent. Vous entendez des cris d'animaux nocturnes et le bruissement des feuilles qui semblent vous guider plus loin dans la forêt.",
+      "action": "Écouter les bruits de la forêt"
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je me demande si je suis sur la bonne piste. Le chemin sombre pourrait être un piège, mais il pourrait aussi conduire au dragon.",
+      "action": "Réfléchir à la direction à prendre",
+      "choices": [
+        {
+          "text": "Mortelle Adèle: Je vais continuer sur le chemin sombre, même si cela me met mal à l'aise.",
+          "action": "Continuer sur le chemin sombre",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Je vais essayer de trouver un point de repère ou un indice qui me dira si je suis sur la bonne piste.",
+          "action": "Rechercher un point de repère ou un indice",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Je vais utiliser mon épée pour éclairer le chemin et essayer de voir plus loin dans l'obscurité.",
+          "action": "Utiliser l'épée pour éclairer le chemin",
+          "inventoryUpdate": null
+        }
+      ]
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je fais briller mon épée pour éclairer le chemin, mais la lumière est faible et vacillante.",
+      "action": "Éclairer le chemin avec l'épée"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: La lumière de l'épée vous permet de voir un peu plus loin, mais elle est trop faible pour réellement éclairer le chemin. Vous continuez à avancer, les yeux fixés sur la lumière qui semble danser devant vous.",
+      "action": "Continuer à avancer"
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je sens que nous sommes proches de quelque chose, mais je ne sais pas quoi.",
+      "action": "Réfléchir",
+      "choices": [
+        {
+          "text": "Mortelle Adèle: Je vais continuer à avancer le long du chemin et voir où il me mène.",
+          "action": "Continuer le long du chemin",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Je vais essayer de trouver un endroit plus éclairé pour mieux voir où je vais.",
+          "action": "Rechercher un endroit plus éclairé",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Je vais utiliser mon épée pour faire un feu de camp et essayer de signaler ma présence au dragon.",
+          "action": "Faire un feu de camp",
+          "inventoryUpdate": null
+        }
+      ]
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je vais continuer à avancer le long du chemin et voir où il me mène.",
+      "action": "Avance le long du chemin"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Le chemin devient de plus en plus sombre et étroit, les arbres semblent se refermer derrière vous.",
+      "action": "Le chemin se referme derrière Adèle"
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: J'entends des bruits étranges, comme des pas qui suivent les miens.",
+      "action": "Écoute les bruits"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Vous continuez à avancer, malgré la peur qui monte en vous. Le chemin commence à s'élargir et vous voyez une clairière devant vous.",
+      "action": "Vit une clairière",
+      "choices": [
+        {
+          "text": "Mortelle Adèle: Je vais entrer dans la clairière et voir ce qu'il y a.",
+          "action": "Entre dans la clairière",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Je vais rester cachée et observer la clairière avant de faire quoi que ce soit.",
+          "action": "Se cache et observe",
+          "inventoryUpdate": null
+        }
+      ]
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Vous entrez dans la clairière, et vous êtes immédiatement frappée par la beauté et la majesté qui vous entoure. Au centre de la clairière se trouve un grand arbre, ses branches s'étendant vers le ciel comme des bras.",
+      "action": "Regarde autour"
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je sens une étrange énergie émaner de cet arbre. Il semble être le cœur de la forêt.",
+      "action": "S'approche de l'arbre"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: À mesure que vous vous approchez de l'arbre, vous remarquez que ses branches sont couvertes de symboles anciens et mystérieux. Ils semblent raconter une histoire, mais vous ne pouvez pas les déchiffrer.",
+      "action": "Examine les symboles",
+      "choices": [
+        {
+          "text": "Mortelle Adèle: J'essaye de déchiffrer les symboles pour comprendre leur signification.",
+          "action": "Déchiffrer les symboles",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Je monte sur l'arbre pour avoir une vue d'ensemble de la clairière et voir si je peux repérer le dragon.",
+          "action": "Monte sur l'arbre",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Je cherche des indices ou des objets autour de l'arbre qui pourraient m'aider dans ma quête.",
+          "action": "Cherche des indices",
+          "inventoryUpdate": null
+        }
+      ]
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je commence à examiner les symboles plus de près, peut-être qu'ils cachent un message.",
+      "action": "Examine les symboles sur l'arbre"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Les symboles semblent être une forme de cryptographie, vous voyez des pattes d'animaux, des lunes et des étoiles.",
+      "action": "Décrit les symboles"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: En examinant les symboles plus attentivement, vous remarquez qu'ils sont disposés de manière à indiquer une direction.",
+      "action": "Remarque la disposition des symboles"
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Ah-ha! Je crois que j'ai trouvé quelque chose, les symboles pourraient indiquer la direction à suivre pour trouver le dragon.",
+      "action": "Comprend la signification des symboles"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Vous suivez la direction indiquée par les symboles et vous remarquez que le sol commence à changer, il devient plus rocailleux et escarpé.",
+      "action": "Suit la direction"
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je sens que je suis sur la bonne piste, mais je dois rester prudente, les roches pourraient être glissantes.",
+      "action": "Continue avec prudence",
+      "choices": [
+        {
+          "text": "Mortelle Adèle: Je vaisescalader les roches pour avoir une meilleure vue de l'environnement.",
+          "action": "Escalade les roches",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Je vais poursuivre le chemin rocailleux, il pourrait mener à une grotte ou à un abri.",
+          "action": "Poursuit le chemin",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Je vais utiliser mon épée pour essayer de déblayer les branches et les buissons qui m'empêchent de voir plus loin.",
+          "action": "Utilise mon épée",
+          "inventoryUpdate": null
+        }
+      ]
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je vais commencer à escalader les roches pour avoir une meilleure vue de l'environnement.",
+      "action": "Commence l'escalade"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Les roches sont plus escarpées que vous ne le pensiez, mais vous parvenez à trouver des prises pour vos mains et vos pieds.",
+      "action": "Progresse dans l'escalade"
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je suis presque en haut, j'espère que la vue sera à la hauteur de mes efforts.",
+      "action": "Presque au sommet"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Enfin, vous atteignez le sommet et vous êtes récompensée par une vue à couper le souffle : la forêt s'étend à perte de vue, avec des vallées et des montagnes au loin.",
+      "action": "Regarde le paysage"
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: C'est magnifique ! Mais je dois me concentrer sur ma quête, je ne suis pas venue ici pour admirer le paysage.",
+      "action": "Regarde autour d'elle"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: En regardant autour de vous, vous remarquez une colonne de fumée qui s'élève d'une vallée lointaine. Elle semble provenir d'un endroit précis.",
+      "action": "Remarque la fumée",
+      "choices": [
+        {
+          "text": "Mortelle Adèle: Je vais me diriger vers la fumée, elle pourrait être liée au dragon.",
+          "action": "Se dirige vers la fumée",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Je vais continuer à explorer les alentours, il y a peut-être d'autres indices à trouver.",
+          "action": "Explore les alentours",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Je vais redescendre et revenir avec plus de provisions, cette quête risque d'être plus longue que prévu.",
+          "action": "Redescend et revient plus tard",
+          "inventoryUpdate": null
+        }
+      ]
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je commence à descendre des roches et à me diriger vers la colonne de fumée, mon épée à deux mains prête à toute éventualité.",
+      "action": "Descente des roches"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: La descente est plus difficile que vous ne le pensiez, mais vous parvenez à atteindre le fond de la vallée sans encombre.",
+      "action": "Arrivée en vallée"
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: La fumée semble provenir d'une grotte, je vais devoir être prudente pour m'approcher.",
+      "action": "Approche de la grotte"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: À mesure que vous vous approchez de la grotte, vous entendez des bruits de pas lourds et des grondements, ils semblent provenir de l'intérieur.",
+      "action": "Découverte des bruits"
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je sens que je suis proche du dragon, je vais devoir être courageuse pour affronter ce qui m'attend.",
+      "action": "Préparation au combat",
+      "choices": [
+        {
+          "text": "Mortelle Adèle: Je vais entrer dans la grotte, mon épée à deux mains prête à affronter le dragon.",
+          "action": " Entrée dans la grotte",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Je vais essayer de trouver un autre moyen de découvrir ce qui se trouve dans la grotte avant d'y entrer.",
+          "action": "Recherche d'informations",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Je vais utiliser mon épée pour tenter de faire sortir le dragon de la grotte.",
+          "action": "Tentative de sortie",
+          "inventoryUpdate": null
+        }
+      ]
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je pénètre dans la grotte, mon épée à deux mains levée, prête à affronter le danger qui se cache à l'intérieur.",
+      "action": "Entrée dans la grotte"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: La grotte est sombre et humide, l'air est épais et sent la fumée et la pierre mouillée. Vous entendez les bruits de pas lourds et les grondements qui se rapprochent.",
+      "action": "Description de la grotte"
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je sens mon cœur battre la chamade, mais je ne vais pas reculer maintenant. Je vais faire face à ce qui se cache dans cette grotte.",
+      "action": "Préparation pour la confrontation",
+      "choices": [
+        {
+          "text": "Mortelle Adèle: Je vais avancer lentement et essayer de voir ce qui se trouve plus loin dans la grotte.",
+          "action": "Exploration de la grotte",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Je vais crier pour essayer de faire sortir le dragon de sa cachette.",
+          "action": "Confrontation directe",
+          "inventoryUpdate": null
+        }
+      ]
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Vous faites quelques pas prudents à l'intérieur de la grotte, votre épée à deux mains toujours levée, prête à réagir à tout danger.",
+      "action": "Mortelle Adèle avance prudemment dans la grotte."
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je sens que je suis très proche maintenant, je dois rester calme et analyser la situation.",
+      "action": "Mortelle Adèle s'arrête pour écouter et observer son environnement."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Les bruits de pas lourds et les grondements sont de plus en plus forts, vous pouvez sentir le sol trembler légèrement sous vos pieds.",
+      "action": "La grotte commence à trembler."
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Qu'est-ce que c'est ? Le dragon ? Je dois me préparer au pire.",
+      "action": "Mortelle Adèle tient son épée à deux mains avec une ferme détermination.",
+      "choices": [
+        {
+          "text": "Mortelle Adèle: Je vais tourner à gauche pour voir si je peux trouver une ouverture ou un abri.",
+          "action": "Exploration de la partie gauche de la grotte",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Je vais continuer tout droit pour affronter directement la source des bruits.",
+          "action": "Affronter le danger de face",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Je vais essayer de trouver un endroit pour me cacher et observer depuis là.",
+          "action": "Rechercher un endroit pour se cacher",
+          "inventoryUpdate": null
+        }
+      ]
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je vais continuer tout droit pour affronter directement la source des bruits.",
+      "action": "Avancer prudemment"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Les bruits de pas lourds et les grondements sont de plus en plus forts, vous pouvez sentir le sol trembler légèrement sous vos pieds.",
+      "action": "Serrer l'épée à deux mains"
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je suis prête à affronter ce qui se cache dans cette grotte, qu'il s'agisse du dragon ou de quelque chose d'autre.",
+      "action": "Se préparer à l'attaque"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Soudain, la lumière de la grotte augmente légèrement, révélant une grande silhouette sombre qui se dresse devant vous.",
+      "action": "La grotte s'éclaire légèrement"
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Qu'est-ce que c'est ? Un dragon ? Un monstre ? Je ne distingue pas clairement les traits de la créature.",
+      "action": "Essayer de voir plus clair",
+      "choices": [
+        {
+          "text": "Mortelle Adèle: Je vais essayer de communiquer avec la créature pour comprendre ce qu'elle est et ce qu'elle veut.",
+          "action": "Essayer de communiquer avec la créature",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Je vais attaquer la créature directement, sans hésitation, car je ne sais pas si elle est amicale ou hostile.",
+          "action": "Attaquer la créature",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Je vais faire un pas en arrière et essayer de trouver un moyen de m'enfuir ou de détourner l'attention de la créature.",
+          "action": "Reculer et chercher une issue",
+          "inventoryUpdate": null
+        }
+      ]
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je charge avec mon épée à deux mains, prête à frapper cette créature inconnue.",
+      "action": "Attaquer la créature"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: La créature se tourne vers vous, ses yeux brillant dans l'obscurité, et vous voyez que c'est un dragon, mais pas comme vous l'imaginiez.",
+      "action": "Révélation du dragon"
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Le dragon est plus grand que je ne l'aurais cru, avec des écailles noires et des yeux qui semblent voir droit à travers moi.",
+      "action": "Observer le dragon"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Le dragon ouvre la gueule, révélant des dents pointues, et vous sentez un souffle chaud et puissant vous frapper, mais il ne semble pas vous attaquer pour le moment.",
+      "action": "Le dragon ouvre la gueule",
+      "choices": [
+        {
+          "text": "Mortelle Adèle: Je continue à charger, prête à frapper le dragon avec mon épée à deux mains.",
+          "action": "Attaquer le dragon",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Je m'arrête et essaie de communiquer avec le dragon, peut-être qu'il n'est pas hostile.",
+          "action": "Essayer de communiquer",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Je prends un moment pour observer le dragon de plus près, peut-être qu'il y a quelque chose d'intéressant à remarquer.",
+          "action": "Observer le dragon de plus près",
+          "inventoryUpdate": null
+        }
+      ]
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je continue à charger, prête à frapper le dragon avec mon épée à deux mains.",
+      "action": "Attaque le dragon"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Le dragon, sentant votre détermination, ne bouge pas et vous laisse approcher.",
+      "action": "Le dragon reste immobile"
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je suis presque à portée de frappe, mon cœur bat la chamade, mais je ne vais pas reculer maintenant.",
+      "action": "Prête à frapper"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Au moment où vous allez frapper, le dragon lève une patte et vous bloque la route, ses griffes étincelant dans la faible lumière.",
+      "action": "Le dragon bloque l'attaque"
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je dois trouver un moyen de contourner cette défense, mais comment ?",
+      "action": "Réfléchit à une nouvelle stratégie"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Le dragon vous regarde avec une intensité qui vous fait sentir comme si vous étiez transpercé par son regard.",
+      "action": "Le dragon observe Adèle",
+      "choices": [
+        {
+          "text": "Mortelle Adèle: Je vais essayer de contourner le dragon par la gauche.",
+          "action": "Contourner le dragon",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Je vais utiliser mon épée pour essayer de désarmer le dragon.",
+          "action": "Désarmer le dragon",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Je vais essayer de communiquer avec le dragon, peut-être qu'il n'est pas hostile.",
+          "action": "Communiquer avec le dragon",
+          "inventoryUpdate": null
+        }
+      ]
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je vais utiliser mon épée pour essayer de désarmer le dragon.",
+      "action": "Essayer de désarmer le dragon"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Vous tentez de frapper les griffes du dragon avec votre épée, dans l'espoir de le désarmer.",
+      "action": "Le dragon réagit"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Le dragon, sentant votre intention, contracte ses muscles et sa patte devient encore plus solide.",
+      "action": "Le dragon est toujours en défense"
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je dois trouver une autre façon de passer outre cette défense, peut-être en visant les articulations.",
+      "action": "Réfléchir à une nouvelle stratégie",
+      "choices": [
+        {
+          "text": "Mortelle Adèle: Je vais viser les articulations des griffes pour essayer de les déboîter.",
+          "action": "Viser les articulations",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Je vais essayer de distraire le dragon pour qu'il baisse sa garde, puis je frapperai.",
+          "action": "Tenter de distraire le dragon",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Je vais utiliser mon environnement à mon avantage et chercher un moyen de contourner le dragon.",
+          "action": "Chercher un moyen de contourner",
+          "inventoryUpdate": null
+        }
+      ]
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je vais essayer de distraire le dragon pour qu'il baisse sa garde, puis je frapperai.",
+      "action": "Mortelle Adèle fait quelques pas de côté, essayant d'attirer l'attention du dragon."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Le dragon suit vos mouvements avec ses yeux, mais ne baisse pas sa garde.",
+      "action": "Le dragon reste vigilant, ses griffes toujours levées."
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Il faut que je trouve quelque chose pour vraiment le distraire, peut-être quelque chose qui lui fera du bruit ou qui l'éblouira.",
+      "action": "Mortelle Adèle regarde autour d'elle, cherchant un objet à utiliser."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Vous remarquez un petit rocher près de vous, qui pourrait servir à créer un bruit suffisamment fort pour distraire le dragon.",
+      "action": "Le rocher se trouve à quelques pas de distance, facile à atteindre."
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Voilà, ce rocher devrait faire l'affaire. Maintenant, il faut juste que je le lance au bon moment.",
+      "action": "Mortelle Adèle ramasse le rocher et se prépare à le lancer.",
+      "choices": [
+        {
+          "text": "Mortelle Adèle: Je vais lancer le rocher derrière le dragon pour le faire se retourner.",
+          "action": "Lancer le rocher",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Je vais lancer le rocher directement sur le dragon, pour tenter de le désarmer.",
+          "action": "Lancer le rocher sur le dragon",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Je vais utiliser une autre stratégie, peut-être essayer de parler au dragon.",
+          "action": "Essayer de communiquer avec le dragon",
+          "inventoryUpdate": null
+        }
+      ]
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je lance le rocher avec force, visant la patte levée du dragon.",
+      "action": "Lancer le rocher"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Le rocher vole à travers l'air, frappant la patte du dragon avec un bruit sourd.",
+      "action": "Le dragon réagit"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Le dragon, surpris, baisse sa garde un court instant, suffisamment long pour que vous ayez une ouverture.",
+      "action": "Le dragon baisse sa garde"
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Maintenant c'est le moment, je vais frapper les articulations de la patte pour essayer de les désarmer.",
+      "action": "Attaquer les articulations",
+      "choices": [
+        {
+          "text": "Mortelle Adèle: Je vais viser directement les genoux du dragon.",
+          "action": "Attaquer les genoux",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Je vais essayer de contourner le dragon pour attaquer par derrière.",
+          "action": "Contourner le dragon",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Je vais utiliser l'ouverture pour discuter avec le dragon, peut-être qu'il n'est pas agressif.",
+          "action": "Discuter avec le dragon",
+          "inventoryUpdate": null
+        }
+      ]
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je vais viser directement les genoux du dragon.",
+      "action": "Se prépare à frapper"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Le dragon, toujours surpris par le rocher, n'a pas le temps de réagir avant que vous n'atteigniez ses genoux.",
+      "action": "Le dragon est déséquilibré"
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Ah-ha ! Je l'ai eu !",
+      "action": "Frappe les genoux du dragon"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Votre épée s'abat sur les genoux du dragon, mais celles-ci sont plus résistantes que vous ne l'auriez cru.",
+      "action": "Le dragon gronde"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Le dragon pousse un grondement de douleur et de colère, et ses genoux commencent à s'écrouler.",
+      "action": "Le dragon s'écroule",
+      "choices": [
+        {
+          "text": "Mortelle Adèle: Je vais profiter de l'occasion pour frapper le dragon à la tête.",
+          "action": "Attaquer la tête",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Je vais essayer de parler au dragon pour comprendre pourquoi il est ici.",
+          "action": "Parler au dragon",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Je vais me préparer à défendre, le dragon va probablement se relever et contre-attaquer.",
+          "action": "Se préparer à défendre",
+          "inventoryUpdate": null
+        }
+      ]
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je vais profiter de l'occasion pour frapper le dragon à la tête.",
+      "action": "Se prépare à frapper la tête du dragon"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Le dragon, affaibli par la douleur aux genoux, commence à s'écrouler.",
+      "action": "Le dragon s'écroule"
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: C'est maintenant ou jamais, je vais donner tout ce que j'ai pour vaincre ce monstre.",
+      "action": "Prépare son épée pour un coup final"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: La tête du dragon est exposée, offrant une cible parfaite.",
+      "action": "La tête du dragon est dévoilée",
+      "choices": [
+        {
+          "text": "Mortelle Adèle: Je vais viser l'œil du dragon pour un coup critique.",
+          "action": "Attaquer l'œil",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Je vais frapper la gueule pour lui faire mal et essayer de le neutraliser.",
+          "action": "Attaquer la gueule",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Je vais utiliser mon épée pour essayer de désarmer le dragon et le capturer.",
+          "action": "Essayer de capturer le dragon",
+          "inventoryUpdate": null
+        }
+      ]
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je vais viser l'œil du dragon pour un coup critique.",
+      "action": "Se prépare à frapper"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: La tête du dragon est maintenant entièrement exposée, et son œil semble être la cible idéale.",
+      "action": "Description de la scène"
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je dois viser juste pour que cela en vaille la peine.",
+      "action": "Se concentre"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Vous vous préparez à délivrer le coup fatal, votre main tremble légèrement mais votre détermination est intacte.",
+      "action": "Tension montante"
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Maintenant !",
+      "action": "Frappe l'œil du dragon",
+      "choices": [
+        {
+          "text": "Mortelle Adèle: Je frappe avec toute ma force pour tuer le dragon.",
+          "action": "Frappe finale",
+          "inventoryUpdate": {}
+        },
+        {
+          "text": "Mortelle Adèle: Je recule un instant pour réfléchir à une stratégie alternative.",
+          "action": "Réfléchir",
+          "inventoryUpdate": {}
+        },
+        {
+          "text": "Mortelle Adèle: Je crie victoire avant même d'avoir porté le coup fatal.",
+          "action": "Cri de victoire",
+          "inventoryUpdate": {}
+        }
+      ]
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je vais frapper avec toute ma force pour tuer le dragon.",
+      "action": "Frappe finale"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Votre épée s'abat sur l'œil du dragon avec une force et une précision qui vous surprennent vous-même.",
+      "action": "Le dragon vacille"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Le dragon pousse un hurlement de douleur et de colère, son corps commence à s'effondrer.",
+      "action": "Le dragon s'effondre"
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: C'est fait, je l'ai vaincu.",
+      "action": "Adèle respire difficilement"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Le dragon gît à vos pieds, vaincu, et vous sentez un sentiment de fierté et d'accomplissement vous submerger.",
+      "action": "Adèle contemple le dragon vaincu",
+      "choices": [
+        {
+          "text": "Mortelle Adèle: Je vais examiner le corps du dragon pour voir s'il y a quelque chose de valeur.",
+          "action": "Examiner le corps du dragon",
+          "inventoryUpdate": {
+            "type": "ITEM",
+            "name": "Écailles de dragon"
+          }
+        },
+        {
+          "text": "Mortelle Adèle: Je vais quitter cette grotte et trouver mon chemin de retour vers la civilisation.",
+          "action": "Quitter la grotte"
+        }
+      ]
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je vais quitter cette grotte et trouver mon chemin de retour vers la civilisation.",
+      "action": "Mortelle Adèle se dirige vers la sortie de la grotte."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Vous vous sentez soulagée d'avoir vaincu le dragon et de pouvoir quitter la grotte.",
+      "action": ""
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je me demande ce que les gens vont dire lorsque je leur raconterai mon histoire.",
+      "action": "Mortelle Adèle sort de la grotte et regarde autour d'elle."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: La lumière du jour est aveuglante après l'obscurité de la grotte, mais vous commencez à voir les contours de la forêt.",
+      "action": ""
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je dois trouver mon chemin de retour vers la civilisation.",
+      "action": "Mortelle Adèle commence à marcher dans la direction qui lui semble la plus prometteuse.",
+      "choices": [
+        {
+          "text": "Mortelle Adèle: Je vais suivre le ruisseau que j'entends au loin, il pourrait me mener à une ville ou à un village.",
+          "action": "Suivre le ruisseau",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Je vais monter sur cette colline pour avoir une meilleure vue de l'environnement.",
+          "action": "Monter sur la colline",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Je vais suivre les empreintes de pas que je vois sur le sol, elles pourraient appartenir à quelqu'un qui connaît le chemin de la civilisation.",
+          "action": "Suivre les empreintes de pas",
+          "inventoryUpdate": null
+        }
+      ]
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je vais suivre le ruisseau que j'entends au loin, il pourrait me mener à une ville ou à un village.",
+      "action": "Suivre le ruisseau"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Le ruisseau est plus proche que vous ne le pensiez, et son eau claire et cristalline vous apporte un soulagement après la poussière et la chaleur de la grotte.",
+      "action": "Arriver au ruisseau"
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: L'eau est fraîche et rafraîchissante, je vais boire un peu pour me réhydrater.",
+      "action": "Boire de l'eau"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Après avoir bu, vous vous sentez revigorée et prête à continuer votre chemin le long du ruisseau.",
+      "action": "Continuer le chemin"
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Le ruisseau serpente à travers la forêt, je vais le suivre pour voir où il me mène.",
+      "action": "Suivre le ruisseau",
+      "choices": [
+        {
+          "text": "Mortelle Adèle: Je vais continuer à suivre le ruisseau, il pourrait me mener à une cascade ou à un lac.",
+          "action": "Continuer à suivre le ruisseau",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Je vais monter sur cette colline pour avoir une vue d'ensemble de la forêt et voir si je peux apercevoir une ville ou un village.",
+          "action": "Monter sur la colline",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Je vais faire une pause pour me reposer et réfléchir à ma situation avant de décider quoi faire ensuite.",
+          "action": "Faire une pause",
+          "inventoryUpdate": null
+        }
+      ]
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je vais continuer à suivre le ruisseau, il pourrait me mener à une cascade ou à un lac.",
+      "action": "Suivre le ruisseau"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Le ruisseau continue de serpenter à travers la forêt, passant entre les arbres et suivant une pente douce.",
+      "action": "Observer le paysage"
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: L'eau est claire et fraîche, je me sens revigorée après avoir bu et je suis déterminée à suivre ce ruisseau.",
+      "action": "Marcher le long du ruisseau"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Au fur et à mesure que vous marchez, le ruisseau devient plus étroit et les arbres commencent à se rapprocher les uns des autres.",
+      "action": "Noter les changements dans l'environnement"
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je vais continuer à suivre le ruisseau, même si le sentier devient plus étroit et plus difficile.",
+      "action": "Poursuivre la marche"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Soudain, vous entendez un bruit de cascade lointaine, et le ruisseau commence à accélérer son débit.",
+      "action": "S'approcher de la cascade"
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Ah, une cascade ! Je me demande où elle mène.",
+      "action": "S'approcher de la cascade",
+      "choices": [
+        {
+          "text": "Mortelle Adèle: Je vais essayer de passer derrière la cascade pour voir si je trouve un passage secret.",
+          "action": "Passer derrière la cascade",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Je vais grimper le long de la paroi rocheuse pour avoir une meilleure vue de la cascade.",
+          "action": "Grimper la paroi rocheuse",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Je vais suivre le ruisseau qui sort de la cascade pour voir où il me mène.",
+          "action": "Suivre le ruisseau descendant",
+          "inventoryUpdate": null
+        }
+      ]
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je commence à longer la cascade pour trouver un moyen de descendre.",
+      "action": "Mortelle Adèle s'approche du bord de la cascade"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: La cascade est impressionnante, avec de l'eau qui tombe du haut d'une falaise escarpée.",
+      "action": "La cascade crée un nuage de brume autour de Mortelle Adèle"
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je vais chercher un chemin pour descendants le long de la cascade.",
+      "action": "Mortelle Adèle scrute les alentours pour trouver un chemin"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Vous trouvez un chemin étroit et escarpé qui descend le long de la cascade.",
+      "action": "Mortelle Adèle commence à descendre le long de la cascade"
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je vais suivre le ruisseau qui sort de la cascade pour voir où il me mène.",
+      "action": "Mortelle Adèle continue de longer le ruisseau"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Le ruisseau forme un petit lac en bas de la cascade, qui s'étend jusqu'à une forêt dense.",
+      "action": "Mortelle Adèle arrive au bord du lac",
+      "choices": [
+        {
+          "text": "Mortelle Adèle: Je vais suivre le pourtour du lac pour voir s'il y a des signes de vie.",
+          "action": "Suivre le pourtour du lac",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Je vais traverser le lac pour atteindre la forêt dense.",
+          "action": "Traverser le lac",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Je vais explorer les alentours pour voir si je peux trouver des ressources.",
+          "action": "Explorer les alentours",
+          "inventoryUpdate": null
+        }
+      ]
+    }
+  ],
+  "id": "1778767700332-1y5go0",
+  "createdAt": 1778767700332,
+  "inventory": {
+    "items": [
+      "Épée à deux mains"
+    ],
+    "allies": [],
+    "heroId": "adele"
+  }
+}

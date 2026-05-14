@@ -61,6 +61,38 @@
           "inventoryUpdate": null
         }
       ]
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Je me sens une pointe d'excitation et de peur en empruntant ce sentier de droite. Il est plus sombre et les arbres semblent se refermer sur moi.",
+      "action": "Avancer avec précaution"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Le sentier se rétrécit de plus en plus, et les bruits de la forêt vous entourent. Vous entendez des cris d'oiseaux et des branches qui craquent.",
+      "action": "Continuer à avancer"
+    },
+    {
+      "speaker": "Lina la bagarreuse",
+      "text": "Lina la bagarreuse: Hé, vous ! Arrêtez-vous un instant. Je vous ai vue emprunter ce sentier. Vous cherchez quelque chose... ou quelqu'un ?",
+      "action": "S'arrêter et regarder Lina",
+      "choices": [
+        {
+          "text": "Mortelle Adèle: Je suis en quête du Dragon, je n'ai pas de temps pour les discussions.",
+          "action": "Ignorer Lina et continuer",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Et vous, qu'est-ce que vous faites ici ? Vous connaissez peut-être un chemin plus sûr pour atteindre le Dragon ?",
+          "action": "Engager la conversation avec Lina",
+          "inventoryUpdate": null
+        },
+        {
+          "text": "Mortelle Adèle: Je dois me défendre, Lina a peut-être des intentions hostiles.",
+          "action": "Se préparer à se défendre",
+          "inventoryUpdate": null
+        }
+      ]
     }
   ],
   "id": "1778767009484-kaooie",
