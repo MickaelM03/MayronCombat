@@ -1,0 +1,67 @@
+{
+  "title": "Ma Première Aventure : En quête du Dragon",
+  "characterIds": [
+    "lina",
+    "sachat",
+    "timon"
+  ],
+  "arenaId": "foret_dragon",
+  "arenaName": "La Forêt du Dragon",
+  "arenaImg": "/images/foret_dragon_arena_1778750742162.png",
+  "theme": "Ma Première Aventure : En quête du Dragon",
+  "isInteractive": true,
+  "isFinished": false,
+  "script": [
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Bienvenue dans cette nouvelle aventure : \"Ma Première Aventure : En quête du Dragon\". Avant de partir, tu dois choisir ton héros. Qui vas-tu incarner ?",
+      "action": "Choix du Héros",
+      "choices": [
+        {
+          "text": "Incarner Lina la bagarreuse",
+          "action": "Le joueur choisit d'incarner Lina la bagarreuse. Ce personnage sera le héros principal et commence avec son équipement de base."
+        },
+        {
+          "text": "Incarner Sachat le chapardeur",
+          "action": "Le joueur choisit d'incarner Sachat le chapardeur. Ce personnage sera le héros principal et commence avec son équipement de base."
+        },
+        {
+          "text": "Incarner Timon le magicien",
+          "action": "Le joueur choisit d'incarner Timon le magicien. Ce personnage sera le héros principal et commence avec son équipement de base."
+        }
+      ]
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Te voilà, Sachat, le plus grand chapardeur à moustaches de la région ! Tu te tiens devant la Forêt du Dragon, un lieu tellement mystérieux que même les arbres portent des lunettes de soleil pour ne pas être reconnus.",
+      "action": "Le narrateur pointe une forêt aux arbres violets et mouvants."
+    },
+    {
+      "speaker": "Sachat",
+      "text": "Sachat: Mes griffes sont aiguisées, mes coussinets sont soyeux, et mon envie de trésor est plus grande que ma peur des boules de poils géantes ! Mais où est mon sac ?",
+      "action": "Sachat fouille ses poches vides avec panique."
+    },
+    {
+      "speaker": "Lina",
+      "text": "Lina: Pas de panique, la boule de poils ! J'ai trouvé ce coffre dans un buisson. Si tu ne l'ouvres pas vite, je lui explose le couvercle à coups de bottes !",
+      "action": "Lina donne un petit coup de pied impatient dans un coffre en bois qui couine."
+    },
+    {
+      "speaker": "Timon",
+      "text": "Timon: Par les moustaches d'un poulpe de l'espace, ce coffre contient tes reliques fétiches ! Mais attention, la magie de la forêt limite ton inventaire. Tu ne peux prendre qu'un seul de ces lots d'équipement !",
+      "action": "Timon fait apparaître des étincelles en forme de bretzels au-dessus du coffre."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Dans le coffre, tu aperçois six objets incroyables : 1. Un Crochet-Canard (qui fait 'coin' quand on l'accroche), 2. Des Sandales de Silence en Guimauve, 3. De la Poudre à Éternuer Turbo, 4. Le Fromage de l'Oubli (qui sent si fort qu'on oublie son nom), 5. Une Cape d'Invisibilité en Filet à Patates, et 6. Un Sifflet pour Dragons Malentendants.",
+      "action": "Le coffre s'ouvre pour révéler un bazar hétéroclite et coloré."
+    }
+  ],
+  "id": "1778754363811-61r3n8",
+  "createdAt": 1778754363811,
+  "inventory": {
+    "items": [],
+    "allies": [],
+    "heroId": "sachat"
+  }
+}

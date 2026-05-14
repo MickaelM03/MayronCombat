@@ -1,0 +1,37 @@
+{
+  "title": "Ma Première Aventure : En quête du Dragon",
+  "characterIds": [
+    "lina",
+    "sachat",
+    "timon"
+  ],
+  "arenaId": "foret_dragon",
+  "arenaName": "La Forêt du Dragon",
+  "arenaImg": "/images/foret_dragon_arena_1778750742162.png",
+  "theme": "Ma Première Aventure : En quête du Dragon",
+  "isInteractive": true,
+  "isFinished": false,
+  "script": [
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Bienvenue dans cette nouvelle aventure : \"Ma Première Aventure : En quête du Dragon\". Avant de partir, tu dois choisir ton héros. Qui vas-tu incarner ?",
+      "action": "Choix du Héros",
+      "choices": [
+        {
+          "text": "Incarner Lina la bagarreuse",
+          "action": "Le joueur choisit d'incarner Lina la bagarreuse. Ce personnage sera le héros principal et commence avec son équipement de base."
+        },
+        {
+          "text": "Incarner Sachat le chapardeur",
+          "action": "Le joueur choisit d'incarner Sachat le chapardeur. Ce personnage sera le héros principal et commence avec son équipement de base."
+        },
+        {
+          "text": "Incarner Timon le magicien",
+          "action": "Le joueur choisit d'incarner Timon le magicien. Ce personnage sera le héros principal et commence avec son équipement de base."
+        }
+      ]
+    }
+  ],
+  "id": "1778753697041-xx68on",
+  "createdAt": 1778753697041
+}

@@ -45,6 +45,39 @@ export const CHARACTERS = [
   { id: 'assurancetourix', name: 'Assurancetourix', faction: 'Gaulois', img: '/images/assurancetourix_sf_1778507427239.png', color: 'from-blue-600 to-red-500', voice: 'Zephyr', voiceStyle: 'drama_queen' },
   { id: 'cetautomatix', name: 'Cétautomatix', faction: 'Gaulois', img: '/images/cetautomatix_sf_1778507441190.png', color: 'from-orange-700 to-gray-800', voice: 'Iapetus', voiceStyle: 'guerrier' },
   { id: 'bonemine', name: 'Bonemine', faction: 'Gaulois', img: '/images/bonemine_sf_1778507453133.png', color: 'from-pink-600 to-red-700', voice: 'Autonoe', voiceStyle: 'raleur' },
+  // Ma Premiere Aventure - Batch 1
+  { id: 'lina', name: 'Lina la bagarreuse', faction: 'Dragon', img: '/images/lina_dragon_sf_1778750600855.png', color: 'from-red-500 to-orange-600', voice: 'Kore', voiceStyle: 'aventuriere' },
+  { id: 'sachat', name: 'Sachat le chapardeur', faction: 'Dragon', img: '/images/sachat_dragon_sf_1778750623043.png', color: 'from-blue-400 to-indigo-600', voice: 'Zephyr', voiceStyle: 'enfant' },
+  { id: 'timon', name: 'Timon le magicien', faction: 'Dragon', img: '/images/timon_dragon_sf_1778750639387.png', color: 'from-purple-500 to-blue-700', voice: 'Orus', voiceStyle: 'scientifique_fou' },
+  { id: 'manta', name: 'La Manta', faction: 'Atlantide', img: '/images/manta_atlantide_sf_1778750654619.png', color: 'from-cyan-400 to-blue-600', voice: 'Leda', voiceStyle: 'aventuriere' },
+  { id: 'behemoth', name: 'Le Béhémoth', faction: 'Atlantide', img: '/images/behemoth_atlantide_sf_1778750667383.png', color: 'from-slate-600 to-gray-800', voice: 'Fenrir', voiceStyle: 'autoritaire' },
+  { id: 'espadon', name: 'L’Espadon', faction: 'Atlantide', img: '/images/espadon_atlantide_sf_1778750693942.png', color: 'from-teal-400 to-emerald-600', voice: 'Sadachbia', voiceStyle: 'presse' },
+  // Ma Premiere Aventure - Batch 2
+  { id: 'gloub', name: 'Gloub le mécanicien', faction: 'Phobos', img: '/images/gloub_phobos_sf_1778751038385.png', color: 'from-green-400 to-lime-600', voice: 'Enceladus', voiceStyle: 'idiot' },
+  { id: 'eclipse', name: 'Eclipse la pilote', faction: 'Phobos', img: '/images/eclipse_phobos_sf_1778751057106.png', color: 'from-blue-500 to-indigo-700', voice: 'Kore', voiceStyle: 'aventuriere' },
+  { id: 'toby', name: 'Toby le scientifique', faction: 'Phobos', img: '/images/toby_phobos_sf_1778751069886.png', color: 'from-yellow-400 to-orange-600', voice: 'Umbriel', voiceStyle: 'gamer' },
+  { id: 'sumai', name: 'Sumaï le cueilleur', faction: 'Terre Ocre', img: '/images/sumai_ocre_sf_1778751086869.png', color: 'from-amber-500 to-orange-700', voice: 'Zephyr', voiceStyle: 'enfant' },
+  { id: 'mailune', name: 'Maïlune la chasseuse', faction: 'Terre Ocre', img: '/images/mailune_ocre_sf_1778751100541.png', color: 'from-red-600 to-brown-800', voice: 'Leda', voiceStyle: 'aventuriere' },
+  { id: 'issa', name: 'Issa la bergère', faction: 'Terre Ocre', img: '/images/issa_ocre_sf_1778751113697.png', color: 'from-green-500 to-teal-700', voice: 'Leda', voiceStyle: 'maman' },
+  // Ma Premiere Aventure - Batch 3 & Remaining
+  { id: 'bipbop', name: 'Bip-Bop', faction: 'Course', img: '/images/bipbop_sf_1778751200923.png', color: 'from-blue-400 to-cyan-600', voice: 'Zephyr', voiceStyle: 'enfant' },
+  { id: 'ambrose', name: 'Ambrose', faction: 'Course', img: '/images/ambrose_sf_1778751213305.png', color: 'from-gray-700 to-slate-900', voice: 'Fenrir', voiceStyle: 'autoritaire' },
+  { id: 'haru', name: 'Haru l\'éclair', faction: 'Course', img: '/images/luffy_gear5_sf.png', color: 'from-red-500 to-red-700', voice: 'Puck', voiceStyle: 'hero_jeune' },
+  { id: 'bizzcotte', name: 'Bizzcotte', faction: 'Abeille', img: '/images/bonemine_sf_1778507453133.png', color: 'from-yellow-400 to-black', voice: 'Kore', voiceStyle: 'aventuriere' },
+  { id: 'bizzou', name: 'Bizzou', faction: 'Abeille', img: '/images/adele_generic_sf_1778417097290.png', color: 'from-yellow-500 to-orange-600', voice: 'Leda', voiceStyle: 'enfant_diabolique' },
+  { id: 'zoe', name: 'Zoé la souris', faction: 'Détective', img: '/images/rat_gouttiere_sf.png', color: 'from-gray-400 to-pink-200', voice: 'Zephyr', voiceStyle: 'enfant' },
+  { id: 'jeppy', name: 'Jeppy l\'Ours', faction: 'Détective', img: '/images/shrek_sf.png', color: 'from-brown-600 to-orange-800', voice: 'Enceladus', voiceStyle: 'ogre' },
+  { id: 'nouky', name: 'Nouky le raton', faction: 'Détective', img: '/images/le_chat_sf_1778416951561.png', color: 'from-slate-500 to-black', voice: 'Puck', voiceStyle: 'gangster' },
+  { id: 'aivy', name: 'Aïvy', faction: 'Montagne', img: '/images/lara_sf.png', color: 'from-emerald-500 to-green-700', voice: 'Leda', voiceStyle: 'aventuriere' },
+  { id: 'will', name: 'Will la débrouille', faction: 'Montagne', img: '/images/steve_sf_1778417051770.png', color: 'from-blue-600 to-indigo-800', voice: 'Umbriel', voiceStyle: 'gamer' },
+  { id: 'lilon', name: 'Lilon l\'elfe', faction: 'Magie', img: '/images/spiderman_sf.png', color: 'from-cyan-300 to-blue-500', voice: 'Zephyr', voiceStyle: 'hero_jeune' },
+  { id: 'camille', name: 'Camille l\'ensorceleuse', faction: 'Magie', img: '/images/mercredi_sf.png', color: 'from-purple-600 to-black', voice: 'Aoede', voiceStyle: 'monotone' },
+  { id: 'lucien', name: 'Lucien le pyromancien', faction: 'Magie', img: '/images/goku_sf.png', color: 'from-red-600 to-orange-500', voice: 'Fenrir', voiceStyle: 'guerrier' },
+  { id: 'sam_matou', name: 'Sam le matou', faction: 'Théâtre', img: '/images/le_chat_sf_1778416951561.png', color: 'from-orange-400 to-amber-600', voice: 'Zephyr', voiceStyle: 'enfant' },
+  { id: 'pattie', name: 'Pattie', faction: 'Théâtre', img: '/images/adele_generic_sf_1778417097290.png', color: 'from-pink-400 to-rose-600', voice: 'Kore', voiceStyle: 'aventuriere' },
+  { id: 'ptit_bouh', name: 'P\'tit Bouh', faction: 'Fantôme', img: '/images/mercredi_sf.png', color: 'from-blue-100 to-slate-300', voice: 'Umbriel', voiceStyle: 'nerveux' },
+  { id: 'lepine', name: 'L\'Épine', faction: 'Superopolis', img: '/images/spiderman_sf.png', color: 'from-green-600 to-emerald-800', voice: 'Autonoe', voiceStyle: 'aventuriere' },
+  { id: 'boombox', name: 'Boom-Box', faction: 'Superopolis', img: '/images/franklin_sf_1778417110721.png', color: 'from-yellow-600 to-orange-800', voice: 'Sadachbia', voiceStyle: 'gangster' },
 ];
 
 export const ARENAS = [
@@ -70,6 +103,19 @@ export const ARENAS = [
   { id: 'bateau_pirate', name: 'Galère des Pirates', img: '/images/bateau_pirate_arena_1778507496054.png' },
   { id: 'foret_druides', name: 'Forêt des Druides', img: '/images/foret_druides_arena_1778507514763.png' },
   { id: 'lutece', name: 'Rues de Lutèce', img: '/images/lutece_arena_1778507530787.png' },
+  // Ma Premiere Aventure - Batch 1
+  { id: 'foret_dragon', name: 'La Forêt du Dragon', img: '/images/foret_dragon_arena_1778750742162.png' },
+  { id: 'atlantide', name: 'Cité d\'Atlantide', img: '/images/atlantide_arena_1778750773189.png' },
+  { id: 'phobos_station', name: 'Station Phobos', img: '/images/phobos_arena_1778750798422.png' },
+  // Ma Premiere Aventure - Remaining Arenas
+  { id: 'vallee_ocre', name: 'Vallée de Terre Ocre', img: 'https://images.unsplash.com/photo-1509316785289-025f54246b21?w=1200' },
+  { id: 'circuit_casse_tout', name: 'Circuit Grand Prix', img: 'https://images.unsplash.com/photo-1530906358829-e84b276e1fdd?w=1200' },
+  { id: 'ruche_champ_fleuri', name: 'Ruche de Champ-Fleuri', img: 'https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=1200' },
+  { id: 'ville_superopolis', name: 'Cité de Superopolis', img: '/images/neotokyo_sf.png' },
+  { id: 'bibliotheque_infinie', name: 'La Bibliothèque Infinie', img: '/images/hogwarts_sf.png' },
+  { id: 'jungle_ruines', name: 'Ruines de la Jungle', img: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=1200' },
+  { id: 'chateau_ptit_bouh', name: 'Le Château Hanté', img: 'https://images.unsplash.com/photo-1505843513577-22bb7d21e455?w=1200' },
+  { id: 'montagne_dahu', name: 'Sommets Enneigés', img: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1200' },
 ];
 
 export const STYLE_PROMPTS: Record<string, string> = {

@@ -1,0 +1,117 @@
+{
+  "title": "Ma Première Aventure : En quête du Dragon",
+  "characterIds": [
+    "lina",
+    "sachat",
+    "timon"
+  ],
+  "arenaId": "foret_dragon",
+  "arenaName": "La Forêt du Dragon",
+  "arenaImg": "/images/foret_dragon_arena_1778750742162.png",
+  "theme": "Ma Première Aventure : En quête du Dragon",
+  "isInteractive": true,
+  "isFinished": false,
+  "script": [
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Bienvenue dans cette nouvelle aventure : \"Ma Première Aventure : En quête du Dragon\". Avant de partir, tu dois choisir ton héros. Qui vas-tu incarner ?",
+      "action": "Choix du Héros",
+      "choices": [
+        {
+          "text": "Incarner Lina la bagarreuse",
+          "action": "Le joueur choisit d'incarner Lina la bagarreuse. Ce personnage sera le héros principal et commence avec son équipement de base."
+        },
+        {
+          "text": "Incarner Sachat le chapardeur",
+          "action": "Le joueur choisit d'incarner Sachat le chapardeur. Ce personnage sera le héros principal et commence avec son équipement de base."
+        },
+        {
+          "text": "Incarner Timon le magicien",
+          "action": "Le joueur choisit d'incarner Timon le magicien. Ce personnage sera le héros principal et commence avec son équipement de base."
+        }
+      ]
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Sachat le chapardeur s'aventure prudemment dans la Forêt du Dragon, ses oreilles frémissant au moindre craquement de branche en polystyrène.",
+      "action": "Le narrateur pointe une pancarte indiquant 'Attention : Dragon sensible du nez'."
+    },
+    {
+      "speaker": "Lina",
+      "text": "Lina: Pourquoi on rampe comme des limaces ? Si je croise une souche d'arbre qui me regarde de travers, je lui fais une clé de bras !",
+      "action": "Lina donne un coup de poing dans un nuage qui passait par là."
+    },
+    {
+      "speaker": "Timon",
+      "text": "Timon: Patience, jeune brute ! Mes pouvoirs mystiques m'indiquent que le dragon est soit à l'est, soit à l'ouest, soit en train de faire une sieste derrière ce rocher qui ressemble à une miche de pain.",
+      "action": "Timon essaie d'allumer sa baguette mais elle produit un bruit de klaxon."
+    },
+    {
+      "speaker": "Sachat",
+      "text": "Sachat: Chut ! On ne veut pas se faire remarquer avant d'avoir trouvé un trésor à... euh... protéger. Mais avant d'aller plus loin, je dois choisir l'outil parfait dans ma besace de pro.",
+      "action": "Sachat sort trois objets bizarres de sa poche sans fond."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: C'est le moment crucial ! Pour réussir sa première aventure, Sachat doit choisir un équipement spécial. Qu'est-ce que notre héros emporte avec lui ?",
+      "action": "Le narrateur fait apparaître trois boîtes cadeaux flottantes."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Sachat fouille frénétiquement dans son sac à dos, qui semble contenir plus de recoins qu'un labyrinthe de fromage, pendant qu'un écureuil en arrière-plan jongle avec des glands en plastique.",
+      "action": "Sachat plonge le bras dans son sac jusqu'à l'épaule."
+    },
+    {
+      "speaker": "Lina",
+      "text": "Lina: Allez, le sac à puces ! Si on n'est pas devant le dragon dans cinq minutes, je commence à faire des prises de judo aux arbres pour passer le temps !",
+      "action": "Lina donne un coup de poing dans sa paume."
+    },
+    {
+      "speaker": "Timon",
+      "text": "Timon: Par les poils de ma moustache invisible ! Prends quelque chose d'utile, comme un chapeau en aluminium ou une fourchette magique. La stratégie, c'est tout ce qui compte !",
+      "action": "Timon fait apparaître une colombe qui se transforme immédiatement en sandwich."
+    },
+    {
+      "speaker": "Sachat",
+      "text": "Sachat: Rangez vos griffes ! J'ai déniché trois objets incroyables qui traînaient entre mes croquettes et une vieille carte postale du Pays des Ronrons.",
+      "action": "Sachat étale trois objets bizarres sur une souche."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: C'est le moment crucial ! Quel objet Sachat va-t-il emporter pour affronter les dangers (très colorés) de la Forêt du Dragon ?",
+      "action": "Un projecteur illumine les trois objets au sol."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Le décor en carton-pâte de la forêt tremble alors que Sachat étale ses trésors sur une souche d'arbre qui couine étrangement.",
+      "action": "Le narrateur agite une branche en plastique dans le champ."
+    },
+    {
+      "speaker": "Sachat",
+      "text": "Sachat: Regardez-moi ça ! Ce sont des reliques de haute technologie chapardeuse, ou peut-être juste des trucs que j'ai trouvés dans une poubelle royale au château des Ronrons.",
+      "action": "Sachat sort trois objets improbables de sa besace avec un bruit de ressort."
+    },
+    {
+      "speaker": "Lina",
+      "text": "Lina: Un poulet en plastique ? Tu vas faire quoi avec ça, une prise de catch ? Si ça ne cogne pas plus fort qu'un oreiller, je n'en veux pas !",
+      "action": "Lina donne un coup de poing dans le vide, faisant basculer un faux buisson."
+    },
+    {
+      "speaker": "Timon",
+      "text": "Timon: Par la barbe de mon grand-père qui était un hologramme ! Ces objets possèdent une aura de n'importe quoi absolument nécessaire à notre survie !",
+      "action": "Timon fait léviter son chapeau par erreur au lieu d'un objet."
+    },
+    {
+      "speaker": "Sachat",
+      "text": "Sachat: Allez, on n'a pas toute la journée, le dragon va finir par se lasser de nous attendre ! Quel outil de pro vais-je choisir ?",
+      "action": "Sachat prend une pose héroïque en glissant sur une peau de banane imaginaire."
+    }
+  ],
+  "id": "1778754599581-okuw60",
+  "createdAt": 1778754599581,
+  "inventory": {
+    "items": [],
+    "allies": [],
+    "heroId": "sachat"
+  }
+}

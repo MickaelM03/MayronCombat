@@ -1,0 +1,142 @@
+{
+  "title": "Ma Première Aventure : En quête du Dragon",
+  "characterIds": [
+    "lina",
+    "sachat",
+    "timon"
+  ],
+  "arenaId": "foret_dragon",
+  "arenaName": "La Forêt du Dragon",
+  "arenaImg": "/images/foret_dragon_arena_1778750742162.png",
+  "theme": "Ma Première Aventure : En quête du Dragon",
+  "isInteractive": true,
+  "isFinished": false,
+  "script": [
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Bienvenue dans cette nouvelle aventure : \"Ma Première Aventure : En quête du Dragon\". Avant de partir, tu dois choisir ton héros. Qui vas-tu incarner ?",
+      "action": "Choix du Héros",
+      "choices": [
+        {
+          "text": "Incarner Lina la bagarreuse",
+          "action": "Le joueur choisit d'incarner Lina la bagarreuse. Ce personnage sera le héros principal et commence avec son équipement de base."
+        },
+        {
+          "text": "Incarner Sachat le chapardeur",
+          "action": "Le joueur choisit d'incarner Sachat le chapardeur. Ce personnage sera le héros principal et commence avec son équipement de base."
+        },
+        {
+          "text": "Incarner Timon le magicien",
+          "action": "Le joueur choisit d'incarner Timon le magicien. Ce personnage sera le héros principal et commence avec son équipement de base."
+        }
+      ]
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Timon le magicien, Lina la bagarreuse et Sachat le chapardeur se tiennent à l'entrée de la Forêt du Dragon, un endroit où les arbres ont la fâcheuse habitude de se déplacer quand on ne les regarde pas.",
+      "action": "Le groupe observe la forêt dense et colorée qui semble ricaner dans leur direction."
+    },
+    {
+      "speaker": "Lina",
+      "text": "Lina: Bon, on y va ? J'ai des fourmis dans les poings et j'ai promis à ma grand-mère de ramener une écaille de dragon pour sa collection de dessous de plat !",
+      "action": "Lina fait craquer son cou avec un bruit de ressort métallique."
+    },
+    {
+      "speaker": "Sachat",
+      "text": "Sachat: Doucement, Lina. Une aventure, ça se prépare avec finesse et... discrétion. Surtout s'il y a des objets brillants à ramasser sans que personne ne s'en aperçoive.",
+      "action": "Sachat fait disparaître une pièce d'or imaginaire entre ses doigts."
+    },
+    {
+      "speaker": "Timon",
+      "text": "Timon: Par les moustaches de la Grande Loutre Cosmique ! Avant de nous enfoncer dans ce labyrinthe végétal, je dois sortir un objet magique de mon sac à malices.",
+      "action": "Timon fouille dans sa besace qui émet des bruits de klaxon et de cloches."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Pour commencer cette aventure, Timon doit choisir l'équipement qui l'accompagnera. Quel objet étrange va-t-il emporter ?",
+      "action": "Timon pose trois objets bizarres sur une souche qui semble un peu trop confortable pour être honnête."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Nos trois compères s'arrêtent devant un buisson qui semble porter une perruque et des lunettes de soleil. Timon fouille frénétiquement dans sa besace enchantée qui fait des bruits de canard en plastique.",
+      "action": "Un arbre à l'arrière-plan change discrètement de place en faisant 'pouf'."
+    },
+    {
+      "speaker": "Timon",
+      "text": "Timon: Par les bretelles de l'Espace-Temps ! Mon sac est un vrai capharnaüm aujourd'hui. Je dois choisir un seul de ces objets mystiques pour nous aider à débusquer ce dragon !",
+      "action": "Sort trois objets improbables de son chapeau pointu."
+    },
+    {
+      "speaker": "Lina",
+      "text": "Lina: Dépêche-toi, Timon ! J'ai déjà préparé mon crochet du droit spécial 'gros lézard' et mes poings commencent à bouillir !",
+      "action": "Fait des moulinets avec ses bras comme une hélice d'avion."
+    },
+    {
+      "speaker": "Sachat",
+      "text": "Sachat: Prends quelque chose d'utile, par pitié. Un truc qui brille ou qui permet de s'esquiver si les choses deviennent... enflammées.",
+      "action": "Tente de chiper discrètement une pièce d'or imaginaire dans l'air."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Quel objet Timon va-t-il emporter dans cette périlleuse (et ridicule) aventure ?",
+      "action": "Le narrateur fait apparaître des flèches lumineuses pointant vers les objets."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Timon plonge sa main dans son sac à malices, qui émet maintenant un bruit de poulet en caoutchouc qu'on écrase. La Forêt du Dragon semble l'observer, et un buisson de ronces vient de se mettre à applaudir.",
+      "action": "Un buisson bat des feuilles avec enthousiasme."
+    },
+    {
+      "speaker": "Timon",
+      "text": "Timon: Par le slip en maille de Merlin ! Ma réserve de reliques est un vrai capharnaüm ! Je ne peux en emporter qu'un seul, sinon mon sac va exploser en confettis !",
+      "action": "Timon sort trois objets étranges et les pose sur une souche qui ronfle."
+    },
+    {
+      "speaker": "Lina",
+      "text": "Lina: Dépêche-toi ! On n'est pas là pour faire une brocante ! Si cet objet ne peut pas assommer un dragon d'un seul coup, il ne sert à rien !",
+      "action": "Lina s'échauffe en faisant des pompes sur un seul doigt."
+    },
+    {
+      "speaker": "Sachat",
+      "text": "Sachat: Patience, Lina. Moi, j'aime bien celui qui brille. On pourrait l'échanger contre... euh, je veux dire, l'utiliser pour la science !",
+      "action": "Sachat essaie de discrètement mordre l'un des objets pour voir s'il est en or."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Timon présente ses trois options au groupe. Quel outil farfelu va devenir l'atout de notre mage ?",
+      "action": "Le narrateur fait apparaître des flèches lumineuses au-dessus des objets."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Les trois aventuriers s'arrêtent devant un arbre centenaire qui est en train de faire des étirements pour éviter d'avoir des crampes dans les racines.",
+      "action": "L'arbre émet un craquement sonore et bâille."
+    },
+    {
+      "speaker": "Timon",
+      "text": "Timon: Par les bretelles de l'Espace-Temps ! J'ai enfin réussi à déloger mes trois plus grandes reliques du fond de mon sac à malices. Attention, ça va faire des étincelles (ou des confettis, je confonds souvent les deux sorts) !",
+      "action": "Timon pose trois objets étranges sur une souche qui porte un chapeau de fête."
+    },
+    {
+      "speaker": "Lina",
+      "text": "Lina: Dépêche-toi, Timon ! Si on ne trouve pas ce dragon avant le goûter, je vais finir par boxer ces buissons qui nous fixent avec insistance !",
+      "action": "Lina donne un coup de poing dans le vide en faisant 'Wosh !'."
+    },
+    {
+      "speaker": "Sachat",
+      "text": "Sachat: Oh, regardez comme ça brille... Je veux dire, regardez comme ces outils semblent indispensables pour une mission de cette envergure. Quel choix cornélien !",
+      "action": "Sachat essaie de glisser discrètement un des objets vers sa poche avant de se raviser."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Timon doit maintenant trancher. Un seul de ces objets pourra les accompagner pour le reste de la traversée de la Forêt du Dragon.",
+      "action": "Le sac à malices fait un bruit de klaxon de clown."
+    }
+  ],
+  "id": "1778758108038-er2d03",
+  "createdAt": 1778758108038,
+  "inventory": {
+    "items": [],
+    "allies": [],
+    "heroId": "timon"
+  }
+}

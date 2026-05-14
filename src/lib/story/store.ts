@@ -4,7 +4,11 @@ interface StoryLine {
   speaker: string;
   text: string;
   action?: string;
-  choices?: { text: string; action: string }[]; // Only present at the end of a chapter in interactive mode
+  choices?: { 
+    text: string; 
+    action: string; 
+    inventoryUpdate?: { type: 'ITEM' | 'ALLY', name: string } 
+  }[]; 
 }
 
 interface SavedStory {
@@ -19,6 +23,11 @@ interface SavedStory {
   isInteractive: boolean;
   isFinished?: boolean;
   script: StoryLine[]; // Flattened sequence of all lines generated so far
+  inventory?: {
+    heroId?: string;
+    items: string[];
+    allies: string[];
+  };
 }
 
 type AudioFormat = 'pcm' | 'wav';
@@ -108,6 +117,28 @@ export async function updateStory(story: SavedStory): Promise<void> {
   const db = await getDB();
   await db.put('stories', story);
   apiPost('/api/stories', story).catch(() => {});
+}
+
+export async function deleteStory(id: string): Promise<void> {
+  const db = await getDB();
+  await db.delete('stories', id);
+  
+  // Clean up audio in IndexedDB
+  const tx = db.transaction('story_audio', 'readwrite');
+  const index = tx.store.index('byStory');
+  let cursor = await index.openCursor(id);
+  while (cursor) {
+    await cursor.delete();
+    cursor = await cursor.continue();
+  }
+  await tx.done;
+
+  // Clean up on server
+  try {
+    await fetch(`${API_BASE}/api/stories/${encodeURIComponent(id)}`, { method: 'DELETE' });
+  } catch (e) {
+    console.warn('[story-store] Server delete failed:', e);
+  }
 }
 
 export async function listStories(): Promise<SavedStory[]> {

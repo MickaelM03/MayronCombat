@@ -1,0 +1,94 @@
+{
+  "title": "Mayron et la Licorne Collante",
+  "characterIds": [],
+  "arenaId": "living_room",
+  "arenaName": "Le Salon de la Maison",
+  "arenaImg": "https://images.unsplash.com/photo-1567016432779-094069958ea5?w=1200",
+  "theme": "Mayron et la licorne magique",
+  "isInteractive": false,
+  "isFinished": true,
+  "script": [
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Le salon de la maison est d'un calme plat, jusqu'à ce que le canapé commence à vibrer comme un téléphone portable géant.",
+      "action": "Un vrombissement sourd secoue les coussins du canapé."
+    },
+    {
+      "speaker": "Mayron",
+      "text": "Mayron: Oh là là ! Est-ce que mon sandwich au fromage est en train de devenir vivant sous le canapé ?",
+      "action": "Il regarde sous le meuble avec des yeux écarquillés."
+    },
+    {
+      "speaker": "Paillette la Licorne",
+      "text": "Paillette la Licorne: TADAAA ! Je suis là pour l'aventure, et aussi parce que j'ai senti l'odeur du sirop de fraise !",
+      "action": "Elle surgit des coussins dans une explosion de paillettes et de confettis."
+    },
+    {
+      "speaker": "Mayron",
+      "text": "Mayron: Une licorne ? Trop cool ! Mais pourquoi tu as une ventouse de plombier à la place du sabot gauche ?",
+      "action": "Il pointe du doigt l'extrémité caoutchouteuse de la patte de l'animal."
+    },
+    {
+      "speaker": "Paillette la Licorne",
+      "text": "Paillette la Licorne: C'est le dernier cri à Arc-en-Ciel Land ! Ça aide à ne pas glisser sur les nuages de savon pendant la douche.",
+      "action": "Elle fait un bruit de ventouse sonore en marchant sur le parquet."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: La licorne tente un cabré héroïque mais s'emmêle les pattes dans le tapis persan du salon.",
+      "action": "Elle s'étale de tout son long avec un bruit de klaxon de clown."
+    },
+    {
+      "speaker": "Mayron",
+      "text": "Mayron: Ouch ! Attends, je vais te montrer ma magie à moi : le saut périlleux sur fauteuil !",
+      "action": "Mayron bondit sur le fauteuil qui se transforme subitement en marshmallow géant."
+    },
+    {
+      "speaker": "Paillette la Licorne",
+      "text": "Paillette la Licorne: Regarde ça ! Éternuement pailleté turbo ! Atchoum !",
+      "action": "Elle éternue violemment et transforme la télévision en un bloc de gelée rose tremblotante."
+    },
+    {
+      "speaker": "Mayron",
+      "text": "Mayron: Wahou ! On peut regarder les dessins animés en mangeant l'écran maintenant ?",
+      "action": "Il essaie de mordre un coin de la télévision-gelée."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Soudain, la licorne commence à briller si fort que la lampe du salon se sent complexée et s'éteint d'elle-même.",
+      "action": "Le salon devient une véritable discothèque multicolore et chaotique."
+    },
+    {
+      "speaker": "Paillette la Licorne",
+      "text": "Paillette la Licorne: Oups, j'ai mangé trop de sucre. Je commence à léviter vers le plafond comme un ballon de baudruche !",
+      "action": "Elle s'envole lentement, sa corne se coinçant dans les pales du ventilateur éteint."
+    },
+    {
+      "speaker": "Mayron",
+      "text": "Mayron: Reviens ! Tu n'as pas encore transformé mon chat en muffin à la myrtille !",
+      "action": "Il saute pour essayer d'attraper la queue multicolore de la licorne."
+    },
+    {
+      "speaker": "Paillette la Licorne",
+      "text": "Paillette la Licorne: Désolée Mayron, mon GPS interne indique qu'il est l'heure du goûter galactique sur la Lune !",
+      "action": "Elle commence à disparaître dans un tourbillon de barbe à papa et de confettis."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Dans un dernier bruit de pet magique, la licorne s'évapore, laissant le salon entièrement couvert de sucre glace.",
+      "action": "Le silence revient, seulement rompu par le bruit d'une ventouse qui se détache du plafond."
+    },
+    {
+      "speaker": "Mayron",
+      "text": "Mayron: Bon... au moins, le canapé est devenu un gâteau géant. Maman va être... très surprise !",
+      "action": "Il s'assoit dans le canapé-biscuit et commence à manger un morceau de l'accoudoir."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Mayron s'endort finalement au milieu des confettis, rêvant de sa prochaine rencontre absurde.",
+      "action": "Rideau sur un salon rose, collant, mais définitivement magique."
+    }
+  ],
+  "id": "1778758419618-82p6si",
+  "createdAt": 1778758419618
+}

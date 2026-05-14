@@ -1,0 +1,67 @@
+{
+  "title": "Ma Première Aventure : En quête du Dragon",
+  "characterIds": [
+    "lina",
+    "sachat",
+    "timon"
+  ],
+  "arenaId": "foret_dragon",
+  "arenaName": "La Forêt du Dragon",
+  "arenaImg": "/images/foret_dragon_arena_1778750742162.png",
+  "theme": "Ma Première Aventure : En quête du Dragon",
+  "isInteractive": true,
+  "isFinished": false,
+  "script": [
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Bienvenue dans cette nouvelle aventure : \"Ma Première Aventure : En quête du Dragon\". Avant de partir, tu dois choisir ton héros. Qui vas-tu incarner ?",
+      "action": "Choix du Héros",
+      "choices": [
+        {
+          "text": "Incarner Lina la bagarreuse",
+          "action": "Le joueur choisit d'incarner Lina la bagarreuse. Ce personnage sera le héros principal et commence avec son équipement de base."
+        },
+        {
+          "text": "Incarner Sachat le chapardeur",
+          "action": "Le joueur choisit d'incarner Sachat le chapardeur. Ce personnage sera le héros principal et commence avec son équipement de base."
+        },
+        {
+          "text": "Incarner Timon le magicien",
+          "action": "Le joueur choisit d'incarner Timon le magicien. Ce personnage sera le héros principal et commence avec son équipement de base."
+        }
+      ]
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Nous y sommes ! La Forêt du Dragon. L'endroit où les arbres ont des yeux et où le vent sent le soufre... et le vieux camembert.",
+      "action": "Un arbre au loin ferme un œil en baillant."
+    },
+    {
+      "speaker": "Sachat",
+      "text": "Sachat: *Tiptop-tiptop...* Regardez-moi ça ! Je suis si discret que même mon ombre a peur de faire du bruit en me suivant !",
+      "action": "Sachat tente de se cacher derrière un pissenlit géant, mais ses oreilles dépassent."
+    },
+    {
+      "speaker": "Lina",
+      "text": "Lina: Arrête de faire la crêpe, Sachat ! Moi, je veux voir du muscle, de l'action, et des écailles à polir avec mes poings !",
+      "action": "Lina donne un coup de poing dans un tronc, ce qui fait tomber une enclume de cartoon sur son pied. Elle ne bronche pas."
+    },
+    {
+      "speaker": "Timon",
+      "text": "Timon: Mes calculs magiques indiquent que nous avons 99% de chances de trouver un dragon, et 1% de chances de trouver une boulangerie. Quelqu'un a faim ?",
+      "action": "Timon consulte un grimoire qui essaie de lui mordre les doigts."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Soudain, un énorme ronflement fait trembler le sol. Devant vous, un chemin couvert de feuilles sèches mène vers une grotte, tandis qu'un petit pont de singe vacille au-dessus d'un ruisseau de limonade.",
+      "action": "Le sol tremble si fort que les moustaches de Sachat s'enroulent comme des ressorts."
+    }
+  ],
+  "id": "1778754162112-011d73",
+  "createdAt": 1778754162112,
+  "inventory": {
+    "items": [],
+    "allies": [],
+    "heroId": "sachat"
+  }
+}

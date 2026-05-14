@@ -1591,6 +1591,40 @@ FORMAT JSON REQUIS :
     }
 
     try {
+      const isMaPremiereAventure = config.theme.includes('Ma Première Aventure');
+      
+      if (isMaPremiereAventure) {
+        // Mode "Ma Première Aventure" : On fusionne l'intro et le choix pour éviter les doublons
+        const initialLines = [
+          { 
+            speaker: "Narrateur", 
+            text: `Narrateur: Bienvenue dans cette nouvelle aventure : "${config.theme}". Avant de partir, tu dois choisir ton héros. Qui vas-tu incarner ?`, 
+            action: "Choix du Héros",
+            choices: config.characters.map((c: any) => ({
+              text: `Incarner ${c.name}`,
+              action: `Le joueur choisit d'incarner ${c.name}. Ce personnage sera le héros principal et commence avec son équipement de base.`
+            }))
+          }
+        ];
+
+        const newStory: Omit<SavedStory, 'id' | 'createdAt'> = {
+          title: config.theme,
+          characterIds: config.characters.map((c: any) => c.id),
+          arenaId: config.arena.id,
+          arenaName: config.arena.name,
+          arenaImg: config.arena.img,
+          theme: config.theme,
+          isInteractive: true,
+          isFinished: false,
+          script: initialLines
+        };
+
+        const id = await saveStory(newStory);
+        const saved = await getStory(id);
+        if (saved) setCurrentStory(saved);
+        return;
+      }
+
       const charNames = config.characters.map((c: any) => c.name);
       const prompt = getStoryDirectives(narrativeMode, charNames, config.arena.name, config.theme, config.isInteractive);
       
@@ -1632,7 +1666,7 @@ FORMAT JSON REQUIS :
     }
   };
 
-  const handleChoice = async (choiceText: string, choiceAction: string) => {
+  const handleChoice = async (choiceText: string, choiceAction: string, inventoryUpdate?: { type: 'ITEM' | 'ALLY', name: string }) => {
     if (!currentStory) return;
     setIsGeneratingStory(true);
 
@@ -1642,13 +1676,37 @@ FORMAT JSON REQUIS :
       const previousContext = currentStory.script.map(l => `${l.speaker}: ${l.text}`).join('\n');
       const choiceContext = `Le lecteur a choisi : "${choiceText}" (${choiceAction})`;
       
+      // Mise à jour de l'inventaire si c'est un choix MPA
+      let updatedInventory = { 
+        items: [], 
+        allies: [], 
+        ...currentStory.inventory 
+      };
+      
+      // 1. Choix du Héros
+      if (choiceText.startsWith("Incarner ")) {
+        const heroName = choiceText.replace("Incarner ", "");
+        const hero = CHARACTERS.find(c => c.name === heroName);
+        if (hero) updatedInventory.heroId = hero.id;
+      }
+      
+      // 2. Mise à jour via inventoryUpdate de l'IA
+      if (inventoryUpdate) {
+        if (inventoryUpdate.type === 'ITEM' && !updatedInventory.items.includes(inventoryUpdate.name)) {
+          updatedInventory.items = [...updatedInventory.items, inventoryUpdate.name];
+        } else if (inventoryUpdate.type === 'ALLY' && !updatedInventory.allies.includes(inventoryUpdate.name)) {
+          updatedInventory.allies = [...updatedInventory.allies, inventoryUpdate.name];
+        }
+      }
+
       const prompt = getStoryDirectives(
         narrativeMode, 
         charNames, 
         currentStory.arenaName, 
         currentStory.theme, 
         true, 
-        `${previousContext}\n\n${choiceContext}`
+        `${previousContext}\n\n${choiceContext}`,
+        updatedInventory
       );
 
       const ai = new GoogleGenAI({ apiKey });
@@ -1668,7 +1726,8 @@ FORMAT JSON REQUIS :
       const updatedStory = {
         ...currentStory,
         isFinished: !!storyJson.isEnd,
-        script: [...currentStory.script, ...storyJson.lines]
+        script: [...currentStory.script, ...storyJson.lines],
+        inventory: updatedInventory
       };
 
       await updateStory(updatedStory);
@@ -1719,15 +1778,35 @@ FORMAT JSON REQUIS :
 
   if (appMode === 'STORY_CONFIG') {
     return (
-      <div className="relative">
+      <div className="relative overflow-x-hidden bg-mesh min-h-screen">
+        {/* Navigation Header */}
+        <div className="fixed top-0 left-0 right-0 z-[100] px-4 py-3 flex justify-between items-center pointer-events-none">
+          <motion.button
+            initial={{ x: -20, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            onClick={() => setAppMode('HOME')}
+            className="p-3 bg-black/60 backdrop-blur-md rounded-2xl border border-white/10 text-white hover:bg-amber-600 transition-all shadow-2xl pointer-events-auto group"
+            title="Accueil"
+          >
+            <Home size={22} className="group-hover:scale-110 transition-transform" />
+          </motion.button>
+          
+          <motion.div 
+            initial={{ x: 20, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            className="flex gap-2 pointer-events-auto"
+          >
+            <button
+              onClick={() => setAppMode('STORY_LIBRARY')}
+              className="p-3 bg-black/60 backdrop-blur-md rounded-2xl border border-white/10 text-white hover:bg-amber-600 transition-all shadow-2xl group"
+              title="Bibliothèque"
+            >
+              <HistoryIcon size={22} className="group-hover:rotate-12 transition-transform" />
+            </button>
+          </motion.div>
+        </div>
+
         <StoryConfigurator onStart={handleStartStory} onBack={() => setAppMode('HOME')} />
-        <button
-          onClick={() => setAppMode('STORY_LIBRARY')}
-          className="fixed top-4 right-4 z-50 p-3 bg-amber-900/80 rounded-full border border-amber-600 text-white hover:bg-amber-700 transition-colors shadow-lg"
-          title="Bibliothèque"
-        >
-          <HistoryIcon size={24} />
-        </button>
       </div>
     );
   }

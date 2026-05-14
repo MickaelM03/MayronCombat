@@ -1,0 +1,92 @@
+{
+  "title": "Ma Première Aventure : En quête du Dragon",
+  "characterIds": [
+    "lina",
+    "sachat",
+    "timon"
+  ],
+  "arenaId": "foret_dragon",
+  "arenaName": "La Forêt du Dragon",
+  "arenaImg": "/images/foret_dragon_arena_1778750742162.png",
+  "theme": "Ma Première Aventure : En quête du Dragon",
+  "isInteractive": true,
+  "isFinished": false,
+  "script": [
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Bienvenue dans cette nouvelle aventure : \"Ma Première Aventure : En quête du Dragon\". Avant de partir, tu dois choisir ton héros. Qui vas-tu incarner ?",
+      "action": "Choix du Héros",
+      "choices": [
+        {
+          "text": "Incarner Lina la bagarreuse",
+          "action": "Le joueur choisit d'incarner Lina la bagarreuse. Ce personnage sera le héros principal et commence avec son équipement de base."
+        },
+        {
+          "text": "Incarner Sachat le chapardeur",
+          "action": "Le joueur choisit d'incarner Sachat le chapardeur. Ce personnage sera le héros principal et commence avec son équipement de base."
+        },
+        {
+          "text": "Incarner Timon le magicien",
+          "action": "Le joueur choisit d'incarner Timon le magicien. Ce personnage sera le héros principal et commence avec son équipement de base."
+        }
+      ]
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Nous y sommes ! La Forêt du Dragon se dresse devant nous, aussi dense qu'une barbe de vieux mage mal peignée. Sachat, tu es aux commandes, avec tes complices de toujours : Lina, qui est déjà en train de donner des coups de poing dans un arbre pour 's'échauffer', et Timon, qui essaie de faire léviter son propre chapeau avec un succès... relatif.",
+      "action": "La caméra survole la forêt sombre et finit sur les trois héros."
+    },
+    {
+      "speaker": "Lina la bagarreuse",
+      "text": "Lina: Allez, bouge tes pattes, Sachat ! Le dragon ne va pas se transformer en sac de frappe tout seul. J'ai une envie folle de lui décrocher la mâchoire !",
+      "action": "Lina craque ses jointures bruyamment, brisant accidentellement une branche voisine."
+    },
+    {
+      "speaker": "Timon le magicien",
+      "text": "Timon: Par les moustaches de la Grande Loutre ! Ne sois pas si brutale, Lina. Il nous faut de la finesse, de la subtilité... et peut-être une de mes inventions magiques qui ne finiront pas forcément par nous exploser à la figure !",
+      "action": "Timon sort une baguette qui ressemble étrangement à une carotte séchée."
+    },
+    {
+      "speaker": "Sachat le chapardeur",
+      "text": "Sachat: Détendez-vous ! Un bon chapardeur ne part jamais sans son attirail. Voyons ce que j'ai pu 'emprunter' au village avant de partir.",
+      "action": "Sachat fouille dans sa besace pleine de poches secrètes."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Pour traverser cette forêt remplie de pièges absurdes et de créatures bizarres, Sachat ne peut emporter qu'un seul objet spécial. Choisis bien, car ton inventaire est pour l'instant vide !",
+      "action": "Le narrateur pointe les trois objets posés au sol."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Sachat s'arrête devant un buisson qui ressemble étrangement à un caniche géant et vide son sac de 'récupération' sur une souche de bois.",
+      "action": "Sachat étale des objets hétéroclites au sol."
+    },
+    {
+      "speaker": "Sachat le chapardeur",
+      "text": "Sachat: Regardez-moi ça ! J'ai réussi à subtiliser quelques merveilles avant que le garde de la ville ne glisse sur une peau de banane. C'était purement accidentel, je le jure sur ma queue !",
+      "action": "Sachat remonte ses moustaches d'un air fier."
+    },
+    {
+      "speaker": "Lina la bagarreuse",
+      "text": "Lina: On s'en fiche de tes excuses, Sachat ! Choisis un truc qui peut assommer un dragon ou au moins me servir de bouclier si ça tourne mal.",
+      "action": "Lina donne un coup de pied dans un champignon qui fait un bruit de pouet-pouet."
+    },
+    {
+      "speaker": "Timon le magicien",
+      "text": "Timon: Par le slip en flanelle de Merlin ! La magie réside parfois dans les objets les plus insignifiants... ou les plus bruyants. Faites vite, un arbre vient de me faire un clin d'œil.",
+      "action": "Timon s'agrippe nerveusement à son bâton tordu."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Devant vous se trouvent trois objets. Un seul peut être emporté pour cette aventure. Lequel Sachat va-t-il glisser dans sa besace ?",
+      "action": "Le soleil brille sur les objets ridicules."
+    }
+  ],
+  "id": "1778754827597-a7kz90",
+  "createdAt": 1778754827597,
+  "inventory": {
+    "items": [],
+    "allies": [],
+    "heroId": "sachat"
+  }
+}

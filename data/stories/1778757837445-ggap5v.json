@@ -1,0 +1,107 @@
+{
+  "title": "Ma Première Aventure : En quête du Dragon",
+  "characterIds": [
+    "lina",
+    "sachat",
+    "timon"
+  ],
+  "arenaId": "foret_dragon",
+  "arenaName": "La Forêt du Dragon",
+  "arenaImg": "/images/foret_dragon_arena_1778750742162.png",
+  "theme": "Ma Première Aventure : En quête du Dragon",
+  "isInteractive": true,
+  "isFinished": false,
+  "script": [
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Bienvenue dans cette nouvelle aventure : \"Ma Première Aventure : En quête du Dragon\". Avant de partir, tu dois choisir ton héros. Qui vas-tu incarner ?",
+      "action": "Choix du Héros",
+      "choices": [
+        {
+          "text": "Incarner Lina la bagarreuse",
+          "action": "Le joueur choisit d'incarner Lina la bagarreuse. Ce personnage sera le héros principal et commence avec son équipement de base."
+        },
+        {
+          "text": "Incarner Sachat le chapardeur",
+          "action": "Le joueur choisit d'incarner Sachat le chapardeur. Ce personnage sera le héros principal et commence avec son équipement de base."
+        },
+        {
+          "text": "Incarner Timon le magicien",
+          "action": "Le joueur choisit d'incarner Timon le magicien. Ce personnage sera le héros principal et commence avec son équipement de base."
+        }
+      ]
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Timon, toi le mage de pacotille qui rate même ses tours de cartes à deux balles, tu te tiens à l'entrée de la Forêt du Dragon. C'est sombre, ça pue l'humus et la charogne, bref, c'est l'endroit idéal pour crever d'une manière pathétique.",
+      "action": "Timon ajuste son chapeau pointu tout de travers et essaie d'avoir l'air charismatique, sans succès."
+    },
+    {
+      "speaker": "Lina",
+      "text": "Lina: On avance ou on attend que mes poils de bras poussent ? J'ai une furieuse envie de déboîter la mâchoire d'un lézard géant ! Ma hache s'emmerde !",
+      "action": "Lina crache un gros molard verdâtre dans un buisson."
+    },
+    {
+      "speaker": "Sachat",
+      "text": "Sachat: Oh, détends ton string, Lina. Moi, je cherche juste à voir si le dragon a des dents en or ou un trésor caché dans son cul. On pourrait revendre tout ça pour s'acheter de la vraie bibine et arrêter de boire de la pisse de gobelin.",
+      "action": "Sachat vérifie si ses doigts de fée sont bien agiles en volant une pièce imaginaire dans l'air."
+    },
+    {
+      "speaker": "Timon",
+      "text": "Timon: Vos gueules ! Ma tête va exploser ! Avant de s'enfoncer dans ce dépotoir végétal, j'ai besoin de mon matos de secours. On sait jamais, sur un malentendu, je pourrais réussir un sort sans m'auto-immoler.",
+      "action": "Timon fouille dans sa besace pleine de miettes de biscuits et de chaussettes sales."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Timon s'arrête devant un buisson de ronces qui ressemble étrangement à un majeur tendu. Il fouille nerveusement dans son sac en toile qui empeste la sueur et le désespoir.",
+      "action": "Timon vide son sac par terre dans la boue."
+    },
+    {
+      "speaker": "Lina",
+      "text": "Lina: Tu vas te grouiller le fion, le mage ? Si on reste ici plus longtemps, on va se faire becter par des moustiques de la taille d'un pigeon ! J'ai une envie de meurtre qui me démange les phalanges !",
+      "action": "Lina crache par terre en ajustant sa hache."
+    },
+    {
+      "speaker": "Sachat",
+      "text": "Sachat: Oh, calme ta joie, la barbare. Regarde-le, il est à deux doigts de faire dans son froc. Timon, choisis une de ces saloperies qu'on puisse avancer vers le pognon... euh, vers l'aventure.",
+      "action": "Sachat examine ses ongles sales avec un sourire cynique."
+    },
+    {
+      "speaker": "Timon",
+      "text": "Timon: Vos gueules ! Faire de la magie sans accessoire, c'est comme chier sans papier, c'est salissant et ça finit mal. Je dois prendre un truc pour compenser mon manque total de talent.",
+      "action": "Timon regarde trois objets minables étalés sur le sol."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Timon vide son sac sur une souche d'arbre qui ressemble étrangement à une tumeur géante. Les trois objets qui en tombent n'inspirent pas vraiment l'héroïsme, mais plutôt un passage rapide aux urgences.",
+      "action": "Le sac est vidé avec un bruit de ferraille rouillée"
+    },
+    {
+      "speaker": "Timon",
+      "text": "Timon: Putain de sortilèges de mes deux... J'ai le choix entre ces trois déchets. Mon maître disait que c'étaient des reliques, mais il disait aussi qu'il était sobre alors qu'il sniffait de la poudre de licorne.",
+      "action": "Timon gratte une croûte sur son nez"
+    },
+    {
+      "speaker": "Lina",
+      "text": "Lina: Grouille-toi le fion, Timon ! On n'a pas toute la journée pour contempler ton tas de merde ! Prends un truc et avançons, j'ai une envie viscérale de transformer un gobelin en tartare !",
+      "action": "Lina donne un coup de pied dans une souche"
+    },
+    {
+      "speaker": "Sachat",
+      "text": "Sachat: Oh, regarde-moi ce flacon... C'est de la gnole ou un poison pour rat ? Dans les deux cas, ça doit valoir quelques pièces d'argent chez un receleur aveugle.",
+      "action": "Sachat louche sur les objets"
+    },
+    {
+      "speaker": "Timon",
+      "text": "Timon: La ferme ! Je réfléchis ! C'est pas avec vos cervelles de moineaux lobotomisés qu'on va survivre à ce dragon. Je dois choisir l'outil le moins pété du lot.",
+      "action": "Timon hésite, la main tremblante"
+    }
+  ],
+  "id": "1778757837445-ggap5v",
+  "createdAt": 1778757837446,
+  "inventory": {
+    "items": [],
+    "allies": [],
+    "heroId": "timon"
+  }
+}

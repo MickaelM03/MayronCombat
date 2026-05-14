@@ -1,0 +1,67 @@
+{
+  "title": "Ma Première Aventure : En quête du Dragon",
+  "characterIds": [
+    "lina",
+    "sachat",
+    "timon"
+  ],
+  "arenaId": "foret_dragon",
+  "arenaName": "La Forêt du Dragon",
+  "arenaImg": "/images/foret_dragon_arena_1778750742162.png",
+  "theme": "Ma Première Aventure : En quête du Dragon",
+  "isInteractive": true,
+  "isFinished": false,
+  "script": [
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Bienvenue dans cette nouvelle aventure : \"Ma Première Aventure : En quête du Dragon\". Avant de partir, tu dois choisir ton héros. Qui vas-tu incarner ?",
+      "action": "Choix du Héros",
+      "choices": [
+        {
+          "text": "Incarner Lina la bagarreuse",
+          "action": "Le joueur choisit d'incarner Lina la bagarreuse. Ce personnage sera le héros principal et commence avec son équipement de base."
+        },
+        {
+          "text": "Incarner Sachat le chapardeur",
+          "action": "Le joueur choisit d'incarner Sachat le chapardeur. Ce personnage sera le héros principal et commence avec son équipement de base."
+        },
+        {
+          "text": "Incarner Timon le magicien",
+          "action": "Le joueur choisit d'incarner Timon le magicien. Ce personnage sera le héros principal et commence avec son équipement de base."
+        }
+      ]
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Nous y sommes ! Lina la bagarreuse, flanquée de ses deux compères, se tient devant l'entrée de la redoutable Forêt du Dragon. Les arbres sont tellement tordus qu'ils ont l'air d'avoir une crampe géante.",
+      "action": "Affiche une carte de la forêt en carton-pâte."
+    },
+    {
+      "speaker": "Lina",
+      "text": "Lina: Pourquoi on s'arrête ? Mon poing droit s'ennuie et mon poing gauche commence à faire la tête ! On va trouver ce dragon et je vais lui apprendre à cracher du feu sans permis !",
+      "action": "Donne un coup de poing dans le vide qui la fait tournoyer sur elle-même."
+    },
+    {
+      "speaker": "Timon",
+      "text": "Timon: Par ma moustache fluorescente, Lina ! Il faut une approche stratégique. Selon le 'Guide du Petit Aventurier Trouillard', nous devrions d'abord vérifier si le vent ne sent pas le roussi.",
+      "action": "Sort un livre plus grand que lui et manque de tomber sous son poids."
+    },
+    {
+      "speaker": "Sachat",
+      "text": "Sachat: Sachat ne sent rien à part l'odeur de la peur... et peut-être d'une tarte aux pommes qui refroidit quelque part. Si c'est brillant, Sachat le veut. Si ça brûle, Sachat laisse ça à Lina.",
+      "action": "Vérifie ses poches déjà pleines de cailloux inutiles."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Soudain, un buisson gigantesque et particulièrement poilu bondit au milieu du chemin. Il porte une pancarte : 'PÉAGE : DONNEZ UN TRUC OU JE VOUS CHATOUILLE JUSQU'À L'ÉVANOUISSEMENT'. C'est le terrible Buisson-Gouille !",
+      "action": "Le buisson agite ses branches de manière menaçante et ridicule."
+    }
+  ],
+  "id": "1778753974404-6nyn3x",
+  "createdAt": 1778753974404,
+  "inventory": {
+    "items": [],
+    "allies": [],
+    "heroId": "lina"
+  }
+}
