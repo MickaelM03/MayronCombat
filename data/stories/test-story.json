@@ -1,0 +1,19 @@
+{
+  "id": "test-story",
+  "createdAt": 1715670000000,
+  "title": "Histoire de Test",
+  "characterIds": [
+    "homer"
+  ],
+  "arenaId": "pmu",
+  "arenaName": "Le PMU du coin",
+  "arenaImg": "/images/pmu_du_coin_sf.png",
+  "theme": "Un test",
+  "isInteractive": false,
+  "script": [
+    {
+      "speaker": "Narrateur",
+      "text": "Ceci est une histoire de test pour vérifier la bibliothèque."
+    }
+  ]
+}

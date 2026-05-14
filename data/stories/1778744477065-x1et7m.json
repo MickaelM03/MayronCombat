@@ -1,0 +1,95 @@
+{
+  "title": "La Baguette d'Infinité et le Pétrin Cosmique",
+  "characterIds": [
+    "steve",
+    "cesar",
+    "falbala",
+    "bart",
+    "obelix"
+  ],
+  "arenaId": "boulangerie",
+  "arenaName": "Boulangerie Tradition",
+  "arenaImg": "/images/boulangerie_arena.png",
+  "theme": "Une quête mystique pour retrouver un artefact perdu",
+  "isInteractive": false,
+  "isFinished": true,
+  "script": [
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: La Boulangerie Tradition tremble alors qu'une faille spatio-temporelle s'ouvre entre les pains de campagne et les chouquettes.",
+      "action": "Une aura violette entoure le présentoir à gâteaux."
+    },
+    {
+      "speaker": "Jules César",
+      "text": "Jules César: Par Jupiter ! Je sens la présence de l'Artefact Croustillant caché sous cette montagne de farine !",
+      "action": "Il pointe son glaive vers un tas de farine suspect."
+    },
+    {
+      "speaker": "Steve",
+      "text": "Steve: Steve: *Bruit de pioche* Je vais miner ce comptoir, il y a forcément un coffre caché derrière les textures.",
+      "action": "Il commence à détruire frénétiquement le carrelage de la boutique."
+    },
+    {
+      "speaker": "Bart Simpson",
+      "text": "Bart Simpson: Mange mes shorts, César ! Le premier qui touche à la brioche mystique gagne un abonnement à vie aux farces téléphoniques !",
+      "action": "Il secoue une bombe de peinture de couleur néon."
+    },
+    {
+      "speaker": "Obélix",
+      "text": "Obélix: Ils sont fous ces romains ! On ne peut pas manger tranquillement un petit sanglier en croûte sans que tout explose ?",
+      "action": "Il essaie d'attraper douze baguettes d'un seul coup."
+    },
+    {
+      "speaker": "Falbala",
+      "text": "Falbala: Oh, mais regardez ce bel éclat doré qui sort du four ! C'est bien plus charmant qu'un simple petit pain.",
+      "action": "Elle ajuste ses cheveux alors que le four émet une lumière divine."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Soudain, une miche de pain en or massif avec des ailes de poulet s'envole du pétrin en chantant de l'opéra.",
+      "action": "L'artefact vole en cercles absurdes au-dessus des têtes."
+    },
+    {
+      "speaker": "Jules César",
+      "text": "Jules César: Veni, Vidi, Tartini ! Soldats, emparez-vous de ce levain de gloire pour l'Empire !",
+      "action": "Il glisse sur un éclair au chocolat et tombe dans un panier d'osier."
+    },
+    {
+      "speaker": "Steve",
+      "text": "Steve: Steve: *Oof* J'ai faim, je vais essayer de crafter un sandwich avec cet objet légendaire.",
+      "action": "Il tente de combiner l'artefact avec un steak cru dans son inventaire imaginaire."
+    },
+    {
+      "speaker": "Bart Simpson",
+      "text": "Bart Simpson: Ay Caramba ! Si je lance mon lance-pierre dessus, est-ce qu'on obtient des toasts gratuits ?",
+      "action": "Il vise l'artefact volant avec un noyau de cerise."
+    },
+    {
+      "speaker": "Obélix",
+      "text": "Obélix: Idéfix dit que ce pain sent le menhir magique, et il ne se trompe jamais sur les minéraux !",
+      "action": "Il siffle Idéfix qui tente de mordre les ailes en poulet du pain."
+    },
+    {
+      "speaker": "Falbala",
+      "text": "Falbala: C'est magnifique, mais est-ce que l'artefact pourrait transformer ces croissants en bijoux assortis à ma robe ?",
+      "action": "Elle fait un clin d'œil à l'artefact qui s'arrête net, hypnotisé."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: L'artefact éternue violemment, transformant instantanément Jules César en un énorme bretzel humain.",
+      "action": "César est désormais torsadé et parsemé de gros sel."
+    },
+    {
+      "speaker": "Steve",
+      "text": "Steve: Steve: *Bruit de clic droit* Le bretzel romain donne +10 en charisme mais réduit la vitesse de marche.",
+      "action": "Il prend des notes sur un parchemin cubique."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: La boulangerie s'élève dans les airs alors que tout le groupe commence à rebondir sur des sols en guimauve.",
+      "action": "Tout le monde s'envole vers la stratosphère dans un rire général absurde."
+    }
+  ],
+  "id": "1778744477065-x1et7m",
+  "createdAt": 1778744477065
+}

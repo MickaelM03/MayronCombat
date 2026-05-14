@@ -1,0 +1,94 @@
+{
+  "title": "Panique à Lutèce : L'Attaque des Baguettes Galactiques",
+  "characterIds": [
+    "homer",
+    "steve",
+    "adele",
+    "bart"
+  ],
+  "arenaId": "lutece",
+  "arenaName": "Rues de Lutèce",
+  "arenaImg": "/images/lutece_arena_1778507530787.png",
+  "theme": "Une invasion extraterrestre à déjouer",
+  "isInteractive": false,
+  "isFinished": true,
+  "script": [
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Au milieu des pavés de Lutèce, une ombre en forme de soucoupe cache soudainement le soleil de midi.",
+      "action": "La caméra survole les toits en ardoise tandis qu'un ovni en forme de camembert descend du ciel."
+    },
+    {
+      "speaker": "Homer Simpson",
+      "text": "Homer Simpson: Oh punaise ! J'espère que ces extraterrestres ont ramené des donuts géants à la place de leurs rayons laser !",
+      "action": "Il regarde le ciel en bavant, ignorant la foule qui panique autour de lui."
+    },
+    {
+      "speaker": "Bart Simpson",
+      "text": "Bart Simpson: Regarde, Man ! Leurs vaisseaux ressemblent à des fromages coulants, c'est trop naze !",
+      "action": "Il prépare son lance-pierre en visant le dôme brillant de l'appareil spatial."
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Enfin un peu d'action ! Si ces cornichons de l'espace veulent raser la ville, je leur prête ma pelle !",
+      "action": "Elle affiche un sourire sadique et brandit sa pelle de jardinage avec enthousiasme."
+    },
+    {
+      "speaker": "Steve",
+      "text": "Steve: *Bruit de pop* Je vais construire un mur en obsidienne autour du Panthéon, ça devrait les calmer.",
+      "action": "Il commence à poser des cubes noirs massifs à une vitesse surhumaine en plein milieu de la rue."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Un alien en forme de baguette fluorescente descend du vaisseau en hurlant des sons de flûte à bec.",
+      "action": "La créature rebondit sur le sol, laissant des traces de confiture d'étoiles derrière elle."
+    },
+    {
+      "speaker": "Homer Simpson",
+      "text": "Homer Simpson: Miam ! Une baguette magique qui brille ! Viens par ici, mon petit goûter spatial !",
+      "action": "Il se jette sur l'extraterrestre et tente de lui croquer l'extrémité croustillante."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Homer croque l'alien, ce qui déclenche une alerte rouge galactique et une fuite d'huile d'olive radioactive.",
+      "action": "L'alien siffle de douleur tandis que les capteurs du vaisseau clignotent frénétiquement."
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Ajax, attaque ! Montre à ces gélatines vertes ce qu'est un vrai prédateur d'appartement !",
+      "action": "Elle lance son chat grognon directement dans l'ouverture de la soucoupe volante."
+    },
+    {
+      "speaker": "Bart Simpson",
+      "text": "Bart Simpson: Ay Caramba ! Prenez ça, têtes de têtards ! *Il tire des pétards sur le train d'atterrissage*.",
+      "action": "Les pétards explosent en cascade, créant une fumée colorée qui désoriente les envahisseurs."
+    },
+    {
+      "speaker": "Steve",
+      "text": "Steve: J'ai crafté un canon à TNT avec des restes de poulet et des pavés, attention les yeux !",
+      "action": "Il actionne un levier en bois et une caisse de dynamite s'envole vers le vaisseau-mère."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Dans une explosion de confettis et de fromage, les extraterrestres s'enfuient vers la constellation du Beignet.",
+      "action": "Le vaisseau décolle en catastrophe, perdant des morceaux de croûte galactique dans sa course."
+    },
+    {
+      "speaker": "Homer Simpson",
+      "text": "Homer Simpson: Woohoo ! On a gagné ! Quelqu'un a vu mon Duff de la victoire dans ces ruines romaines ?",
+      "action": "Il danse la victoire en ramassant des miettes d'alien sur sa chemise blanche."
+    },
+    {
+      "speaker": "Mortelle Adèle",
+      "text": "Mortelle Adèle: Pff, même pas une apocalypse digne de ce nom, je rentre torturer mon chat.",
+      "action": "Elle s'en va en traînant sa pelle, l'air profondément déçue par la brièveté du combat."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Et c'est ainsi que Lutèce fut sauvée par un glouton, un mineur cubique, un garnement et une petite peste.",
+      "action": "Le soleil se couche sur la ville tandis que Bart tague 'El Barto' sur un bloc d'obsidienne resté là."
+    }
+  ],
+  "id": "1778744438525-yb7bg8",
+  "createdAt": 1778744438525
+}

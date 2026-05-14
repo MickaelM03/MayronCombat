@@ -1,0 +1,99 @@
+{
+  "title": "La Princesse Hacker et le Donjon des Pixels",
+  "characterIds": [
+    "mayron",
+    "papa",
+    "maman",
+    "clara"
+  ],
+  "arenaId": "living_room",
+  "arenaName": "Le Salon de la Maison",
+  "arenaImg": "https://images.unsplash.com/photo-1567016432779-094069958ea5?w=1200",
+  "theme": "La princesse hacker et le château enchanté ",
+  "isInteractive": false,
+  "isFinished": true,
+  "script": [
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Le salon familial a été transformé en forteresse numérique : des câbles Ethernet pendent des lustres et les coussins forment un rempart impénétrable autour de la télévision.",
+      "action": "Une lumière verte défile sur les murs façon Matrix."
+    },
+    {
+      "speaker": "Papa",
+      "text": "Papa: Clara ! Pourquoi est-ce que le canapé m'a demandé un mot de passe à seize caractères pour que je puisse m'asseoir ?",
+      "action": "Papa essaie désespérément de s'asseoir sur un pouf qui s'éloigne tout seul."
+    },
+    {
+      "speaker": "Clara",
+      "text": "Clara: Silence, humble paysan ! Je suis la Princesse Cyber-Gwen et ce château est sous protocole de sécurité 'Enchantement-256'.",
+      "action": "Clara tape frénétiquement sur un clavier rétroéclairé en portant une couronne en carton."
+    },
+    {
+      "speaker": "Mayron",
+      "text": "Mayron: Trop stylé ! Elle a hacké la machine à café, maintenant elle ne distribue que des potions de mana bleues !",
+      "action": "Mayron boit un liquide bizarre et commence à vibrer sur place."
+    },
+    {
+      "speaker": "Maman",
+      "text": "Maman: Clara, chérie, c'est charmant, mais j'aimerais récupérer le contrôle du micro-ondes. Il refuse de chauffer ma soupe tant que je n'ai pas résolu un captcha sur les ponts-levis.",
+      "action": "Maman montre son téléphone où s'affichent des images de châteaux médiévaux."
+    },
+    {
+      "speaker": "Clara",
+      "text": "Clara: Impossible ! Le dragon pare-feu garde l'accès aux calories ! Seul un chevalier muni de la clé USB sacrée pourra passer !",
+      "action": "Elle pointe une clé USB dorée suspendue au collier du chat."
+    },
+    {
+      "speaker": "Papa",
+      "text": "Papa: Le chat ? Tu as mis la sécurité du foyer entre les pattes de Mistigri ?",
+      "action": "Le chat passe en courant et déclenche une alarme de police sur les enceintes du salon."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Soudain, la télévision s'allume et affiche un dragon en 8-bit qui crache des spams publicitaires pour des boucliers en promotion.",
+      "action": "Des prospectus commencent à sortir mystérieusement de l'imprimante."
+    },
+    {
+      "speaker": "Mayron",
+      "text": "Mayron: Attention ! Le boss final est là ! Papa, utilise la télécommande, c'est ton épée magique !",
+      "action": "Mayron brandit une baguette de pain comme un bouclier."
+    },
+    {
+      "speaker": "Papa",
+      "text": "Papa: Je vais en finir avec cette tyrannie numérique ! Par le pouvoir du bouton 'Source' !",
+      "action": "Papa appuie frénétiquement sur la télécommande mais déclenche par erreur l'aspirateur robot."
+    },
+    {
+      "speaker": "Clara",
+      "text": "Clara: Non ! Pas l'aspirateur de l'apocalypse ! Il va aspirer tout mon code source !",
+      "action": "Clara fait semblant de s'évanouir dramatiquement sur un tas de câbles."
+    },
+    {
+      "speaker": "Maman",
+      "text": "Maman: Bon, assez rigolé. La princesse doit aller faire ses devoirs de mathématiques, ou je lance une attaque par déni de service sur le goûter.",
+      "action": "Maman débranche la multiprise principale avec un sourire malicieux."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Dans un bruit de vieux modem qui s'éteint, les lumières redeviennent normales et le château redevient un simple salon encombré.",
+      "action": "Les écrans s'éteignent simultanément dans un petit 'pop'."
+    },
+    {
+      "speaker": "Clara",
+      "text": "Clara: Oh non... Le royaume est tombé. La magie du Wi-Fi m'a abandonnée.",
+      "action": "Clara retire sa couronne et soupire avec humour."
+    },
+    {
+      "speaker": "Mayron",
+      "text": "Mayron: C'est pas grave, demain on hackera le jardin pour en faire une jungle préhistorique !",
+      "action": "Mayron commence déjà à dessiner des dinosaures sur des post-it."
+    },
+    {
+      "speaker": "Papa",
+      "text": "Papa: On verra ça demain. Pour l'instant, quelqu'un peut m'aider à sortir de ce pouf ? Je crois qu'il m'a vraiment verrouillé dessus.",
+      "action": "Papa gesticule, les fesses coincées dans le pouf à mémoire de forme."
+    }
+  ],
+  "id": "1778745211778-bugajo",
+  "createdAt": 1778745211778
+}

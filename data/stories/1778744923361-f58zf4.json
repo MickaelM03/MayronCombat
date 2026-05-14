@@ -1,0 +1,114 @@
+{
+  "title": "Mayron et la Licorne Pailletée-Explosive",
+  "characterIds": [
+    "mayron",
+    "clara",
+    "maman",
+    "papa"
+  ],
+  "arenaId": "forest",
+  "arenaName": "Forêt Mystique",
+  "arenaImg": "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1200",
+  "theme": "Mayron et la licorne magique",
+  "isInteractive": false,
+  "isFinished": true,
+  "script": [
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Au cœur de la Forêt Mystique, où les arbres sentent la barbe à papa et les fleurs chantent du disco, la famille est en pleine exploration.",
+      "action": "Un arbre fait un clin d'œil à la caméra."
+    },
+    {
+      "speaker": "Mayron",
+      "text": "Mayron: Je la sens ! L'odeur de la magie ! Ou alors c'est Papa qui a encore renversé son sirop de fraise sur son t-shirt.",
+      "action": "Renifle l'air bruyamment comme un chien de chasse."
+    },
+    {
+      "speaker": "Papa",
+      "text": "Papa: C'est de l'art abstrait, Mayron ! Et ce n'est pas de la fraise, c'est du jus de baies sauvages... très tachant.",
+      "action": "Tente d'essuyer une tache énorme en forme de canard sur son ventre."
+    },
+    {
+      "speaker": "Clara",
+      "text": "Clara: On est là depuis dix minutes et j'ai déjà trois moustiques magiques qui essaient de me piquer pour voler mon Wi-Fi.",
+      "action": "Agite frénétiquement son téléphone en l'air."
+    },
+    {
+      "speaker": "Maman",
+      "text": "Maman: Restez concentrés ! La légende dit que la licorne n'apparaît qu'à ceux qui ont un cœur pur et des chaussures propres.",
+      "action": "Nettoie frénétiquement ses baskets avec une lingette."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Soudain, un buisson de paillettes explose et une licorne portant des lunettes de soleil et un tutu sort en faisant du moonwalk.",
+      "action": "La licorne glisse sur l'herbe en lançant des confettis par la corne."
+    },
+    {
+      "speaker": "Mayron",
+      "text": "Mayron: OUAH ! Elle est trop stylée ! Madame la Licorne, vous faites quoi dans la vie ?",
+      "action": "S'agenouille devant la créature avec des étoiles dans les yeux."
+    },
+    {
+      "speaker": "La Licorne",
+      "text": "La Licorne: Yo les humains ! Je suis en pause déjeuner. Quelqu'un a un burger aux arcs-en-ciel ? J'ai une faim de poney !",
+      "action": "Ajuste ses lunettes de soleil avec son sabot."
+    },
+    {
+      "speaker": "Papa",
+      "text": "Papa: On a des sandwichs au jambon... Ça marche pour la magie, le jambon ?",
+      "action": "Sort un sandwich écrasé de sa poche."
+    },
+    {
+      "speaker": "La Licorne",
+      "text": "La Licorne: Beurk ! Ça va pas la tête ? Pour la peine, je vais vous montrer un tour de magie raté !",
+      "action": "Éternue violemment, ce qui déclenche une pluie de chamallows géants."
+    },
+    {
+      "speaker": "Clara",
+      "text": "Clara: Super, maintenant il pleut de la guimauve. Mon brushing est officiellement ruiné.",
+      "action": "Reçoit un chamallow géant sur la tête qui reste collé."
+    },
+    {
+      "speaker": "Maman",
+      "text": "Maman: Vite ! Un selfie avec la licorne-punk avant qu'elle ne reparte !",
+      "action": "Pousse tout le monde pour cadrer la photo."
+    },
+    {
+      "speaker": "Mayron",
+      "text": "Mayron: Monsieur le Narrateur, tu peux faire en sorte qu'elle m'emmène faire un tour sur la Lune ?",
+      "action": "Regarde le ciel avec espoir."
+    },
+    {
+      "speaker": "La Licorne",
+      "text": "La Licorne: La Lune ? Désolé petit, avec le prix de l'essence magique, je ne dépasse pas le sommet du grand chêne.",
+      "action": "Fait un signe de la main et disparaît dans un nuage de fumée parfumée à la vanille."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: La licorne s'évapora, laissant derrière elle une famille couverte de sucre et un Papa qui essayait toujours d'enlever sa tache de sirop.",
+      "action": "Papa frotte maintenant sa tache avec un chamallow."
+    },
+    {
+      "speaker": "Papa",
+      "text": "Papa: Bon, au moins, on n'aura pas besoin de dessert ce soir.",
+      "action": "Lèche un morceau de guimauve sur son bras."
+    },
+    {
+      "speaker": "Clara",
+      "text": "Clara: Je déteste cette forêt. Mais j'ai 2000 likes sur ma photo de chamallow-tête.",
+      "action": "Sourit enfin à son écran."
+    },
+    {
+      "speaker": "Mayron",
+      "text": "Mayron: C'était génial ! Demain, on cherche le dragon qui fait des gaufres ?",
+      "action": "Saute de joie en courant vers la sortie."
+    },
+    {
+      "speaker": "Maman",
+      "text": "Maman: On verra ça, Mayron. D'abord, on passe tous à la douche collective !",
+      "action": "Pousse la famille hors de la forêt alors que les arbres commencent à applaudir."
+    }
+  ],
+  "id": "1778744923361-f58zf4",
+  "createdAt": 1778744923361
+}

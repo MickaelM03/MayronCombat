@@ -39,7 +39,13 @@ export default function StoryConfigurator({ onStart, onBack }: StoryConfigurator
     "Une comédie absurde impliquant un chat et un banquier",
     "Une évasion spectaculaire d'une prison de haute sécurité",
     "Une exploration périlleuse d'une planète hostile",
-    "Un tournoi de cuisine qui tourne mal"
+    "Un tournoi de cuisine qui tourne mal",
+    "Mayron et la licorne magique",
+    "L'équipe de choc contre les pirates de l'espace",
+    "Sam le chat astronaute et le mystère de la lune en fromage",
+    "Le chevalier courageux et le dragon qui bave du chocolat",
+    "La princesse hacker et le château enchanté "
+
   ];
 
   return (

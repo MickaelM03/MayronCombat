@@ -1,0 +1,93 @@
+{
+  "title": "Panique au Cyber-Babaorum",
+  "characterIds": [
+    "morty",
+    "franklin",
+    "denis_survivor"
+  ],
+  "arenaId": "camp_romain",
+  "arenaName": "Camp de Babaorum",
+  "arenaImg": "/images/camp_romain_arena_1778507468891.png",
+  "theme": "Une enquête policière dans un futur cyberpunk",
+  "isInteractive": false,
+  "isFinished": true,
+  "script": [
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Au camp de Babaorum-2099, les centurions-cyborgs portent des sandales à propulsion et mangent des puces électroniques à la sauce poisson.",
+      "action": "Une caméra survole un camp romain rempli de néons et de fils électriques."
+    },
+    {
+      "speaker": "Morty Smith",
+      "text": "Morty Smith: Oh-oh la vache, Rick m'a jeté dans cette simulation pourrie pour retrouver son tournevis laser, oh geez, ça sent le vieux métal !",
+      "action": "Morty tremble en ajustant ses lunettes de détective trop grandes pour lui."
+    },
+    {
+      "speaker": "Franklin",
+      "text": "Franklin: Je... crois... que... j'ai... trouvé... un... indice... mais... je... marche... accidentellement... sur... le... Wi-Fi.",
+      "action": "Franklin la tortue avance à 0,1 km/h en écrasant un routeur holographique."
+    },
+    {
+      "speaker": "Denis le Survivant",
+      "text": "Denis le Survivant: Écoutez-moi bien ! Le totem de l'immunité numérique a été volé et la sentence est irrévocable : on va bouffer des câbles !",
+      "action": "Denis pointe un doigt autoritaire vers un écran géant affichant 'GAME OVER'."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Un drone-gladiateur s'écrase dans un tas de frites virtuelles en hurlant des insultes en binaire pendant qu'un chien robot fait du breakdance.",
+      "action": "Des étincelles de toutes les couleurs jaillissent de partout."
+    },
+    {
+      "speaker": "Morty Smith",
+      "text": "Morty Smith: Pourquoi ce-ce robot-lion essaie de me scanner les fesses avec un laser bleu ? C'est super bizarre et intrusif !",
+      "action": "Morty court en rond tandis qu'un laser le poursuit frénétiquement."
+    },
+    {
+      "speaker": "Denis le Survivant",
+      "text": "Denis le Survivant: C'est un test de survie, Morty ! Il faut manger du manioc synthétique pour rester dans l'aventure et décoder le coupable !",
+      "action": "Denis sort une racine en plastique brillant et commence à la mâcher violemment."
+    },
+    {
+      "speaker": "Franklin",
+      "text": "Franklin: Oh... attendez... j'ai... une... mise... à... jour... de... ma... carapace... chromée... à... faire... à... l'aide.",
+      "action": "Franklin se fige alors qu'une barre de progression de 99 heures apparaît au-dessus de lui."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Soudain, Franklin se transforme en une boule de disco bionique qui projette des hologrammes de Jules César dansant le disco.",
+      "action": "La lumière devient aveuglante et une musique de club futuriste s'enclenche."
+    },
+    {
+      "speaker": "Morty Smith",
+      "text": "Morty Smith: Oh mon dieu, tout le camp est en train de devenir un club de nuit galactique, Rick va me tuer si je ramène pas son tournevis !",
+      "action": "Morty essaie désespérément de débrancher un pilier romain qui clignote."
+    },
+    {
+      "speaker": "Denis le Survivant",
+      "text": "Denis le Survivant: Je ne partirai pas sans mon flambeau ! Même si le sol devient de la lave de pixels, je resterai digne sur mon poteau !",
+      "action": "Denis saute sur un poteau de trois centimètres de haut et garde l'équilibre avec une intensité terrifiante."
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Denis commence à faire des pompes sur son petit poteau pendant qu'un glitch visuel fait disparaître ses jambes de l'existence.",
+      "action": "Le corps de Denis scintille et devient transparent par intermittence."
+    },
+    {
+      "speaker": "Franklin",
+      "text": "Franklin: Quelqu'un... a... vu... ma... maman... dans... le... Cloud... ? Je... me... sens... tout... léger...",
+      "action": "Franklin s'envole lentement vers le plafond comme un ballon de baudruche."
+    },
+    {
+      "speaker": "Morty Smith",
+      "text": "Morty Smith: C'est fini, on est coincés dans un épisode de télé-réalité pour processeurs défectueux ! Au secours !",
+      "action": "Morty se met en position fœtale sur le sol en néon."
+    },
+    {
+      "speaker": "Denis le Survivant",
+      "text": "Denis le Survivant: Je n'ai peut-être plus de jambes physiques, mais j'ai mon totem de code source, et ça, c'est la victoire !",
+      "action": "Denis brandit fièrement une clé USB pleine de bave de tortue."
+    }
+  ],
+  "id": "1778744462265-hr5gzj",
+  "createdAt": 1778744462265
+}

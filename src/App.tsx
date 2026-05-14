@@ -405,6 +405,19 @@ export default function App() {
   } => {
     const speakerLower = speaker.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 
+    // Story Mode : vérifie en priorité les personnages de l'histoire
+    if (currentStory) {
+      for (const id of currentStory.characterIds) {
+        const char = CHARACTERS.find(c => c.id === id);
+        if (char) {
+          const nameLower = char.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+          if (speakerLower.includes(nameLower) || nameLower.includes(speakerLower)) {
+            return { voiceName: char.voice, voiceStyle: char.voiceStyle, charId: char.id, params: buildParams(char.id, char.voice, char.voiceStyle) };
+          }
+        }
+      }
+    }
+
     // Check P1
     const p1NameLower = p1.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
     if (speakerLower.includes(p1NameLower) || p1NameLower.includes(speakerLower)) {
@@ -423,19 +436,6 @@ export default function App() {
     }
     if (p2FirstWord.length > 2 && speakerLower.includes(p2FirstWord)) {
       return { voiceName: p2.voice, voiceStyle: p2.voiceStyle, charId: p2.id, params: buildParams(p2.id, p2.voice, p2.voiceStyle) };
-    }
-
-    // Story Mode Characters (fallback if not p1/p2)
-    if (currentStory) {
-      for (const id of currentStory.characterIds) {
-        const char = CHARACTERS.find(c => c.id === id);
-        if (char) {
-          const nameLower = char.name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-          if (speakerLower.includes(nameLower) || nameLower.includes(speakerLower)) {
-            return { voiceName: char.voice, voiceStyle: char.voiceStyle, charId: char.id, params: buildParams(char.id, char.voice, char.voiceStyle) };
-          }
-        }
-      }
     }
 
     // Default: Arbitre voice
@@ -1009,6 +1009,115 @@ FORMAT JSON identique au schéma standard (intro, rounds, winner, finishingMove,
     return { ok, fail };
   };
 
+  const STORY_THEMES = [
+    "Une quête mystique pour retrouver un artefact perdu",
+    "Une enquête policière dans un futur cyberpunk",
+    "Une comédie absurde impliquant un chat et un banquier",
+    "Une évasion spectaculaire d'une prison de haute sécurité",
+    "Une exploration périlleuse d'une planète hostile",
+    "Un tournoi de cuisine qui tourne mal",
+    "Un road trip interdimensionnel hilarant",
+    "Une invasion extraterrestre à déjouer",
+    "La quête du meilleur burger du multivers",
+    "Un mystère à résoudre dans un manoir hanté"
+  ];
+
+  const generateBatchStories = async (
+    count: number,
+    mode: 'linear' | 'interactive',
+    chapters: number
+  ): Promise<{ ok: number; fail: number }> => {
+    let ok = 0;
+    let fail = 0;
+    const apiKey = process.env.GEMINI_API_KEY || tempApiKey;
+    if (!apiKey) return { ok: 0, fail: count };
+    const ai = new GoogleGenAI({ apiKey });
+
+    for (let i = 0; i < count; i++) {
+      try {
+        // Pick random characters (3-5)
+        const shuffled = [...CHARACTERS].sort(() => Math.random() - 0.5);
+        const numChars = 3 + Math.floor(Math.random() * 3); // 3-5
+        const chars = shuffled.slice(0, numChars);
+        const arena = ARENAS[Math.floor(Math.random() * ARENAS.length)];
+        const theme = STORY_THEMES[Math.floor(Math.random() * STORY_THEMES.length)];
+        const isInteractive = mode === 'interactive';
+
+        const charNames = chars.map(c => c.name);
+        const modeDirective = {
+          1: "Mode FAMILLE : Pas de violence, pas de gros mots, ton bienveillant et magique. Style conte pour enfants.",
+          2: "Mode COMIQUE : Humour absurde, situations ridicules, gags visuels décrits par le narrateur. Style cartoon.",
+          3: "Mode SÉRIEUX : Ton dramatique, épique, enjeux élevés, style roman d'aventure sérieux ou thriller.",
+          4: "Mode LÉGER : Ton familier, taquineries, un peu de piquant mais reste gentil et divertissant.",
+          5: "Mode TRASH : Humour noir, gros mots créatifs, situations cyniques et décalées. Style déjanté.",
+          6: "Mode HARDCORE : Sans filtre, trash extrême, style South Park / Tarantino. Dialogue percutant et situations chaotiques.",
+        }[narrativeMode];
+
+        const linesPerChapter = 5;
+        const totalLines = chapters * linesPerChapter;
+
+        const interactiveRule = isInteractive
+          ? `Ajoute un champ "choices" avec 2-3 options après chaque groupe de ${linesPerChapter} lignes (sauf le dernier). Le dernier groupe doit avoir "isEnd": true.`
+          : 'Ne mets pas de "choices". Mets "isEnd": true à la fin de l\'histoire.';
+
+        const prompt = `Tu es le "Grand Archiviste du Multivers", un conteur de génie. Génère une histoire JSON.
+
+PERSONNAGES (respecte leurs personnalités et tics de langage) : ${charNames.join(', ')}
+LIEU : ${arena.name}
+THÈME : ${theme}
+${modeDirective}
+
+RÈGLES :
+- L'histoire doit faire EXACTEMENT ${totalLines} lignes de dialogue/narration.
+- Chaque ligne "text" DOIT commencer par "NomDuPerso: " (exemple: "Homer Simpson: Oh punaise !).
+- Pour le narrateur : "Narrateur: ..."
+${interactiveRule}
+
+FORMAT JSON :
+{
+  "title": "Titre de l'histoire",
+  "lines": [
+    { "speaker": "Nom", "text": "Nom: Dialogue", "action": "Action" }
+    ${isInteractive ? ',"choices": [ { "text": "Choix 1", "action": "..." }, { "text": "Choix 2", "action": "..." } ], "isEnd": false' : ', "isEnd": true'}
+  ]
+}
+
+Réponds UNIQUEMENT par le JSON.`;
+
+        const response = await ai.models.generateContent({
+          model: 'gemini-flash-latest',
+          contents: [{ parts: [{ text: prompt }] }],
+          config: { responseMimeType: 'application/json' }
+        });
+
+        const text = response.text || "";
+        const jsonMatch = text.match(/\{[\s\S]*\}/);
+        if (!jsonMatch) { fail++; continue; }
+
+        const storyJson = JSON.parse(jsonMatch[0]);
+
+        const story = {
+          title: storyJson.title || `Chronique : ${theme.substring(0, 40)}`,
+          characterIds: chars.map(c => c.id),
+          arenaId: arena.id,
+          arenaName: arena.name,
+          arenaImg: arena.img,
+          theme,
+          isInteractive,
+          isFinished: true,
+          script: storyJson.lines || []
+        };
+
+        await saveStory(story);
+        ok++;
+        await new Promise(r => setTimeout(r, 1200));
+      } catch {
+        fail++;
+      }
+    }
+    return { ok, fail };
+  };
+
   const handleReplay = (saved: SavedBattle) => {
     getAudioCtx();
     currentBattleId.current = saved.id;
@@ -1385,7 +1494,86 @@ FORMAT JSON REQUIS :
 
   // Si mode Accueil, on affiche la nouvelle HomePage
   if (appMode === 'HOME') {
-    return <HomePage onSelectMode={setAppMode} />;
+    return (
+      <>
+        <HomePage onSelectMode={setAppMode} narrativeMode={narrativeMode} onOpenParentalControl={() => setShowParentalModal(true)} />
+        <AnimatePresence>
+          {showParentalModal && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm"
+              onClick={() => { setShowParentalModal(false); setParentalCode(""); setParentalError(false); setPendingMode(null); setShowConfirm(false); }}
+            >
+              <motion.div
+                initial={{ scale: 0.8, y: 40 }}
+                animate={{ scale: 1, y: 0 }}
+                exit={{ scale: 0.8, y: 40 }}
+                onClick={(e) => e.stopPropagation()}
+                className={`bg-gray-900 border-2 border-red-600/60 rounded-3xl p-6 w-full shadow-[0_0_60px_rgba(220,38,38,0.3)] relative max-h-[90vh] overflow-y-auto transition-all ${parentalTab === 'voix' ? 'max-w-lg' : 'max-w-sm'}`}
+              >
+                <button
+                  onClick={() => { setShowParentalModal(false); setParentalCode(""); setParentalError(false); setPendingMode(null); setShowConfirm(false); setParentalTab('mode'); }}
+                  className="absolute top-3 right-3 p-1 text-gray-500 hover:text-white transition-colors z-10"
+                >
+                  <X size={20} />
+                </button>
+                <div className="text-center mb-3">
+                  <h3 className="sf-title text-xl text-red-500 uppercase">Contrôle Parental</h3>
+                </div>
+                <div className="flex gap-1 mb-4 bg-gray-800 rounded-xl p-1">
+                  <button
+                    onClick={() => setParentalTab('mode')}
+                    className={`flex-1 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${parentalTab === 'mode' ? 'bg-red-700 text-white shadow-lg' : 'text-gray-400 hover:text-white'}`}
+                  >🎮 Mode</button>
+                  <button
+                    onClick={() => setParentalTab('voix')}
+                    className={`flex-1 py-2 rounded-lg text-xs font-bold uppercase tracking-wider transition-all ${parentalTab === 'voix' ? 'bg-purple-700 text-white shadow-lg' : 'text-gray-400 hover:text-white'}`}
+                  >🎙️ Voix</button>
+                </div>
+                {parentalTab === 'mode' && (<>
+                  <div className="text-center mb-4 px-4 py-2 rounded-xl bg-gray-800 border border-gray-700">
+                    <span className="text-xs uppercase tracking-wider font-bold text-gray-400">Mode actuel : </span>
+                    <span className="font-black text-sm text-white">{NARRATIVE_MODE_META[narrativeMode].icon} {NARRATIVE_MODE_META[narrativeMode].name}</span>
+                  </div>
+                  {!process.env.GEMINI_API_KEY && (
+                    <div className="mb-4">
+                      <label className="text-[10px] text-gray-500 uppercase tracking-wider block mb-1">Clé API Gemini</label>
+                      <div className="flex gap-2">
+                        <input type="password" placeholder="AIza…" value={tempApiKey} onChange={e => saveApiKey(e.target.value)} className="flex-1 bg-black border border-gray-700 rounded-xl px-3 py-2 text-xs font-mono outline-none focus:border-blue-500 transition-colors" />
+                        {tempApiKey && <button onClick={() => saveApiKey('')} className="px-2 py-1 rounded-lg text-[10px] text-gray-500 hover:text-red-400 border border-gray-700 hover:border-red-700 transition-colors" title="Supprimer la clé"><X size={12} /></button>}
+                      </div>
+                      <p className="text-[9px] text-gray-600 mt-1">{tempApiKey ? '✓ Clé stockée dans votre navigateur (localStorage) — jamais sur GitHub' : 'Saisissez une clé — elle reste dans votre navigateur, jamais sur GitHub'}</p>
+                    </div>
+                  )}
+                  <NarrativeModeSelector
+                    current={pendingMode ?? narrativeMode}
+                    onChange={(mode) => {
+                      if (mode === 1) { applyNarrativeMode(1); setShowParentalModal(false); setParentalCode(""); setParentalError(false); setPendingMode(null); setShowConfirm(false); }
+                      else { setPendingMode(mode); setParentalCode(""); setParentalError(false); setShowConfirm(false); }
+                    }}
+                  />
+                  {pendingMode !== null && pendingMode > 1 && (
+                    <div className="mt-4">
+                      <label className="text-[10px] text-gray-500 uppercase tracking-wider block mb-2">Code Parental pour {NARRATIVE_MODE_META[pendingMode].icon} {NARRATIVE_MODE_META[pendingMode].name}</label>
+                      <input type="password" maxLength={4} value={parentalCode} onChange={(e) => { setParentalCode(e.target.value.replace(/\D/g, '')); setParentalError(false); }} placeholder="● ● ● ●" className={`w-full bg-black border-2 rounded-xl px-4 py-3 text-center text-lg tracking-[0.5em] font-mono outline-none transition-colors ${parentalError ? 'border-red-500 animate-shake' : 'border-gray-700 focus:border-red-500'}`} onKeyDown={(e) => { if (e.key === 'Enter' && parentalCode === PARENTAL_CODE) { if (NARRATIVE_MODE_META[pendingMode].requiresConfirm && !showConfirm) { setShowConfirm(true); } else { applyNarrativeMode(pendingMode); setShowParentalModal(false); setParentalCode(""); setPendingMode(null); setShowConfirm(false); } } else if (e.key === 'Enter') { setParentalError(true); } }} />
+                      {parentalError && <p className="text-red-400 text-[10px] text-center mt-1 animate-pulse">❌ Code incorrect !</p>}
+                      {showConfirm && <p className="text-orange-400 text-[10px] text-center mt-2 animate-pulse">⚠️ Mode {NARRATIVE_MODE_META[pendingMode].name} — Contenu adulte. Confirmer ?</p>}
+                      <button onClick={() => { if (parentalCode !== PARENTAL_CODE) { setParentalError(true); return; } if (NARRATIVE_MODE_META[pendingMode].requiresConfirm && !showConfirm) { setShowConfirm(true); return; } applyNarrativeMode(pendingMode); setShowParentalModal(false); setParentalCode(""); setPendingMode(null); setShowConfirm(false); }} className="w-full mt-3 py-3 rounded-xl bg-red-700 hover:bg-red-600 text-white font-black uppercase text-sm tracking-wider transition-colors">{showConfirm ? '⚠️ Confirmer' : `Activer ${NARRATIVE_MODE_META[pendingMode].icon} ${NARRATIVE_MODE_META[pendingMode].name}`}</button>
+                    </div>
+                  )}
+                  {narrativeMode > 1 && <BatchGenerator onGenerateBattles={generateBatch} onGenerateStories={generateBatchStories} />}
+                </>)}
+                {parentalTab === 'voix' && (
+                  <VoiceConfigurator characters={CHARACTERS} overrides={voiceOverrides} stylePrompts={STYLE_PROMPTS} onSave={saveVoiceOverrides} onTestVoice={testVoice} />
+                )}
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </>
+    );
   }
 
   // --- LOGIQUE STORY MODE ---
@@ -1619,20 +1807,6 @@ FORMAT JSON REQUIS :
         {/* Bibliothèque de combats sauvegardés */}
         <BattleLibrary onReplay={handleReplay} onPreGenerate={preGenerateBattleVoices} />
 
-        {/* Bouton Parental / Mode Narratif */}
-        <button
-          onClick={() => setShowParentalModal(true)}
-          className={`p-3 bg-gray-900/80 rounded-full border text-white transition-colors shadow-lg ${narrativeMode >= 5 ? 'border-red-500 hover:bg-red-900/60' : narrativeMode >= 4 ? 'border-orange-500 hover:bg-orange-900/60' : narrativeMode >= 2 ? 'border-blue-500 hover:bg-blue-900/60' : 'border-gray-700 hover:bg-gray-700'}`}
-          title={`Mode: ${NARRATIVE_MODE_META[narrativeMode].name}`}
-        >
-          {narrativeMode >= 5
-            ? <AlertTriangle size={22} className="text-red-500 animate-pulse" />
-            : narrativeMode >= 2
-              ? <Settings2 size={22} className="text-blue-400" />
-              : <Lock size={22} className="opacity-40" />
-          }
-        </button>
-
         {/* Bouton Musique */}
         <button
           onClick={() => {
@@ -1815,7 +1989,7 @@ FORMAT JSON REQUIS :
 
               {/* Batch pre-generation — visible only when PIN already unlocked (mode > 1) */}
               {narrativeMode > 1 && (
-                <BatchGenerator onGenerate={generateBatch} />
+                <BatchGenerator onGenerateBattles={generateBatch} onGenerateStories={generateBatchStories} />
               )}
               </>)}
 

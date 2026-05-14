@@ -1,12 +1,34 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Swords, BookOpen } from 'lucide-react';
+import { Swords, BookOpen, Lock, AlertTriangle, Settings2 } from 'lucide-react';
+import { NarrativeMode } from '../lib/battles/prompts';
+
+const NARRATIVE_MODE_META: Record<NarrativeMode, { name: string; icon: string }> = {
+  1: { name: 'Familial', icon: '👶' },
+  2: { name: 'Ado', icon: '🧑' },
+  3: { name: 'Adulte', icon: '🧔' },
+  4: { name: 'NSFW', icon: '🔞' },
+  5: { name: 'Gore', icon: '💀' },
+  6: { name: 'Extrême', icon: '☠️' },
+};
+
+const getTier = (mode: NarrativeMode): number => {
+  if (mode >= 5) return 3; // red
+  if (mode >= 3) return 2; // orange/blue
+  if (mode >= 2) return 1; // blue
+  return 0; // safe
+};
 
 interface HomePageProps {
   onSelectMode: (mode: 'BRAWLER' | 'STORY_CONFIG' | 'STORY_LIBRARY') => void;
+  narrativeMode: NarrativeMode;
+  onOpenParentalControl: () => void;
 }
 
-export default function HomePage({ onSelectMode }: HomePageProps) {
+export default function HomePage({ onSelectMode, narrativeMode, onOpenParentalControl }: HomePageProps) {
+  const tier = getTier(narrativeMode);
+  const meta = NARRATIVE_MODE_META[narrativeMode];
+
   return (
     <div className="min-h-screen bg-black w-full flex flex-col items-center justify-center p-4 relative overflow-hidden">
       {/* Background Effects */}
@@ -79,6 +101,29 @@ export default function HomePage({ onSelectMode }: HomePageProps) {
       >
         <BookOpen size={18} className="group-hover:animate-bounce" />
         Consulter la Bibliothèque des Chroniques
+      </motion.button>
+
+      {/* Parental Control Button — bottom center */}
+      <motion.button
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1 }}
+        onClick={onOpenParentalControl}
+        className="mt-8 flex items-center gap-2 px-4 py-2 rounded-full border border-gray-700 bg-gray-900/60 backdrop-blur-sm hover:bg-gray-800 hover:border-gray-500 transition-all group"
+        title={`Contrôle Parental — Mode actuel : ${meta.icon} ${meta.name}`}
+      >
+        {tier >= 3 ? (
+          <AlertTriangle size={16} className="text-red-500 animate-pulse" />
+        ) : tier >= 1 ? (
+          <Settings2 size={16} className="text-blue-400" />
+        ) : (
+          <Lock size={16} className="text-gray-500" />
+        )}
+        <span className={`text-xs font-bold uppercase tracking-wider ${
+          tier >= 3 ? 'text-red-400' : tier >= 1 ? 'text-blue-300' : 'text-gray-400'
+        }`}>
+          {meta.icon} {meta.name}
+        </span>
       </motion.button>
     </div>
   );
