@@ -41,6 +41,8 @@ import StoryViewer from './components/StoryMode/StoryViewer';
 import StoryLibrary from './components/StoryMode/StoryLibrary';
 import { getStoryDirectives, StoryChapterJSON } from './lib/story/prompts';
 import { saveStory, updateStory, getStory, getStoryAudio, saveStoryAudio, listStories, SavedStory, StoryLine } from './lib/story/store';
+import { generateWithFallback, AICascadeConfig } from './lib/ai/cascade';
+
 import { playWebSpeechEnhanced } from './lib/voice/webspeech';
 import { playPiperTTS, getPiperBlob, PIPER_STYLE_ADJUSTMENTS } from './lib/voice/piper';
 import { tryXttsAudio, xttsSynthesize } from './lib/voice/xtts';
@@ -112,11 +114,61 @@ export default function App() {
   const [tempApiKey, setTempApiKey] = useState<string>(() =>
     localStorage.getItem('mayron.apiKey') ?? ''
   );
+  const [groqKey, setGroqKey] = useState<string>(() =>
+    localStorage.getItem('mayron.groqKey') ?? ''
+  );
+  const [openaiKey, setOpenaiKey] = useState<string>(() =>
+    localStorage.getItem('mayron.openaiKey') ?? ''
+  );
+  const [deepInfraKey, setDeepInfraKey] = useState<string>(() =>
+    localStorage.getItem('mayron.deepInfraKey') ?? ''
+  );
+  const [deepseekKey, setDeepseekKey] = useState<string>(() =>
+    localStorage.getItem('mayron.deepseekKey') ?? ''
+  );
+
   const saveApiKey = (key: string) => {
     setTempApiKey(key);
     if (key) localStorage.setItem('mayron.apiKey', key);
     else localStorage.removeItem('mayron.apiKey');
   };
+
+  const saveGroqKey = (key: string) => {
+    setGroqKey(key);
+    if (key) localStorage.setItem('mayron.groqKey', key);
+    else localStorage.removeItem('mayron.groqKey');
+  };
+
+  const saveOpenaiKey = (key: string) => {
+    setOpenaiKey(key);
+    if (key) localStorage.setItem('mayron.openaiKey', key);
+    else localStorage.removeItem('mayron.openaiKey');
+  };
+
+  const saveDeepInfraKey = (key: string) => {
+    setDeepInfraKey(key);
+    if (key) localStorage.setItem('mayron.deepInfraKey', key);
+    else localStorage.removeItem('mayron.deepInfraKey');
+  };
+
+  const saveDeepseekKey = (key: string) => {
+    setDeepseekKey(key);
+    if (key) localStorage.setItem('mayron.deepseekKey', key);
+    else localStorage.removeItem('mayron.deepseekKey');
+  };
+
+  const getAIConfig = useCallback((): AICascadeConfig => {
+    const rawKeys = process.env.GEMINI_API_KEY || tempApiKey;
+    const geminiKeys = rawKeys.split(/[,;\n]/).map(k => k.trim()).filter(k => k.length > 5);
+    
+    return {
+      geminiKeys,
+      openaiKey: openaiKey || undefined,
+      groqKey: groqKey || undefined,
+      deepInfraKey: deepInfraKey || undefined,
+      deepseekKey: deepseekKey || undefined,
+    };
+  }, [tempApiKey, openaiKey, groqKey, deepInfraKey, deepseekKey]);
   const [selectingPlayer, setSelectingPlayer] = useState<1 | 2>(1);
   const [matchDuration, setMatchDuration] = useState(3);
   const audioBgRef = useRef<HTMLAudioElement | null>(null);
@@ -940,9 +992,8 @@ export default function App() {
   const generateBatch = async (count: number): Promise<{ ok: number; fail: number }> => {
     let ok = 0;
     let fail = 0;
-    const apiKey = process.env.GEMINI_API_KEY || tempApiKey;
-    if (!apiKey) return { ok: 0, fail: count };
-    const ai = new GoogleGenAI({ apiKey });
+    const aiConfig = getAIConfig();
+    if (aiConfig.geminiKeys.length === 0 && !aiConfig.openaiKey && !aiConfig.groqKey) return { ok: 0, fail: count };
 
     for (let i = 0; i < count; i++) {
       try {
@@ -971,26 +1022,19 @@ DIRECTIVES :
 ${directives}
 FORMAT JSON identique au schéma standard (intro, rounds, winner, finishingMove, conclusion).`;
 
-        const response = await ai.models.generateContent({
-          model: 'gemini-flash-latest',
-          contents: prompt,
-          config: {
-            responseMimeType: 'application/json',
-            responseSchema: {
-              type: Type.OBJECT,
-              properties: {
-                intro: { type: Type.OBJECT, properties: { text: { type: Type.STRING }, speaker: { type: Type.STRING } }, required: ['text', 'speaker'] },
-                rounds: { type: Type.ARRAY, items: { type: Type.OBJECT, properties: { title: { type: Type.STRING }, dialogues: { type: Type.ARRAY, items: { type: Type.OBJECT, properties: { speaker: { type: Type.STRING }, text: { type: Type.STRING }, action: { type: Type.STRING } }, required: ['speaker', 'text'] } } }, required: ['title', 'dialogues'] } },
-                winner: { type: Type.STRING },
-                finishingMove: { type: Type.OBJECT, properties: { type: { type: Type.STRING }, description: { type: Type.STRING }, speaker: { type: Type.STRING } }, required: ['type', 'description', 'speaker'] },
-                conclusion: { type: Type.OBJECT, properties: { text: { type: Type.STRING }, speaker: { type: Type.STRING } }, required: ['text', 'speaker'] },
-              },
-              required: ['intro', 'rounds', 'winner', 'finishingMove', 'conclusion'],
-            },
+        const result = await generateWithFallback(prompt, aiConfig, {
+          type: Type.OBJECT,
+          properties: {
+            intro: { type: Type.OBJECT, properties: { text: { type: Type.STRING }, speaker: { type: Type.STRING } }, required: ['text', 'speaker'] },
+            rounds: { type: Type.ARRAY, items: { type: Type.OBJECT, properties: { title: { type: Type.STRING }, dialogues: { type: Type.ARRAY, items: { type: Type.OBJECT, properties: { speaker: { type: Type.STRING }, text: { type: Type.STRING }, action: { type: Type.STRING } }, required: ['speaker', 'text'] } } }, required: ['title', 'dialogues'] } },
+            winner: { type: Type.STRING },
+            finishingMove: { type: Type.OBJECT, properties: { type: { type: Type.STRING }, description: { type: Type.STRING }, speaker: { type: Type.STRING } }, required: ['type', 'description', 'speaker'] },
+            conclusion: { type: Type.OBJECT, properties: { text: { type: Type.STRING }, speaker: { type: Type.STRING } }, required: ['text', 'speaker'] },
           },
+          required: ['intro', 'rounds', 'winner', 'finishingMove', 'conclusion'],
         });
 
-        const data = JSON.parse(response.text?.trim() || '{}');
+        const data = JSON.parse(result.text?.trim() || '{}');
         await saveBattle({
           p1Id: rp1.id, p1Name: rp1.name, p1Img: rp1.img,
           p1Voice: rp1.voice, p1VoiceStyle: rp1.voiceStyle,
@@ -1029,9 +1073,8 @@ FORMAT JSON identique au schéma standard (intro, rounds, winner, finishingMove,
   ): Promise<{ ok: number; fail: number }> => {
     let ok = 0;
     let fail = 0;
-    const apiKey = process.env.GEMINI_API_KEY || tempApiKey;
-    if (!apiKey) return { ok: 0, fail: count };
-    const ai = new GoogleGenAI({ apiKey });
+    const aiConfig = getAIConfig();
+    if (aiConfig.geminiKeys.length === 0 && !aiConfig.openaiKey && !aiConfig.groqKey) return { ok: 0, fail: count };
 
     for (let i = 0; i < count; i++) {
       try {
@@ -1084,13 +1127,8 @@ FORMAT JSON :
 
 Réponds UNIQUEMENT par le JSON.`;
 
-        const response = await ai.models.generateContent({
-          model: 'gemini-flash-latest',
-          contents: [{ parts: [{ text: prompt }] }],
-          config: { responseMimeType: 'application/json' }
-        });
-
-        const text = response.text || "";
+        const result = await generateWithFallback(prompt, aiConfig);
+        const text = result.text || "";
         const jsonMatch = text.match(/\{[\s\S]*\}/);
         if (!jsonMatch) { fail++; continue; }
 
@@ -1298,13 +1336,11 @@ Réponds UNIQUEMENT par le JSON.`;
     }
 
     try {
-      const apiKey = process.env.GEMINI_API_KEY || tempApiKey;
-      if (!apiKey) {
+      const aiConfig = getAIConfig();
+      if (aiConfig.geminiKeys.length === 0 && !aiConfig.openaiKey && !aiConfig.groqKey) {
         setGameState('SETUP');
-        throw new Error("Clé API manquante. Entre-la dans le menu 🔒 Contrôle Parental, ou lance la Démo.");
+        throw new Error("Clé API manquante. Entre-la dans le menu 🔒 Contrôle Parental (tu peux en mettre plusieurs séparées par des virgules), ou lance la Démo.");
       }
-
-      const ai = new GoogleGenAI({ apiKey });
 
       const trashDirectives = getNarrativeDirectives(narrativeMode, p1.name, p2.name, matchDuration);
 
@@ -1341,64 +1377,41 @@ FORMAT JSON REQUIS :
   "conclusion": { "text": "La victoire est absolue pour ${p1.name} ! Mwahaha !", "speaker": "Arbitre" }
 }`;
 
-      // Retry on 503 (model overloaded) with exponential backoff
-      let response: Awaited<ReturnType<typeof ai.models.generateContent>>;
-      const retryDelays = [0, 2000, 5000, 10000];
-      for (let attempt = 0; attempt < retryDelays.length; attempt++) {
-        if (retryDelays[attempt] > 0) {
-          setErrorMsg(`Gemini surchargé, nouvelle tentative ${attempt}/${retryDelays.length - 1}…`);
-          await new Promise(r => setTimeout(r, retryDelays[attempt]));
-          setErrorMsg(null);
-        }
-        try {
-          response = await ai.models.generateContent({
-            model: "gemini-flash-latest",
-            contents: prompt,
-            config: {
-              responseMimeType: "application/json",
-              responseSchema: {
-                type: Type.OBJECT,
-                properties: {
-                  intro: { type: Type.OBJECT, properties: { text: { type: Type.STRING }, speaker: { type: Type.STRING } }, required: ["text", "speaker"] },
-                  rounds: {
-                    type: Type.ARRAY,
-                    items: {
-                      type: Type.OBJECT,
-                      properties: {
-                        title: { type: Type.STRING },
-                        dialogues: {
-                          type: Type.ARRAY,
-                          items: {
-                            type: Type.OBJECT,
-                            properties: {
-                              speaker: { type: Type.STRING },
-                              text: { type: Type.STRING },
-                              action: { type: Type.STRING }
-                            },
-                            required: ["speaker", "text"]
-                          }
-                        }
-                      },
-                      required: ["title", "dialogues"]
-                    }
-                  },
-                  winner: { type: Type.STRING },
-                  finishingMove: { type: Type.OBJECT, properties: { type: { type: Type.STRING }, description: { type: Type.STRING }, speaker: { type: Type.STRING } }, required: ["type", "description", "speaker"] },
-                  conclusion: { type: Type.OBJECT, properties: { text: { type: Type.STRING }, speaker: { type: Type.STRING } }, required: ["text", "speaker"] }
-                },
-                required: ["intro", "rounds", "winner", "finishingMove", "conclusion"]
-              }
+      const schema = {
+        type: Type.OBJECT,
+        properties: {
+          intro: { type: Type.OBJECT, properties: { text: { type: Type.STRING }, speaker: { type: Type.STRING } }, required: ["text", "speaker"] },
+          rounds: {
+            type: Type.ARRAY,
+            items: {
+              type: Type.OBJECT,
+              properties: {
+                title: { type: Type.STRING },
+                dialogues: {
+                  type: Type.ARRAY,
+                  items: {
+                    type: Type.OBJECT,
+                    properties: {
+                      speaker: { type: Type.STRING },
+                      text: { type: Type.STRING },
+                      action: { type: Type.STRING }
+                    },
+                    required: ["speaker", "text"]
+                  }
+                }
+              },
+              required: ["title", "dialogues"]
             }
-          });
-          break; // success
-        } catch (e: any) {
-          const is503 = /503|unavailable|overloaded|high demand/i.test(String(e?.message || e));
-          if (!is503 || attempt === retryDelays.length - 1) throw e;
-          console.warn(`[gemini] 503 tentative ${attempt + 1}/${retryDelays.length}, retry dans ${retryDelays[attempt + 1]}ms`);
-        }
-      }
+          },
+          winner: { type: Type.STRING },
+          finishingMove: { type: Type.OBJECT, properties: { type: { type: Type.STRING }, description: { type: Type.STRING }, speaker: { type: Type.STRING } }, required: ["type", "description", "speaker"] },
+          conclusion: { type: Type.OBJECT, properties: { text: { type: Type.STRING }, speaker: { type: Type.STRING } }, required: ["text", "speaker"] }
+        },
+        required: ["intro", "rounds", "winner", "finishingMove", "conclusion"]
+      };
 
-      const data = JSON.parse(response.text?.trim() || "{}");
+      const result = await generateWithFallback(prompt, aiConfig, schema);
+      const data = JSON.parse(result.text?.trim() || "{}");
       const battleId = await saveBattle({
         p1Id: p1.id, p1Name: p1.name, p1Img: p1.img,
         p1Voice: p1.voice, p1VoiceStyle: p1.voiceStyle,
@@ -1537,16 +1550,45 @@ FORMAT JSON REQUIS :
                     <span className="text-xs uppercase tracking-wider font-bold text-gray-400">Mode actuel : </span>
                     <span className="font-black text-sm text-white">{NARRATIVE_MODE_META[narrativeMode].icon} {NARRATIVE_MODE_META[narrativeMode].name}</span>
                   </div>
-                  {!process.env.GEMINI_API_KEY && (
-                    <div className="mb-4">
-                      <label className="text-[10px] text-gray-500 uppercase tracking-wider block mb-1">Clé API Gemini</label>
+                  <div className="mb-4 space-y-3">
+                    <div>
+                      <label className="text-[10px] text-gray-500 uppercase tracking-wider block mb-1">Cerveaux Gemini (Séparez par virgules)</label>
                       <div className="flex gap-2">
-                        <input type="password" placeholder="AIza…" value={tempApiKey} onChange={e => saveApiKey(e.target.value)} className="flex-1 bg-black border border-gray-700 rounded-xl px-3 py-2 text-xs font-mono outline-none focus:border-blue-500 transition-colors" />
-                        {tempApiKey && <button onClick={() => saveApiKey('')} className="px-2 py-1 rounded-lg text-[10px] text-gray-500 hover:text-red-400 border border-gray-700 hover:border-red-700 transition-colors" title="Supprimer la clé"><X size={12} /></button>}
+                        <input type="password" placeholder="AIza... , AIza..." value={tempApiKey} onChange={e => saveApiKey(e.target.value)} className="flex-1 bg-black border border-gray-700 rounded-xl px-3 py-2 text-xs font-mono outline-none focus:border-yellow-500 transition-colors" />
+                        {tempApiKey && <button onClick={() => saveApiKey('')} className="px-2 py-1 rounded-lg text-[10px] text-gray-500 hover:text-red-400 border border-gray-700 hover:border-red-700 transition-colors"><X size={12} /></button>}
                       </div>
-                      <p className="text-[9px] text-gray-600 mt-1">{tempApiKey ? '✓ Clé stockée dans votre navigateur (localStorage) — jamais sur GitHub' : 'Saisissez une clé — elle reste dans votre navigateur, jamais sur GitHub'}</p>
                     </div>
-                  )}
+                    
+                    <div className="pt-2 border-t border-gray-800">
+                      <label className="text-[9px] text-gray-600 uppercase tracking-widest block mb-2 font-bold italic">Options de Secours (Fallback)</label>
+                      <div className="grid grid-cols-2 gap-2">
+                        <div>
+                          <label className="text-[8px] text-gray-500 block mb-1">Groq Key (Llama 3.3)</label>
+                          <input type="password" placeholder="gsk_..." value={groqKey} onChange={e => saveGroqKey(e.target.value)} className="w-full bg-black border border-gray-800 rounded-lg px-2 py-1.5 text-[10px] font-mono outline-none focus:border-purple-500 transition-colors" />
+                        </div>
+                        <div>
+                          <label className="text-[8px] text-gray-500 block mb-1">OpenAI Key (GPT-4o)</label>
+                          <input type="password" placeholder="sk-..." value={openaiKey} onChange={e => saveOpenaiKey(e.target.value)} className="w-full bg-black border border-gray-800 rounded-lg px-2 py-1.5 text-[10px] font-mono outline-none focus:border-blue-500 transition-colors" />
+                        </div>
+                      </div>
+                      <div className="mt-2 grid grid-cols-2 gap-2">
+                        <div>
+                          <label className="text-[8px] text-gray-500 block mb-1">DeepInfra Key</label>
+                          <input type="password" placeholder="Key..." value={deepInfraKey} onChange={e => saveDeepInfraKey(e.target.value)} className="w-full bg-black border border-gray-800 rounded-lg px-2 py-1.5 text-[10px] font-mono outline-none focus:border-cyan-500 transition-colors" />
+                        </div>
+                        <div>
+                          <label className="text-[8px] text-gray-500 block mb-1">DeepSeek Key</label>
+                          <input type="password" placeholder="sk-..." value={deepseekKey} onChange={e => saveDeepseekKey(e.target.value)} className="w-full bg-black border border-gray-800 rounded-lg px-2 py-1.5 text-[10px] font-mono outline-none focus:border-emerald-500 transition-colors" />
+                        </div>
+                      </div>
+                    </div>
+
+                    <p className="text-[9px] text-gray-600 bg-black/40 p-2 rounded-lg border border-gray-800/50">
+                      {getAIConfig().geminiKeys.length > 0 
+                        ? `✓ ${getAIConfig().geminiKeys.length} cerveau(x) Gemini actifs. Fallback auto sur la suite si quota épuisé.` 
+                        : '⚠️ Aucune clé Gemini configurée.'}
+                    </p>
+                  </div>
                   <NarrativeModeSelector
                     current={pendingMode ?? narrativeMode}
                     onChange={(mode) => {
@@ -1583,8 +1625,8 @@ FORMAT JSON REQUIS :
     setIsGeneratingStory(true);
     setErrorMsg("");
     
-    const apiKey = process.env.GEMINI_API_KEY || tempApiKey;
-    if (!apiKey) {
+    const aiConfig = getAIConfig();
+    if (aiConfig.geminiKeys.length === 0 && !aiConfig.openaiKey && !aiConfig.groqKey) {
       setErrorMsg("Une clé API Gemini est requise pour générer des histoires.");
       setAppMode('STORY_CONFIG');
       return;
@@ -1628,15 +1670,8 @@ FORMAT JSON REQUIS :
       const charNames = config.characters.map((c: any) => c.name);
       const prompt = getStoryDirectives(narrativeMode, charNames, config.arena.name, config.theme, config.isInteractive);
       
-      const ai = new GoogleGenAI({ apiKey });
-      const response = await ai.models.generateContent({
-        model: "gemini-flash-latest",
-        contents: [{ parts: [{ text: prompt }] }],
-        config: {
-          responseMimeType: 'application/json'
-        }
-      });
-      const text = response.text || "";
+      const result = await generateWithFallback(prompt, aiConfig);
+      const text = result.text || "";
       const jsonMatch = text.match(/\{[\s\S]*\}/);
       if (!jsonMatch) throw new Error("Format JSON invalide reçu de l'IA.");
       
@@ -1675,7 +1710,7 @@ FORMAT JSON REQUIS :
     if (!currentStory) return;
     setIsGeneratingStory(true);
 
-    const apiKey = process.env.GEMINI_API_KEY || tempApiKey;
+    const aiConfig = getAIConfig();
     try {
       const charNames = currentStory.characterIds.map(id => CHARACTERS.find(c => c.id === id)?.name || id);
       const previousContext = currentStory.script.map(l => `${l.speaker}: ${l.text}`).join('\n');
@@ -1714,15 +1749,8 @@ FORMAT JSON REQUIS :
         updatedInventory
       );
 
-      const ai = new GoogleGenAI({ apiKey });
-      const response = await ai.models.generateContent({
-        model: "gemini-flash-latest",
-        contents: [{ parts: [{ text: prompt }] }],
-        config: {
-          responseMimeType: 'application/json'
-        }
-      });
-      const text = response.text || "";
+      const result = await generateWithFallback(prompt, aiConfig);
+      const text = result.text || "";
       const jsonMatch = text.match(/\{[\s\S]*\}/);
       if (!jsonMatch) throw new Error("Format JSON invalide reçu de l'IA.");
       
@@ -1972,36 +2000,45 @@ FORMAT JSON REQUIS :
               </div>
 
               {/* API Key — behind PIN, stored in localStorage only */}
-              {!process.env.GEMINI_API_KEY && (
-                <div className="mb-4">
-                  <label className="text-[10px] text-gray-500 uppercase tracking-wider block mb-1">
-                    Clé API Gemini
-                  </label>
-                  <div className="flex gap-2">
-                    <input
-                      type="password"
-                      placeholder="AIza…"
-                      value={tempApiKey}
-                      onChange={e => saveApiKey(e.target.value)}
-                      className="flex-1 bg-black border border-gray-700 rounded-xl px-3 py-2 text-xs font-mono outline-none focus:border-blue-500 transition-colors"
-                    />
-                    {tempApiKey && (
-                      <button
-                        onClick={() => saveApiKey('')}
-                        className="px-2 py-1 rounded-lg text-[10px] text-gray-500 hover:text-red-400 border border-gray-700 hover:border-red-700 transition-colors"
-                        title="Supprimer la clé"
-                      >
-                        <X size={12} />
-                      </button>
-                    )}
+                  <div className="mb-4 space-y-3">
+                    <div>
+                      <label className="text-[10px] text-gray-500 uppercase tracking-wider block mb-1">Cerveaux Gemini (Séparez par virgules)</label>
+                      <div className="flex gap-2">
+                        <input type="password" placeholder="AIza... , AIza..." value={tempApiKey} onChange={e => saveApiKey(e.target.value)} className="flex-1 bg-black border border-gray-700 rounded-xl px-3 py-2 text-xs font-mono outline-none focus:border-yellow-500 transition-colors" />
+                        {tempApiKey && <button onClick={() => saveApiKey('')} className="px-2 py-1 rounded-lg text-[10px] text-gray-500 hover:text-red-400 border border-gray-700 hover:border-red-700 transition-colors"><X size={12} /></button>}
+                      </div>
+                    </div>
+                    
+                    <div className="pt-2 border-t border-gray-800">
+                      <label className="text-[9px] text-gray-600 uppercase tracking-widest block mb-2 font-bold italic">Options de Secours (Fallback)</label>
+                      <div className="grid grid-cols-2 gap-2">
+                        <div>
+                          <label className="text-[8px] text-gray-500 block mb-1">Groq Key (Llama 3.3)</label>
+                          <input type="password" placeholder="gsk_..." value={groqKey} onChange={e => saveGroqKey(e.target.value)} className="w-full bg-black border border-gray-800 rounded-lg px-2 py-1.5 text-[10px] font-mono outline-none focus:border-purple-500 transition-colors" />
+                        </div>
+                        <div>
+                          <label className="text-[8px] text-gray-500 block mb-1">OpenAI Key (GPT-4o)</label>
+                          <input type="password" placeholder="sk-..." value={openaiKey} onChange={e => saveOpenaiKey(e.target.value)} className="w-full bg-black border border-gray-800 rounded-lg px-2 py-1.5 text-[10px] font-mono outline-none focus:border-blue-500 transition-colors" />
+                        </div>
+                      </div>
+                      <div className="mt-2 grid grid-cols-2 gap-2">
+                        <div>
+                          <label className="text-[8px] text-gray-500 block mb-1">DeepInfra Key</label>
+                          <input type="password" placeholder="Key..." value={deepInfraKey} onChange={e => saveDeepInfraKey(e.target.value)} className="w-full bg-black border border-gray-800 rounded-lg px-2 py-1.5 text-[10px] font-mono outline-none focus:border-cyan-500 transition-colors" />
+                        </div>
+                        <div>
+                          <label className="text-[8px] text-gray-500 block mb-1">DeepSeek Key</label>
+                          <input type="password" placeholder="sk-..." value={deepseekKey} onChange={e => saveDeepseekKey(e.target.value)} className="w-full bg-black border border-gray-800 rounded-lg px-2 py-1.5 text-[10px] font-mono outline-none focus:border-emerald-500 transition-colors" />
+                        </div>
+                      </div>
+                    </div>
+
+                    <p className="text-[9px] text-gray-600 bg-black/40 p-2 rounded-lg border border-gray-800/50">
+                      {getAIConfig().geminiKeys.length > 0 
+                        ? `✓ ${getAIConfig().geminiKeys.length} cerveau(x) Gemini actifs. Fallback auto sur la suite si quota épuisé.` 
+                        : '⚠️ Aucune clé Gemini configurée.'}
+                    </p>
                   </div>
-                  <p className="text-[9px] text-gray-600 mt-1">
-                    {tempApiKey
-                      ? '✓ Clé sauvegardée localement (jamais sur GitHub)'
-                      : 'Sauvegardée dans le navigateur uniquement'}
-                  </p>
-                </div>
-              )}
 
               {/* Mode selector — always visible, PIN required for modes 2-6 */}
               <NarrativeModeSelector

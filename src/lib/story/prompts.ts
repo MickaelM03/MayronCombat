@@ -69,7 +69,12 @@ export function getStoryDirectives(
 
 export interface StoryChapterJSON {
   title?: string;
-  lines: { speaker: string; text: string; action?: string }[];
-  choices?: { text: string; action: string }[];
+  lines: { 
+    speaker: string; 
+    text: string; 
+    action?: string;
+    choices?: { text: string; action: string; inventoryUpdate?: { type: 'ITEM' | 'ALLY', name: string } }[];
+  }[];
+  choices?: { text: string; action: string; inventoryUpdate?: { type: 'ITEM' | 'ALLY', name: string } }[];
   isEnd?: boolean;
 }
