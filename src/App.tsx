@@ -24,7 +24,7 @@ import {
   AlertTriangle,
   Settings2,
   Home,
-  History,
+  History as HistoryIcon,
   Save,
   BookOpen
 } from 'lucide-react';
@@ -1538,7 +1538,7 @@ FORMAT JSON REQUIS :
           className="fixed top-4 right-4 z-50 p-3 bg-amber-900/80 rounded-full border border-amber-600 text-white hover:bg-amber-700 transition-colors shadow-lg"
           title="Bibliothèque"
         >
-          <History size={24} />
+          <HistoryIcon size={24} />
         </button>
       </div>
     );

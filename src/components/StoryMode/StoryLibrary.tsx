@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
-  Book, History, Trash2, Play, Calendar, Users, MapPin, ArrowLeft, Search, RefreshCw
+  Book, History as HistoryIcon, Trash2, Play, Calendar, Users, MapPin, ArrowLeft, Search, RefreshCw
 } from 'lucide-react';
 import { listStories, SavedStory, updateStory } from '../../lib/story/store';
 import { CHARACTERS } from '../../lib/constants';
