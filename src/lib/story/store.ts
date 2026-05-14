@@ -49,12 +49,20 @@ let _db: IDBPDatabase<StoryDB> | null = null;
 
 async function getDB() {
   if (_db) return _db;
-  _db = await openDB<StoryDB>('mayron-stories', 1, {
-    upgrade(db) {
-      const stories = db.createObjectStore('stories', { keyPath: 'id' });
-      stories.createIndex('byDate', 'createdAt');
-      const audio = db.createObjectStore('story_audio', { keyPath: 'id' });
-      audio.createIndex('byStory', 'storyId');
+  _db = await openDB<StoryDB>('mayron-stories', 2, {
+    upgrade(db, oldVersion, newVersion, transaction) {
+      if (oldVersion < 1) {
+        const stories = db.createObjectStore('stories', { keyPath: 'id' });
+        stories.createIndex('byDate', 'createdAt');
+        const audio = db.createObjectStore('story_audio', { keyPath: 'id' });
+        audio.createIndex('byStory', 'storyId');
+      } else if (oldVersion < 2) {
+        // Ensure index exists if it was missed in v1
+        const storiesStore = transaction.objectStore('stories');
+        if (!storiesStore.indexNames.contains('byDate')) {
+          storiesStore.createIndex('byDate', 'createdAt');
+        }
+      }
     },
   });
   return _db;

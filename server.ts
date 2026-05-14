@@ -27,6 +27,7 @@ app.use(express.raw({ type: 'application/octet-stream', limit: '50mb' }));
 
 // CORS — allow Vite dev server
 app.use((_req, res, next) => {
+  console.log(`[API] ${_req.method} ${_req.path}`);
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Content-Type');
@@ -159,9 +160,11 @@ app.post('/api/stories', (req, res) => {
   try {
     const story = req.body;
     if (!story.id) return res.status(400).json({ error: 'Missing story id' });
+    console.log(`[STORY] Saving story: ${story.id} (${story.title})`);
     writeStory(story);
     res.status(201).json({ ok: true, id: story.id });
   } catch (err) {
+    console.error('POST /api/stories error:', err);
     res.status(500).json({ error: 'Failed to save story' });
   }
 });
