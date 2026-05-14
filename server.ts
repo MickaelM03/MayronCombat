@@ -14,8 +14,12 @@ const PORT = parseInt(process.env.API_PORT || '3061', 10);
 // Data directory for persistent storage
 const DATA_DIR = path.join(__dirname, 'data', 'battles');
 const AUDIO_DIR = path.join(DATA_DIR, 'audio');
+const STORY_DIR = path.join(__dirname, 'data', 'stories');
+const STORY_AUDIO_DIR = path.join(STORY_DIR, 'audio');
 fs.mkdirSync(DATA_DIR, { recursive: true });
 fs.mkdirSync(AUDIO_DIR, { recursive: true });
+fs.mkdirSync(STORY_DIR, { recursive: true });
+fs.mkdirSync(STORY_AUDIO_DIR, { recursive: true });
 
 // Middleware
 app.use(express.json({ limit: '5mb' }));
@@ -46,6 +50,21 @@ function readBattle(id: string): any | null {
 
 function writeBattle(battle: any): void {
   fs.writeFileSync(battlePath(battle.id), JSON.stringify(battle, null, 2), 'utf-8');
+}
+
+function storyPath(id: string): string {
+  const safe = id.replace(/[^a-zA-Z0-9_\-]/g, '');
+  return path.join(STORY_DIR, `${safe}.json`);
+}
+
+function readStory(id: string): any | null {
+  const p = storyPath(id);
+  if (!fs.existsSync(p)) return null;
+  return JSON.parse(fs.readFileSync(p, 'utf-8'));
+}
+
+function writeStory(story: any): void {
+  fs.writeFileSync(storyPath(story.id), JSON.stringify(story, null, 2), 'utf-8');
 }
 
 // ─── Routes ─────────────────────────────────────────────────
@@ -112,6 +131,55 @@ app.delete('/api/battles/:id', (req, res) => {
   res.json({ ok: true });
 });
 
+// --- STORIES ---
+
+app.get('/api/stories', (_req, res) => {
+  try {
+    const files = fs.readdirSync(STORY_DIR).filter(f => f.endsWith('.json'));
+    const stories = files
+      .map(f => {
+        try { return JSON.parse(fs.readFileSync(path.join(STORY_DIR, f), 'utf-8')); }
+        catch { return null; }
+      })
+      .filter(Boolean)
+      .sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+    res.json(stories);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to list stories' });
+  }
+});
+
+app.get('/api/stories/:id', (req, res) => {
+  const story = readStory(req.params.id);
+  if (!story) return res.status(404).json({ error: 'Story not found' });
+  res.json(story);
+});
+
+app.post('/api/stories', (req, res) => {
+  try {
+    const story = req.body;
+    if (!story.id) return res.status(400).json({ error: 'Missing story id' });
+    writeStory(story);
+    res.status(201).json({ ok: true, id: story.id });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to save story' });
+  }
+});
+
+app.delete('/api/stories/:id', (req, res) => {
+  const id = req.params.id;
+  const p = storyPath(id);
+  if (fs.existsSync(p)) fs.unlinkSync(p);
+  try {
+    const files = fs.readdirSync(STORY_AUDIO_DIR);
+    const prefix = `${id}__`;
+    for (const f of files) {
+      if (f.startsWith(prefix)) fs.unlinkSync(path.join(STORY_AUDIO_DIR, f));
+    }
+  } catch {}
+  res.json({ ok: true });
+});
+
 // ─── Audio Cache ────────────────────────────────────────────
 
 // Get an audio file
@@ -163,6 +231,46 @@ app.post('/api/battles/:id/audio/:lineIndex/:voiceName', (req, res) => {
     res.json({ ok: true });
   } catch (err) {
     console.error('Failed to save audio:', err);
+    res.status(500).json({ error: 'Failed to save audio' });
+  }
+});
+
+// --- STORY AUDIO ---
+
+app.get('/api/stories/:id/audio/:lineIndex/:voiceName', (req, res) => {
+  const { id, lineIndex, voiceName } = req.params;
+  const safeId = id.replace(/[^a-zA-Z0-9_\-]/g, '');
+  const safeLine = lineIndex.replace(/[^0-9]/g, '');
+  const safeVoice = voiceName.replace(/[^a-zA-Z0-9_\-]/g, '');
+  const prefix = `${safeId}__${safeLine}__${safeVoice}`;
+  
+  try {
+    const files = fs.readdirSync(STORY_AUDIO_DIR);
+    const file = files.find(f => f.startsWith(prefix));
+    if (!file) return res.status(404).json({ error: 'Audio not found' });
+    const format = file.endsWith('.wav') ? 'wav' : 'pcm';
+    res.set('X-Audio-Format', format);
+    res.set('Content-Type', 'application/octet-stream');
+    res.set('Cache-Control', 'public, max-age=31536000');
+    fs.createReadStream(path.join(STORY_AUDIO_DIR, file)).pipe(res);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to read audio' });
+  }
+});
+
+app.post('/api/stories/:id/audio/:lineIndex/:voiceName', (req, res) => {
+  const { id, lineIndex, voiceName } = req.params;
+  const format = req.query.format === 'wav' ? 'wav' : 'pcm';
+  const safeId = id.replace(/[^a-zA-Z0-9_\-]/g, '');
+  const safeLine = lineIndex.replace(/[^0-9]/g, '');
+  const safeVoice = voiceName.replace(/[^a-zA-Z0-9_\-]/g, '');
+  
+  if (!Buffer.isBuffer(req.body)) return res.status(400).json({ error: 'Body must be raw binary data' });
+  const filePath = path.join(STORY_AUDIO_DIR, `${safeId}__${safeLine}__${safeVoice}.${format}`);
+  try {
+    fs.writeFileSync(filePath, req.body);
+    res.json({ ok: true });
+  } catch (err) {
     res.status(500).json({ error: 'Failed to save audio' });
   }
 });

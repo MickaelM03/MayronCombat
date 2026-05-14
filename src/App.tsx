@@ -40,7 +40,7 @@ import StoryConfigurator from './components/StoryMode/StoryConfigurator';
 import StoryViewer from './components/StoryMode/StoryViewer';
 import StoryLibrary from './components/StoryMode/StoryLibrary';
 import { getStoryDirectives, StoryChapterJSON } from './lib/story/prompts';
-import { saveStory, updateStory, getStory, getStoryAudio, saveStoryAudio, SavedStory, StoryLine } from './lib/story/store';
+import { saveStory, updateStory, getStory, getStoryAudio, saveStoryAudio, listStories, SavedStory, StoryLine } from './lib/story/store';
 import { playWebSpeechEnhanced } from './lib/voice/webspeech';
 import { playPiperTTS, getPiperBlob, PIPER_STYLE_ADJUSTMENTS } from './lib/voice/piper';
 import { tryXttsAudio, xttsSynthesize } from './lib/voice/xtts';
@@ -167,6 +167,7 @@ export default function App() {
   // Détection ElevenLabs au démarrage (clé API + nombre de voix mappées)
   useEffect(() => {
     fetchElevenLabsStatus().catch(() => {});
+    listStories().catch(() => {});
   }, []);
 
   // Test a voice from the configurator (with fine-tuned params)
