@@ -1366,8 +1366,9 @@ Réponds UNIQUEMENT par le JSON.`;
       }
 
       const trashDirectives = getNarrativeDirectives(narrativeMode, p1.name, p2.name, matchDuration);
+      const dialoguesPerRound = matchDuration <= 3 ? 4 : matchDuration <= 5 ? 5 : 6;
 
-      const prompt = `Tu es le "Grand Maître du Multivers", le narrateur officiel d'un tournoi de combat ultime. Génère un script de combat en JSON.
+      const prompt = `Tu es le "Grand Maître du Multivers", scénariste et conteur d'un tournoi de combat ultime. Ton rôle : raconter une VRAIE HISTOIRE de combat, pas juste enchaîner des coups. L'arène, les styles et les personnalités tissent la narration.
 
 PARAMÈTRES D'ENTRÉE :
 - Combattant 1 : ${p1.name} (Style : ${p1Style.name})
@@ -1383,21 +1384,25 @@ ${trashDirectives}
 
 IMPORTANT POUR LA VOIX : Chaque réplique sera lue par un moteur de synthèse vocale. Écris les dialogues de manière à ce qu'ils sonnent naturels à l'oral. Utilise des pauses (...), des cris (!!!), des hésitations, des onomatopées qui correspondent à la personnalité vocale décrite ci-dessus. Les répliques doivent être COURTES (max 2-3 phrases) pour être fluides en TTS.
 
-FORMAT JSON REQUIS :
+FORMAT JSON REQUIS — l'intro pose le décor narratif (pourquoi ce duel ICI), chaque round contient AU MINIMUM ${dialoguesPerRound} dialogues mêlant narration de l'Arbitre + répliques des combattants + actions interactives avec l'arène :
 {
-  "intro": { "text": "Bienvenue dans l'arène de ${arena.name} ! Que le combat commence ! Ding ding !", "speaker": "Arbitre" },
+  "intro": { "text": "Arbitre: Bienvenue dans l'arène de ${arena.name} ! [décris brièvement le lieu et pourquoi le duel y prend place, l'enjeu, l'ambiance]. Que le combat commence ! Ding ding !", "speaker": "Arbitre" },
   "rounds": [
     {
       "title": "ROUND 1",
       "dialogues": [
-        { "speaker": "${p1.name}", "text": "${p1.name}: Ta réplique trash ici ! Bam !", "action": "Provocation" },
-        { "speaker": "${p2.name}", "text": "${p2.name}: Ma réponse ! Grrr...", "action": "Réplique" }
+        { "speaker": "Arbitre", "text": "Arbitre: [narration : le décor de ${arena.name} influence l'instant, qui attaque, qui esquive, public/objets qui réagissent]", "action": "Mise en scène" },
+        { "speaker": "${p1.name}", "text": "${p1.name}: [réplique fidèle à sa personnalité ET son univers d'origine, liée à son style ${p1Style.name}]", "action": "Provocation" },
+        { "speaker": "${p2.name}", "text": "${p2.name}: [réponse fidèle à sa personnalité, qui s'oppose stylistiquement à P1]", "action": "Réplique" },
+        { "speaker": "${p1.name}", "text": "${p1.name}: [enchaîne avec un coup décrit selon son style ${p1Style.name}]", "action": "Attaque" },
+        { "speaker": "Arbitre", "text": "Arbitre: [conclusion du round, twist, élément narratif qui prépare le suivant]", "action": "Transition" }
       ]
     }
+    // Répète pour les ${matchDuration} rounds. Chaque round doit faire AVANCER l'histoire (pas juste répéter le précédent).
   ],
   "winner": "${p1.name}",
-  "finishingMove": { "type": "FATALITY", "description": "FATALITY! ${p1.name} détruit son adversaire ! K.O. !", "speaker": "Arbitre" },
-  "conclusion": { "text": "La victoire est absolue pour ${p1.name} ! Mwahaha !", "speaker": "Arbitre" }
+  "finishingMove": { "type": "FATALITY", "description": "FATALITY! [décris le coup final de manière cinématographique, en lien avec le style et l'arène]", "speaker": "Arbitre" },
+  "conclusion": { "text": "Arbitre: [aftermath : conséquences pour le perdant, transformation du gagnant, comment l'arène est laissée, morale ou clin d'œil final]", "speaker": "Arbitre" }
 }`;
 
       const schema = {
@@ -1698,31 +1703,69 @@ FORMAT JSON REQUIS :
       }
 
       const charNames = config.characters.map((c: any) => c.name);
-      const prompt = getStoryDirectives(narrativeMode, charNames, config.arena.name, config.theme, config.isInteractive, undefined, undefined, 0, config.duration ?? 5);
+      const duration = config.duration ?? 5;
 
-      const result = await generateWithFallback(prompt, aiConfig);
-      const text = result.text || "";
-      const jsonMatch = text.match(/\{[\s\S]*\}/);
-      if (!jsonMatch) throw new Error("Format JSON invalide reçu de l'IA.");
-      
-      const storyJson: StoryChapterJSON = JSON.parse(jsonMatch[0]);
-      
-      const newLines = [...storyJson.lines];
-      if (storyJson.choices && newLines.length > 0) {
-        newLines[newLines.length - 1].choices = storyJson.choices;
+      // Mode interactif : un seul chapitre à la fois, l'utilisateur fait des choix.
+      // Mode linéaire : on génère TOUT d'un coup, mais Gemini cap à ~55 lignes par
+      // réponse (8192 tokens) → on boucle en chunks pour atteindre la durée demandée.
+      const LINES_PER_CHUNK = 55;
+      const LINES_PER_MINUTE = 9;
+      const totalTargetLines = Math.max(15, Math.round(duration * LINES_PER_MINUTE));
+      const totalChunks = config.isInteractive ? 1 : Math.max(1, Math.ceil(totalTargetLines / LINES_PER_CHUNK));
+
+      let allLines: any[] = [];
+      let storyTitle = '';
+      let lastIsEnd = false;
+      let finalChoices: any[] | undefined;
+
+      for (let chunkIdx = 0; chunkIdx < totalChunks && !lastIsEnd; chunkIdx++) {
+        const isFirst = chunkIdx === 0;
+        const previousContext = isFirst
+          ? undefined
+          : allLines.map(l => `${l.speaker}: ${l.text}`).join('\n');
+
+        const chunkInfo = config.isInteractive ? undefined : { current: chunkIdx + 1, total: totalChunks };
+
+        const prompt = getStoryDirectives(
+          narrativeMode,
+          charNames,
+          config.arena.name,
+          config.theme,
+          config.isInteractive,
+          previousContext,
+          undefined,
+          chunkIdx,
+          duration,
+          chunkInfo
+        );
+
+        const result = await generateWithFallback(prompt, aiConfig);
+        const text = result.text || "";
+        const jsonMatch = text.match(/\{[\s\S]*\}/);
+        if (!jsonMatch) throw new Error("Format JSON invalide reçu de l'IA.");
+
+        const chunkJson: StoryChapterJSON = JSON.parse(jsonMatch[0]);
+        if (isFirst && chunkJson.title) storyTitle = chunkJson.title;
+        allLines.push(...chunkJson.lines);
+        lastIsEnd = !!chunkJson.isEnd;
+        finalChoices = chunkJson.choices;
       }
-      
+
+      if (finalChoices && allLines.length > 0) {
+        allLines[allLines.length - 1].choices = finalChoices;
+      }
+
       const newStory: Omit<SavedStory, 'id' | 'createdAt'> = {
-        title: storyJson.title || "Une Nouvelle Chronique",
+        title: storyTitle || "Une Nouvelle Chronique",
         characterIds: config.characters.map((c: any) => c.id),
         arenaId: config.arena.id,
         arenaName: config.arena.name,
         arenaImg: config.arena.img,
         theme: config.theme,
         isInteractive: config.isInteractive,
-        isFinished: !!storyJson.isEnd,
-        script: newLines,
-        duration: config.duration ?? 5,
+        isFinished: lastIsEnd || !config.isInteractive,
+        script: allLines,
+        duration,
         chapterCount: 1
       };
 

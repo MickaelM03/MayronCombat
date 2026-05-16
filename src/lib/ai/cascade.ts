@@ -46,6 +46,8 @@ export async function generateWithFallback(
       
       const generationConfig: any = {
         responseMimeType: mimeType,
+        maxOutputTokens: 8192, // max Gemini 2.0 Flash — sinon coupe ~2048 tokens
+        temperature: 0.95,
       };
       if (schema) {
         generationConfig.responseSchema = schema;
@@ -98,6 +100,8 @@ export async function generateWithFallback(
               model,
               messages: [{ role: 'user', content: prompt }],
               response_format: mimeType === 'application/json' ? { type: 'json_object' } : undefined,
+              max_tokens: 8192,
+              temperature: 0.95,
             }),
           });
 
@@ -153,6 +157,8 @@ export async function generateWithFallback(
           model: 'gpt-4o-mini',
           messages: [{ role: 'user', content: prompt }],
           response_format: mimeType === 'application/json' ? { type: 'json_object' } : undefined,
+          max_tokens: 16384,
+          temperature: 0.95,
         }),
       });
 
@@ -193,6 +199,8 @@ export async function generateWithFallback(
             model: 'meta-llama/Llama-3.3-70B-Instruct',
             messages: [{ role: 'user', content: prompt }],
             response_format: mimeType === 'application/json' ? { type: 'json_object' } : undefined,
+            max_tokens: 8192,
+            temperature: 0.95,
           }),
         });
 
@@ -237,6 +245,8 @@ export async function generateWithFallback(
           model: 'deepseek-chat',
           messages: [{ role: 'user', content: prompt }],
           response_format: mimeType === 'application/json' ? { type: 'json_object' } : undefined,
+          max_tokens: 8192,
+          temperature: 0.95,
         }),
       });
 

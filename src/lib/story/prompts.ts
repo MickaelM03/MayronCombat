@@ -9,7 +9,8 @@ export function getStoryDirectives(
   previousContext?: string,
   inventory?: { heroId?: string, items: string[], allies: string[] },
   chapterCount: number = 0,
-  durationMinutes: number = 5
+  durationMinutes: number = 5,
+  chunkInfo?: { current: number; total: number }
 ): string {
   const charactersList = characterNames.join(', ');
   const isMaPremiereAventure = theme.includes('Ma Première Aventure');
@@ -23,9 +24,24 @@ export function getStoryDirectives(
   const perChapterLines = Math.max(12, Math.round(totalTargetLines / EXPECTED_CHAPTERS));
   const isFinalChapter = isInteractive && chapterCount >= EXPECTED_CHAPTERS;
 
-  const durationRule = isInteractive
-    ? `🎯 LONGUEUR (PRIORITÉ ABSOLUE) : Ce chapitre DOIT contenir AU MINIMUM ${perChapterLines} lignes de dialogue/narration dans le tableau "lines"${isFinalChapter ? ` ET marquer "isEnd": true avec ${Math.round(perChapterLines * 1.5)} lignes minimum pour la conclusion` : ''}. Étoffe les descriptions, ajoute des dialogues secondaires, développe les actions. NE génère JAMAIS moins de lignes que demandé.`
-    : `🎯 LONGUEUR (PRIORITÉ ABSOLUE) : L'histoire complète DOIT contenir AU MINIMUM ${totalTargetLines} lignes de dialogue/narration dans le tableau "lines" pour durer ${durationMinutes} minute${durationMinutes > 1 ? 's' : ''} à l'oral. Étoffe les descriptions, ajoute des scènes intermédiaires, des dialogues secondaires, des moments de tension, des respirations narratives. NE génère JAMAIS moins de ${totalTargetLines} lignes — c'est une contrainte STRICTE qui prime sur toute autre directive de longueur.`;
+  // Per-chunk target for linear mode chunked generation (cap to ~55 lines to fit Gemini's 8192 token output)
+  const LINES_PER_CHUNK = 55;
+
+  const durationRule = (() => {
+    if (isInteractive) {
+      return `🎯 LONGUEUR (PRIORITÉ ABSOLUE) : Ce chapitre DOIT contenir AU MINIMUM ${perChapterLines} lignes de dialogue/narration dans le tableau "lines"${isFinalChapter ? ` ET marquer "isEnd": true avec ${Math.round(perChapterLines * 1.5)} lignes minimum pour la conclusion` : ''}. Étoffe les descriptions, ajoute des dialogues secondaires, développe les actions. NE génère JAMAIS moins de lignes que demandé.`;
+    }
+    if (chunkInfo) {
+      const isFirst = chunkInfo.current === 1;
+      const isLast = chunkInfo.current === chunkInfo.total;
+      const position = isFirst ? 'INTRODUCTION' : isLast ? 'CONCLUSION' : 'MILIEU';
+      const endRule = isLast
+        ? 'TU DOIS mettre "isEnd": true à la fin de cette partie ET conclure l\'histoire avec une moralité claire liée au thème.'
+        : 'NE PAS mettre "isEnd": true — l\'histoire continue dans une partie suivante. Termine ce chunk sur un cliffhanger ou une transition naturelle.';
+      return `🎯 LONGUEUR (PRIORITÉ ABSOLUE) : Partie ${chunkInfo.current}/${chunkInfo.total} (${position}) d'une histoire de ${durationMinutes} minutes au total. Ce chunk DOIT contenir AU MINIMUM ${LINES_PER_CHUNK} lignes de dialogue/narration dans le tableau "lines". ${endRule} NE génère JAMAIS moins de ${LINES_PER_CHUNK} lignes.`;
+    }
+    return `🎯 LONGUEUR (PRIORITÉ ABSOLUE) : L'histoire complète DOIT contenir AU MINIMUM ${totalTargetLines} lignes de dialogue/narration dans le tableau "lines" pour durer ${durationMinutes} minute${durationMinutes > 1 ? 's' : ''} à l'oral. Étoffe les descriptions, ajoute des scènes intermédiaires, des dialogues secondaires, des moments de tension, des respirations narratives. NE génère JAMAIS moins de ${totalTargetLines} lignes — c'est une contrainte STRICTE qui prime sur toute autre directive de longueur.`;
+  })();
 
   // Identification du héros actuel
   const currentHero = inventory?.heroId ? characterNames.find(n => inventory.heroId === n) || inventory.heroId : "Non défini";
