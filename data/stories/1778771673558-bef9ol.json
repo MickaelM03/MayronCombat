@@ -1,0 +1,44 @@
+{
+  "title": "L'Aventure de Mayron dans sa Cabane",
+  "characterIds": [
+    "mayron",
+    "papa",
+    "clara",
+    "maman"
+  ],
+  "arenaId": "living_room",
+  "arenaName": "Le Salon de la Maison",
+  "arenaImg": "https://images.unsplash.com/photo-1567016432779-094069958ea5?w=1200",
+  "theme": "Une aventure de mayron dans sa cabane avec son ami le putois qui empeste et sa petite sœur qui s'appelle Clara ",
+  "isInteractive": false,
+  "isFinished": false,
+  "script": [
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Dans le salon de la maison, un jeune garçon nommé Mayron préparait son aventure quotidienne.",
+      "action": "Mayron range ses affaires dans son sac à dos"
+    },
+    {
+      "speaker": "Mayron",
+      "text": "Mayron: Papa, Maman, je vais jouer dans ma cabane avec mon ami le putois !",
+      "action": "Mayron montre son sac à dos à ses parents"
+    },
+    {
+      "speaker": "Papa",
+      "text": "Papa: D'accord mon fils, mais n'oublie pas de te laver les mains après avoir joué avec le putois, il empeste !",
+      "action": "Papa sourit et hoche la tête"
+    },
+    {
+      "speaker": "Maman",
+      "text": "Maman: Et n'oublie pas de prendre soin de ta petite sœur Clara, elle voudra probablement te rejoindre dans ta cabane.",
+      "action": "Maman embrasse Mayron sur la joue"
+    },
+    {
+      "speaker": "Clara",
+      "text": "Clara: Oui ! Je veux aller jouer avec Mayron et le putois !",
+      "action": "Clara saute de joie et se dirige vers la cabane"
+    }
+  ],
+  "id": "1778771673558-bef9ol",
+  "createdAt": 1778771673558
+}

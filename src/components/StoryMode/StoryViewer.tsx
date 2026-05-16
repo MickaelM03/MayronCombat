@@ -73,6 +73,7 @@ export default function StoryViewer({ story, onChoice, onBack, playVoice, isGene
 
   const isLastLine = currentLineIndex === lines.length - 1;
   const showChoices = isLastLine && story.isInteractive && currentLine?.choices && currentLine.choices.length > 0 && !isGenerating;
+  const disableChoices = isSpeaking || isGenerating;
   
   const shouldHideNavButton = isSpeaking || isGenerating || (isAutoPlaying && !isLastLine);
 
@@ -253,9 +254,9 @@ export default function StoryViewer({ story, onChoice, onBack, playVoice, isGene
             animate={{ opacity: 1, y: 0 }}
             className="w-full max-w-2xl flex flex-col gap-3 pointer-events-auto z-[60] mb-4"
           >
-            <div className="bg-black/80 backdrop-blur-xl border-2 border-amber-500/30 rounded-2xl p-4 shadow-[0_0_40px_rgba(0,0,0,0.6)] flex flex-col max-h-[35vh]">
+            <div className={`bg-black/80 backdrop-blur-xl border-2 border-amber-500/30 rounded-2xl p-4 shadow-[0_0_40px_rgba(0,0,0,0.6)] flex flex-col max-h-[35vh] transition-opacity ${disableChoices ? 'opacity-50' : 'opacity-100'}`}>
               <h4 className="text-sm md:text-base font-black text-amber-400 uppercase tracking-[0.2em] text-center italic mb-4 flex-shrink-0">
-                Que décidez-vous ?
+                {isSpeaking ? "Écoutez la fin de l'histoire..." : "Que décidez-vous ?"}
               </h4>
               
               <div className="flex flex-col gap-2 overflow-y-auto custom-scroll pr-1">
@@ -267,13 +268,14 @@ export default function StoryViewer({ story, onChoice, onBack, playVoice, isGene
                     return (
                       <button
                         key={i}
+                        disabled={disableChoices}
                         onClick={async () => {
                           const nextIdx = story.script.length;
+                          await onChoice(choice.text, choice.action, choice.inventoryUpdate);
                           setCurrentLineIndex(nextIdx);
                           setIsAutoPlaying(true);
-                          await onChoice(choice.text, choice.action, choice.inventoryUpdate);
                         }}
-                        className="flex items-center gap-3 bg-amber-900/30 hover:bg-amber-800/50 border border-amber-500/20 hover:border-amber-400 rounded-xl p-2.5 transition-all group flex-shrink-0"
+                        className="flex items-center gap-3 bg-amber-900/30 hover:bg-amber-800/50 border border-amber-500/20 hover:border-amber-400 rounded-xl p-2.5 transition-all group flex-shrink-0 disabled:cursor-not-allowed"
                       >
                         {hero && <img src={hero.img} className="w-10 h-10 rounded-full border border-amber-500/40" alt={hero.name} />}
                         <span className="text-sm font-bold text-amber-100">{choice.text}</span>
@@ -285,13 +287,14 @@ export default function StoryViewer({ story, onChoice, onBack, playVoice, isGene
                   return (
                     <button
                       key={i}
+                      disabled={disableChoices}
                       onClick={async () => {
                         const nextIdx = story.script.length;
+                        await onChoice(choice.text, choice.action, choice.inventoryUpdate);
                         setCurrentLineIndex(nextIdx);
                         setIsAutoPlaying(true);
-                        await onChoice(choice.text, choice.action, choice.inventoryUpdate);
                       }}
-                      className="w-full bg-[#1a140f]/90 hover:bg-amber-900/50 border border-amber-500/20 hover:border-amber-400 rounded-xl p-3.5 text-amber-100 text-xs md:text-sm font-bold transition-all flex items-center justify-between group backdrop-blur-md flex-shrink-0"
+                      className="w-full bg-[#1a140f]/90 hover:bg-amber-900/50 border border-amber-500/20 hover:border-amber-400 rounded-xl p-3.5 text-amber-100 text-xs md:text-sm font-bold transition-all flex items-center justify-between group backdrop-blur-md flex-shrink-0 disabled:cursor-not-allowed"
                     >
                       <span className="text-left leading-snug">{choice.text}</span>
                       <ChevronRight size={16} className="flex-shrink-0 text-amber-500 group-hover:translate-x-1 transition-transform ml-3" />

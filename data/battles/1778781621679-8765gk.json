@@ -1,0 +1,133 @@
+{
+  "p1Id": "adele",
+  "p1Name": "Mortelle Adèle",
+  "p1Img": "/images/adele_generic_sf_1778417097290.png",
+  "p1Voice": "Erinome",
+  "p1VoiceStyle": "enfant_diabolique",
+  "p2Id": "mayron",
+  "p2Name": "Mayron",
+  "p2Img": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=600&fit=crop",
+  "p2Voice": "Puck",
+  "p2VoiceStyle": "ado_garcon",
+  "arenaId": "jungle_ruines",
+  "arenaName": "Ruines de la Jungle",
+  "arenaImg": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=1200",
+  "duration": 5,
+  "narrativeMode": 3,
+  "script": {
+    "intro": {
+      "text": "Nom: Les combattants se préparent à affronter les Ruines de la Jungle ! La venue est immense ! Bienvenue au tournoi ultime !",
+      "speaker": "Arbitre"
+    },
+    "rounds": [
+      {
+        "title": "ROUND 1",
+        "dialogues": [
+          {
+            "speaker": "Mortelle Adèle",
+            "text": "Mortelle Adèle: Tu vas essayer de gagner contre moi ?!!!",
+            "action": "Provocation"
+          },
+          {
+            "speaker": "Mayron",
+            "text": "Mayron: Non, je vais te vaincre.",
+            "action": "Réplique"
+          },
+          {
+            "speaker": "Mayron",
+            "text": "Mayron: Je vais montrer mes compétences en Krav Maga !",
+            "action": "Échauffement"
+          }
+        ]
+      },
+      {
+        "title": "ROUND 2",
+        "dialogues": [
+          {
+            "speaker": "Mortelle Adèle",
+            "text": "Mortelle Adèle: Un jab ! Ça va être un combat intense !",
+            "action": "Contrat-attaque"
+          },
+          {
+            "speaker": "Mayron",
+            "text": "Mayron: Non ! Je vais esquiver !",
+            "action": "Esquive"
+          },
+          {
+            "speaker": "Mayron",
+            "text": "Mayron: Et maintenant, c'est mon tour ! Un uppercut !",
+            "action": "Réplique"
+          }
+        ]
+      },
+      {
+        "title": "ROUND 3",
+        "dialogues": [
+          {
+            "speaker": "Mortelle Adèle",
+            "text": "Mortelle Adèle: Un poing énorme ! Tu es fort, mais je suis plus intelligente !",
+            "action": "Contrat-attaque"
+          },
+          {
+            "speaker": "Mayron",
+            "text": "Mayron: Mais je suis prêt ! Un contre-attaque !",
+            "action": "Contre-attaque"
+          },
+          {
+            "speaker": "Mayron",
+            "text": "Mayron: Et maintenant, je vais te montrer mon vrai visage !",
+            "action": "Échauffement"
+          }
+        ]
+      },
+      {
+        "title": "ROUND 4",
+        "dialogues": [
+          {
+            "speaker": "Mortelle Adèle",
+            "text": "Mortelle Adèle: Un coup de pied bas ! Tu es tombé !",
+            "action": "Réplique"
+          },
+          {
+            "speaker": "Mayron",
+            "text": "Mayron: Non ! Je vais te frapper avec mes pieds !",
+            "action": "Contrat-attaque"
+          },
+          {
+            "speaker": "Mortelle Adèle",
+            "text": "Mortelle Adèle: Mais non, je suis plus rapide !",
+            "action": "Esquive"
+          }
+        ]
+      },
+      {
+        "title": "ROUND 5 (FINALE)",
+        "dialogues": [
+          {
+            "speaker": "Mortelle Adèle",
+            "text": "Mortelle Adèle: FATALITY ! Le Krav Maga de Mayron n'est qu'un jeu d'enfant contre mon style !",
+            "action": "FinishingMove"
+          },
+          {
+            "speaker": "Arbitre",
+            "text": "Mortelle Adèle: Le combat est terminé ! La victoire est absoluement au profit de Mortelle Adèle !",
+            "action": "Arbitre"
+          }
+        ]
+      }
+    ],
+    "winner": "Mortelle Adèle",
+    "finishingMove": {
+      "type": "FATALITY",
+      "description": "Mortelle Adèle détruit son adversaire ! K.O.! ",
+      "speaker": "Arbitre"
+    },
+    "conclusion": {
+      "text": "La victoire est absolue pour Mortelle Adèle ! Mwahaha !",
+      "speaker": "Arbitre"
+    }
+  },
+  "winner": "Mortelle Adèle",
+  "id": "1778781621679-8765gk",
+  "createdAt": 1778781621679
+}

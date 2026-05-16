@@ -9,7 +9,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = parseInt(process.env.API_PORT || '3061', 10);
+const PORT = parseInt(process.env.PORT || process.env.API_PORT || '3061', 10);
 
 // Data directory for persistent storage
 const DATA_DIR = path.join(__dirname, 'data', 'battles');
@@ -586,6 +586,14 @@ app.get('/api/voice-sample/:charId', (req, res) => {
   res.set('Cache-Control', 'public, max-age=86400');
   fs.createReadStream(wavPath).pipe(res);
 });
+
+// ─── Serve built frontend (production) ──────────────────────
+
+const distPath = path.join(__dirname, 'dist');
+if (fs.existsSync(distPath)) {
+  app.use(express.static(distPath));
+  app.get('*', (_req, res) => res.sendFile(path.join(distPath, 'index.html')));
+}
 
 // ─── Start ──────────────────────────────────────────────────
 

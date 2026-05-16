@@ -1,0 +1,144 @@
+{
+  "title": "L'Aventurière et le Larbin : Une Expédition au Zoo",
+  "characterIds": [
+    "mayron",
+    "clara"
+  ],
+  "arenaId": "living_room",
+  "arenaName": "Le Salon de la Maison",
+  "arenaImg": "https://images.unsplash.com/photo-1567016432779-094069958ea5?w=1200",
+  "theme": "L'aventure de Clara la princesse et son larbin de frere Mayron dans une histoire de visite au zoo ou mayron ces trouve une cherie putoi\n ",
+  "isInteractive": true,
+  "isFinished": false,
+  "script": [
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Dans une journée ensoleillée, Clara, la princesse, et son frère Mayron, se trouvaient dans le salon de la maison, impatient de commencer leur aventure.",
+      "action": "Ils se préparent pour partir."
+    },
+    {
+      "speaker": "Clara",
+      "text": "Clara: Mayron, es-tu prêt à affronter les dangers du zoo ?",
+      "action": "Clara ajuste son chapeau."
+    },
+    {
+      "speaker": "Mayron",
+      "text": "Mayron: Oui, Clara. Je suis prêt, même si je doute que nous trouverons des dangers au zoo.",
+      "action": "Mayron prend son sac à dos.",
+      "choices": [
+        {
+          "text": "Mayron: Je vais chercher des sandwichs pour le pique-nique.",
+          "action": "Aller à la cuisine",
+          "inventoryUpdate": {
+            "type": "ITEM",
+            "name": "Sandwichs"
+          }
+        },
+        {
+          "text": "Clara: Partons immédiatement, nous ne voulons pas rater les premières attractions.",
+          "action": "Partir pour le zoo"
+        },
+        {
+          "text": "Mayron: Mais Clara, j'ai oublié mon appareil photo. Je vais le chercher.",
+          "action": "Aller chercher l'appareil photo",
+          "inventoryUpdate": {
+            "type": "ITEM",
+            "name": "Appareil photo"
+          }
+        }
+      ]
+    },
+    {
+      "speaker": "Mayron",
+      "text": "Mayron: Je reviens avec les sandwichs, Clara !",
+      "action": "Mayron entre dans la cuisine"
+    },
+    {
+      "speaker": "Clara",
+      "text": "Clara: N'oublie pas les boissons, Mayron !",
+      "action": "Clara regarde par la fenêtre"
+    },
+    {
+      "speaker": "Mayron",
+      "text": "Mayron: Je les ai déjà mises dans le panier, Clara !",
+      "action": "Mayron revient avec le panier"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Le panier est rempli de sandwichs, de fruits et de jus de fruits.",
+      "action": "Le couple se prépare à partir"
+    },
+    {
+      "speaker": "Clara",
+      "text": "Clara: Maintenant que nous avons notre pique-nique, allons-y !",
+      "action": "Clara se lève et prend son sac"
+    },
+    {
+      "speaker": "Mayron",
+      "text": "Mayron: D'accord, Clara. Je suis prêt à affronter les dangers du zoo... ou du moins, les enfants bruyants !",
+      "action": "Mayron sourit et prend le panier"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Les deux frères et sœurs sortent de la maison et se dirigent vers le zoo.",
+      "action": "Ils marchent dans la rue ensoleillée",
+      "choices": [
+        {
+          "text": "Mayron: Allons prendre le bus pour aller plus vite au zoo.",
+          "action": "Direction : Arrêt de bus",
+          "inventoryUpdate": {}
+        },
+        {
+          "text": "Clara: Marchons jusqu'au zoo, c'est une belle journée pour se promener.",
+          "action": "Direction : Rue piétonne",
+          "inventoryUpdate": {}
+        },
+        {
+          "text": "Mayron: Attends, j'ai une idée ! Allons passer par le parc pour y faire un petit détour.",
+          "action": "Direction : Parc",
+          "inventoryUpdate": {}
+        }
+      ]
+    },
+    {
+      "speaker": "Clara",
+      "text": "Clara: Marchons jusqu'au zoo, c'est une belle journée pour se promener.",
+      "action": "Les deux frères et sœurs continuent leur marche en direction du zoo."
+    },
+    {
+      "speaker": "Mayron",
+      "text": "Mayron: Oui, c'est vrai. Les gens paraissent heureux aujourd'hui.",
+      "action": "Les gens de la rue leur font des signes de la main et les enfants leur sourient."
+    },
+    {
+      "speaker": "Clara",
+      "text": "Clara: Ils sont toujours heureux dans un parc public, n'est-ce pas ?",
+      "action": "Les deux frères et sœurs rient et continuent leur marche.",
+      "choices": [
+        {
+          "text": "Mayron: Allons plutôt par le long du fleuve. Je connais un joli sentier.",
+          "action": "Direction : Le Sentier du Fleuve",
+          "inventoryUpdate": {}
+        },
+        {
+          "text": "Clara: Non, laisse-ton aller par la route principale. Peut-être verrons-nous les magasins du centre-ville.",
+          "action": "Direction : La Rue Principale",
+          "inventoryUpdate": {}
+        },
+        {
+          "text": "Narrateur: Nous voilà à proximité du zoo... Mais regardez ! Un enfant a perdu son chien.",
+          "action": "Direction : Le Chien Perdu",
+          "inventoryUpdate": {}
+        }
+      ]
+    }
+  ],
+  "id": "1778781443103-pdf184",
+  "createdAt": 1778781443103,
+  "inventory": {
+    "items": [
+      "Sandwichs"
+    ],
+    "allies": []
+  }
+}

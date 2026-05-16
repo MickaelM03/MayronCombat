@@ -1,0 +1,158 @@
+{
+  "p1Id": "adele",
+  "p1Name": "Mortelle Adèle",
+  "p1Img": "/images/adele_generic_sf_1778417097290.png",
+  "p1Voice": "Erinome",
+  "p1VoiceStyle": "enfant_diabolique",
+  "p2Id": "mayron",
+  "p2Name": "Mayron",
+  "p2Img": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&h=600&fit=crop",
+  "p2Voice": "Puck",
+  "p2VoiceStyle": "ado_garcon",
+  "arenaId": "jungle_ruines",
+  "arenaName": "Ruines de la Jungle",
+  "arenaImg": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=1200",
+  "duration": 5,
+  "narrativeMode": 4,
+  "script": {
+    "intro": {
+      "text": "Bienvenue dans l'arène de Ruines de la Jungle ! Que le combat commence ! Ding ding !",
+      "speaker": "Arbitre"
+    },
+    "rounds": [
+      {
+        "title": "ROUND 1",
+        "dialogues": [
+          {
+            "speaker": "Mortelle Adèle",
+            "text": "Mortelle Adèle: Enfin ! Mon adversaire ! Qu'est-ce que tu vas faire, abruti ? Zut !",
+            "action": "Provocation"
+          },
+          {
+            "speaker": "Mayron",
+            "text": "Mayron: Je vais te montrer mon Krav Maga de Comptoir ! Ksss...",
+            "action": "Réplique"
+          },
+          {
+            "speaker": "Mortelle Adèle",
+            "text": "Mortelle Adèle: Ahah, tu crois te faire peur avec ton petit brontosaurus ? Non, non, non !",
+            "action": "Contre-attaque"
+          },
+          {
+            "speaker": "Mayron",
+            "text": "Mayron: Je te montrerai qui est le brontosaurus ! Bam !",
+            "action": "Réplique"
+          }
+        ]
+      },
+      {
+        "title": "ROUND 2",
+        "dialogues": [
+          {
+            "speaker": "Mayron",
+            "text": "Mayron: Tu as eu ta chance, nul, va la chercher ! Grrr...",
+            "action": "Provocation"
+          },
+          {
+            "speaker": "Mortelle Adèle",
+            "text": "Mortelle Adèle: Tu me prends pour une crétine, peut-être ? Non, mais pas n'importe comment !",
+            "action": "Contre-attaque"
+          },
+          {
+            "speaker": "Mayron",
+            "text": "Mayron: Toi, la petite salope de la jungle, allons-y ! Hii-yah !",
+            "action": "Riposte"
+          },
+          {
+            "speaker": "Mortelle Adèle",
+            "text": "Mortelle Adèle: Tu me prends pour une salope, crétin ? Je vais te montrer qui est vraiment salope !",
+            "action": "Attaque"
+          }
+        ]
+      },
+      {
+        "title": "ROUND 3",
+        "dialogues": [
+          {
+            "speaker": "Mortelle Adèle",
+            "text": "Mortelle Adèle: Ahah, tu te fous de moi ? Va chercher !",
+            "action": "Provocation"
+          },
+          {
+            "speaker": "Mayron",
+            "text": "Mayron: Je vais te montrer mon vrai jeu, la pute de la jungle ! Grrr...",
+            "action": "Réplique"
+          },
+          {
+            "speaker": "Mortelle Adèle",
+            "text": "Mortelle Adèle: Ahahaha, tu crois me faire trembler avec tes grosses menaces, abruti ?",
+            "action": "Contre-attaque"
+          },
+          {
+            "speaker": "Mayron",
+            "text": "Mayron: Vas-y, petite salope, prends-la, prends-la !",
+            "action": "Attaque"
+          }
+        ]
+      },
+      {
+        "title": "ROUND 4",
+        "dialogues": [
+          {
+            "speaker": "Mayron",
+            "text": "Mayron: Je suis en train de prendre les choses en main, la petite andouille de la jungle !",
+            "action": "Provocation"
+          },
+          {
+            "speaker": "Mortelle Adèle",
+            "text": "Mortelle Adèle: Ahah, tu crois avoir le dessus, crétin ? Tu vas voir !",
+            "action": "Contre-attaque"
+          },
+          {
+            "speaker": "Mayron",
+            "text": "Mayron: Je vais te montrer qui est vraiment fort, petite salope !",
+            "action": "Réplique"
+          },
+          {
+            "speaker": "Mortelle Adèle",
+            "text": "Mortelle Adèle: Ahah, tu as raison, je vais te montrer que je suis la reine de la jungle !",
+            "action": "Attaque"
+          }
+        ]
+      },
+      {
+        "title": "ROUND 5",
+        "dialogues": [
+          {
+            "speaker": "Mortelle Adèle",
+            "text": "Mortelle Adèle: Ahahah, c'est le moment de montrer mon FATALITY ! K.O. !",
+            "action": "FATALITY"
+          },
+          {
+            "speaker": "Mayron",
+            "text": "Mayron: Non... non... c'est impossible...",
+            "action": "Réplique"
+          },
+          {
+            "speaker": "Mortelle Adèle",
+            "text": "Mortelle Adèle: FATALITY ! C'EST FINI, CRÉTIN !",
+            "action": "FATALITY"
+          }
+        ]
+      }
+    ],
+    "winner": "Mortelle Adèle",
+    "finishingMove": {
+      "type": "FATALITY",
+      "description": "FATALITY ! Mortelle Adèle détruit son adversaire ! K.O. !",
+      "speaker": "Arbitre"
+    },
+    "conclusion": {
+      "text": "La victoire est absolue pour Mortelle Adèle ! Mwahaha !",
+      "speaker": "Arbitre"
+    }
+  },
+  "winner": "Mortelle Adèle",
+  "id": "1778781739764-lwlt4z",
+  "createdAt": 1778781739764
+}

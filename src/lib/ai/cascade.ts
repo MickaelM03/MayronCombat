@@ -1,8 +1,11 @@
 import { GoogleGenAI, Type } from '@google/genai';
 
+// Sticky failure tracking to avoid retrying broken providers/keys for a while
+const deadKeys = new Map<string, number>();
+const DEAD_DURATION = 5 * 60 * 1000; // 5 minutes
+
 export interface AICascadeConfig {
   geminiKeys: string[];
-  // Potential future providers
   openaiKey?: string;
   groqKey?: string;
   deepInfraKey?: string;
@@ -16,10 +19,6 @@ export interface GenerationResult {
   model: string;
 }
 
-/**
- * Handles AI generation with fallback logic.
- * Tries Gemini keys in order, then falls back to other providers if configured.
- */
 export async function generateWithFallback(
   prompt: string,
   config: AICascadeConfig,
@@ -28,11 +27,18 @@ export async function generateWithFallback(
 ): Promise<GenerationResult> {
   const { geminiKeys, openaiKey, groqKey, deepInfraKey, deepseekKey } = config;
   const errors: Error[] = [];
+  const now = Date.now();
 
   // 1. Try Gemini Keys
   for (let i = 0; i < geminiKeys.length; i++) {
     const key = geminiKeys[i].trim();
     if (!key) continue;
+
+    // Skip if marked as dead
+    if (deadKeys.has(key) && now < (deadKeys.get(key) || 0)) {
+      console.info(`[ai] Saut de Gemini #${i + 1} (marqué comme défaillant récemment)`);
+      continue;
+    }
 
     try {
       console.info(`[ai] Tentative avec Gemini (clé ${i + 1}/${geminiKeys.length})...`);
@@ -46,69 +52,94 @@ export async function generateWithFallback(
       }
 
       const result = await ai.models.generateContent({
-        model: "gemini-1.5-flash",
+        model: "gemini-2.0-flash-exp",
         contents: [{ role: 'user', parts: [{ text: prompt }] }],
         config: generationConfig,
       });
 
       const text = result.text;
       if (text) {
+        // Success! Clear dead status if any
+        deadKeys.delete(key);
         return {
           text,
           provider: `Gemini #${i + 1}`,
-          model: 'gemini-1.5-flash-latest'
+          model: 'gemini-2.0-flash-exp'
         };
       }
     } catch (err: any) {
       const msg = String(err?.message || err);
       console.warn(`[ai] Gemini #${i + 1} échoué:`, msg);
       
-      // If it's not a quota error, maybe we should stop? 
-      // But usually, we want to try the next key anyway.
-      errors.push(err);
-      
-      // If it's a "Safety" error, it won't work with other keys either probably, 
-      // but let's keep it simple and try all keys.
-    }
-  }
-
-  // 2. Try Groq (Great free tier fallback if user has a key)
-  if (groqKey) {
-    try {
-      console.info(`[ai] Tentative avec Groq...`);
-      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${groqKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          model: 'llama-3.3-70b-versatile',
-          messages: [{ role: 'user', content: prompt }],
-          response_format: mimeType === 'application/json' ? { type: 'json_object' } : undefined,
-        }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        const text = data.choices[0]?.message?.content;
-        if (text) {
-          return {
-            text,
-            provider: 'Groq',
-            model: 'llama-3.3-70b-versatile'
-          };
-        }
-      } else {
-        const errData = await response.json().catch(() => ({}));
-        console.warn(`[ai] Groq échoué:`, errData);
+      // Mark as dead if it's a quota or config error (404, 429, 403)
+      if (/404|429|403|quota|not found|RESOURCE_EXHAUSTED/i.test(msg)) {
+        deadKeys.set(key, now + DEAD_DURATION);
       }
-    } catch (err) {
-      console.warn(`[ai] Erreur Groq:`, err);
+      
+      errors.push(new Error(`Gemini #${i + 1}: ${msg}`));
     }
   }
 
-  // 3. Try OpenAI (If user has a key)
+  // 2. Try Groq
+  if (groqKey) {
+    if (!deadKeys.has('groq') || now > (deadKeys.get('groq') || 0)) {
+      const groqModels = ['llama-3.3-70b-versatile', 'llama-3.1-8b-instant', 'mixtral-8x7b-32768'];
+      
+      for (const model of groqModels) {
+        try {
+          console.info(`[ai] Tentative avec Groq (${model})...`);
+          const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${groqKey}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              model,
+              messages: [{ role: 'user', content: prompt }],
+              response_format: mimeType === 'application/json' ? { type: 'json_object' } : undefined,
+            }),
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            const text = data.choices[0]?.message?.content;
+            if (text) {
+              deadKeys.delete('groq');
+              return {
+                text,
+                provider: 'Groq',
+                model
+              };
+            }
+          } else {
+            const errData = await response.json().catch(() => ({}));
+            const msg = errData.error?.message || response.statusText || 'Erreur inconnue';
+            console.warn(`[ai] Groq (${model}) échoué:`, msg);
+            
+            if (response.status === 429 && model !== groqModels[groqModels.length - 1]) {
+              console.info(`[ai] Groq rate limit pour ${model}, essai du modèle suivant...`);
+              continue;
+            }
+
+            if (response.status === 429 || response.status === 402) {
+              deadKeys.set('groq', now + DEAD_DURATION);
+            }
+            errors.push(new Error(`Groq: ${msg}`));
+            break; // Stop trying Groq models if it's not a simple rate limit or if we're out of models
+          }
+        } catch (err: any) {
+          console.warn(`[ai] Erreur Groq (${model}):`, err);
+          errors.push(new Error(`Groq (Network): ${err.message}`));
+          break;
+        }
+      }
+    } else {
+      console.info(`[ai] Saut de Groq (marqué comme défaillant récemment)`);
+    }
+  }
+
+  // 3. Try OpenAI
   if (openaiKey) {
     try {
       console.info(`[ai] Tentative avec OpenAI...`);
@@ -135,46 +166,64 @@ export async function generateWithFallback(
             model: 'gpt-4o-mini'
           };
         }
+      } else {
+        const errData = await response.json().catch(() => ({}));
+        const msg = errData.error?.message || response.statusText || 'Erreur inconnue';
+        console.warn(`[ai] OpenAI échoué:`, msg);
+        errors.push(new Error(`OpenAI: ${msg}`));
       }
-    } catch (err) {
+    } catch (err: any) {
       console.warn(`[ai] Erreur OpenAI:`, err);
+      errors.push(new Error(`OpenAI (Network): ${err.message}`));
     }
   }
 
-  // 4. Try DeepInfra (High performance open-weights)
+  // 4. Try DeepInfra
   if (deepInfraKey) {
-    try {
-      console.info(`[ai] Tentative avec DeepInfra...`);
-      const response = await fetch('https://api.deepinfra.com/v1/openai/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${deepInfraKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          model: 'meta-llama/Llama-3.3-70B-Instruct',
-          messages: [{ role: 'user', content: prompt }],
-          response_format: mimeType === 'application/json' ? { type: 'json_object' } : undefined,
-        }),
-      });
+    if (!deadKeys.has('deepinfra') || now > (deadKeys.get('deepinfra') || 0)) {
+      try {
+        console.info(`[ai] Tentative avec DeepInfra...`);
+        const response = await fetch('https://api.deepinfra.com/v1/openai/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${deepInfraKey}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            model: 'meta-llama/Llama-3.3-70B-Instruct',
+            messages: [{ role: 'user', content: prompt }],
+            response_format: mimeType === 'application/json' ? { type: 'json_object' } : undefined,
+          }),
+        });
 
-      if (response.ok) {
-        const data = await response.json();
-        const text = data.choices[0]?.message?.content;
-        if (text) {
-          return {
-            text,
-            provider: 'DeepInfra',
-            model: 'Llama-3.3-70B-Instruct'
-          };
+        if (response.ok) {
+          const data = await response.json();
+          const text = data.choices[0]?.message?.content;
+          if (text) {
+            deadKeys.delete('deepinfra');
+            return {
+              text,
+              provider: 'DeepInfra',
+              model: 'Llama-3.3-70B-Instruct'
+            };
+          }
+        } else {
+          const errData = await response.json().catch(() => ({}));
+          const msg = errData.error?.message || response.statusText || 'Erreur inconnue';
+          console.warn(`[ai] DeepInfra échoué:`, msg);
+          if (response.status === 402 || response.status === 429) {
+            deadKeys.set('deepinfra', now + DEAD_DURATION);
+          }
+          errors.push(new Error(`DeepInfra: ${msg}`));
         }
+      } catch (err: any) {
+        console.warn(`[ai] Erreur DeepInfra:`, err);
+        errors.push(new Error(`DeepInfra (Network): ${err.message}`));
       }
-    } catch (err) {
-      console.warn(`[ai] Erreur DeepInfra:`, err);
     }
   }
 
-  // 5. Try DeepSeek (High performance / Low cost)
+  // 5. Try DeepSeek
   if (deepseekKey) {
     try {
       console.info(`[ai] Tentative avec DeepSeek...`);
@@ -201,14 +250,21 @@ export async function generateWithFallback(
             model: 'deepseek-chat'
           };
         }
+      } else {
+        const errData = await response.json().catch(() => ({}));
+        const msg = errData.error?.message || response.statusText || 'Erreur inconnue';
+        console.warn(`[ai] DeepSeek échoué:`, msg);
+        errors.push(new Error(`DeepSeek: ${msg}`));
       }
-    } catch (err) {
+    } catch (err: any) {
       console.warn(`[ai] Erreur DeepSeek:`, err);
+      errors.push(new Error(`DeepSeek (Network): ${err.message}`));
     }
   }
 
   if (errors.length > 0) {
-    throw errors[0];
+    const summary = errors.map(e => e.message).join('\n');
+    throw new Error(`Échec de la cascade AI :\n${summary}`);
   }
-  throw new Error("Tous les providers AI ont échoué ou aucune clé valide n'est configurée.");
+  throw new Error("Aucun provider AI n'est configuré ou opérationnel.");
 }

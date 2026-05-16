@@ -686,7 +686,7 @@ export default function App() {
       
       try {
         const response = await ai.models.generateContent({
-          model: "gemini-1.5-flash",
+          model: "gemini-2.0-flash-exp",
           contents: [{ parts: [{ text: prompted }] }],
           config: {
             responseModalities: ["AUDIO"],
@@ -1651,7 +1651,7 @@ FORMAT JSON REQUIS :
       }
 
       const charNames = config.characters.map((c: any) => c.name);
-      const prompt = getStoryDirectives(narrativeMode, charNames, config.arena.name, config.theme, config.isInteractive);
+      const prompt = getStoryDirectives(narrativeMode, charNames, config.arena.name, config.theme, config.isInteractive, undefined, undefined, 0);
       
       const result = await generateWithFallback(prompt, aiConfig);
       const text = result.text || "";
@@ -1729,7 +1729,8 @@ FORMAT JSON REQUIS :
         currentStory.theme, 
         true, 
         `${previousContext}\n\n${choiceContext}`,
-        updatedInventory
+        updatedInventory,
+        currentStory.script.length
       );
 
       const result = await generateWithFallback(prompt, aiConfig);

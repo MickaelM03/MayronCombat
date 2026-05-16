@@ -1,0 +1,353 @@
+{
+  "title": "Ma Première Aventure : En quête du Dragon",
+  "characterIds": [
+    "lina",
+    "sachat",
+    "timon"
+  ],
+  "arenaId": "foret_dragon",
+  "arenaName": "La Forêt du Dragon",
+  "arenaImg": "/images/foret_dragon_arena_1778750742162.png",
+  "theme": "Ma Première Aventure : En quête du Dragon",
+  "isInteractive": true,
+  "isFinished": false,
+  "script": [
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Bienvenue dans cette nouvelle aventure : \"Ma Première Aventure : En quête du Dragon\". Avant de partir, tu dois choisir ton héros. Qui vas-tu incarner ?",
+      "action": "Choix du Héros",
+      "choices": [
+        {
+          "text": "Incarner Lina la bagarreuse",
+          "action": "Le joueur choisit d'incarner Lina la bagarreuse. Ce personnage sera le héros principal et commence avec son équipement de base."
+        },
+        {
+          "text": "Incarner Sachat le chapardeur",
+          "action": "Le joueur choisit d'incarner Sachat le chapardeur. Ce personnage sera le héros principal et commence avec son équipement de base."
+        },
+        {
+          "text": "Incarner Timon le magicien",
+          "action": "Le joueur choisit d'incarner Timon le magicien. Ce personnage sera le héros principal et commence avec son équipement de base."
+        }
+      ]
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Le Narrateur: Bienvenue dans la Forêt du Dragon, Sachat le chapardeur. Tu es prêt à commencer ta première aventure ?"
+    },
+    {
+      "speaker": "Sachat",
+      "text": "Sachat: Ahah, j'ai hâte de voir ce qui me attend dans cette forêt magique ! Qu'en est-il pour l'équipement, le narrateur ?"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Le Narrateur: Très bien. Comme tu as choisi de incarner le chapardeur, tu dois décider de l'équipement que tu asimeras. Choisis parmi ces trois objets : une bouteille d'eau magique, une carte de la forêt ou un sac à dos confortable.",
+      "choices": [
+        {
+          "text": "La bouteille d'eau magique pour me garder hydraté",
+          "action": "Choix d'équipement"
+        },
+        {
+          "text": "La carte de la forêt pour trouver rapidement des chemins secrets",
+          "action": "Choix d'équipement"
+        },
+        {
+          "text": "Un sac à dos confortable pour les longues marches",
+          "action": "Choix d'équipement"
+        }
+      ]
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: En route dans la Forêt du Dragon avec votre carte de la forêt magique ! Vous êtes prêt à explorer l'incroyable monde des arbres géants et des lacs profonds.",
+      "action": "Continuer l'exploration",
+      "choices": [
+        {
+          "text": "Investir la zone proche du ruisseau qui se trouve juste à côté de vous",
+          "action": "Explorer la zone proche",
+          "inventoryUpdate": {
+            "type": "ITEM",
+            "name": "Bouteille d'eau magique"
+          }
+        },
+        {
+          "text": "Monter sur cette colline pour avoir une vue d'ensemble de la forêt",
+          "action": "Montée de la colline",
+          "inventoryUpdate": {
+            "type": "ITEM",
+            "name": "Carte détaillée de la Forêt du Dragon"
+          }
+        },
+        {
+          "text": "Retourner à la forêt pour trouver des herbes et des plantes rares",
+          "action": "Retour dans la forêt",
+          "inventoryUpdate": {
+            "type": "ITEM",
+            "name": "Sac à dos confortable"
+          }
+        }
+      ]
+    },
+    {
+      "speaker": "Sachat",
+      "text": "Sachat: Voilà que nous revoyons nos terres préférées ! Je sens que la magie de la forêt me berce déjà.",
+      "action": "Sachat se laisse aller à la beauté de la forêt"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: En effet, la Forêt du Dragon abrite de nombreux secrets et merveilles, que vous êtes bientôt sur le point de découvrir.",
+      "action": "Le narrateur vous accompagne à travers les arbres géants",
+      "choices": [
+        {
+          "text": "Explorer le lac profond pour y chercher de la pêche",
+          "action": "Sachat décide de pêcher sur le lac profond",
+          "inventoryUpdate": {
+            "type": "ITEM",
+            "name": "Poissons frais"
+          }
+        },
+        {
+          "text": "Suitre le sentier de la forêt en quête de rares herbes et plantes",
+          "action": "Sachat décide de chercher des plantes rares",
+          "inventoryUpdate": {
+            "type": "ITEM",
+            "name": "Herbes médicinales"
+          }
+        }
+      ]
+    },
+    {
+      "speaker": "Sachat",
+      "text": "Sachat: Je sens que la magie de la forêt me berce déjà. Mais j'ai également très faim ! Où se trouve la meilleure pêche dans ce lac profond ?",
+      "action": "s'approcher du bord du lac"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: La pêche est abondante dans ce lac, mais il faudra être patient et habile pour attraper les poissons les plus gros. En effet, les poissons du lac profond sont très farceux et ne se laissent pas prendre facilement.",
+      "action": "expliquer les difficultés de la pêche"
+    },
+    {
+      "speaker": "Sachat",
+      "text": "Sachat: Ahah, je suis prêt à l'essayer ! Je vais prendre mon Sac à dos confortable et me préparer pour une longue bataille contre les poissons.",
+      "action": "s'accroupir au bord du lac"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: En tant que chapardeur, tu as acquis une certaine patience et une bonne habileté pour manipuler les objets. Mais la pêche est un art qui nécessite encore plus de qualités.",
+      "action": "expliquer les qualités nécessaires pour la pêche",
+      "choices": [
+        {
+          "text": "Réfléchir à ma stratégie pour attraper les poissons",
+          "action": "pensée",
+          "inventoryUpdate": {}
+        },
+        {
+          "text": "Utiliser mon Sac à dos confortable pour se préparer pour des heures d'observation",
+          "action": "organisation",
+          "inventoryUpdate": {}
+        }
+      ]
+    },
+    {
+      "speaker": "Sachat",
+      "text": "Sachat: Ahah, je vais réfléchir à ma stratégie pour attraper les poissons. Il faut être patient et habile...",
+      "action": "Réflexion sérieuse"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Sachat, tu as choisi de réfléchir à ta stratégie. C'est une excellente décision, car la pêche est un art qui nécessite de la patience et de la habileté.",
+      "action": "Reprise"
+    },
+    {
+      "speaker": "Sachat",
+      "text": "Sachat: Oui, je vais utiliser mon Sac à dos confortable pour me préparer pour une longue bataille contre les poissons. Et j'ai pensé à l'endroit où il y a le plus de poissons dans ce lac profond.",
+      "action": "Localisation des poissons"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Ahah, Sachat, tu as raison ! Je vais te donner un indice sur la localisation des poissons. Si tu veux attraper le plus gros poisson, tu devras aller jusqu'au fond du lac, là où les eaux sont les plus profondes.",
+      "action": "Indice",
+      "choices": [
+        {
+          "text": "Allez en reconnaissance près du lac",
+          "action": "Exploration",
+          "inventoryUpdate": {
+            "type": "ITEM",
+            "name": "Carte de la forêt"
+          }
+        },
+        {
+          "text": "Commencer à pêcher sans attendre",
+          "action": "Pêche",
+          "inventoryUpdate": {
+            "type": "ITEM",
+            "name": "Poissons frais"
+          }
+        }
+      ]
+    },
+    {
+      "speaker": "Sachat",
+      "text": "Sachat: Ahah, je sens que la magie de la forêt me berce déjà. Mais j'ai également très faim ! Où se trouve la meilleure pêche dans ce lac profond ?",
+      "action": "Se tourner vers le lac profond"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: La pêche est abondante dans ce lac, mais il faudra être patient et habile pour attraper les poissons les plus gros.",
+      "action": "Montrer le lac profond"
+    },
+    {
+      "speaker": "Sachat",
+      "text": "Sachat: Ahah, je suis prêt à l'essayer ! Je vais prendre mon Sac à dos confortable et me préparer pour une longue bataille contre les poissons.",
+      "action": "Prendre son sac à dos"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: En tant que chapardeur, tu as acquis une certaine patience et une bonne habileté pour manipuler les objets. Mais la pêche est un art qui nécessite encore plus de qualités.",
+      "action": "Montrer sa fierté"
+    },
+    {
+      "speaker": "Sachat",
+      "text": "Sachat: Ahah, je vais réfléchir à ma stratégie pour attraper les poissons. Il faut être patient et habile...",
+      "action": "Se concentrer"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Sachat, tu as choisi de réfléchir à ta stratégie. C'est une excellente décision, car la pêche est un art qui nécessite de la patience et de la habileté.",
+      "action": "Approuver sa décision"
+    },
+    {
+      "speaker": "Sachat",
+      "text": "Sachat: Oui, je vais utiliser mon Sac à dos confortable pour me préparer pour une longue bataille contre les poissons. Et j'ai pensé à l'endroit où il y a le plus de poissons dans ce lac profond.",
+      "action": "Montrer sa planification"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Ahah, Sachat, tu as raison ! Je vais te donner un indice sur la localisation des poissons. Si tu veux attraper le plus gros poisson, tu devras aller jusqu'au fond du lac, là où les eaux sont les plus profondes.",
+      "action": "Donner un indice",
+      "choices": [
+        {
+          "text": "Allez en reconnaissance près du lac",
+          "action": "Explorer le lac",
+          "inventoryUpdate": {}
+        },
+        {
+          "text": "Commencez à pêcher immédiatement",
+          "action": "Pêcher",
+          "inventoryUpdate": {}
+        },
+        {
+          "text": "Recherchez une autre source de nourriture",
+          "action": "Recherche",
+          "inventoryUpdate": {}
+        }
+      ]
+    },
+    {
+      "speaker": "Sachat",
+      "text": "Sachat: Ahah, je sens que la magie de la forêt me berce déjà. Mais j'ai également très faim ! Où se trouve la meilleure pêche dans ce lac profond ?",
+      "action": "Regarder dans toutes les directions"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: La pêche est abondante dans ce lac, mais il faudra être patient et habile pour attraper les poissons les plus gros.",
+      "action": "Expliquer les difficultés de la pêche"
+    },
+    {
+      "speaker": "Sachat",
+      "text": "Sachat: Ahah, je suis prêt à l'essayer ! Je vais prendre mon Sac à dos confortable et me préparer pour une longue bataille contre les poissons.",
+      "action": "Prendre une position à l'eau"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: En tant que chapardeur, tu as acquis une certaine patience et une bonne habileté pour manipuler les objets. Mais la pêche est un art qui nécessite encore plus de qualités.",
+      "action": "Souligner les compétences de Sachat",
+      "choices": [
+        {
+          "text": "Recherchez une autre source de nourriture",
+          "action": "Aller explorer les alentours du lac en quête de nourriture",
+          "inventoryUpdate": {
+            "type": "ITEM",
+            "name": "Fruits sauvages"
+          }
+        },
+        {
+          "text": "Attendez que le poisson soit fatigué",
+          "action": "Attendez une longue période pour que le poisson soit fatigué avant d'essayer de le pêcher",
+          "inventoryUpdate": {
+            "type": "ITEM",
+            "name": "Fleur de la Forêt"
+          }
+        }
+      ]
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Ahah, Sachat ! Tu vas donc explorer les alentours du lac en quête de nourriture ! C'est une excellente idée.",
+      "action": "Sachat se lève et commence à explorer les alentours du lac"
+    },
+    {
+      "speaker": "Sachat",
+      "text": "Sachat: Oui, je sens que la faim me dévore ! Je vais chercher à trouver quelque chose à manger.",
+      "action": "Sachat regarde autour de lui et se dirige vers un bosquet proche"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Ahah, Sachat ! Tu vas trouver quelque chose à manger. Mais attends, je te préviens, il y a des dangers dans ce bosquet.",
+      "action": "Le narrateur montre une expression de précaution"
+    },
+    {
+      "speaker": "Sachat",
+      "text": "Sachat: Mais de quoi as-tu peur ? Je suis un brave chapardeur, je peux me défendre.",
+      "action": "Sachat se sent courageux et décide d'aller plus loin"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Ahah, Sachat ! Tu es bien courageux, mais il faudra être prudent.",
+      "action": "Le narrateur montre un signe de la main, comme si pour signaler que ça irait, mais pas plus loin que ça"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Comme tu es un brave chapardeur, voici trois choix pour trouver quelque chose à manger.",
+      "action": "Le narrateur montre trois options, chacune avec un objet différent",
+      "choices": [
+        {
+          "text": "Recherchez des fruits sauvages",
+          "action": "Sachat se dirige vers un endroit où il y a des fruits sauvages",
+          "inventoryUpdate": {
+            "type": "ITEM",
+            "name": "Fruits sauvages"
+          }
+        },
+        {
+          "text": "Pêchez dans un ruisseau",
+          "action": "Sachat se dirige vers un ruisseau proche pour pêcher",
+          "inventoryUpdate": {
+            "type": "ITEM",
+            "name": "Poissons frais"
+          }
+        },
+        {
+          "text": "Mangiez des noix",
+          "action": "Sachat se dirige vers un arbre proche avec des noix",
+          "inventoryUpdate": {
+            "type": "ITEM",
+            "name": "Noix"
+          }
+        }
+      ]
+    }
+  ],
+  "id": "1778781830143-gnli6p",
+  "createdAt": 1778781830143,
+  "inventory": {
+    "items": [
+      "Sac à dos confortable",
+      "Poissons frais",
+      "Carte de la forêt",
+      "Fruits sauvages"
+    ],
+    "allies": [],
+    "heroId": "sachat"
+  }
+}

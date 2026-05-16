@@ -1,0 +1,123 @@
+{
+  "title": "L'aventure de Clara la princesse et Mayron le larbin",
+  "characterIds": [
+    "clara",
+    "mayron"
+  ],
+  "arenaId": "living_room",
+  "arenaName": "Le Salon de la Maison",
+  "arenaImg": "https://images.unsplash.com/photo-1567016432779-094069958ea5?w=1200",
+  "theme": "\nUne aventure de clara la princesse est son grand frere le larbin mayron le putoi",
+  "isInteractive": true,
+  "isFinished": false,
+  "script": [
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Dans le grand salon de la maison, Clara la princesse et son grand frère Mayron le larbin se trouvaient face à face, l'atmosphère était tendue.",
+      "action": "Ils se faisaient face"
+    },
+    {
+      "speaker": "Clara",
+      "text": "Clara: Mayron, j'ai besoin de ton aide, j'ai découvert un mystérieux message qui indique que notre roi est en danger.",
+      "action": "Elle tendait un parchemin à Mayron"
+    },
+    {
+      "speaker": "Mayron",
+      "text": "Mayron: Qu'est-ce que cela a à voir avec moi ? Je suis juste un larbin, pas un héros.",
+      "action": "Il haussait les épaules"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Mayron regarda le parchemin, puis leva les yeux vers Clara, une étincelle d'intérêt s'allumait dans son regard.",
+      "action": "Il examinait le parchemin"
+    },
+    {
+      "speaker": "Mayron",
+      "text": "Mayron: D'accord, je t'aiderai, mais si c'est pour m'amuser, pas pour sauver le roi.",
+      "action": "Il souriait en coin",
+      "choices": [
+        {
+          "text": "Narrateur: Partir immédiatement pour le château du roi.",
+          "action": "Château du roi",
+          "inventoryUpdate": {
+            "type": "INFORMATION",
+            "name": "Message mystérieux"
+          }
+        },
+        {
+          "text": "Narrateur: Demander plus d'informations sur le message et le danger qui menace le roi.",
+          "action": "Enquête",
+          "inventoryUpdate": {
+            "type": "INFORMATION",
+            "name": "Description du danger"
+          }
+        },
+        {
+          "text": "Narrateur: Refuser de s'impliquer et laisser Mayron partir.",
+          "action": "Abandon",
+          "inventoryUpdate": {
+            "type": "ÉCHEC",
+            "name": "Perte de confiance"
+          }
+        }
+      ]
+    },
+    {
+      "speaker": "Clara",
+      "text": "Clara: Ce message est cripté, mais je pense qu'il fait référence à une conspiration contre notre roi.",
+      "action": "Clara tend le parchemin à Mayron"
+    },
+    {
+      "speaker": "Mayron",
+      "text": "Mayron: Un complot, hein ? Ça commence à devenir intéressant. Mais qu'est-ce qui te fait penser que c'est sérieux ?",
+      "action": "Mayron examine le parchemin de plus près"
+    },
+    {
+      "speaker": "Clara",
+      "text": "Clara: Le symbole en bas, c'est le sceau de la famille royale. Et le message mentionne une date, demain soir. Je pense que c'est un avertissement.",
+      "action": "Clara regarde Mayron avec anxiété"
+    },
+    {
+      "speaker": "Mayron",
+      "text": "Mayron: Demain soir, c'est la soirée de gala au château. Si quelque chose doit se passer, c'est le moment idéal pour frapper.",
+      "action": "Mayron se lève et commence à faire les cent pas dans la pièce"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Le salon est plongé dans le silence, les deux frère et sœur réfléchissent aux conséquences de leur découverte.",
+      "action": "La tension monte dans l'air",
+      "choices": [
+        {
+          "text": "Mayron: Allons enquêter discrètement au château pour voir si nous pouvons trouver des informations sur le complot.",
+          "action": "Enquête",
+          "inventoryUpdate": {
+            "type": "INFORMATION",
+            "name": "Rumeurs de complot"
+          }
+        },
+        {
+          "text": "Clara: Nous devons avertir le roi immédiatement, même s'il s'agit d'une fausse alerte, il vaut mieux être prudent.",
+          "action": "Avertir le roi",
+          "inventoryUpdate": {
+            "type": "ALLIÉ",
+            "name": "Garde royale"
+          }
+        },
+        {
+          "text": "Mayron: Attends, j'ai une idée. Nous pourrions infiltrer la soirée de gala en nous déguisant et essayer de découvrir ce qui se trame.",
+          "action": "Infiltration",
+          "inventoryUpdate": {
+            "type": "ITEM",
+            "name": "Déguisement"
+          }
+        }
+      ]
+    }
+  ],
+  "id": "1778781033771-1z6x2f",
+  "createdAt": 1778781033771,
+  "inventory": {
+    "items": [],
+    "allies": []
+  }
+}

@@ -7,14 +7,15 @@ export function getStoryDirectives(
   theme: string,
   isInteractive: boolean,
   previousContext?: string,
-  inventory?: { heroId?: string, items: string[], allies: string[] }
+  inventory?: { heroId?: string, items: string[], allies: string[] },
+  chapterCount: number = 0
 ): string {
   const charactersList = characterNames.join(', ');
   const isMaPremiereAventure = theme.includes('Ma Première Aventure');
 
   // Identification du héros actuel
   const currentHero = inventory?.heroId ? characterNames.find(n => inventory.heroId === n) || inventory.heroId : "Non défini";
-
+  
   const baseRules = `
 1. PERSONNAGES : Les personnages présents sont : ${charactersList}. Respecte scrupuleusement leurs personnalités, tics de langage et univers respectifs.
 2. LIEU : L'histoire se déroule à : ${arenaName}. Utilise le décor pour enrichir la narration.
@@ -29,9 +30,9 @@ export function getStoryDirectives(
 }
 5. INVENTAIRE : Si le joueur fait un choix qui mérite un objet ou un allié, ajoute un champ "inventoryUpdate" dans le choix.
 6. TTS : Chaque valeur de "text" DOIT commencer par "Nom: ".
-7. COHÉRENCE NARRATIVE : L'histoire doit suivre une progression logique. Chaque chapitre doit s'appuyer sur le contexte précédent pour construire une intrigue riche et cohérente.
-8. ÉCHEC ET RÉUSSITE : Le joueur ne gagne pas automatiquement. Ses choix doivent avoir des conséquences réelles. Une mauvaise décision peut mener à un échec (ex: perdre la trace du dragon, se perdre dans la forêt) ou à une fin prématurée ("isEnd": true). Cependant, l'aventure doit idéalement durer entre 5 et 8 chapitres pour être satisfaisante.
-9. DUREE : Ne termine PAS l'aventure avant au moins 5 interactions significatives, sauf en cas de décision catastrophique du joueur.
+7. COHÉRENCE NARRATIVE : L'histoire doit suivre une progression logique. Chaque chapitre doit s'appuyer sur le contexte précédent.
+8. PERSISTANCE ET ÉCHEC : Un mauvais choix ne doit JAMAIS mener à une fin prématurée ou une défaite définitive ("isEnd": true). L'échec doit toujours créer une nouvelle péripétie, un détour ou une épreuve supplémentaire. L'histoire continue jusqu'à une résolution positive.
+9. CONCLUSION ET MORALITÉ : Le chapitre final ("isEnd": true) doit être BEAUCOUP PLUS LONG (10-15 lignes). Il doit offrir une conclusion riche et se terminer par une moralité claire liée au thème (amitié, courage, sagesse, etc.).
 `;
 
   const mpaRules = isMaPremiereAventure ? `
@@ -57,8 +58,10 @@ export function getStoryDirectives(
   }[mode];
 
   const interactiveRules = isInteractive 
-    ? `6. INTERACTIVITÉ : Tu es dans un mode "Livre dont vous êtes le héros". Termine TOUJOURS ce chapitre par exactement 2 ou 3 choix cruciaux pour le lecteur dans le champ "choices".`
-    : `6. LINÉAIRE : Raconte une histoire complète et structurée (début, milieu, fin) en environ 15-20 lignes de dialogue/narration.`;
+    ? `6. INTERACTIVITÉ : Tu es dans un mode "Livre dont vous êtes le héros". Termine TOUJOURS ce chapitre par exactement 2 ou 3 choix cruciaux pour le lecteur dans le champ "choices".
+       ${chapterCount >= 5 ? 'AVERTISSEMENT : L\'histoire dure depuis un moment. Prépare la conclusion.' : ''}
+       ${chapterCount >= 8 ? 'URGENT : C\'est le DERNIER CHAPITRE. Tu DOIS terminer l\'histoire ici en mettant "isEnd": true.' : ''}`
+    : `6. LINÉAIRE : Raconte une histoire complète et structurée (début, milieu, fin). Pour le chapitre final, génère 15-20 lignes de dialogue/narration avec une moralité.`;
 
   const contextPrompt = previousContext 
     ? `\n${isMaPremiereAventure ? '9' : '8'}. CONTEXTE PRÉCÉDENT : Voici ce qui s'est passé avant :\n${previousContext}\nCONTINUE l'histoire à partir de là en tenant compte du dernier choix effectué.`

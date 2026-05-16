@@ -1,0 +1,60 @@
+{
+  "title": "L'aventure de Clara, la princesse et son larbin Mayron",
+  "characterIds": [
+    "mayron",
+    "clara"
+  ],
+  "arenaId": "parking",
+  "arenaName": "Parking du Supermarché",
+  "arenaImg": "https://images.unsplash.com/photo-1506521781263-d8422e82f27a?w=1200",
+  "theme": "Une aventure de clara la princesse est son larbin mayron le putoi",
+  "isInteractive": true,
+  "isFinished": false,
+  "script": [
+    {
+      "speaker": "Mayron",
+      "text": "Mayron: Bonjour Madame, nous sommes arrivés au parking du Supermarché, comme vous l'avez demandé.",
+      "action": "S'incliner"
+    },
+    {
+      "speaker": "Clara",
+      "text": "Clara: Merci Mayron, j'ai un rendez-vous important ici. Je dois retrouver un vieux connaissant qui possède des informations cruciales pour le royaume.",
+      "action": "Regarder autour"
+    },
+    {
+      "speaker": "Narrateur",
+      "text": "Narrateur: Le parking est presque désert, à l'exception d'une voiture noire avec des vitres teintées, garée au fond.",
+      "action": "Observer la voiture"
+    },
+    {
+      "speaker": "Mayron",
+      "text": "Mayron: Madame, je ne sais pas si c'est une bonne idée de rencontrer quelqu'un ici. Cet endroit me semble louche.",
+      "action": "Se rapprocher de Clara"
+    },
+    {
+      "speaker": "Clara",
+      "text": "Clara: Ne vous inquiétez pas, Mayron. J'ai confiance en cette personne. Allons-y, nous ne devons pas être en retard.",
+      "action": "Se diriger vers la voiture",
+      "choices": [
+        {
+          "text": "Mayron: Je vais aller devant pour vérifier si tout va bien avant que vous ne rencontriez votre contact.",
+          "action": "Avancer vers la voiture",
+          "inventoryUpdate": {
+            "type": "INFORMATION",
+            "name": "Renseignements sur la voiture"
+          }
+        },
+        {
+          "text": "Clara: Non, Mayron, restez avec moi. Nous allons rencontrer mon contact ensemble.",
+          "action": "Se diriger vers la voiture avec Mayron"
+        },
+        {
+          "text": "Clara: Attendez, Mayron. Je vais d'abord essayer de contacter mon ami pour confirmer qu'il est bien là.",
+          "action": "Sortir un téléphone pour appeler"
+        }
+      ]
+    }
+  ],
+  "id": "1778780930961-6tknnq",
+  "createdAt": 1778780930961
+}
