@@ -3,6 +3,9 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "concurrently --raw -n vite,api,xtts -c cyan,yellow,magenta \"vite --port=3060 --strictPort --host=0.0.0.0\" \"API_PORT=3061 tsx server.ts\" \"COQUI_TOS_AGREED=1 scripts/venv/bin/python scripts/tts_server.py 2>&1 || echo '[xtts] serveur Python non dispo, fallback Piper actif'\"",
     "dev:no-xtts": "concurrently --raw -n vite,api -c cyan,yellow \"vite --port=3060 --strictPort --host=0.0.0.0\" \"API_PORT=3061 tsx server.ts\"",
