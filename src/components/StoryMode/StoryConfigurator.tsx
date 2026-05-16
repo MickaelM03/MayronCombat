@@ -16,8 +16,8 @@ interface StoryConfiguratorProps {
   onBack: () => void;
 }
 
-export default function StoryConfigurator({ onStart, onBack }: StoryConfiguratorProps) {
-  const [selectedChars, setSelectedChars] = useState<(typeof CHARACTERS[0])[]>([]);
+export default function StoryConfigurator({ onStart, onBack, errorMsg }: StoryConfiguratorProps & { errorMsg?: string }) {
+  const [selectedChars, setSelectedChars] = useState<(typeof CHARACTERS[0])[]>([CHARACTERS[0], CHARACTERS[1], CHARACTERS[2]]);
   const [selectedArena, setSelectedArena] = useState(ARENAS[0]);
   const [theme, setTheme] = useState('Une aventure épique à travers les dimensions');
   const [isInteractive, setIsInteractive] = useState(true);
@@ -120,8 +120,19 @@ export default function StoryConfigurator({ onStart, onBack }: StoryConfigurator
 
   return (
     <div className="min-h-screen bg-mesh text-[#e2d1b3] p-4 md:p-8 flex flex-col items-center font-serif overflow-x-hidden relative">
+      {/* Error Banner */}
+      {errorMsg && (
+        <motion.div
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          className="fixed top-20 left-1/2 -translate-x-1/2 z-[150] bg-red-950/95 backdrop-blur-md border-2 border-red-500/60 rounded-xl px-5 py-3 max-w-md shadow-2xl text-red-100 text-sm font-bold italic text-center"
+        >
+          {errorMsg}
+        </motion.div>
+      )}
+
       {/* Header */}
-      <motion.div 
+      <motion.div
         initial={{ y: -30, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         className="text-center mb-12 mt-8 md:mt-0"

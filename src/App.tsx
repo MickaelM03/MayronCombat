@@ -1608,17 +1608,17 @@ FORMAT JSON REQUIS :
     setAppMode('STORY_PLAY');
     setIsGeneratingStory(true);
     setErrorMsg("");
-    
-    const aiConfig = getAIConfig();
-    if (aiConfig.geminiKeys.length === 0 && !aiConfig.openaiKey && !aiConfig.groqKey) {
-      setErrorMsg("Une clé API Gemini est requise pour générer des histoires.");
+
+    if (!config.characters || config.characters.length === 0) {
+      setErrorMsg("Ajoutez au moins un personnage avant de lancer l'aventure.");
       setAppMode('STORY_CONFIG');
+      setIsGeneratingStory(false);
       return;
     }
 
     try {
       const isMaPremiereAventure = config.theme.includes('Ma Première Aventure');
-      
+
       if (isMaPremiereAventure) {
         // Mode "Ma Première Aventure" : On fusionne l'intro et le choix pour éviter les doublons
         const initialLines = [
@@ -1651,9 +1651,14 @@ FORMAT JSON REQUIS :
         return;
       }
 
+      const aiConfig = getAIConfig();
+      if (aiConfig.geminiKeys.length === 0 && !aiConfig.openaiKey && !aiConfig.groqKey) {
+        throw new Error("Une clé API Gemini est requise pour générer des histoires non-MPA.");
+      }
+
       const charNames = config.characters.map((c: any) => c.name);
       const prompt = getStoryDirectives(narrativeMode, charNames, config.arena.name, config.theme, config.isInteractive, undefined, undefined, 0, config.duration ?? 5);
-      
+
       const result = await generateWithFallback(prompt, aiConfig);
       const text = result.text || "";
       const jsonMatch = text.match(/\{[\s\S]*\}/);
@@ -1829,7 +1834,7 @@ FORMAT JSON REQUIS :
           </motion.div>
         </div>
 
-        <StoryConfigurator onStart={handleStartStory} onBack={() => setAppMode('HOME')} />
+        <StoryConfigurator onStart={handleStartStory} onBack={() => setAppMode('HOME')} errorMsg={errorMsg} />
       </div>
     );
   }
