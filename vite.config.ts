@@ -21,9 +21,10 @@ export default defineConfig(({ mode }) => {
       VitePWA({
         registerType: 'autoUpdate',
         workbox: {
-          globPatterns: ['**/*.{js,css,html,ico,png,svg,webp}'],
-          // Don't cache ONNX models in SW (too large) — browser caches them in OPFS
-          globIgnores: ['**/*.onnx', '**/*.onnx.json'],
+          globPatterns: ['**/*.{js,css,html,ico,svg,webp}'],
+          // Exclude heavy assets from pre-cache — ONNX models and large PNG images (arena, chars)
+          // are fetched/cached at runtime instead
+          globIgnores: ['**/*.onnx', '**/*.onnx.json', 'images/**'],
           runtimeCaching: [
             {
               // Cache arena images from Unsplash at runtime
@@ -32,6 +33,15 @@ export default defineConfig(({ mode }) => {
               options: {
                 cacheName: 'unsplash-images',
                 expiration: { maxEntries: 30, maxAgeSeconds: 60 * 60 * 24 * 30 },
+              },
+            },
+            {
+              // Cache local images (arenas, characters) at runtime — too large to pre-cache
+              urlPattern: /\/images\/.+\.(png|webp|jpg|jpeg)$/i,
+              handler: 'CacheFirst',
+              options: {
+                cacheName: 'local-images',
+                expiration: { maxEntries: 60, maxAgeSeconds: 60 * 60 * 24 * 90 },
               },
             },
           ],
