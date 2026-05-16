@@ -9,7 +9,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-const PORT = parseInt(process.env.PORT || process.env.API_PORT || '3061', 10);
+const PORT = parseInt(process.env.PORT || process.env.API_PORT || '3000', 10);
 
 // Data directory for persistent storage
 const DATA_DIR = path.join(__dirname, 'data', 'battles');
