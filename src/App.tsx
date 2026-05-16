@@ -1763,21 +1763,21 @@ FORMAT JSON REQUIS :
     }
   };
 
-  const playStoryVoice = async (line: StoryLine, index: number, storyId: string) => {
+  const playStoryVoice = async (line: StoryLine, index: number, storyId: string, onStart?: (duration: number) => void) => {
     if (!voiceEnabled) return;
-    
+
     // Check cache first
     const cached = await getStoryAudio(storyId, index, line.speaker);
     if (cached) {
       const params = getVoiceForSpeaker(line.speaker).params || ({} as VoiceOverride);
-      await playPcmBlobWithParams(cached.blob, cached.format, params);
+      await playPcmBlobWithParams(cached.blob, cached.format, params, 1.0, onStart);
       return;
     }
 
     // Generate and save
     const { voiceName, voiceStyle, charId, params } = getVoiceForSpeaker(line.speaker);
     const cleanText = line.text.replace(/^[^:]+:\s*/, '');
-    
+
     const apiKey = process.env.GEMINI_API_KEY || tempApiKey;
     let blob: Blob | null = null;
     let format: 'pcm' | 'wav' = 'pcm';
@@ -1794,7 +1794,7 @@ FORMAT JSON REQUIS :
 
     if (blob) {
       await saveStoryAudio(storyId, index, line.speaker, blob, format);
-      await playPcmBlobWithParams(blob, format, params || ({} as VoiceOverride));
+      await playPcmBlobWithParams(blob, format, params || ({} as VoiceOverride), 1.0, onStart);
     }
   };
 

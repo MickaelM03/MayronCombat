@@ -10,7 +10,7 @@ interface StoryViewerProps {
   story: SavedStory;
   onChoice: (choiceText: string, choiceAction: string, inventoryUpdate?: { type: 'ITEM' | 'ALLY', name: string }) => Promise<void>;
   onBack: () => void;
-  playVoice: (line: StoryLine, index: number, storyId: string) => Promise<void>;
+  playVoice: (line: StoryLine, index: number, storyId: string, onStart?: (duration: number) => void) => Promise<void>;
   isGenerating: boolean;
 }
 
@@ -19,7 +19,7 @@ export default function StoryViewer({ story, onChoice, onBack, playVoice, isGene
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const lastPlayedIdx = useRef<number>(-1);
   const [isSpeaking, setIsSpeaking] = useState(false);
-  const [showCharModal, setShowCharModal] = useState<number | null>(null);
+  const [lineDuration, setLineDuration] = useState(0);
   const lines = story.script;
   const currentLine = lines[currentLineIndex];
   
@@ -54,10 +54,14 @@ export default function StoryViewer({ story, onChoice, onBack, playVoice, isGene
   }, [currentLineIndex, lines.length, story.isInteractive, isGenerating, currentLine?.choices]);
 
   useEffect(() => {
+    setLineDuration(0);
+  }, [currentLineIndex]);
+
+  useEffect(() => {
     if (currentLine && !isSpeaking && !isGenerating && lastPlayedIdx.current !== currentLineIndex) {
       lastPlayedIdx.current = currentLineIndex;
       setIsSpeaking(true);
-      playVoice(currentLine, currentLineIndex, story.id).then(() => {
+      playVoice(currentLine, currentLineIndex, story.id, setLineDuration).then(() => {
         setIsSpeaking(false);
         if (isAutoPlaying) {
           setTimeout(nextLine, 1000);
@@ -195,22 +199,54 @@ export default function StoryViewer({ story, onChoice, onBack, playVoice, isGene
           </div>
 
           <div className="min-h-[80px] flex flex-col justify-center">
-            <AnimatePresence mode="wait">
-              <motion.p
-                key={currentLineIndex}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                className="text-xl md:text-3xl leading-relaxed italic text-[#e2d1b3]"
-              >
-                {currentLine?.text.replace(/^[^:]+:\s*/, '')}
-                {currentLine?.action && (
-                  <span className="block text-sm md:text-base text-amber-600/70 mt-4 uppercase tracking-[0.3em] font-bold">
-                    ({currentLine.action})
+            <div key={currentLineIndex} className="text-xl md:text-3xl leading-relaxed italic">
+              {(() => {
+                const cleanText = currentLine?.text.replace(/^[^:]+:\s*/, '') || '';
+                if (lineDuration > 0) {
+                  const words = cleanText.split(' ');
+                  const totalChars = cleanText.length;
+                  const timePerChar = (lineDuration * 0.95) / Math.max(totalChars, 1);
+                  let runningChars = 0;
+                  return (
+                    <>
+                      {words.map((word, wIdx) => {
+                        const delay = runningChars * timePerChar;
+                        const wordDuration = Math.max(word.length * timePerChar, 0.1);
+                        runningChars += word.length + 1;
+                        return (
+                          <motion.span
+                            key={wIdx}
+                            initial={{ color: '#6b5240' }}
+                            animate={{ color: '#e2d1b3' }}
+                            transition={{ delay, duration: wordDuration * 0.8 }}
+                            className="inline-block mr-[0.25em]"
+                          >
+                            {word}
+                          </motion.span>
+                        );
+                      })}
+                      {currentLine?.action && (
+                        <span className="block text-sm md:text-base text-amber-600/70 mt-4 uppercase tracking-[0.3em] font-bold">
+                          ({currentLine.action})
+                        </span>
+                      )}
+                    </>
+                  );
+                }
+                // lineDuration=0 : audio pas encore démarré (buffering) ou voix désactivée
+                // On montre le texte sombre si on est en train de parler (buffering), clair sinon
+                return (
+                  <span className={isSpeaking ? 'text-[#6b5240]' : 'text-[#e2d1b3]'}>
+                    {cleanText}
+                    {currentLine?.action && (
+                      <span className="block text-sm md:text-base text-amber-600/70 mt-4 uppercase tracking-[0.3em] font-bold">
+                        ({currentLine.action})
+                      </span>
+                    )}
                   </span>
-                )}
-              </motion.p>
-            </AnimatePresence>
+                );
+              })()}
+            </div>
           </div>
 
           {/* Controls / Next Button */}
