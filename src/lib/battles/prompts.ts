@@ -32,9 +32,9 @@ export function getNarrativeDirectives(mode: NarrativeMode, p1Name: string, p2Na
 3. ENJEU ÉPIQUE : Crée une tension narrative style anime shōnen (Dragon Ball, Naruto, One Piece). Chaque round est une montée en puissance. Le narrateur prend le combat au sérieux.${baseRules('FINISHING BLOW technique et cinématographique')}`;
 
     case 4:
-      return `1. TON FAMILIER ET TAQUIN : Vocabulaire familier autorisé (zut, mince, bordel, idiot, crétin, abruti, andouille, nul). Aucun vrai gros mot.
-2. TAQUINERIES PIQUANTES : Les personnages se charient mais sans méchanceté réelle. Humour de cour de récré amélioré.
-3. PERSONNAGES : En version légèrement énervée et moqueuse, leurs défauts mis en avant avec tendresse.${baseRules('SUPER COMBO épique et piquant')}`;
+      return `1. TON COMIQUE ET PIQUANT : Humour absurde et cartoonesque comme le mode COMIQUE (gags, onomatopées SPLAT/BOING/ZING, situations ridicules) AVEC quelques petits gros mots autorisés : merde, bâtard, connard, salaud, con, crétin, bordel, putain, enfoiré, abruti. INTERDIT ABSOLU : insultes sexuelles ou crues (pute, salope, enculé, fils de pute, ta mère, etc.).
+2. VANNES ET CHAMBRAGES : Les personnages se chambrent avec mordant mais l'objectif reste l'humour. Ça pétille, ça vanne, ça déconne — jamais méchant gratuit.
+3. PERSONNAGES : Exploite leur côté comique avec un soupçon de mordant, défauts amplifiés pour le fun.${baseRules('SUPER COMBO drôle et un peu cinglant')}`;
 
     case 5:
       return `1. TON TRASH ET HUMOUR NOIR : Lâche-toi ! Gros mots autorisés (putain, merde, bâtard, salaud, bordel, connard). Trashtalk violent, cynique et humoristique. Les insultes doivent fuser et être créatives.

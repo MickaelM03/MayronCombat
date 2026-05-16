@@ -78,7 +78,7 @@ export const CHARACTERS = [
   { id: 'ptit_bouh', name: 'P\'tit Bouh', faction: 'Fantôme', img: '/images/ptit_bouh_sf_1778869524016.png', color: 'from-blue-100 to-slate-300', voice: 'Umbriel', voiceStyle: 'nerveux' },
   { id: 'lepine', name: 'L\'Épine', faction: 'Superopolis', img: '/images/epine_sf_1778869592995.png', color: 'from-green-600 to-emerald-800', voice: 'Autonoe', voiceStyle: 'aventuriere' },
   { id: 'boombox', name: 'Boom-Box', faction: 'Superopolis', img: '/images/boombox_sf_1778914669502.png', color: 'from-yellow-600 to-orange-800', voice: 'Sadachbia', voiceStyle: 'gangster' },
-  { id: 'lise', name: 'Lise', faction: 'Kids', img: '/images/lise_sf.png', color: 'from-orange-400 to-red-600', voice: 'Zephyr', voiceStyle: 'enfant' },
+  { id: 'lisse', name: 'Lisse', faction: 'Kids', img: '/images/lise_sf.png', color: 'from-orange-400 to-red-600', voice: 'Zephyr', voiceStyle: 'enfant' },
 ];
 
 export const ARENAS = [

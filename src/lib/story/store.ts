@@ -28,6 +28,8 @@ interface SavedStory {
     items: string[];
     allies: string[];
   };
+  duration?: number; // minutes (3-20), chosen by user before launch
+  chapterCount?: number; // number of generated chapters (interactive mode)
 }
 
 type AudioFormat = 'pcm' | 'wav';

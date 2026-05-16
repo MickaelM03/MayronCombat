@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { 
-  ChevronRight, RefreshCw, Volume2, Save, ArrowLeft, History, Play, Pause, UserPlus 
+import {
+  ChevronRight, RefreshCw, Volume2, Save, ArrowLeft, History, Play, Pause, UserPlus, ChevronDown
 } from 'lucide-react';
 import { StoryLine, SavedStory, getStoryAudio, saveStoryAudio, updateStory } from '../../lib/story/store';
 import { CHARACTERS } from '../../lib/constants';
@@ -18,6 +18,7 @@ interface StoryViewerProps {
 export default function StoryViewer({ story, onChoice, onBack, playVoice, stopVoice, isGenerating }: StoryViewerProps) {
   const [currentLineIndex, setCurrentLineIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [themeExpanded, setThemeExpanded] = useState(false);
   const isAutoPlayingRef = useRef(true);
   const lastPlayedIdx = useRef<number>(-1);
   const [isSpeaking, setIsSpeaking] = useState(false);
@@ -154,9 +155,19 @@ export default function StoryViewer({ story, onChoice, onBack, playVoice, stopVo
           <button onClick={onBack} className="p-2 hover:bg-amber-900/30 rounded-full transition-colors">
             <ArrowLeft size={24} />
           </button>
-          <div>
-            <h1 className="text-xl md:text-2xl font-bold italic">{story.title}</h1>
-            <div className="text-[10px] uppercase tracking-[0.2em] text-amber-500 font-bold">{story.theme}</div>
+          <div className="min-w-0 flex-1">
+            <h1 className="text-xl md:text-2xl font-bold italic truncate">{story.title}</h1>
+            <button
+              type="button"
+              onClick={() => setThemeExpanded(v => !v)}
+              className="text-[10px] uppercase tracking-[0.2em] text-amber-500 font-bold flex items-center gap-1 hover:text-amber-300 transition-colors text-left max-w-full"
+              title={themeExpanded ? 'Réduire le thème' : 'Voir le thème complet'}
+            >
+              <span className={themeExpanded ? 'whitespace-normal break-words' : 'truncate max-w-[180px] md:max-w-[280px]'}>
+                {story.theme}
+              </span>
+              <ChevronDown size={12} className={`flex-shrink-0 transition-transform ${themeExpanded ? 'rotate-180' : ''}`} />
+            </button>
           </div>
         </div>
         <div className="flex items-center gap-2">

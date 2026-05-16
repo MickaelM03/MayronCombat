@@ -1114,7 +1114,7 @@ FORMAT JSON identique au schéma standard (intro, rounds, winner, finishingMove,
           1: "Mode FAMILLE : Pas de violence, pas de gros mots, ton bienveillant et magique. Style conte pour enfants.",
           2: "Mode COMIQUE : Humour absurde, situations ridicules, gags visuels décrits par le narrateur. Style cartoon.",
           3: "Mode SÉRIEUX : Ton dramatique, épique, enjeux élevés, style roman d'aventure sérieux ou thriller.",
-          4: "Mode LÉGER : Ton familier, taquineries, un peu de piquant mais reste gentil et divertissant.",
+          4: "Mode LÉGER : Humour absurde et cartoonesque comme le mode COMIQUE (gags, quiproquos, situations ridicules, onomatopées) AVEC quelques petits gros mots autorisés (merde, bâtard, connard, salaud, con, crétin, bordel, putain, enfoiré, abruti). INTERDIT ABSOLU : insultes sexuelles ou crues (pute, salope, enculé, fils de pute, ta mère). L'histoire DOIT être AMUSANTE et faire rire — priorité au comique pétillant et aux vannes qui piquent.",
           5: "Mode TRASH : Humour noir, gros mots créatifs, situations cyniques et décalées. Style déjanté.",
           6: "Mode HARDCORE : Sans filtre, trash extrême, style South Park / Tarantino. Dialogue percutant et situations chaotiques.",
         }[narrativeMode];
@@ -1681,7 +1681,9 @@ FORMAT JSON REQUIS :
           theme: config.theme,
           isInteractive: true,
           isFinished: false,
-          script: initialLines
+          script: initialLines,
+          duration: config.duration ?? 5,
+          chapterCount: 0
         };
 
         const id = await saveStory(newStory);
@@ -1719,7 +1721,9 @@ FORMAT JSON REQUIS :
         theme: config.theme,
         isInteractive: config.isInteractive,
         isFinished: !!storyJson.isEnd,
-        script: newLines
+        script: newLines,
+        duration: config.duration ?? 5,
+        chapterCount: 1
       };
 
       const id = await saveStory(newStory);
@@ -1768,14 +1772,15 @@ FORMAT JSON REQUIS :
       }
 
       const prompt = getStoryDirectives(
-        narrativeMode, 
-        charNames, 
-        currentStory.arenaName, 
-        currentStory.theme, 
-        true, 
+        narrativeMode,
+        charNames,
+        currentStory.arenaName,
+        currentStory.theme,
+        true,
         `${previousContext}\n\n${choiceContext}`,
         updatedInventory,
-        currentStory.script.length
+        currentStory.chapterCount ?? 0,
+        currentStory.duration ?? 5
       );
 
       const result = await generateWithFallback(prompt, aiConfig);
@@ -1794,7 +1799,8 @@ FORMAT JSON REQUIS :
         ...currentStory,
         isFinished: !!storyJson.isEnd,
         script: [...currentStory.script, ...newLines],
-        inventory: updatedInventory
+        inventory: updatedInventory,
+        chapterCount: (currentStory.chapterCount ?? 0) + 1
       };
 
       await updateStory(updatedStory);
@@ -1811,34 +1817,105 @@ FORMAT JSON REQUIS :
   const playStoryVoice = async (line: StoryLine, index: number, storyId: string, onStart?: (duration: number) => void) => {
     if (!voiceEnabled) return;
 
-    // Check cache first
-    const cached = await getStoryAudio(storyId, index, line.speaker);
+    const { voiceName, voiceStyle, charId, params } = getVoiceForSpeaker(line.speaker);
+    const forcedProvider = params?.provider && params.provider !== 'auto' ? params.provider : null;
+    const useDefault = params?.useDefaultVoice === true;
+
+    // Cache key tagged with the chosen provider so changing Voice overrides
+    // doesn't replay an old voice produced by a different provider.
+    const cacheTag = forcedProvider || (useDefault ? 'default' : 'auto');
+    const taggedKey = `${line.speaker}__${cacheTag}`;
+
+    // Try the tagged cache first, then fall back to the legacy un-tagged cache
+    // (= already-generated stories before this refactor).
+    let cached = await getStoryAudio(storyId, index, taggedKey);
+    if (!cached) cached = await getStoryAudio(storyId, index, line.speaker);
     if (cached) {
-      const params = getVoiceForSpeaker(line.speaker).params || ({} as VoiceOverride);
-      await playPcmBlobWithParams(cached.blob, cached.format, params, 1.0, onStart);
+      await playPcmBlobWithParams(cached.blob, cached.format, params || ({} as VoiceOverride), 1.0, onStart);
       return;
     }
 
-    // Generate and save
-    const { voiceName, voiceStyle, charId, params } = getVoiceForSpeaker(line.speaker);
-    const cleanText = line.text.replace(/^[^:]+:\s*/, '');
+    const cleanText = line.text
+      .replace(/^[^:]+:\s*/, '')
+      .replace(/[\u{1F600}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, '')
+      .replace(/\*[^*]+\*/g, '')
+      .replace(/\s{2,}/g, ' ')
+      .trim();
 
     const apiKey = process.env.GEMINI_API_KEY || tempApiKey;
+    const effectiveStyle = params?.customPrompt?.trim() ? '__custom__' : voiceStyle;
+    if (params?.customPrompt?.trim()) {
+      STYLE_PROMPTS['__custom__'] = params.customPrompt.trim();
+    }
+
     let blob: Blob | null = null;
     let format: 'pcm' | 'wav' = 'pcm';
 
-    if (apiKey) {
-      blob = await fetchGeminiAudio(cleanText, voiceName, voiceStyle, getAIConfig());
-      format = 'pcm';
-    }
+    const tryProvider = async (p: string): Promise<{ blob: Blob; format: 'pcm' | 'wav' } | null> => {
+      try {
+        if (p === 'edge') {
+          const b = await tryEdgeAudio(cleanText, params?.providerVoiceId || getDefaultEdgeVoice(voiceName, voiceStyle));
+          return b ? { blob: b, format: 'wav' } : null;
+        }
+        if (p === 'gcloud') {
+          const b = await tryGCloudAudio(cleanText, params?.providerVoiceId);
+          return b ? { blob: b, format: 'wav' } : null;
+        }
+        if (p === 'hf') {
+          const b = await tryHuggingFaceAudio(cleanText);
+          return b ? { blob: b, format: 'wav' } : null;
+        }
+        if (p === 'elevenlabs') {
+          const b = await tryElevenLabsAudio(cleanText, charId);
+          return b ? { blob: b, format: 'wav' } : null;
+        }
+        if (p === 'xtts') {
+          const b = await tryXttsAudio(cleanText, charId);
+          return b ? { blob: b, format: 'wav' } : null;
+        }
+        if (p === 'piper') {
+          const b = await getPiperBlob(cleanText, voiceName);
+          return b ? { blob: b, format: 'wav' } : null;
+        }
+        if (p === 'gemini' && apiKey) {
+          const b = await fetchGeminiAudio(cleanText, voiceName, effectiveStyle, getAIConfig());
+          return b ? { blob: b, format: 'pcm' } : null;
+        }
+      } catch (err) {
+        console.warn(`[story-voice] ${p} failed:`, err);
+      }
+      return null;
+    };
 
-    if (!blob) {
-      blob = await tryEdgeAudio(cleanText, params?.providerVoiceId || getDefaultEdgeVoice(voiceName, voiceStyle));
-      format = 'wav';
+    try {
+      // 1) Forced provider — STRICT : on n'autorise PAS de cascade vers un autre
+      // provider, sinon la voix changerait au milieu de l'histoire.
+      if (forcedProvider) {
+        const res = await tryProvider(forcedProvider);
+        if (res) { blob = res.blob; format = res.format; }
+        // Last-resort fallback to Edge if forced provider died — Edge est gratuit
+        // illimité, donc on a au moins un son. La voix ne sera pas identique mais
+        // évite le silence complet.
+        if (!blob && forcedProvider !== 'edge') {
+          const res2 = await tryProvider('edge');
+          if (res2) { blob = res2.blob; format = res2.format; }
+        }
+      } else {
+        // 2) Auto : cascade stable (même ordre pour toutes les lignes).
+        const cascade = useDefault
+          ? ['gemini', 'edge', 'piper']
+          : ['elevenlabs', 'gemini', 'edge', 'xtts', 'piper'];
+        for (const p of cascade) {
+          const res = await tryProvider(p);
+          if (res) { blob = res.blob; format = res.format; break; }
+        }
+      }
+    } finally {
+      if (params?.customPrompt?.trim()) delete STYLE_PROMPTS['__custom__'];
     }
 
     if (blob) {
-      await saveStoryAudio(storyId, index, line.speaker, blob, format);
+      await saveStoryAudio(storyId, index, taggedKey, blob, format);
       await playPcmBlobWithParams(blob, format, params || ({} as VoiceOverride), 1.0, onStart);
     }
   };
