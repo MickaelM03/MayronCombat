@@ -211,6 +211,10 @@ export default function App() {
   const [selectingPlayer, setSelectingPlayer] = useState<1 | 2>(1);
   const [matchDuration, setMatchDuration] = useState(3);
   const [charSearch, setCharSearch] = useState('');
+  // Mobile-only step-by-step setup flow (desktop voit tout d'un coup)
+  type SetupStep = 'p1' | 'p1Style' | 'p2' | 'p2Style' | 'arena' | 'rounds';
+  const SETUP_STEPS: SetupStep[] = ['p1', 'p1Style', 'p2', 'p2Style', 'arena', 'rounds'];
+  const [setupStep, setSetupStep] = useState<SetupStep>('p1');
   const audioBgRef = useRef<HTMLAudioElement | null>(null);
 
   // Narrative mode (parental control)
@@ -2312,7 +2316,7 @@ FORMAT JSON REQUIS — l'intro pose le décor narratif (pourquoi ce duel ICI), c
         </div>
       </header>
 
-      <div className="relative z-10 flex lg:grid lg:grid-cols-[1fr_auto_1fr] gap-2 lg:gap-4 w-full max-w-7xl items-center flex-1 min-h-0 justify-center">
+      <div className="relative z-10 flex lg:grid lg:grid-cols-[1fr_auto_1fr] gap-2 lg:gap-4 w-full max-w-7xl items-stretch lg:items-center flex-1 min-h-0 justify-center">
 
         {/* PLAYER 1 SELECT - hidden on mobile */}
         <div className="hidden lg:flex">
@@ -2328,21 +2332,233 @@ FORMAT JSON REQUIS — l'intro pose le décor narratif (pourquoi ce duel ICI), c
         </div>
 
         {/* MIDDLE GRID */}
-        <div className="flex flex-col items-center min-h-0 overflow-hidden bg-black/40 backdrop-blur-sm rounded-3xl p-3 lg:p-4 border border-white/5">
+        <div className="flex flex-col items-center min-h-0 overflow-hidden bg-black/40 backdrop-blur-sm rounded-3xl p-3 lg:p-4 border border-white/5 w-full lg:w-auto flex-1 lg:flex-initial">
 
-          {/* Mobile Player Preview */}
-          <div className="flex lg:hidden items-center justify-center gap-3 mb-2 flex-shrink-0">
-            <div className={`flex items-center gap-2 px-2 py-1 rounded-xl border ${selectingPlayer === 1 ? 'border-blue-500 bg-blue-950/50' : 'border-gray-800 bg-gray-900/50 opacity-60'}`} onClick={() => setSelectingPlayer(1)}>
-              <img src={p1.img} className="w-8 h-8 rounded-lg object-cover border border-blue-500/50" alt={p1.name} />
-              <div className="text-[9px] font-bold uppercase text-blue-400">{p1.name}</div>
+          {/* ─── MOBILE: Step-by-step setup ─── */}
+          <div className="lg:hidden flex flex-col w-full flex-1 min-h-0 overflow-hidden">
+            {/* Step badges */}
+            <div className="flex gap-1.5 mb-3 justify-center flex-shrink-0">
+              {SETUP_STEPS.map((s, i) => {
+                const curIdx = SETUP_STEPS.indexOf(setupStep);
+                const isActive = setupStep === s;
+                const isDone = curIdx > i;
+                const colorClasses: Record<SetupStep, { active: string; done: string }> = {
+                  p1: { active: 'bg-blue-500 text-black', done: 'bg-blue-900/50 text-blue-400 border-blue-700' },
+                  p1Style: { active: 'bg-blue-500 text-black', done: 'bg-blue-900/50 text-blue-400 border-blue-700' },
+                  p2: { active: 'bg-red-500 text-black', done: 'bg-red-900/50 text-red-400 border-red-700' },
+                  p2Style: { active: 'bg-red-500 text-black', done: 'bg-red-900/50 text-red-400 border-red-700' },
+                  arena: { active: 'bg-yellow-500 text-black', done: 'bg-yellow-900/50 text-yellow-400 border-yellow-700' },
+                  rounds: { active: 'bg-orange-500 text-black', done: 'bg-orange-900/50 text-orange-400 border-orange-700' },
+                };
+                const c = colorClasses[s];
+                return (
+                  <button
+                    key={s}
+                    onClick={() => setSetupStep(s)}
+                    className={`w-8 h-8 rounded-full text-[11px] font-black flex items-center justify-center transition-all border ${
+                      isActive ? `${c.active} scale-110 shadow-lg border-transparent` :
+                      isDone ? `${c.done} border` :
+                      'bg-gray-800 text-gray-600 border-gray-700'
+                    }`}
+                  >
+                    {i + 1}
+                  </button>
+                );
+              })}
             </div>
-            <div className="sf-title text-red-500 text-sm">VS</div>
-            <div className={`flex items-center gap-2 px-2 py-1 rounded-xl border ${selectingPlayer === 2 ? 'border-red-500 bg-red-950/50' : 'border-gray-800 bg-gray-900/50 opacity-60'}`} onClick={() => setSelectingPlayer(2)}>
-              <div className="text-[9px] font-bold uppercase text-red-400">{p2.name}</div>
-              <img src={p2.img} className="w-8 h-8 rounded-lg object-cover border border-red-500/50" alt={p2.name} />
+
+            {/* Step title — banner visible en haut */}
+            <div className="text-center mb-2 flex-shrink-0 px-3 py-2 rounded-xl bg-black/60 border border-white/10 backdrop-blur-sm">
+              <h2 className="text-sm font-black uppercase tracking-wider sf-title">
+                {setupStep === 'p1' && <span className="text-blue-400">▸ Joueur 1 — Choisis ton personnage</span>}
+                {setupStep === 'p1Style' && <span className="text-blue-400">▸ Joueur 1 — Style de combat</span>}
+                {setupStep === 'p2' && <span className="text-red-400">▸ Joueur 2 — Choisis ton personnage</span>}
+                {setupStep === 'p2Style' && <span className="text-red-400">▸ Joueur 2 — Style de combat</span>}
+                {setupStep === 'arena' && <span className="text-yellow-400">▸ Choisis l'arène</span>}
+                {setupStep === 'rounds' && <span className="text-orange-400">▸ Durée & Lancement</span>}
+              </h2>
+            </div>
+
+            {/* Step content (scrollable) */}
+            <div className="flex-1 overflow-y-auto custom-scroll w-full pr-1">
+              {(setupStep === 'p1' || setupStep === 'p2') && (
+                <div className="flex flex-col gap-2 w-full">
+                  <input
+                    type="text"
+                    value={charSearch}
+                    onChange={e => setCharSearch(e.target.value)}
+                    placeholder="Rechercher un personnage..."
+                    className="w-full bg-gray-900/80 border border-gray-700/60 rounded-xl px-3 py-2 text-xs text-gray-200 placeholder-gray-600 outline-none focus:border-gray-500"
+                  />
+                  <div className="grid grid-cols-3 gap-2">
+                    {CHARACTERS.filter(c => c.name.toLowerCase().includes(charSearch.toLowerCase())).map((char) => {
+                      const isP1Pick = setupStep === 'p1' && p1.id === char.id;
+                      const isP2Pick = setupStep === 'p2' && p2.id === char.id;
+                      return (
+                        <button
+                          key={char.id}
+                          onClick={() => {
+                            const c = withVoiceOverride(char);
+                            if (setupStep === 'p1') {
+                              setP1(c);
+                              setSelectingPlayer(1);
+                              setSetupStep('p1Style');
+                            } else {
+                              setP2(c);
+                              setSelectingPlayer(2);
+                              setSetupStep('p2Style');
+                            }
+                          }}
+                          className={`relative aspect-[3/4] rounded-xl overflow-hidden border-2 transition-all active:scale-95 ${
+                            isP1Pick ? 'border-blue-500 shadow-[0_0_20px_rgba(59,130,246,0.6)] scale-[1.03]' :
+                            isP2Pick ? 'border-red-500 shadow-[0_0_20px_rgba(239,68,68,0.6)] scale-[1.03]' :
+                            'border-gray-700/50 hover:border-gray-500'
+                          }`}
+                        >
+                          <img src={char.img} className="w-full h-full object-cover" alt={char.name} />
+                          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black via-black/80 to-transparent p-1.5">
+                            <div className="text-[10px] font-black text-white truncate text-center leading-tight">{char.name}</div>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {(setupStep === 'p1Style' || setupStep === 'p2Style') && (
+                <div className="grid grid-cols-2 gap-2 pb-2">
+                  {STYLES.map((s) => {
+                    const isP1S = setupStep === 'p1Style' && p1Style.id === s.id;
+                    const isP2S = setupStep === 'p2Style' && p2Style.id === s.id;
+                    return (
+                      <button
+                        key={s.id}
+                        onClick={() => {
+                          if (setupStep === 'p1Style') { setP1Style(s); setSetupStep('p2'); setCharSearch(''); }
+                          else { setP2Style(s); setSetupStep('arena'); }
+                        }}
+                        className={`flex items-center gap-2 px-3 py-3 rounded-xl border-2 text-[11px] uppercase font-bold transition-all text-left ${
+                          isP1S ? 'bg-blue-900/60 border-blue-500 text-blue-200 scale-[1.02]' :
+                          isP2S ? 'bg-red-900/60 border-red-500 text-red-200 scale-[1.02]' :
+                          'bg-black/40 border-gray-700 text-gray-300 hover:border-gray-500 active:scale-95'
+                        }`}
+                      >
+                        <span className="flex-shrink-0">{s.icon}</span>
+                        <span className="leading-tight">{s.name}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+
+              {setupStep === 'arena' && (
+                <div className="grid grid-cols-2 gap-2 pb-2">
+                  {ARENAS.map((a) => (
+                    <button
+                      key={a.id}
+                      onClick={() => { setArena(a); setSetupStep('rounds'); }}
+                      className={`relative rounded-xl overflow-hidden border-2 aspect-[16/10] transition-all active:scale-95 ${
+                        arena.id === a.id ? 'border-yellow-500 shadow-[0_0_25px_rgba(234,179,8,0.5)] scale-[1.03]' :
+                        'border-gray-700 hover:border-gray-500'
+                      }`}
+                    >
+                      <img src={a.img} className="w-full h-full object-cover" alt={a.name} />
+                      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black via-black/70 to-transparent p-1.5">
+                        <span className={`text-[10px] font-black uppercase tracking-wide text-center block leading-tight ${
+                          arena.id === a.id ? 'text-yellow-400' : 'text-gray-200'
+                        }`}>{a.name}</span>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              )}
+
+              {setupStep === 'rounds' && (
+                <div className="flex flex-col items-center gap-4 py-2">
+                  {/* Recap card */}
+                  <div className="flex items-center justify-around gap-2 w-full bg-black/50 rounded-2xl p-3 border border-gray-700/50">
+                    <div className="flex flex-col items-center flex-1 min-w-0">
+                      <img src={p1.img} className="w-14 h-14 rounded-xl object-cover border-2 border-blue-500" alt={p1.name} />
+                      <div className="text-[10px] font-black text-blue-400 mt-1 text-center truncate w-full">{p1.name}</div>
+                      <div className="text-[8px] text-blue-300/70 text-center truncate w-full">{p1Style.name}</div>
+                    </div>
+                    <div className="sf-title text-red-500 text-xl px-1">VS</div>
+                    <div className="flex flex-col items-center flex-1 min-w-0">
+                      <img src={p2.img} className="w-14 h-14 rounded-xl object-cover border-2 border-red-500" alt={p2.name} />
+                      <div className="text-[10px] font-black text-red-400 mt-1 text-center truncate w-full">{p2.name}</div>
+                      <div className="text-[8px] text-red-300/70 text-center truncate w-full">{p2Style.name}</div>
+                    </div>
+                  </div>
+
+                  <div className="w-full relative rounded-xl overflow-hidden aspect-[16/10] border-2 border-yellow-600">
+                    <img src={arena.img} className="w-full h-full object-cover" alt={arena.name} />
+                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black via-black/70 to-transparent p-2">
+                      <span className="text-xs font-black uppercase text-yellow-400 text-center block">{arena.name}</span>
+                    </div>
+                  </div>
+
+                  <div className="w-full">
+                    <label className="text-[11px] text-gray-400 uppercase tracking-wider block mb-2 text-center font-bold">
+                      Nombre de rounds
+                    </label>
+                    <div className="grid grid-cols-3 gap-2">
+                      <button onClick={() => setMatchDuration(3)} className={`py-3 rounded-xl font-black text-xs uppercase tracking-wider transition-all ${matchDuration === 3 ? 'bg-green-600 text-white shadow-lg scale-105' : 'bg-gray-800 text-gray-400 hover:bg-gray-700'}`}>3 Rounds</button>
+                      <button onClick={() => setMatchDuration(5)} className={`py-3 rounded-xl font-black text-xs uppercase tracking-wider transition-all ${matchDuration === 5 ? 'bg-yellow-600 text-white shadow-lg scale-105' : 'bg-gray-800 text-gray-400 hover:bg-gray-700'}`}>5 Rounds</button>
+                      <button onClick={() => setMatchDuration(8)} className={`py-3 rounded-xl font-black text-xs uppercase tracking-wider transition-all ${matchDuration === 8 ? 'bg-red-600 text-white shadow-lg scale-105' : 'bg-gray-800 text-gray-400 hover:bg-gray-700'}`}>8 Rounds</button>
+                    </div>
+                  </div>
+
+                  {!process.env.GEMINI_API_KEY && !tempApiKey && (
+                    <button onClick={() => generateCombat(true)} className="text-[10px] text-gray-500 hover:text-yellow-400 uppercase tracking-wider">
+                      ▶ Démo sans clé API
+                    </button>
+                  )}
+
+                  {gameState === 'LOADING' ? (
+                    <div className="flex items-center gap-3 py-2">
+                      <RefreshCw size={24} className="text-red-600 animate-spin" />
+                      <p className="text-white font-black italic text-sm animate-pulse">GÉNÉRATION...</p>
+                    </div>
+                  ) : (
+                    <motion.button
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => generateCombat(false)}
+                      className="bg-gradient-to-r from-red-700 via-orange-600 to-red-700 px-12 py-4 rounded-full font-black text-xl uppercase italic border-2 border-yellow-400 shadow-[0_5px_20px_rgba(0,0,0,0.5)] sf-title tracking-wider w-full"
+                    >
+                      <span className="flex items-center gap-2 justify-center">
+                        <Play fill="currentColor" size={22} />
+                        Fight !
+                      </span>
+                    </motion.button>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Bottom nav */}
+            <div className="flex items-center justify-between gap-2 mt-2 flex-shrink-0">
+              {SETUP_STEPS.indexOf(setupStep) > 0 ? (
+                <button
+                  onClick={() => setSetupStep(SETUP_STEPS[SETUP_STEPS.indexOf(setupStep) - 1])}
+                  className="flex-1 py-2 rounded-xl bg-gray-800/80 border border-gray-700 text-[11px] font-bold uppercase text-gray-300 hover:bg-gray-700 transition-colors flex items-center justify-center gap-1.5"
+                >
+                  <ChevronLeft size={14} /> Précédent
+                </button>
+              ) : <div className="flex-1" />}
+              {SETUP_STEPS.indexOf(setupStep) < SETUP_STEPS.length - 1 && (
+                <button
+                  onClick={() => setSetupStep(SETUP_STEPS[SETUP_STEPS.indexOf(setupStep) + 1])}
+                  className="flex-1 py-2 rounded-xl bg-gray-800/80 border border-gray-700 text-[11px] font-bold uppercase text-gray-300 hover:bg-gray-700 transition-colors flex items-center justify-center gap-1.5"
+                >
+                  Suivant <ChevronRight size={14} />
+                </button>
+              )}
             </div>
           </div>
 
+          {/* ─── DESKTOP: All-at-once layout (kept identical) ─── */}
+          <div className="hidden lg:flex flex-col items-center w-full">
           {/* Step indicators */}
           <div className="flex items-center gap-2 mb-3 flex-shrink-0">
             {[1, 2, 3].map((step) => {
@@ -2476,6 +2692,7 @@ FORMAT JSON REQUIS — l'intro pose le décor narratif (pourquoi ce duel ICI), c
               </motion.button>
             )}
           </div>
+          </div>{/* /desktop wrapper */}
         </div>
 
         {/* PLAYER 2 SELECT - hidden on mobile */}
