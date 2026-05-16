@@ -41,6 +41,7 @@ import StoryViewer from './components/StoryMode/StoryViewer';
 import StoryLibrary from './components/StoryMode/StoryLibrary';
 import { getStoryDirectives, StoryChapterJSON } from './lib/story/prompts';
 import { saveStory, updateStory, getStory, getStoryAudio, saveStoryAudio, listStories, SavedStory, StoryLine } from './lib/story/store';
+import { fetchServerKeys, saveServerKey } from './lib/settings/keys';
 import { generateWithFallback, AICascadeConfig } from './lib/ai/cascade';
 
 import { playWebSpeechEnhanced } from './lib/voice/webspeech';
@@ -131,31 +132,69 @@ export default function App() {
     setTempApiKey(key);
     if (key) localStorage.setItem('mayron.apiKey', key);
     else localStorage.removeItem('mayron.apiKey');
+    saveServerKey('apiKey', key);
   };
 
   const saveGroqKey = (key: string) => {
     setGroqKey(key);
     if (key) localStorage.setItem('mayron.groqKey', key);
     else localStorage.removeItem('mayron.groqKey');
+    saveServerKey('groqKey', key);
   };
 
   const saveOpenaiKey = (key: string) => {
     setOpenaiKey(key);
     if (key) localStorage.setItem('mayron.openaiKey', key);
     else localStorage.removeItem('mayron.openaiKey');
+    saveServerKey('openaiKey', key);
   };
 
   const saveDeepInfraKey = (key: string) => {
     setDeepInfraKey(key);
     if (key) localStorage.setItem('mayron.deepInfraKey', key);
     else localStorage.removeItem('mayron.deepInfraKey');
+    saveServerKey('deepInfraKey', key);
   };
 
   const saveDeepseekKey = (key: string) => {
     setDeepseekKey(key);
     if (key) localStorage.setItem('mayron.deepseekKey', key);
     else localStorage.removeItem('mayron.deepseekKey');
+    saveServerKey('deepseekKey', key);
   };
+
+  // On mount, hydrate keys from the server so a key entered on any browser
+  // is available to every other browser that connects to this VPS.
+  useEffect(() => {
+    fetchServerKeys().then(remote => {
+      if (remote.apiKey !== undefined && remote.apiKey !== tempApiKey) {
+        setTempApiKey(remote.apiKey);
+        if (remote.apiKey) localStorage.setItem('mayron.apiKey', remote.apiKey);
+        else localStorage.removeItem('mayron.apiKey');
+      }
+      if (remote.groqKey !== undefined && remote.groqKey !== groqKey) {
+        setGroqKey(remote.groqKey);
+        if (remote.groqKey) localStorage.setItem('mayron.groqKey', remote.groqKey);
+        else localStorage.removeItem('mayron.groqKey');
+      }
+      if (remote.openaiKey !== undefined && remote.openaiKey !== openaiKey) {
+        setOpenaiKey(remote.openaiKey);
+        if (remote.openaiKey) localStorage.setItem('mayron.openaiKey', remote.openaiKey);
+        else localStorage.removeItem('mayron.openaiKey');
+      }
+      if (remote.deepInfraKey !== undefined && remote.deepInfraKey !== deepInfraKey) {
+        setDeepInfraKey(remote.deepInfraKey);
+        if (remote.deepInfraKey) localStorage.setItem('mayron.deepInfraKey', remote.deepInfraKey);
+        else localStorage.removeItem('mayron.deepInfraKey');
+      }
+      if (remote.deepseekKey !== undefined && remote.deepseekKey !== deepseekKey) {
+        setDeepseekKey(remote.deepseekKey);
+        if (remote.deepseekKey) localStorage.setItem('mayron.deepseekKey', remote.deepseekKey);
+        else localStorage.removeItem('mayron.deepseekKey');
+      }
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const getAIConfig = useCallback((): AICascadeConfig => {
     const rawKeys = process.env.GEMINI_API_KEY || tempApiKey;

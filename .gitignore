@@ -9,3 +9,4 @@ coverage/
 !.env.example
 scripts/elevenlabs_voices.json
 scripts/venv/
+data/api-keys.json

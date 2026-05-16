@@ -16,6 +16,7 @@ const DATA_DIR = path.join(__dirname, 'data', 'battles');
 const AUDIO_DIR = path.join(DATA_DIR, 'audio');
 const STORY_DIR = path.join(__dirname, 'data', 'stories');
 const STORY_AUDIO_DIR = path.join(STORY_DIR, 'audio');
+const KEYS_FILE = path.join(__dirname, 'data', 'api-keys.json');
 fs.mkdirSync(DATA_DIR, { recursive: true });
 fs.mkdirSync(AUDIO_DIR, { recursive: true });
 fs.mkdirSync(STORY_DIR, { recursive: true });
@@ -181,6 +182,44 @@ app.delete('/api/stories/:id', (req, res) => {
     }
   } catch {}
   res.json({ ok: true });
+});
+
+// ─── Shared API Keys (persisted on the VPS for all browsers) ──
+
+const ALLOWED_KEY_FIELDS = ['apiKey', 'groqKey', 'openaiKey', 'deepInfraKey', 'deepseekKey'] as const;
+type KeyField = typeof ALLOWED_KEY_FIELDS[number];
+
+function readApiKeys(): Partial<Record<KeyField, string>> {
+  try {
+    if (!fs.existsSync(KEYS_FILE)) return {};
+    return JSON.parse(fs.readFileSync(KEYS_FILE, 'utf-8'));
+  } catch (err) {
+    console.warn('[keys] read failed:', err);
+    return {};
+  }
+}
+
+app.get('/api/settings/keys', (_req, res) => {
+  res.json(readApiKeys());
+});
+
+app.post('/api/settings/keys', (req, res) => {
+  try {
+    const incoming = req.body || {};
+    const current = readApiKeys();
+    const merged: Partial<Record<KeyField, string>> = { ...current };
+    for (const k of ALLOWED_KEY_FIELDS) {
+      if (typeof incoming[k] === 'string') {
+        if (incoming[k].trim()) merged[k] = incoming[k].trim();
+        else delete merged[k];
+      }
+    }
+    fs.writeFileSync(KEYS_FILE, JSON.stringify(merged, null, 2), 'utf-8');
+    res.json({ ok: true });
+  } catch (err) {
+    console.error('POST /api/settings/keys error:', err);
+    res.status(500).json({ error: 'Failed to save keys' });
+  }
 });
 
 // ─── Audio Cache ────────────────────────────────────────────
