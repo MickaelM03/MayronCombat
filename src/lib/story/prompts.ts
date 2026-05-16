@@ -8,10 +8,13 @@ export function getStoryDirectives(
   isInteractive: boolean,
   previousContext?: string,
   inventory?: { heroId?: string, items: string[], allies: string[] },
-  chapterCount: number = 0
+  chapterCount: number = 0,
+  durationMinutes: number = 5
 ): string {
   const charactersList = characterNames.join(', ');
   const isMaPremiereAventure = theme.includes('Ma Première Aventure');
+  const targetLines = Math.round(durationMinutes * 3);
+  const durationRule = `10. LONGUEUR : L'histoire doit durer environ ${durationMinutes} minute${durationMinutes > 1 ? 's' : ''} à l'oral. Génère environ ${targetLines} lignes de dialogue/narration (ni plus ni moins).`;
 
   // Identification du héros actuel
   const currentHero = inventory?.heroId ? characterNames.find(n => inventory.heroId === n) || inventory.heroId : "Non défini";
@@ -75,7 +78,7 @@ export function getStoryDirectives(
 - FINALE : La conclusion doit raconter le lien spécial qui unit désormais le héros et le dragon, et se terminer par une moralité explicite sur la patience, l'empathie ou le respect de la nature.
 ` : "";
 
-  return `${baseRules}\n${modeDirectives}\n${mpaRules}\n${interactiveRules}\n${contextPrompt}\n${dragonSpecificRules}`;
+  return `${baseRules}\n${modeDirectives}\n${mpaRules}\n${interactiveRules}\n${contextPrompt}\n${dragonSpecificRules}\n${durationRule}`;
 }
 
 export interface StoryChapterJSON {

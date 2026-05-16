@@ -11,6 +11,7 @@ interface StoryConfiguratorProps {
     arena: typeof ARENAS[0];
     theme: string;
     isInteractive: boolean;
+    duration: number;
   }) => void;
   onBack: () => void;
 }
@@ -21,6 +22,9 @@ export default function StoryConfigurator({ onStart, onBack }: StoryConfigurator
   const [theme, setTheme] = useState('Une aventure épique à travers les dimensions');
   const [isInteractive, setIsInteractive] = useState(true);
   const [showCharModal, setShowCharModal] = useState<number | null>(null);
+  const [showDurationModal, setShowDurationModal] = useState(false);
+  const [duration, setDuration] = useState(5);
+  const [charSearch, setCharSearch] = useState('');
 
   const addCharacter = () => {
     setSelectedChars([...selectedChars, CHARACTERS[3]]);
@@ -160,7 +164,7 @@ export default function StoryConfigurator({ onStart, onBack }: StoryConfigurator
                   className="relative group"
                 >
                   <button
-                    onClick={() => setShowCharModal(index)}
+                    onClick={() => { setCharSearch(''); setShowCharModal(index); }}
                     className="w-full aspect-[3/4] rounded-2xl overflow-hidden border-2 border-amber-900/30 hover:border-amber-400 transition-all bg-black/60 shadow-lg group-hover:shadow-amber-500/20"
                   >
                     <img src={char.img} className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500" alt={char.name} />
@@ -302,7 +306,7 @@ export default function StoryConfigurator({ onStart, onBack }: StoryConfigurator
             <motion.button
               whileHover={{ scale: 1.02, y: -4 }}
               whileTap={{ scale: 0.98 }}
-              onClick={() => onStart({ characters: selectedChars, arena: selectedArena, theme, isInteractive })}
+              onClick={() => setShowDurationModal(true)}
               className="flex-[2] px-8 py-5 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-700 text-black font-black hover:from-amber-400 hover:to-amber-600 transition-all flex items-center justify-center gap-3 uppercase tracking-[0.3em] shadow-[0_15px_30px_rgba(251,191,36,0.2)] italic"
             >
               Lancer l'Aventure
@@ -311,6 +315,96 @@ export default function StoryConfigurator({ onStart, onBack }: StoryConfigurator
           </motion.div>
         </div>
       </motion.div>
+
+      {/* Duration Modal */}
+      <AnimatePresence>
+        {showDurationModal && (
+          <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowDurationModal(false)}
+              className="absolute inset-0 bg-black/90 backdrop-blur-md"
+            />
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className="relative glass-card border-2 border-amber-500/40 rounded-[2rem] p-8 md:p-12 max-w-lg w-full shadow-[0_0_60px_rgba(0,0,0,0.6)] flex flex-col items-center gap-8"
+            >
+              <div className="text-center">
+                <h3 className="text-3xl md:text-4xl font-black italic text-amber-500 uppercase tracking-tighter">
+                  Durée de l'Aventure
+                </h3>
+                <p className="text-amber-200/50 text-sm mt-2 italic">
+                  Combien de temps souhaitez-vous voyager ?
+                </p>
+              </div>
+
+              {/* Duration display */}
+              <div className="text-center">
+                <span className="text-7xl md:text-8xl font-black text-white tabular-nums">{duration}</span>
+                <span className="text-2xl font-black text-amber-500 ml-2">min</span>
+                <p className="text-amber-200/40 text-xs mt-2 italic">
+                  {duration <= 5 ? 'Histoire courte' : duration <= 10 ? 'Histoire moyenne' : duration <= 15 ? 'Histoire longue' : 'Épopée complète'}
+                </p>
+              </div>
+
+              {/* Preset buttons */}
+              <div className="flex gap-2 flex-wrap justify-center">
+                {[3, 5, 10, 15, 20].map(d => (
+                  <button
+                    key={d}
+                    onClick={() => setDuration(d)}
+                    className={`px-4 py-2 rounded-xl font-black text-sm uppercase tracking-wider transition-all border-2 ${duration === d ? 'bg-amber-500 text-black border-amber-400' : 'bg-black/40 text-amber-400 border-amber-900/40 hover:border-amber-500/60'}`}
+                  >
+                    {d} min
+                  </button>
+                ))}
+              </div>
+
+              {/* Slider */}
+              <div className="w-full px-2">
+                <input
+                  type="range"
+                  min={3}
+                  max={20}
+                  value={duration}
+                  onChange={e => setDuration(Number(e.target.value))}
+                  className="w-full accent-amber-500 h-2 cursor-pointer"
+                />
+                <div className="flex justify-between text-[10px] text-amber-900/70 mt-1 font-bold uppercase tracking-wider">
+                  <span>3 min</span>
+                  <span>20 min</span>
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div className="flex gap-3 w-full">
+                <button
+                  onClick={() => setShowDurationModal(false)}
+                  className="flex-1 py-4 rounded-2xl border-2 border-amber-900/50 text-amber-700 font-black hover:bg-amber-900/20 hover:text-amber-500 transition-all uppercase tracking-[0.2em] text-xs italic"
+                >
+                  Annuler
+                </button>
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => {
+                    setShowDurationModal(false);
+                    onStart({ characters: selectedChars, arena: selectedArena, theme, isInteractive, duration });
+                  }}
+                  className="flex-[2] py-4 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-700 text-black font-black hover:from-amber-400 hover:to-amber-600 transition-all flex items-center justify-center gap-2 uppercase tracking-[0.2em] text-sm italic shadow-[0_10px_25px_rgba(251,191,36,0.25)]"
+                >
+                  Lancer
+                  <ChevronRight size={20} />
+                </motion.button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
 
       {/* Character Selection Modal */}
       <AnimatePresence>
@@ -329,12 +423,20 @@ export default function StoryConfigurator({ onStart, onBack }: StoryConfigurator
               exit={{ scale: 0.9, opacity: 0, y: 20 }}
               className="relative glass-card border-2 border-amber-500/40 rounded-[2rem] md:rounded-[3rem] p-4 md:p-10 max-w-5xl w-[95%] md:w-full max-h-[90vh] overflow-hidden flex flex-col shadow-[0_0_50px_rgba(0,0,0,0.5)]"
             >
-              <h3 className="text-2xl md:text-5xl font-black text-amber-500 uppercase italic mb-6 md:mb-10 tracking-tighter text-center leading-none">
+              <h3 className="text-2xl md:text-5xl font-black text-amber-500 uppercase italic mb-4 md:mb-6 tracking-tighter text-center leading-none">
                 Choisir un <span className="text-white">Protagoniste</span>
               </h3>
-              
+
+              <input
+                type="text"
+                value={charSearch}
+                onChange={e => setCharSearch(e.target.value)}
+                placeholder="Rechercher un personnage..."
+                className="w-full mb-4 bg-black/50 border border-amber-900/40 rounded-xl px-4 py-2.5 text-sm text-amber-100 placeholder-amber-900/60 outline-none focus:border-amber-500/60 transition-colors"
+              />
+
               <div className="flex flex-wrap gap-3 overflow-y-auto pr-2 custom-scroll pb-6 justify-center content-start">
-                {CHARACTERS.map((char) => (
+                {CHARACTERS.filter(c => c.name.toLowerCase().includes(charSearch.toLowerCase())).map((char) => (
                   <button
                     key={char.id}
                     onClick={() => {

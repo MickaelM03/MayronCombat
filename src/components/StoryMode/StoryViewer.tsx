@@ -11,12 +11,14 @@ interface StoryViewerProps {
   onChoice: (choiceText: string, choiceAction: string, inventoryUpdate?: { type: 'ITEM' | 'ALLY', name: string }) => Promise<void>;
   onBack: () => void;
   playVoice: (line: StoryLine, index: number, storyId: string, onStart?: (duration: number) => void) => Promise<void>;
+  stopVoice: () => void;
   isGenerating: boolean;
 }
 
-export default function StoryViewer({ story, onChoice, onBack, playVoice, isGenerating }: StoryViewerProps) {
+export default function StoryViewer({ story, onChoice, onBack, playVoice, stopVoice, isGenerating }: StoryViewerProps) {
   const [currentLineIndex, setCurrentLineIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const isAutoPlayingRef = useRef(true);
   const lastPlayedIdx = useRef<number>(-1);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [lineDuration, setLineDuration] = useState(0);
@@ -63,12 +65,14 @@ export default function StoryViewer({ story, onChoice, onBack, playVoice, isGene
       setIsSpeaking(true);
       playVoice(currentLine, currentLineIndex, story.id, setLineDuration).then(() => {
         setIsSpeaking(false);
-        if (isAutoPlaying) {
+        if (isAutoPlayingRef.current) {
           setTimeout(nextLine, 1000);
         }
       });
     }
-  }, [currentLineIndex, story.id, playVoice, isAutoPlaying, isGenerating, currentLine]);
+  // isAutoPlaying intentionally excluded — we read it via isAutoPlayingRef to avoid stale closure
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentLineIndex, story.id, playVoice, isGenerating, currentLine, nextLine]);
 
   const getCharacterImg = (name: string) => {
     const char = CHARACTERS.find(c => name.toLowerCase().includes(c.name.toLowerCase()));
@@ -156,8 +160,17 @@ export default function StoryViewer({ story, onChoice, onBack, playVoice, isGene
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <button 
-            onClick={() => setIsAutoPlaying(!isAutoPlaying)}
+          <button
+            onClick={() => {
+              const next = !isAutoPlaying;
+              isAutoPlayingRef.current = next;
+              setIsAutoPlaying(next);
+              if (!next) {
+                stopVoice();
+              } else {
+                lastPlayedIdx.current = -1;
+              }
+            }}
             className={`p-2 rounded-full border transition-all ${isAutoPlaying ? 'bg-amber-500 text-black border-amber-400' : 'bg-black/40 text-amber-500 border-amber-900/50'}`}
           >
             {isGenerating ? <RefreshCw size={20} className="animate-spin" /> : (isAutoPlaying ? <Pause size={20} fill="currentColor" /> : <Play size={20} fill="none" />)}

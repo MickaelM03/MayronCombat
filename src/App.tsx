@@ -171,6 +171,7 @@ export default function App() {
   }, [tempApiKey, openaiKey, groqKey, deepInfraKey, deepseekKey]);
   const [selectingPlayer, setSelectingPlayer] = useState<1 | 2>(1);
   const [matchDuration, setMatchDuration] = useState(3);
+  const [charSearch, setCharSearch] = useState('');
   const audioBgRef = useRef<HTMLAudioElement | null>(null);
 
   // Narrative mode (parental control)
@@ -1651,7 +1652,7 @@ FORMAT JSON REQUIS :
       }
 
       const charNames = config.characters.map((c: any) => c.name);
-      const prompt = getStoryDirectives(narrativeMode, charNames, config.arena.name, config.theme, config.isInteractive, undefined, undefined, 0);
+      const prompt = getStoryDirectives(narrativeMode, charNames, config.arena.name, config.theme, config.isInteractive, undefined, undefined, 0, config.duration ?? 5);
       
       const result = await generateWithFallback(prompt, aiConfig);
       const text = result.text || "";
@@ -1683,7 +1684,7 @@ FORMAT JSON REQUIS :
     } catch (err: any) {
       console.error(err);
       setErrorMsg("Échec de la génération de l'histoire: " + err.message);
-      setGameState('ERROR');
+      setAppMode('STORY_CONFIG');
     } finally {
       setIsGeneratingStory(false);
     }
@@ -1847,14 +1848,15 @@ FORMAT JSON REQUIS :
       );
     }
     return (
-      <StoryViewer 
-        story={currentStory} 
-        onChoice={handleChoice} 
+      <StoryViewer
+        story={currentStory}
+        onChoice={handleChoice}
         onBack={() => {
           setCurrentStory(null);
           setAppMode('STORY_CONFIG');
-        }} 
+        }}
         playVoice={playStoryVoice}
+        stopVoice={() => { try { currentAudioSource.current?.stop(); } catch {} }}
         isGenerating={isGeneratingStory}
       />
     );
@@ -2198,9 +2200,20 @@ FORMAT JSON REQUIS :
             })}
           </div>
 
+          {/* Character Search */}
+          <div className="w-full mb-2 flex-shrink-0">
+            <input
+              type="text"
+              value={charSearch}
+              onChange={e => setCharSearch(e.target.value)}
+              placeholder="Rechercher un personnage..."
+              className="w-full bg-gray-900/80 border border-gray-700/60 rounded-xl px-3 py-1.5 text-[11px] text-gray-200 placeholder-gray-600 outline-none focus:border-gray-500 transition-colors"
+            />
+          </div>
+
           {/* Character Roster Grid — max 2 rows of 4 visible, scroll for more */}
           <div className="grid grid-cols-4 gap-1.5 sm:gap-2 p-2 sm:p-3 bg-gray-900/60 backdrop-blur-xl rounded-2xl border border-gray-700/50 shadow-2xl flex-shrink-0 max-h-[120px] sm:max-h-[130px] overflow-y-auto custom-scroll">
-            {CHARACTERS.map((char) => (
+            {CHARACTERS.filter(c => c.name.toLowerCase().includes(charSearch.toLowerCase())).map((char) => (
               <button
                 key={char.id}
                 onClick={() => {
