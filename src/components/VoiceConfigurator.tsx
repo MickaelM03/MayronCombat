@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Play, Save, Download, Loader2, Check, ChevronDown, ChevronUp, RotateCcw, RefreshCw, Wifi, WifiOff } from 'lucide-react';
+import { Play, Save, Download, Loader2, Check, ChevronDown, ChevronUp, RotateCcw, RefreshCw, Wifi, WifiOff, Sparkles } from 'lucide-react';
+import TTSStudioModal from './TTSStudioModal';
 import { isXttsAvailable, resetXttsCache } from '../lib/voice/xtts';
 import { fetchElevenLabsStatus } from '../lib/voice/elevenlabs';
 import { fetchEdgeStatus, EDGE_VOICES } from '../lib/voice/edgetts';
@@ -8,7 +9,7 @@ import { fetchHFStatus } from '../lib/voice/huggingface';
 
 
 // All 30 Gemini TTS prebuilt voices with gender hints
-const GEMINI_VOICES = [
+export const GEMINI_VOICES = [
   { name: 'Achernar', gender: 'M', desc: 'Grave, posé' },
   { name: 'Achird', gender: 'M', desc: 'Neutre, clair' },
   { name: 'Algenib', gender: 'M', desc: 'Profond, solennel' },
@@ -195,6 +196,7 @@ interface Props {
   stylePrompts: Record<string, string>;
   onSave: (overrides: Record<string, VoiceOverride>) => void;
   onTestVoice: (text: string, voiceName: string, voiceStyle: string, params: VoiceOverride, charId?: string) => Promise<void>;
+  geminiApiKey?: string;
 }
 
 // Slider component for cleaner code
@@ -221,7 +223,7 @@ function Slider({ label, value, min, max, step, unit, onChange, defaultVal }: {
   );
 }
 
-export default function VoiceConfigurator({ characters, overrides, stylePrompts, onSave, onTestVoice }: Props) {
+export default function VoiceConfigurator({ characters, overrides, stylePrompts, onSave, onTestVoice, geminiApiKey }: Props) {
   const [local, setLocal] = useState<Record<string, VoiceOverride>>(() => {
     // Deep clone so we don't mutate parent
     const clone: Record<string, VoiceOverride> = {};
@@ -235,6 +237,7 @@ export default function VoiceConfigurator({ characters, overrides, stylePrompts,
   const [saved, setSaved] = useState(false);
   const [showDownloads, setShowDownloads] = useState(false);
   const [filter, setFilter] = useState('');
+  const [showStudio, setShowStudio] = useState(false);
   const [xttsOk, setXttsOk] = useState<boolean>(isXttsAvailable());
   const [retrying, setRetrying] = useState(false);
   const [elStatus, setElStatus] = useState<{ enabled: boolean; voiceCount: number }>({ enabled: false, voiceCount: 0 });
@@ -352,6 +355,14 @@ export default function VoiceConfigurator({ characters, overrides, stylePrompts,
 
   return (
     <div className="space-y-3">
+      {/* Studio Modal */}
+      <TTSStudioModal
+        isOpen={showStudio}
+        onClose={() => setShowStudio(false)}
+        onTestVoice={(text, voice, style, params) => onTestVoice(text, voice, style, params)}
+        geminiApiKey={geminiApiKey}
+      />
+
       {/* Top bar */}
       <div className="flex items-center gap-2">
         <input
@@ -362,13 +373,21 @@ export default function VoiceConfigurator({ characters, overrides, stylePrompts,
           className="flex-1 bg-black border border-gray-700 rounded-xl px-3 py-2 text-xs outline-none focus:border-purple-500 transition-colors"
         />
         <button
+          onClick={() => setShowStudio(true)}
+          className="flex items-center gap-1 px-3 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-purple-700 to-pink-700 hover:from-purple-600 hover:to-pink-600 text-white transition-all shadow-lg shadow-purple-900/30"
+          title="Ouvrir le Studio TTS"
+        >
+          <Sparkles size={12} />
+          Studio
+        </button>
+        <button
           onClick={handleSave}
           className={`flex items-center gap-1 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
-            saved ? 'bg-green-700 text-white' : 'bg-purple-700 hover:bg-purple-600 text-white'
+            saved ? 'bg-green-700 text-white' : 'bg-gray-700 hover:bg-gray-600 text-white'
           }`}
         >
           {saved ? <Check size={12} /> : <Save size={12} />}
-          {saved ? 'Sauvé !' : 'Sauver tout'}
+          {saved ? 'Sauvé !' : 'Sauver'}
         </button>
       </div>
 

@@ -730,7 +730,7 @@ export default function App() {
       
       try {
         const response = await ai.models.generateContent({
-          model: "gemini-2.0-flash-exp",
+          model: "gemini-2.5-flash-preview-tts",
           contents: [{ parts: [{ text: prompted }] }],
           config: {
             responseModalities: ["AUDIO"],
@@ -1640,7 +1640,14 @@ FORMAT JSON REQUIS — l'intro pose le décor narratif (pourquoi ce duel ICI), c
                   {narrativeMode > 1 && <BatchGenerator onGenerateBattles={generateBatch} onGenerateStories={generateBatchStories} />}
                 </>)}
                 {parentalTab === 'voix' && (
-                  <VoiceConfigurator characters={CHARACTERS} overrides={voiceOverrides} stylePrompts={STYLE_PROMPTS} onSave={saveVoiceOverrides} onTestVoice={testVoice} />
+                  <VoiceConfigurator
+                    characters={CHARACTERS}
+                    overrides={voiceOverrides}
+                    stylePrompts={STYLE_PROMPTS}
+                    onSave={saveVoiceOverrides}
+                    onTestVoice={testVoice}
+                    geminiApiKey={tempApiKey || undefined}
+                  />
                 )}
               </motion.div>
             </motion.div>
@@ -2281,6 +2288,7 @@ FORMAT JSON REQUIS — l'intro pose le décor narratif (pourquoi ce duel ICI), c
                   stylePrompts={STYLE_PROMPTS}
                   onSave={saveVoiceOverrides}
                   onTestVoice={testVoice}
+                  geminiApiKey={tempApiKey || undefined}
                 />
               )}
             </motion.div>
